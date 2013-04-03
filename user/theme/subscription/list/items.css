@@ -1,0 +1,21 @@
+.i96nzebywb {
+
+    margin-bottom:30px;
+
+    td {
+        border-bottom:1px solid #ccc;
+        padding:10px;
+    }
+    
+    .unsubscribe {
+    
+        padding-left:50px;
+        
+        .button {
+            cursor:pointer;
+            color:red;
+            font-weight:bold;
+        }
+    }
+
+}

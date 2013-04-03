@@ -1,0 +1,54 @@
+1
+
+
+
+<h2>Заголовок</h2>
+
+А сейчас будет {ссылка} на {раздел}
+
+121212
+<code>
+<html>
+<head><title>Example</title></head>
+<body>
+<h1><?php echo "Hello World"; ?></h1>
+<?php
+$txt = "This is my first PHP script";
+/* This line creates the variable $txt and gives it the initial value. Variables in PHP are represented by a dollar sign followed by the name of the variable. The variable name is case-sensitive. */
+
+echo $txt;
+?>
+</body>
+</html>
+</code>
+12312321
+
+Текст до дива
+<div>
+бла бла бла
+</div>
+Текст после дива
+
+<img src='/ndra/data/test.jpg' />
+<img src='/ndra/data/test.jpg' />
+<img src='/ndra/data/test.jpg' alt='345345345' />
+<img src='/ndra/data/test.jpg' />
+
+
+121212
+<ul>
+<li>asdasdasdsadsadas</li>
+<li>asdasdasdsadsadas</li>
+<li>asdasdasdsadsadas</li>
+</ul>
+1231231231
+
+<table>
+<tr>
+<td>1212</td>
+<td>1212</td>
+<td>121212
+31231
+123123</td>
+</tr>
+</table>

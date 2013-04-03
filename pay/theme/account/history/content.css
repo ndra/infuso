@@ -1,0 +1,27 @@
+.w22e7mla9n {
+
+    width:100%;
+
+    thead td {
+        border-bottom:1px solid #ccc;
+        font-style:italic;
+    }
+
+    .incoming {
+        color:green;
+    }
+    
+    .expenditure {
+        color:black;
+    }
+
+    td {
+        padding:10px;
+    }
+    
+    .amount {
+        text-align:right;
+        font-weight:bold;
+    }
+
+}

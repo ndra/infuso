@@ -1,0 +1,23 @@
+.ho8gst45s {
+    font-family:arial,helvetica,sans-serif;
+    font-dize:13px;
+    color:#444444;
+    position:relative;margin:20px 0px;
+    background:#ededed;padding:20px;
+    border:1px solid #cccccc;
+    font-weight:normal;
+    
+    a {
+        color:black;
+    }
+    
+    .close {
+        position:absolute;
+        right:20px;
+        border-bottom:1px dotted gray;
+        cursor:pointer;
+        color:gray;
+    }
+    
+}
+

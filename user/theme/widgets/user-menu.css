@@ -1,0 +1,22 @@
+.gelqz8dj3s {
+
+    background:#ededed;
+    padding:10px;
+    margin-bottom:10px;
+    
+    span {
+        padding-right:10px;
+    }
+    
+    .active {
+        font-weight:bold;
+    }
+    
+    .sup {
+        padding-left:2px;
+        font-weight:normal;
+        position:relative;
+        top:-5px;
+    }
+    
+}

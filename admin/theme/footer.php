@@ -1,0 +1,3 @@
+<?
+
+tmp::footer("tmp:footer");

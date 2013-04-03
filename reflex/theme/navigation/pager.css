@@ -1,0 +1,16 @@
+.pager {
+    padding:7px;
+}
+
+.pager a {
+    color:gray;
+    margin:0px 2px 0px 2px;
+    text-decoration:none;
+    font-weight:bold;
+    font-size:22px;
+    font-family:arial;
+}
+
+.pager a:hover {
+    color:red;
+}

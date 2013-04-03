@@ -1,0 +1,10 @@
+.el2rmjirr-select {
+    width:250px;
+    padding:4px;
+}
+
+.el2rmjirr-container label {
+    display:block;
+    font-style:italic;
+    opacity:.5;
+}

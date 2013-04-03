@@ -1,0 +1,2 @@
+
+inx.ns("inx.layout").fit={create:function(){},add:function(cmp){cmp=inx(cmp);var e=$("<div></div>").css("overflow","hidden").appendTo(this.__body);if(!this.keepBorder)cmp.cmd("border",0);cmp.cmd("render",e);cmp.data("layoutContainer",e);},remove:function(cmp){cmp=inx(cmp);var e=cmp.data("layoutContainer").get(0);e.parentNode.removeChild(e);},sync:function(){for(var i=0;i<this.items.length;i++){inx(this.items[i]).cmd("width",this.__bodyWidth);inx(this.items[i]).cmd("height",this.__bodyHeight);}}}

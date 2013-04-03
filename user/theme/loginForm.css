@@ -1,0 +1,22 @@
+.arwfr2nnm9 {
+
+    .email,.password {
+    
+        position:relative;    
+        
+        .placeholder {
+            position:absolute;
+            left:10px;
+            top:10px;
+            font-style:italic;
+            opacity:.5;
+        }
+        
+        input {
+            width:120px;
+            padding:5px;
+        }
+        
+    }
+
+}

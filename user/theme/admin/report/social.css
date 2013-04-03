@@ -1,0 +1,17 @@
+.be466lsda {
+
+    .photo {
+        img {
+            width:100px;
+            vertical-align:top;
+            margin:5px;
+        }
+    }
+    
+    .comment {
+        font-style:italic;
+        color:gray;
+        margin-bottom:10px;
+    }
+
+}

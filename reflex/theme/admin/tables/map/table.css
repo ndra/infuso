@@ -1,0 +1,19 @@
+.buxb39x8 {
+
+    word-wrap:break-word;
+    width:100px;
+    padding:2px;
+    font-size:11px;
+    border:1px solid #ccc;
+    display:inline-block;
+    vertical-align:top;
+    margin:10px;
+    
+    color:black;
+    text-decoration:none;
+    
+    .field:nth-child(2n) {
+        background:#ededed;
+    }
+    
+}

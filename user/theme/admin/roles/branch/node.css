@@ -1,0 +1,24 @@
+.axxvozzes4 {
+
+    border:1px solid #ccc;
+    padding:3px;
+    border-radius:5px;
+    white-space:nowrap;
+    
+    .title {
+        opacity:.5;
+        font-style:italic;
+    }
+    
+    pre {
+        font-size:11px;
+        background:#ededed;
+    }
+
+}
+
+.axxvozzes4-role {
+    background:green;
+    border:none;
+    color:white;
+}

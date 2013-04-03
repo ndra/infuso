@@ -1,0 +1,15 @@
+<doc>
+<title>Галерея</title>
+<id>b78aiqpls3kghdplrt49</id>
+<inx>{
+	"type":"inx.gallery",
+	"height":200,
+	"loader":{"cmd":"inxdev:example:galleryLoader"}
+}</inx>
+<inx>{
+	"type":"inx.gallery",
+	"height":200,
+	"allowResize":false,
+	"loader":{"cmd":"inxdev:example:galleryLoader"}
+}</inx>
+</doc>

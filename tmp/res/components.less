@@ -1,0 +1,37 @@
+.gradient(@a,@b) {
+    background:@a;
+    background: -moz-linear-gradient(top,  @a 0%, @b 100%); /* FF3.6+ */
+    background: -webkit-linear-gradient(top,  @a 0%, @b 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, @a 0%, @b 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, @a 0%, @b 100%); /* IE10+ */
+    background: linear-gradient(top, @a 0%, @b 100%); /* W3C */
+    -pie-background: linear-gradient(top, @a 0%, @b 100%);
+    behavior: url(/tmp/res/pie.htc); 
+}
+
+
+/* для того что бы заработало надо добавить в .htaccess AddType text/x-component .htc  */
+
+.border-radius(@a){
+     -moz-border-radius:@a; 
+     -webkit-border-radius:@a; 
+     -khtml-border-radius:@a;  
+     border-radius:@a;
+     behavior: url(/tmp/res/pie.htc);    
+}
+
+.border-radius(@topNbottom,@leftNright){
+     -moz-border-radius:@topNbottom @leftNright; 
+     -webkit-border-radius:@topNbottom @leftNright; 
+     -khtml-border-radius:@topNbottom @leftNright;  
+     border-radius:@topNbottom @leftNright;
+     behavior: url(/tmp/res/pie.htc);    
+}
+
+.border-radius(@top,@right,@bottom,@left){
+     -moz-border-radius:@top @right @bottom @left; 
+     -webkit-border-radius:@top @right @bottom @left; 
+     -khtml-border-radius:@top @right @bottom @left;  
+     border-radius:@top @right @bottom @left;
+     behavior: url(/tmp/res/pie.htc);     
+}

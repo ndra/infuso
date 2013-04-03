@@ -1,0 +1,6 @@
+.raub2v07e-menu {
+    background: white;
+}
+.raub2v07e-menu a{color:black;text-decoration:none}
+.raub2v07e-menu a:hover{text-decoration:underline}
+#raub2v07e-menu {display:none;}

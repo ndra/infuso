@@ -1,0 +1,13 @@
+.mb5nics729 {
+    width:100%;
+}
+
+.mb5nics729 td {
+    padding:10px;
+    vertical-align:middle;
+    border-bottom:1px solid #ededed;
+}
+
+.mb5nics729 thead{
+    font-weight:bold;
+}

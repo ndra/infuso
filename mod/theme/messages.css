@@ -1,0 +1,21 @@
+.gveialugfd {
+
+    .message {
+        padding:20px;
+        color:white;
+        margin:0px 0px 1px 0px;
+        &:last-child {
+            margin:0;
+        }
+    }
+
+    .error {
+        .gradient(#d06666,#af0000);
+        .message();
+    }
+    
+    .ok {
+        .gradient(#66cc66,#00aa00);
+        .message();
+    }
+}

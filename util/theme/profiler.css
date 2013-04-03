@@ -1,0 +1,46 @@
+.nw5bny9hxyu6 {
+
+    font-size:12px;
+    width:100%;
+    background: #222;
+    color: #fff;
+    
+    table {
+        width:1000px;
+        margin:0px auto;
+    }
+   
+    td {
+        padding:5px;
+        border-bottom:1px solid rgba(255,255,255,.05);
+    }
+    
+    td:first-child {
+        opacity:.5;
+        font-size:18px;
+        font-weight:normal;
+        vertical-align:middle;
+    }
+    
+    .title {
+        font-weight:bold;
+    }
+    
+    .a {
+    
+        cursor:pointer;
+        &:hover span {
+            text-decoration:underline;
+        }
+        
+        span {
+            width:150px;
+            display:inline-block;
+        }
+    }
+    
+    .b {
+        display:none;
+    }
+
+}

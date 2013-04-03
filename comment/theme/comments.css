@@ -1,0 +1,30 @@
+.w992ykaasp {
+
+    margin-top:30px;
+
+    .item {
+    
+        padding-bottom:20px;
+        margin-bottom:20px;
+        border-bottom:1px solid #ccc;        
+        
+        .stars {
+            color:#6699FF;
+            font-size:1.5em;
+        }
+        
+        .date {
+            display:inline;
+            margin-right:20px;
+        }
+        
+        .mark {
+        }
+    
+        h2 {
+            font-size:1em;
+            padding:0;
+            margin:0;
+        }
+    }
+}

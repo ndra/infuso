@@ -1,0 +1,14 @@
+.w9nyivcoiv {
+
+    .toggle {
+        cursor:pointer;
+        border-bottom:1px dotted gray;
+    }
+    
+    .form {
+        margin-top:20px;
+        display:none;
+        background:#ededed;
+        padding:20px;
+    }
+}
