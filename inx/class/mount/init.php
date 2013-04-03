@@ -35,7 +35,6 @@ class inx_init extends mod_init {
 
 	public static function buildModule($mod) {
 	
-	    inx_mount_file::conf("pack",true);
 		$path = self::getModulePath($mod);
 		
 		if(!$path) {

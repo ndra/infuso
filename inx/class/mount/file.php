@@ -9,7 +9,7 @@ class inx_mount_file {
 
 	private static $conf = array(
 		"dest" => "/inx/pub/",
-		//"pack" => true
+		"pack" => false
 	);
 
 	private $directives = null;
@@ -75,7 +75,7 @@ class inx_mount_file {
 	 * Возвращает исходный код компонента
 	 **/
 	public function src() {
-		if(!$this->scr) {
+		if(!$this->src) {
 		    $this->src = file::get($this->path())->data();
 			preg_match("/^(\/\/ @[^\n]+\n)+/", $this->src, $matches);
 			$this->directives = array();
@@ -101,20 +101,27 @@ class inx_mount_file {
 
 		    foreach($this->linked() as $inc) {
 		        $this->fullCode.= $inc->fullCode();
-		        foreach($inc->fullDirectives() as $dir)
+		        foreach($inc->fullDirectives() as $dir) {
 		            $dirs[] = $dir;
+				}
 		    }
 
 		    $include = array();
-		    foreach($dirs as $dir)
-		        if($dir["name"]=="include")
-		            foreach(util::splitAndTrim($dir["value"],",") as $inc)
-		                $include[] = $inc;
+		    foreach($dirs as $dir) {
+		        if($dir["name"]=="include") {
+		            foreach(util::splitAndTrim($dir["value"],",") as $inc) {
+		                $include[] = trim($inc," \n");
+					}
+				}
+			}
+			
 			$include = array_unique($include);
-
+			
 			$this->fullDirectives = array();
-			if(sizeof($include))
-				$this->fullDirectives[] = array("name"=>"include","value"=>join(",",$include));
+			if(sizeof($include)) {
+			    mod::msg(implode(",",$include));
+				$this->fullDirectives[] = array("name"=>"include","value"=>implode(",",$include));
+			}
 
 		}
 		return $this->fullCode;
