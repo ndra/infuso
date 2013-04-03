@@ -94,7 +94,18 @@ inx.processHandlersArray = function(handlers,p1,p2,p3) {
             ret = handler(p1,p2,p3);
             retFalse = ret===false;
         } else {
-            ret = inx(handler[0]).cmd(handler[1],p1,p2,p3);
+        
+            var cmp = inx(handler[0]);
+            
+            var extraParams = handlers[2];
+            if(extraParams) {
+                inx.msg(12)
+                if(extraParams.visibleOnly && !cmp.info("visibleRecursive")) {
+                    continue;    
+                }
+            }
+            
+            ret = cmp.cmd(handler[1],p1,p2,p3);
             retFalse = ret===false;
         }
         
@@ -162,17 +173,10 @@ inx.css = function() {
 
     var a = [];
     for(var i=0;i<arguments.length;i++) {
-        a.push(arguments[i]);
+        a.push(inx.path(arguments[i]));
     }
         
-    a = a.join("\n");
-    a = inx.path(a);
-    /*a = a.replace(/%%(.*)%%/g,function(a){
-        a = a.replace(/%/g,"").split(".");
-        a = inx.conf.url+a.join("/")+"/";
-        return a;
-    }); */
-    
+    a = a.join("\n");    
     $("<style>"+a+"</style>").appendTo("head");
 }
 
