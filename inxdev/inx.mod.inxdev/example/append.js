@@ -1,5 +1,4 @@
 // @include inx.panel
-// @include inx.layout.column
 
 inx.ns("inx.mod.inxdev.example").append = inx.panel.extend({
 

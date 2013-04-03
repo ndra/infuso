@@ -12,8 +12,10 @@ class inx_init extends mod_init {
 	
 		// Очищаем папку
 		file::get("/inx/pub/")->delete(true);
-		foreach(mod::all() as $mod)
+		foreach(mod::all() as $mod) {
 			self::buildModule($mod);
+        }
+
 		self::generateBuildID();
 	}
 
@@ -35,7 +37,6 @@ class inx_init extends mod_init {
 
 	public static function buildModule($mod) {
 	
-	    inx_mount_file::conf("pack",true);
 		$path = self::getModulePath($mod);
 		
 		if(!$path) {

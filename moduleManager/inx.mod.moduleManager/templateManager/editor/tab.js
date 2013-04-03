@@ -26,7 +26,7 @@ inx.mod.moduleManager.templateManager.editor.tab = inx.tabs.extend({
             ]
         });
         this.cmd("add",this.editorPHP);
-        inx.hotkey("ctrl+s",this,"save");
+        inx.hotkey("ctrl+s",[this.id(),"save"]);
     },
     
     cmd_save:function() {

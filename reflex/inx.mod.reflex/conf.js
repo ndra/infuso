@@ -4,7 +4,7 @@ inx.ns("inx.mod.reflex").conf = inx.form.extend({
 
     constructor:function(p) {
         this.base(p);
-        inx.hotkey("ctrl+s",this.id(),"save");
+        inx.hotkey("ctrl+s",[this.id(),"save"]);
         this.cmd("requestData");
     },
     

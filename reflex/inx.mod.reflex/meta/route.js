@@ -11,7 +11,7 @@ inx.mod.reflex.meta.route = inx.panel.extend({
             {text:"Удалить адрес",icon:"delete",onclick:[this.id(),"deleteRoute"]},
         ];
         this.base(p);
-        inx.hotkey("ctrl+s",this.id(),"save");
+        inx.hotkey("ctrl+s",[this.id(),"save"]);
         this.cmd("requestData");
     },
     

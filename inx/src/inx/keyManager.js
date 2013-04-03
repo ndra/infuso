@@ -10,6 +10,7 @@ $(function() {
             while(cmp.exists()) {
                 var ret = cmp.cmd("keydown",e);
                 if(ret===false) {
+                    e.preventDefault();
                     break;
                 } else if(ret=="stop") {
                     break;

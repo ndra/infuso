@@ -21,7 +21,7 @@ inx.mod.mysql.admin.query = inx.form.extend({
         ];
         p.padding = 10;
         this.base(p);
-        inx.hotkey("ctrl+enter",this,"sendQuery");
+        inx.hotkey("ctrl+enter",[this.id(),"sendQuery"]);
     },
     
     cmd_sendQuery:function() {

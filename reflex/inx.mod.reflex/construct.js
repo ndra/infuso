@@ -19,7 +19,7 @@ inx.ns("inx.mod.reflex").construct = inx.panel.extend({
             onclick:[this.id(),"requestCreate"]
         });
         
-        inx.hotkey("ctrl+s",this.id(),"requestCreate");
+        inx.hotkey("ctrl+s",[this.id(),"requestCreate"]);
         this.on("submit",[this.id(),"requestCreate"]);
     },
     

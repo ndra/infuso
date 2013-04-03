@@ -11,7 +11,7 @@ inx.mod.inxdev.example.filemanager.preview = inx.dialog.extend({
             data:[{id:1,img:p.filename}]
         }];
         this.base(p);
-        inx.hotkey("esc",this.id(),"destroy");
+        inx.hotkey("esc",[this.id(),"destroy"]);
     }
     
 })
