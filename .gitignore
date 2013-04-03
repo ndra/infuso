@@ -2,6 +2,7 @@
 .htaccess
 robots.txt
 favicon.ico
+inx/build_id.txt
 
 # Папки
 PHPExcel
@@ -11,6 +12,21 @@ eshop/files
 file/preview
 tmp/render
 tmp/render-php
+
+# Карты шаблонов тем
+tmp/themes
+inx/pub
+mod/trace
+
+# Кэш в файловой системе
+mod/cache
+
+# Информация о файлах, которые надо пропускать при построении карты сайта
+mod/exclude
+
+reflex/system
+
+ 
 
 
 site
