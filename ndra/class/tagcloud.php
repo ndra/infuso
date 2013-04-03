@@ -1,6 +1,6 @@
 <?
 
-class ndra_tagcloud {
+class ndra_tagcloud extends mod_controller {
 
 	public static function indexTest() { return true; }
 	public static function index() {
@@ -94,7 +94,5 @@ class ndra_tagcloud {
 	public function height($height) { $this->swfobject->height($height); return $this; }
 	public function flashvar($key,$val) { $this->swfobject->flashvar($key,$val); return $this; }
 	public function attribute($key,$val) { $this->swfobject->attribute($key,$val); return $this; }
-	public function param($key,$val) { $this->swfobject->param($key,$val); return $this; }
-
 
 }
