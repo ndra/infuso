@@ -116,9 +116,18 @@ class mod_action extends mod_component {
 
         // Запоминаем текущий экшщн
         self::$currentAction = $this;
+        
+        // Если экшн начинается с mod - блокируем события
+        // Это делается для того, чтобы случайно не сломать консоль кривым событием
+        $suspendEvent = false;
+        if(preg_match("/^mod$/",$this->className())) {
+            $suspendEvent = true;
+		}
 
         // Если события не заблокированы - вызываем событие
-        mod::fire("mod_beforeActionSYS");
+        if(!$suspendEvent) {
+        	mod::fire("mod_beforeActionSYS");
+        }
 
         ob_start();
 
@@ -126,12 +135,6 @@ class mod_action extends mod_component {
             call_user_func($this->failCallback(),$this->params());
 
         } else {
-
-            // Если экшн начинается с mod - блокируем события
-            // Это делается для того, чтобы случайно не сломать консоль кривым событием
-            $suspendEvent = false;
-            if(preg_match("/^mod$/",$this->className()))
-                $suspendEvent = true;
 
             // Если события не заблокированы - вызываем событие
             if(!$suspendEvent) {
@@ -148,13 +151,16 @@ class mod_action extends mod_component {
         $content = ob_get_clean();
 
         // Пост-обработка (отложенные функции)
-        $event = mod::fire("mod_afterActionSYS",array(
-            "content" => $content,
-        ));
+        if(!$suspendEvent) {
+	        $event = mod::fire("mod_afterActionSYS",array(
+	            "content" => $content,
+	        ));
+	        echo $event->param("content");
+        }
 
         mod_component::callDeferedFunctions();
 
-        echo $event->param("content");
+        echo $content;
 
     }
 

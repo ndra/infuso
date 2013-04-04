@@ -50,6 +50,7 @@ class mod_console extends mod_controller{
 	            break;
 
 	        case "change":
+	        
 	            if($_POST["p1"]) {
 	                mod_superadmin::changePassword($_POST);
 	            }
@@ -64,6 +65,7 @@ class mod_console extends mod_controller{
 	            echo "<input type='submit' value='Change password' />";
 	            echo "</form>";
 	            self::footer();
+	            
 	            break;
 
 	        case "relink":
@@ -81,19 +83,21 @@ class mod_console extends mod_controller{
 
 		            if($class) {
 		            	$next = true;
+		            	mod::trace($class);
 		            	call_user_func(array($class,"init"));
 					} else {
 					    $next = false;
 					}
-
 				}
 
 	            $messages = array();
-	            foreach(mod_log::messages() as $msg)
+	            foreach(mod_log::messages() as $msg) {
 	            	$messages[] = array(
 						"text"=>$msg->text(),
 						"error"=>$msg->error()
 					);
+				}
+					
 	            $ret = array(
 					"messages" => $messages,
 					"next" => $next,

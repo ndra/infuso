@@ -53,8 +53,6 @@ function __autoload($class) {
 
 }
 
-//register_shutdown_function(array("mod_cmd","handleError"));
-
 if(mod_superadmin::check()) {
     error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT);
     ini_set("display_errors",1);

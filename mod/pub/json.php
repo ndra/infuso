@@ -2,7 +2,9 @@
 
 ob_start();
 
-if(!function_exists("__autoload")) include("../__autoload.inc.php");
+if(!function_exists("__autoload")) {
+	include("../__autoload.inc.php");
+}
 
 header("Content-type: text/plain; charset=utf-8");
 header("Content-Disposition: inline; filename=result.txt");

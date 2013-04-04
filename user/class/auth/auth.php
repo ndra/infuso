@@ -17,7 +17,7 @@ class user_auth extends reflex {
 	}
 
 	public function user() {
-		return $this->pdata("userID");
+		return user::get($this->data("userID"));
 	}
 
 	public function reflex_beforeCreate() {

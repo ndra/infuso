@@ -29,20 +29,20 @@ try {
     while(ob_get_level()) {
         ob_end_clean();
     }
-    
+
     // Трейсим ошибки
     mod::trace($_SERVER["REMOTE_ADDR"]." at ".$_SERVER["REQUEST_URI"]." got exception: ".$exception->getMessage());
 
     try {
-        
+
         tmp::destroyConveyors();
 
         $action = mod::action("mod_cmd","exception")
             ->param("exception",$exception)
             ->exec();
-    
+
     } catch(Exception $ex2) {
         throw $exception;
     }
-    
+
 }

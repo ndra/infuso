@@ -86,8 +86,9 @@ class reflex_mysql {
     public static function query($query) {
 
         $query = trim($query);
-        if(!preg_match("/^select/i",$query))
+        if(!preg_match("/^select/i",$query)) {
             self::clearCache();
+		}
 
         $params = array();
         for($i=1;$i<func_num_args();$i++)
@@ -110,12 +111,12 @@ class reflex_mysql {
      * Выполняет SQL-запрос
      **/
     private static function aquery($query)    {
-
+    
         preg_match("/\w+/",$query,$matches);
         mod_profiler::beginOperation("mysql",$matches[0],$query);
 
         self::connect();
-
+        
         $t = time();
 
         $result = @mysql_query($query,self::$connection);
@@ -125,7 +126,6 @@ class reflex_mysql {
         if($d>10) {
             mod::trace("slow query: $query ($d s.)");
         }
-
 
         if(self::$trace) {
             $str = $query."\n";
