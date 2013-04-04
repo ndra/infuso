@@ -12,7 +12,7 @@ inx.ns("inx.mod.user.editor").rights = inx.form.extend({
         p.labelWidth = 0;        
         this.base(p);
         this.cmd("requestRights");
-        inx.hotkey("ctrl+s",this.id(),"save");                
+        inx.hotkey("ctrl+s",[this.id(),"save"]);
     },
     
     cmd_requestRights:function() {

@@ -21,7 +21,7 @@ inx.ns("inx.mod.moduleManager.inx").editor = inx.tabs.extend({
     cmd_handleContents:function(data) {
         this.editorPHP =inx({type:"inx.code",value:data.php,title:"PHP",lang:"js"});
         this.cmd("add",this.editorPHP);
-        inx.hotkey("ctrl+s",this,"save");
+        inx.hotkey("ctrl+s",[this.id(),"save"]);
     },
     
     cmd_save:function() {

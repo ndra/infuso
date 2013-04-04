@@ -11,7 +11,7 @@ inx.mod.reflex.meta.title.lang = inx.panel.extend({
             {text:"Удалить метаданные",icon:"delete",onclick:[this.id(),"deleteMeta"]},
         ];
         this.base(p);
-        inx.hotkey("ctrl+s",this.id(),"save");
+        inx.hotkey("ctrl+s",[this.id(),"save"]);
         this.cmd("requestData");
     },
     

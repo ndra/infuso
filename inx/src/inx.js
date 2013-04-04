@@ -6,9 +6,9 @@
 inx = function(p,type) {
 
     if(!p) {
-		p=0;
-	}
-	
+        p=0;
+    }
+    
     switch(typeof(p)) {
     
         case "number":
@@ -20,26 +20,26 @@ inx = function(p,type) {
         
             if(p instanceof Array) {
                 return new inx.cmp(p);
-			}
+            }
 
              // Роутер
-			if(p.xyaz3m9ijf1hnw5zt890) {
+            if(p.xyaz3m9ijf1hnw5zt890) {
                 return p;
-			}
+            }
 
             // Объект
-			if(p.bj852tc92op9zqyli3f5) {
+            if(p.bj852tc92op9zqyli3f5) {
                 return inx(p.id());
-			}
+            }
 
-			if(!p.type) {
+            if(!p.type) {
                 p.type = type;
-			}
+            }
 
-			if(p.type) {
+            if(p.type) {
                 return inx.cmp.create(p);
-			}
-			
+            }
+            
             break;
     }
   
@@ -63,27 +63,28 @@ inx.conf = {
 inx.on = function(name,handler) {
     if(!inx.handlers[name]) {
         inx.handlers[name] = [];
-	}
+    }
     inx.handlers[name].push(handler);
 }
 
 /**
  * Вызывает глобальное событие name
  **/
-inx.fire = function(name,params) {
+inx.fire = function(name,p1,p2,p3) {
     var handlers = inx.handlers[name];
-    inx.processHandlersArray(handlers);
+    return inx.processHandlersArray(handlers,p1,p2,p3);
 }
 
 /**
  * Выполняет массив коллбэков
  * Выбрасывает из него ссылки на уже не существующие объекты
+ * Если хоть один из кэлбэков вернул false, возвращает false
  **/
 inx.processHandlersArray = function(handlers,p1,p2,p3) {
 
     if(!handlers) {
         return;
-	}
+    }
 
     var retFalse = false;
     for(var i in handlers) {
@@ -93,7 +94,18 @@ inx.processHandlersArray = function(handlers,p1,p2,p3) {
             ret = handler(p1,p2,p3);
             retFalse = ret===false;
         } else {
-            ret = inx(handler[0]).cmd(handler[1],p1,p2,p3);
+        
+            var cmp = inx(handler[0]);
+            
+            var extraParams = handlers[2];
+            if(extraParams) {
+                inx.msg(12)
+                if(extraParams.visibleOnly && !cmp.info("visibleRecursive")) {
+                    continue;    
+                }
+            }
+            
+            ret = cmp.cmd(handler[1],p1,p2,p3);
             retFalse = ret===false;
         }
         
@@ -101,7 +113,7 @@ inx.processHandlersArray = function(handlers,p1,p2,p3) {
     
     if(retFalse) {
         ret = false;
-	}
+    }
     
     return ret;
 }
@@ -114,25 +126,25 @@ inx.processHandlersArray = function(handlers,p1,p2,p3) {
 inx.delegate = function(fn,scope,p) {
     if(p) {
         return  function() {
-			return fn.apply(scope,[p]);
-		}
+            return fn.apply(scope,[p]);
+        }
     } else {
         return  function() {
-			return fn.apply(scope,arguments);
-		}
-	}
+            return fn.apply(scope,arguments);
+        }
+    }
 }
 
 inx.cmd = function(id,cmd,p1,p2,p3) {
     if(p1!==undefined) {
         return function() {
-			inx(id).cmd(cmd,p1,p2,p3);
-		}
-	} else {
-		return function(p) {
-			inx(id).cmd(cmd,p);
-		}
-	}
+            inx(id).cmd(cmd,p1,p2,p3);
+        }
+    } else {
+        return function(p) {
+            inx(id).cmd(cmd,p);
+        }
+    }
 }
 
 /**
@@ -146,7 +158,7 @@ inx.ns = function(ns) {
     for(var i=1;i<ns.length;i++) {
         if(!obj[ns[i]]) {
             obj[ns[i]] = {};
-		}
+        }
         obj = obj[ns[i]];
     }
     return obj;
@@ -161,17 +173,10 @@ inx.css = function() {
 
     var a = [];
     for(var i=0;i<arguments.length;i++) {
-        a.push(arguments[i]);
-	}
+        a.push(inx.path(arguments[i]));
+    }
         
-    a = a.join("\n");
-    a = inx.path(a);
-    /*a = a.replace(/%%(.*)%%/g,function(a){
-        a = a.replace(/%/g,"").split(".");
-        a = inx.conf.url+a.join("/")+"/";
-        return a;
-    }); */
-    
+    a = a.join("\n");    
     $("<style>"+a+"</style>").appendTo("head");
 }
 

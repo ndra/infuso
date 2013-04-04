@@ -169,7 +169,7 @@ inx.mod.reflex.editor.list = inx.tabs.extend({
         ];
         this.on("show",this.id(),"handleShow");
         this.on("refresh",function() { this.cmd("load"); return false; });
-        inx.hotkey("f5",this,"handleF5");
+        inx.hotkey("f5",[this.id(),"handleF5"]);
         this.selection = [];
         
         inx.storage.onready(this.id(),"onStorageReady");

@@ -57,7 +57,7 @@ inx.mod.reflex.editor.item.fields = inx.panel.extend({
     },
     
     cmd_handleData:function(data) {
-        inx.hotkey("ctrl+s",this,"save");
+        inx.hotkey("ctrl+s",[this.id(),"save"]);
         this.cmd("add",{
             type:"inx.button",
             text:"Сохранить",

@@ -34,9 +34,9 @@ inx.ns("inx.mod.moduleManager").manager = inx.viewport.extend({
         p.items = [this.tabs];
         
         this.base(p);
-        inx.hotkey("ctrl+w",this.id(),"closeActiveTab");
-        inx.hotkey("f1",this.id(),"toggleNavigation");
-        inx.hotkey("f5",this.id(),"doNothing");
+        inx.hotkey("ctrl+w",[this.id(),"closeActiveTab"]);
+        inx.hotkey("f1",[this.id(),"toggleNavigation"]);
+        inx.hotkey("f5",[this.id(),"doNothing"]);
         
         $(window).get(0).onbeforeunload = function(){ return false; }
         

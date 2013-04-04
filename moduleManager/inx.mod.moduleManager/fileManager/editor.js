@@ -21,7 +21,7 @@ inx.mod.moduleManager.fileManager.editor = inx.tabs.extend({
                     lang:data.lang
                 });
                 this.cmd("add",this.editor);
-                inx.hotkey("ctrl+s",this,"save");
+                inx.hotkey("ctrl+s",[this.id(),"save"]);
                 break;
             case "folder":
                 this.editor = inx({

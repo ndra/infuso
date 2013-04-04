@@ -56,7 +56,7 @@ inx.mod.moduleManager.fileManager.folder = inx.panel.extend({
         //p.side = [this.path];
         
         this.base(p);
-        inx.hotkey("f5",this.id(),"load");
+        inx.hotkey("f5",[this.id(),"load"]);
         this.cmd("setPath",this.path);
         this.cmd("changeViewMode",p.viewMode);
         this.cmd("setPath",p.path);

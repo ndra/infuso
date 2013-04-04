@@ -21,9 +21,9 @@ inx.tabs.head = inx.panel.extend({
 
     cmd_update:function(items) {
     
-        if(!this.__body)
+        if(!this.__body) {
             return;    
-        //this.__body.html("");
+        }
         
         var xx = $("<div>");
         
@@ -39,12 +39,12 @@ inx.tabs.head = inx.panel.extend({
             if(this.owner().info("selected")==items[i]) e.addClass("inx-tabs-selectedTab");
             else e.css({});
 
-            var over = function() { this.src = inx.conf.url+"/inx/tabs/close_hover.gif"; }
-            var out = function() { this.src = inx.conf.url+"/inx/tabs/close.gif"; }
+            var over = function() { this.src = inx.path("%res%/img/components/tabs/close-hover.gif"); }
+            var out = function() { this.src = inx.path("%res%/img/components/tabs/close.gif"); }
 
             if(inx(items[i]).info("param","closable"))
             var close = $("<img>")
-                .attr("src",inx.conf.url+"/inx/tabs/close.gif")
+                .attr("src",inx.path("%res%/img/components/tabs/close.gif"))
                 .addClass("inx-tabs-close")
                 .attr("align","absmiddle")
                 .appendTo(e)

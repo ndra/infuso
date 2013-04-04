@@ -1,4 +1,5 @@
 // @include inx.list
+
 inx.ns("inx.mod.inxdev.example").storage = inx.list.extend({
 
     constructor:function(p) {

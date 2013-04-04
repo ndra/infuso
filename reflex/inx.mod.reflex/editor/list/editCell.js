@@ -27,7 +27,7 @@ inx.mod.reflex.editor.list.editCell = inx.dialog.extend({
          
         this.on("save",p.onsave);   
         this.on("submit","save");
-        inx.hotkey("esc",this,"destroy");
+        inx.hotkey("esc",[this.id(),"destroy"]);
     },
     
     cmd_handleField:function(data) {  

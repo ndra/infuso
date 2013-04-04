@@ -3,9 +3,11 @@
 /**
  * Класс для компиляции и упаковки inx-компонентов
  **/
-class inx_mount_file {
+class inx_mount_file extends mod_component {
 
 	private static $buf = array();
+
+    private $path = "";
 
 	private static $conf = array(
 		"dest" => "/inx/pub/",
@@ -22,10 +24,6 @@ class inx_mount_file {
 
     private $compiled = "";
 
-	public function conf($key,$val) {
-        self::$conf[$key] = $val;
-    }
-	
 	public static function get($path) {
 		$path = file::get($path)->path();
 		if(!self::$buf[$path])
@@ -107,6 +105,7 @@ class inx_mount_file {
 		    }
 
 		    $include = array();
+<<<<<<< HEAD
 		    foreach($dirs as $dir) {
 		        if($dir["name"]=="include") {
 		            foreach(util::splitAndTrim($dir["value"],",") as $inc) {
@@ -115,6 +114,12 @@ class inx_mount_file {
 				}
 			}
 			
+=======
+		    foreach($dirs as $dir)
+		        if($dir["name"]=="include")
+		            foreach(util::splitAndTrim($dir["value"],",") as $inc)
+		                $include[] = trim($inc);
+>>>>>>> 1f4005f9252f1fc785a8e46e02774c59af48781c
 			$include = array_unique($include);
 			
 			$this->fullDirectives = array();
@@ -127,6 +132,9 @@ class inx_mount_file {
 		return $this->fullCode;
 	}
 
+    /**
+     * Возвращает длируетивы компонента с учетом слинкованных компонентов
+     **/
 	public function fullDirectives() {
 		$this->fullCode();
 		return $this->fullDirectives;
@@ -173,6 +181,21 @@ class inx_mount_file {
 	}
 
     /**
+     * Возвращает значение директивы
+     **/
+	public function directive($name) {
+		foreach($this->directives() as $dir) {
+		    if($dir["name"]==$name) {
+		        return $dir["value"];
+            }
+        }
+	}
+
+    public function priority() {
+        return $this->directive("priority");
+    }
+
+    /**
      * Возвращает список слинкованных дочерних элементов
      **/
 	public function linked() {
@@ -197,6 +220,16 @@ class inx_mount_file {
     		    $ret[] = $file;
             }
 		}
+
+        usort($ret,function($a,$b){
+
+            if($d = $b->priority() - $a->priority()) {
+                return $d;
+            }
+
+            return strcmp($a->path(),$b->path());
+        });
+
 		return $ret;
 	}
 

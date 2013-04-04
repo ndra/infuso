@@ -1,30 +1,30 @@
 .svn
 /.htaccess
-robots.txt
-favicon.ico
-inx/build_id.txt
+/robots.txt
+/favicon.ico
+/inx/build_id.txt
 
 # Папки
-PHPExcel
-mod/conf
-mod/service
-eshop/files
-file/preview
-tmp/render
-tmp/render-php
+/PHPExcel
+/eshop/files
+/file/preview
+/tmp/render
+/tmp/render-php
+/mod/conf
+/mod/service
+/reflex/system
 
 # Карты шаблонов тем
-tmp/themes
-inx/pub
-mod/trace
+/tmp/themes
+/inx/pub
+/mod/trace
 
 # Кэш в файловой системе
-mod/cache
+/mod/cache
 
 # Информация о файлах, которые надо пропускать при построении карты сайта
-mod/exclude
+/mod/exclude
 
-reflex/system
-
-site
+# Папка для основной реализации сайта
+/site
 

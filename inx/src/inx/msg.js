@@ -25,10 +25,16 @@ inx.msg = function(text,error,adv) {
         text = str;
     }
 
-    var msg = $("<div>").addClass("inx-msg").addClass("inx-roundcorners").html(text+"");
+    var msg = $("<div>")
+        .addClass("inx-msg")
+        .addClass("inx-roundcorners")
+        .html(text+"");
     
-    if(text.length<50)
-        msg.css({fontSize:18});
+    if(text.length<50) {
+        msg.css({
+            fontSize:18
+        });
+    }
     
     error && msg.addClass("inx-msg-error");
     msg.css("opacity",0);
@@ -37,10 +43,14 @@ inx.msg = function(text,error,adv) {
     
     var max = 15;
     var n = inx.msg.__container.children().length;
-    if(n>max)
+    if(n>max) {
         inx.msg.__container.children().first().remove();
+    }
     
-    msg.animate({opacity:1},500).animate({opacity:1},2000).animate({opacity:0},"slow").hide("slow");
+    msg.animate({opacity:1},500)
+        .animate({opacity:1},2000)
+        .animate({opacity:0},"slow")
+        .hide("slow");
 }
 
 
