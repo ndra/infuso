@@ -35,6 +35,9 @@ function __autoload($class) {
 		"mod_profiler" => "/mod/class/profiler.php",
 		"mod_confLoader_xml" => "/mod/class/confLoader/xml.php",
 		"mod_confLoader_yaml" => "/mod/class/confLoader/yaml.php",
+        "mod_cmd" => "/mod/class/cmd.php",
+        "mod_behaviour" => "/mod/class/behaviour.php",
+        "mod_controller_behaviour" => "/mod/class/controller/behaviour.php",
 	);
 	
 	if($path = $quickMap[$class]) {
