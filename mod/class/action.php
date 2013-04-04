@@ -155,7 +155,7 @@ class mod_action extends mod_component {
 	        $event = mod::fire("mod_afterActionSYS",array(
 	            "content" => $content,
 	        ));
-	        echo $event->param("content");
+	        $content = $event->param("content");
         }
 
         mod_component::callDeferedFunctions();

@@ -12,16 +12,12 @@ class reflex_init extends mod_init {
 
 	    reflex_mysql::query("select version()");
 	    
-	    return;
-	    
 	    $v = reflex_mysql::scalar();
 	    
 	    if(floatval($v)<5) {
 	        mod::msg("You need mysql version 5 or greater. You haver version $v",1);
 	        return;
 	    }
-	    
-	    return;
 
 		// Собираем типы полей
 	    mod_field::collect();

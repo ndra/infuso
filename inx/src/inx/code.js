@@ -129,9 +129,9 @@ inx.code = inx.panel.extend({
         
         this.task("updateLetterWidth");
             
-        inx.hotkey("ctrl+f",this.id(),"showSearchDlg");
-        inx.hotkey("f3",this.id(),"search");
-        inx.hotkey("esc",this.id(),"focus");
+        inx.hotkey("ctrl+f",[this.id(),"showSearchDlg"]);
+        inx.hotkey("f3",[this.id(),"search"]);
+        inx.hotkey("esc",[this.id(),"focus"]);
     },
     
     cmd_updateLetterWidth:function() {
