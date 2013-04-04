@@ -105,21 +105,12 @@ class inx_mount_file extends mod_component {
 		    }
 
 		    $include = array();
-<<<<<<< HEAD
-		    foreach($dirs as $dir) {
-		        if($dir["name"]=="include") {
-		            foreach(util::splitAndTrim($dir["value"],",") as $inc) {
-		                $include[] = trim($inc," \n");
-					}
-				}
-			}
-			
-=======
+
 		    foreach($dirs as $dir)
 		        if($dir["name"]=="include")
 		            foreach(util::splitAndTrim($dir["value"],",") as $inc)
 		                $include[] = trim($inc);
->>>>>>> 1f4005f9252f1fc785a8e46e02774c59af48781c
+
 			$include = array_unique($include);
 			
 			$this->fullDirectives = array();

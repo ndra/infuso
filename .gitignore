@@ -8,15 +8,22 @@
 /PHPExcel
 /eshop/files
 /file/preview
+
 /tmp/render
+
 /tmp/render-php
+
+# Карты шаблонов тем
+/tmp/themes
+
 /mod/conf
 /mod/service
 /reflex/system
 
-# Карты шаблонов тем
-/tmp/themes
+
+
 /inx/pub
+
 /mod/trace
 
 # Кэш в файловой системе
