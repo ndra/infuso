@@ -69,6 +69,10 @@ class inx_mount_file extends mod_component {
 		return $name;
 	}
 
+    public function lastName() {
+        return end(explode(".",$this->name()));
+    }
+
 	/**
 	 * Возвращает исходный код компонента
 	 **/
@@ -213,6 +217,10 @@ class inx_mount_file extends mod_component {
 		}
 
         usort($ret,function($a,$b){
+
+            if($d = $b->isDirective("link_with_parent") - $a->isDirective("link_with_parent")) {
+                return $d;
+            }
 
             if($d = $b->priority() - $a->priority()) {
                 return $d;

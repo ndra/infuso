@@ -185,4 +185,22 @@
   'indexes' => 
   array (
   ),
+  'fieldGroups' => 
+  array (
+    0 => 
+    array (
+      'name' => 'Основное',
+      'title' => 'Основное',
+    ),
+    1 => 
+    array (
+      'name' => NULL,
+      'title' => NULL,
+    ),
+    2 => 
+    array (
+      'name' => 'Личные данные',
+      'title' => 'Личные данные',
+    ),
+  ),
 ); ?>

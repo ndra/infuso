@@ -4,7 +4,9 @@ inx.hotkey = {}
 
 inx.hotkey = function(key,handler) {
 
-    handler.push({visibleOnly:true});
+    handler.push({
+        visibleOnly:true
+    });
 
     inx.service("key").on(key,handler);
 }

@@ -15,39 +15,20 @@ class moduleManager_inxManager extends mod_controller {
     
     public static function post_listItems($params) {
     
-        $dir = self::getPath($params["module"])."/".$params["path"];
-        $files = file::get($dir)->dir();
-        $data = array();
-        foreach($files as $file) {
-            $text = $file->name();
-            if($file->ext()=="js" | $file->folder()) {
-                $text = explode(".",$text);
-                $text = @$text[0];
-                $data[] = $text;
-            }
-        }
-        $data = array_unique($data);
-    
+        $path = self::getPath($params["module"])."/".$params["path"];
+        $parent = inx_mount_file::get($path);
         $ret = array();
-        foreach($data as $item) {
-        
-            $file = inx_mount_file::get("$dir/$item.js");
-            $linked = $file->isDirective("link_with_parent");
-            
-            $text = $item;
-            if($c=null)
-                $text.= "<i style='opacity:.5;' >".$c."</i>";
-            
+        foreach($parent->children() as $item) {
+
             $ret[] = array(
-                "icon" => $linked ? "/moduleManager/res/inx_linked.png" : "/moduleManager/res/inx.gif",
-                "text" => $text,
-                "linked" => $linked,
-                "folder"=> !!file::get("/$dir/$item/")->dir()->count(),
+                "icon" => $item->isDirective("link_with_parent") ? "/moduleManager/res/inx_linked.png" : "/moduleManager/res/inx.gif",
+                "text" => $item->lastName(),
+                "linked" => $item->isDirective("link_with_parent"),
+                "folder"=> !!sizeof($item->children()),
                 "editable" => true
             );
         }
-        
-        usort($ret,array("self","sort"));
+
         return $ret;
     }
     

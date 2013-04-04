@@ -2,16 +2,6 @@
 
 // inline-block
 inx.css(".inx-core-inlineBlock{display: -moz-inline-box;display: inline-table;display: inline-block;}");
-
-/*var m = navigator.userAgent.match(/MSIE (\d+\.\d+)/);
-if(m) {
-    var ver = parseFloat(m[1]);
-    if(ver<8)
-        inx.css(".inx-core-inlineBlock{display: inline;}");
-    if(ver>=8)        
-        inx.css("float:left;");
-}*/
-
 inx.css(".inx-unselectable{-o-user-select: none;-webkit-user-select: none;-moz-user-select: -moz-none;-khtml-user-select: none;-ms-user-select: none;user-select: none;}");
 inx.css(".inx-shadowframe{padding:5px;border-radius: 3px;box-shadow: 0 0 30px rgba(0,0,0,.5);}");
 inx.css(".inx-shadow{box-shadow: 0 0 30px rgba(0,0,0,.5);}");

@@ -13,7 +13,7 @@ inx.panel.toolbar = inx.panel.extend({
         this.base(p);
     },
 
-    __defaultChildType:"inx.toolbar_button",  
+    __defaultChildType:"inx.button",
       
     cmd_add:function(c) {
         if(c=="|")

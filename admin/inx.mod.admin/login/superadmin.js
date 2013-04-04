@@ -41,11 +41,11 @@ inx.mod.admin.login.superadmin = inx.panel.extend({
         this.items().cmd("destroy");        
         if(!zuper) {
             this.style("background","#dcdbdc");
-            this.cmd("add",{type:"inx.toolbar_button",text:"Администраторский пароль",onclick:[this.id(),"showSuperadminForm"],scope:this,x:20,y:0});
+            this.cmd("add",{type:"inx.button",text:"Администраторский пароль",onclick:[this.id(),"showSuperadminForm"],scope:this,x:20,y:0});
         }
         if(zuper) {
             this.style("background","#f2eaa4");
-            this.cmd("add",{type:"inx.toolbar_button",text:"Администраторский пароль введен",onclick:[this.id(),"logout"],x:20,y:0});
+            this.cmd("add",{type:"inx.button",text:"Администраторский пароль введен",onclick:[this.id(),"logout"],x:20,y:0});
         }
     },
     

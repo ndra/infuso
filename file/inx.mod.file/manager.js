@@ -29,7 +29,7 @@ inx.ns("inx.mod.file").manager = inx.list.extend({
             }
         });
         
-        this.downloadLink = inx({type:"inx.toolbar_button",text:"Скачать",href:"javascript::void()"});
+        this.downloadLink = inx({type:"inx.button",text:"Скачать",href:"javascript::void()"});
 
         if(!p.hideControls)
             p.tbar = [

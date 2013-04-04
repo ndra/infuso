@@ -60,62 +60,15 @@ inx.conf = {
     componentLoadingHTML:"Загрузка..."
 };
 
-inx.on = function(name,handler) {
-    if(!inx.handlers[name]) {
-        inx.handlers[name] = [];
-    }
-    inx.handlers[name].push(handler);
+inx.on = function() {
+    inx.service("events").on.apply(null,arguments);
 }
 
 /**
  * Вызывает глобальное событие name
  **/
-inx.fire = function(name,p1,p2,p3) {
-    var handlers = inx.handlers[name];
-    return inx.processHandlersArray(handlers,p1,p2,p3);
-}
-
-/**
- * Выполняет массив коллбэков
- * Выбрасывает из него ссылки на уже не существующие объекты
- * Если хоть один из кэлбэков вернул false, возвращает false
- **/
-inx.processHandlersArray = function(handlers,p1,p2,p3) {
-
-    if(!handlers) {
-        return;
-    }
-
-    var retFalse = false;
-    for(var i in handlers) {
-    
-        var handler = handlers[i];
-        if(handler instanceof Function) {
-            ret = handler(p1,p2,p3);
-            retFalse = ret===false;
-        } else {
-        
-            var cmp = inx(handler[0]);
-            
-            var extraParams = handlers[2];
-            if(extraParams) {
-                inx.msg(12)
-                if(extraParams.visibleOnly && !cmp.info("visibleRecursive")) {
-                    continue;    
-                }
-            }
-            
-            ret = cmp.cmd(handler[1],p1,p2,p3);
-            retFalse = ret===false;
-        }
-        
-    }
-    
-    if(retFalse) {
-        ret = false;
-    }
-    
-    return ret;
+inx.fire = function() {
+    return inx.service("events").fire.apply(null,arguments);
 }
 
 /**
