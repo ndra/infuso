@@ -10,6 +10,8 @@ inx.key = new function() {
     
     this.handleKeydown = function(e) {
     
+        inx.key.pressed[e.keyCode] = true;
+    
         // Определяем нажата ли клавиша комманд
         if((inx.key.pressed[91] || inx.key.pressed[93]) && e.metaKey) {
             e.commandKey = true;
@@ -86,9 +88,14 @@ inx.key = new function() {
         }
     }
     
+    that.handleKeyUp = function(e) {
+        inx.key.pressed[e.keyCode] = false;
+    }
+    
     this.init = function() {        
         $(document).keypress(that.handleKeypress);
         $(document).keydown(that.handleKeydown);
+        $(document).keyup(that.handleKeyUp);
         inx.service.register("key",that);
     }
     
