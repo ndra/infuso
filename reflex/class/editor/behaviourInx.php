@@ -166,9 +166,11 @@ class reflex_editor_behaviourInx extends mod_behaviour {
     }
 
     /**
-     * @return Возвращает форму редактирования объекта
+     * Возвращает форму редактирования объекта
+     * @param array Конфигурация
+     * @return array Масив с конструктором inx
      **/
-    public function inxForm() {
+    public function inxForm($p = array()) {
 
         $ret = array(
             "type" => "inx.panel",
@@ -191,6 +193,11 @@ class reflex_editor_behaviourInx extends mod_behaviour {
 
         foreach($this->item()->table()->fieldGroups() as $group) {
 
+            //Если в настройках указана группа, то пропускаем другие группы
+            if (array_key_exists("group", $p) && $p["group"] != $group->name()) {
+                continue;
+            }
+            
             $items = array();
 
             foreach($this->item()->fields() as $field) {
