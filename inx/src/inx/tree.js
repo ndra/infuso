@@ -15,22 +15,22 @@ inx.tree = inx.panel.extend({
 
         if(!p.data) {
             p.data = [];
-		}
+        }
 
         if(!p.style) {
             p.style = {};
-		}
+        }
 
         p.style.vscroll = true;
 
         // Создаем и нсатраиваем корень дерева
         if(typeof(p.root)=="string") {
             p.root = {text:p.root};
-		}
+        }
 
         if(!p.root) {
             p.root = {};
-		}
+        }
 
         p.root.parent = "xca0opez7fl2np56qm1b";
         p.root.depth = 0;
@@ -41,20 +41,20 @@ inx.tree = inx.panel.extend({
 
         if(p.showRoot===undefined) {
             p.showRoot = true;
-		}
+        }
 
         p.editKey = p.editKey || "text";
 
         // Быстрые обработчики событий
         if(!p.listeners) {
             p.listeners = {};
-		}
+        }
         if(p.onselect) {
             p.listeners.select = p.onselect;
-		}
+        }
         if(p.onclick) {
             p.listeners.click = p.onclick;
-		}
+        }
 
         this.base(p);
         this.heap = {};
@@ -145,12 +145,14 @@ inx.tree = inx.panel.extend({
             inx.msg("inx.tree loader is not defined",1);
             return;
         }
+        
+        var loader = inx.deepCopy(this.loader);
 
-        this.loader.id = id;
-        this.fire("beforeload",this.loader);
+        loader.id = id;
+        this.fire("beforeload",loader);
         this.loadingNodes++;
         this.call(
-            this.loader,
+            loader,
             [this.id(),"handleNodeLoad"],
             [this.id(),"privateLoadFailed"],
             {nodeID:id});
@@ -332,8 +334,8 @@ inx.tree = inx.panel.extend({
         var arrow = "noarrow";
         if(this.info("children",node.id).length || node.folder) {
             arrow = node.expanded ? "minus" : "plus";
-		}
-		
+        }
+        
         var img = inx.path("%res%/img/components/tree/"+arrow+".gif");
         node.collapser.attr("src",img);
     },
