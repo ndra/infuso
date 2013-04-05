@@ -7,13 +7,15 @@ class mod extends mod_controller {
 	}
 	
 	public static function index() {
-		mod_console::xindex();
+	    
+	    try {
+			mod_console::xindex();
+		} catch (Exception $ex) {
+		    echo "Exception: ".$ex->getMessage();
+		}
+
 	}
 	
-	/*public static function index_cron() {
-		mod_cron::index();
-	} */
-
 	private static $info = array();
 
 	/**

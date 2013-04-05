@@ -69,6 +69,7 @@ class mod_console extends mod_controller{
 	            break;
 
 	        case "relink":
+	        
 
 				$step = $_POST["step"];
 
@@ -83,7 +84,6 @@ class mod_console extends mod_controller{
 
 		            if($class) {
 		            	$next = true;
-		            	mod::trace($class);
 		            	call_user_func(array($class,"init"));
 					} else {
 					    $next = false;
