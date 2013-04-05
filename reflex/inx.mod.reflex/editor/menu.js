@@ -47,8 +47,6 @@ inx.mod.reflex.editor.menu = inx.tree.extend({
         
         p.side = [this.tabs]  
         
-        p.tab = "user";
-        
         this.base(p);                      
     },
     
@@ -72,6 +70,10 @@ inx.mod.reflex.editor.menu = inx.tree.extend({
     },
     
     cmd_beforeLoad:function(data) {
+    
+        if(data.id!=0) {
+            delete data.tab;
+        }
     
         data.first = this.first;
         var node = this.info("node",data.id);

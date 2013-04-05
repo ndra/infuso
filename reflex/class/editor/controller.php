@@ -119,8 +119,9 @@ class reflex_editor_controller extends mod_controller {
     public static function post_views($p) {
     
         // При первом запросе дерева очищаем кэш
-        if($p["first"])
+        if($p["first"]) {
             reflex_editor_root::clearCache();
+		}
 
         $p["expanded"][] = $p["id"]."";
 
@@ -128,7 +129,7 @@ class reflex_editor_controller extends mod_controller {
         $nodes = $node["children"];
 
         return array(
-            "data" => $nodes,
+			"data" => $nodes,
         );
     }
 

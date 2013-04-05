@@ -31,12 +31,14 @@ class mod_console extends mod_controller{
 	    }
 
 	    // Проверяем наличие административного пароля
-	    if(!mod_superadmin::check())
+	    if(!mod_superadmin::check()) {
 			self::fuckoff();
+		}
 
 	    // Пробуем установить бесконечное время выполнения скрипта
-		if(function_exists("set_time_limit"))
+		if(function_exists("set_time_limit")) {
 			set_time_limit(0);
+		}
 		
 	    switch($_GET["cmd"]) {
 
