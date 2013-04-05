@@ -14,21 +14,23 @@ class mod_url {
         // К примеру, parse_url() возвращает false, если в адресе есть двоеточие ":"
         // Это противоречит стандарту, но, нем не менее, используется на некоторых сайтах
 
-        $r  = "^(?:(?P<scheme>\w+)://)?";
-        $r .= "(?:(?P<login>\w+):(?P<pass>\w+)@)?";
-        $r .= "(?P<host>(?:(?P<subdomain>[\-\w\.]+)\.)?" . "(?P<domain>[\-\w]+\.(?P<extension>\w+)))?";
-        $r .= "(?::(?P<port>\d+))?";
-        $r .= "(?P<path>[\w\/\-\:\.]*)?";
-        $r .= "(?:\?(?P<query>[\w=&\:\%\.\-]+))?";
-        $r .= "(?:#(?P<anchor>\w+))?";
-        $r = "!$r!";
+        $scheme  = "^(?:(?P<scheme>\w+)://)";
+        $login  = "(?:(?P<login>\w+):(?P<pass>\w+)@)?";
+        $host = "(?P<host>[\w\.\-]+)";
+        
+        $port = "(?::(?P<port>\d+))?";
+        $path = "(?P<path>[\w\/\-\:\.]*)?";
+        $query = "(?:\?(?P<query>[\w=&\:\%\.\-]+))?";
+        $anchor = "(?:#(?P<anchor>\w+))?";
+        
+        $r = "!($scheme$login$host)?$port$path$query$anchor!";
 
-        preg_match ( $r, $url, $url );
+        preg_match ( $r, $url, $matches);
 
-        $this->scheme = $url["scheme"];
-        $this->host = $url["host"];
-        $this->path = urldecode($url["path"]);
-        parse_str($url["query"],$query);
+        $this->scheme = $matches["scheme"];
+        $this->host = $matches["host"];
+        $this->path = urldecode($matches["path"]);
+        parse_str($matches["query"],$query);
         $this->query = $query;
     }
 
