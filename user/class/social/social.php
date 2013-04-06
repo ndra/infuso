@@ -47,7 +47,7 @@ class user_social extends reflex {
     }
 
     /**
-     * Прикрепляет данный социальный профиль к активному пользователю\
+     * Прикрепляет данный социальный профиль к активному пользователю
      **/
     public static function appendToActiveUser() {
 

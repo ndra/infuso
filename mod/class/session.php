@@ -1,14 +1,25 @@
 <?
 
 /**
- * Класс-огбертка для работы с сессией
+ * Класс-обертка для работы с сессией
  **/
-class mod_session {
+class mod_session extends mod_service {
 
 	private static $started;
+
+    public function defaultService() {
+        return "session";
+    }
+
+    public static function serviceFactory() {
+        self::start();
+        return new util_array($_SESSION);
+    }
+
 	public static function start() {
-		if(self::$started)
+		if(self::$started) {
 		    return;
+        }
 		session_start();
 		self::$started = true;
 	}
@@ -22,5 +33,10 @@ class mod_session {
 		self::start();
 		$_SESSION[$key] = $val;
 	}
+
+    public function session() {
+        self::start();
+        return new util_array($_SESSION);
+    }
 
 }

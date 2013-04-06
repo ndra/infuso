@@ -30,26 +30,30 @@ class util_array extends mod_component {
 
     /**
      * Преобразует переданное значение в массив
+     * массив => массив
+     * class util_array => массив
      **/
     private static function &toNativeArray(&$a) {
         if(is_object($a)) {
-            if(get_class($a)=="util_array") {
+            if(get_class($a)==get_class()) {
                 return $a->asArray();
             }
         }
         return $a;
     }
 
-    public function map($map) {
+    /**
+     * Геттер
+     **/
+    public function __get($key) {
+        return $this->get($key);
+    }
 
-        $ret = array();
-
-        foreach($map as $srcKey=>$destKey) {
-            $ret[$destKey] = $this->data[$srcKey];
-        }
-
-        return new self($ret);
-
+    /**
+     * Сеттер
+     **/
+    public function __set($key,$val) {
+        $this->set($key,$val);
     }
 
     public function set($key,$val) {
@@ -59,6 +63,7 @@ class util_array extends mod_component {
 
     /**
      * Возвращает элемент массива по ключу
+     * Если передано несколько ключей, то они используются как ключи многомерного массива
      **/
     public function get() {
 
@@ -93,9 +98,28 @@ class util_array extends mod_component {
         }
     }
 
+    /**
+     * Возвращает первый элемент массива
+     **/
     public function &first() {
 
         reset($this->data);
+        $key = key($this->data);
+        $ret = &$this->data[$key];
+
+        if(is_array($ret)) {
+            return new self($ret);
+        }
+
+        return $ret;
+    }
+
+    /**
+     * Возвращает последний элемент массива
+     **/
+    public function &last() {
+
+        end($this->data);
         $key = key($this->data);
         $ret = &$this->data[$key];
 
@@ -113,7 +137,6 @@ class util_array extends mod_component {
                 if($val[$ekey] == $eval) {
                     $ret[$key] = &$this->data[$key];
                 }
-
             }
         }
         return new self($ret);
@@ -123,6 +146,11 @@ class util_array extends mod_component {
      * Фильтрует исходный массив, оставляя в нем только элементы с ключами из массива $keys
      **/
     public function filter($keys) {
+
+        if(is_string($keys)) {
+            $keys = func_get_args();
+        }
+
         $ret = array();
         foreach($keys as $key) {
             if(array_key_exists($key,$this->data)) {
@@ -130,6 +158,18 @@ class util_array extends mod_component {
             }
         }
         return new self($ret);
+    }
+
+    public function map($map) {
+
+        $ret = array();
+
+        foreach($map as $srcKey=>$destKey) {
+            $ret[$destKey] = $this->data[$srcKey];
+        }
+
+        return new self($ret);
+
     }
 
 }

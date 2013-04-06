@@ -70,8 +70,9 @@ class pay_invoice extends reflex implements mod_handler {
         
         // Если в сессии записано ID этого инвойса, то может
         @session_start();
-        if(in_array($this->id(),$_SESSION["twer38ebxm96xm1roya0"]))
+        if(in_array($this->id(),$_SESSION["twer38ebxm96xm1roya0"])) {
             return true;
+        }
     
         // Не может
         return false;

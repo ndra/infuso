@@ -38,24 +38,29 @@ class reflex_editor_root extends reflex {
      * + можно скинуть ссылку другому человеку и она сработает
     **/
     public static function level0() {
+
+        $session = mod::service("session");
     
+        // Хэш, который меняется при изменении возможностей для просмотра пользолвателя
         $hash = md5(user::active()->data("roles").":".user::active()->id().":".mod_superadmin::check());
         $rebuild = false;
         
-        if($hash!=$_SESSION[self::$sessionHashKey])
+        if($hash!=$session->get(self::$sessionHashKey)) {
 			self::clearCache();
+        }
 			
-        $_SESSION[self::$sessionHashKey] = $hash;
+        $session->set(self::$sessionHashKey,$hash);
 
-        $ids = $_SESSION[self::$sessionDataKey];
+        $ids = $session->get(self::$sessionDataKey);
 
         if(!$ids) {
             $ids = array();
-            foreach(self::buildMap() as $item)
+            foreach(self::buildMap() as $item) {
                 $ids[] = $item->hash();
+            }
         }
 
-        $_SESSION[self::$sessionDataKey] = $ids;
+        $session->set(self::$sessionDataKey, $ids);
         
         reflex::storeAll();
 
@@ -68,8 +73,7 @@ class reflex_editor_root extends reflex {
     }
 
     public static function clearCache() {
-        @session_start();
-        $_SESSION[self::$sessionDataKey] = null;
+        mod::service("session")->set(self::$sessionDataKey,null);
     }
 
     /**

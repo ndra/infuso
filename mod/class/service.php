@@ -9,6 +9,10 @@ class mod_service extends mod_controller {
 	    return false;
 	}
 
+    public static function serviceFactory() {
+        return new get_called_class();
+    }
+
 	public static function get($name) {
 	
 	    $class = mod_conf::general("services",$name,"class");
@@ -22,7 +26,7 @@ class mod_service extends mod_controller {
 	        throw new Exception("Service [$name] not found");
 	    }
 	    
-	    return new $class;
+	    return $class::serviceFactory();
 	
 	}
 
