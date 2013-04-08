@@ -6,6 +6,17 @@
 class mod_behaviour {
 
 	/**
+	 * Ссылка на компонент
+	 **/
+	protected $component;
+	
+	/**
+	 * Порядок добавления поведения в компонент
+	 * Устанавливается при добавлении поведения к компоненту и участвует в сортировке поведений
+	 **/
+	protected $behaviourSequenceNumber = 0;
+
+	/**
 	 * При помощи этой функции вы можете прикрепить это поведение как стандартное к любому классу.
 	 * @return string Класс, к которому вы хотите приеркпить поведение
 	 **/
@@ -29,9 +40,6 @@ class mod_behaviour {
 	public function behaviourSequenceNumber() {
 		return $this->behaviourSequenceNumber;
 	}
-
-	protected $component;
-	protected $behaviourSequenceNumber = 0;
 
 	/**
 	 * При добавлении поведения к классу, вызывается этот метод

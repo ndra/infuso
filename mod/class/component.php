@@ -2,27 +2,27 @@
 
 class mod_component {
 
-    /**
-     * Параметры компонента
-     *
-     * @var array
-     **/
-     private $param = array();
-     private $paramsLoaded = false;
+	/**
+	 * Параметры компонента
+	 *
+	 * @var array
+	 **/
+	 private $param = array();
+	 private $paramsLoaded = false;
 
-     private $lockedParams = array();
+	 private $lockedParams = array();
 
-     private static $conf = null;
+	 private static $conf = null;
 
 
-    private $___behaviours = array();
-    private $nextBehaviourPriority = 0;
-    private $defaultBehavioursAdded = false;
-    private $behavioursSorted = false;
+	private $___behaviours = array();
+	private $nextBehaviourPriority = 0;
+	private $defaultBehavioursAdded = false;
+	private $behavioursSorted = false;
 
-    private $behavioursAdded = array();
+	private $behavioursAdded = array();
 
-    private static $reflections = array();
+	private static $reflections = array();
 
     /**
      * Статический массив для хранения списка отложенных функций
@@ -224,21 +224,25 @@ class mod_component {
     private final function addDefaultBehaviours() {
 
         // Второй раз поведения по умолчанию не добавляем
-        if($this->defaultBehavioursAdded)
+        if($this->defaultBehavioursAdded) {
             return;
+		}
 
-         $this->defaultBehavioursAdded = true;
+        $this->defaultBehavioursAdded = true;
 
-        foreach($this->defaultBehaviours() as $b)
+        foreach($this->defaultBehaviours() as $b) {
             $this->addBehaviour($b);
+		}
 
         $bb = mod::classmap("behaviours");
         $bb = $bb[get_class($this)];
-        if($bb)
-            foreach($bb as $b)
+        if($bb) {
+            foreach($bb as $b) {
                 $this->addBehaviour($b);
+			}
+		}
     }
-
+    
     /**
      * @return Массив поведений, который дорбавляются объекту по умолчанию
      **/

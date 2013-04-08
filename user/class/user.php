@@ -10,15 +10,6 @@ class user extends reflex {
     private $errorText = "";
     
     /**
-     * Поведения по умолчанию
-     **/
-    public function defaultBehaviours() {
-        $b = parent::defaultBehaviours();
-        $b[] = "user_behaviour";
-        return $b;
-    }
-
-    /**
      * Удаляем неактивных пользователей через 2 дня после регистрации
      **/
     public function reflex_cleanup() {
@@ -536,21 +527,6 @@ class user extends reflex {
             $extra[$key] = $val;
             $this->data("extra",json_encode($extra));
         }
-    }
-
-    /**
-     * Возвращает объект файла юзерпика пользователя
-     **/
-    public function userpick() {
-        if($this->data("userpick")!=""){
-           return $this->pdata("userpick");
-        }
-        $key="userpick";
-        foreach($this->behaviours() as $b)
-            if(method_exists($b,$key))
-                if($val = trim($b->$key()))
-                    return file::get($val);
-        return file::nonExistent();
     }
 
     /**

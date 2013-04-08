@@ -6,7 +6,7 @@
 class geo_userBehaviour extends mod_behaviour {
 
     public function behaviourPriority() {
-        return -1;
+        return -10;
     }
 
     /**
@@ -37,12 +37,14 @@ class geo_userBehaviour extends mod_behaviour {
 
         // Пробуем взять координаты из объекта города пользователя
         $cityCoords = $this->component()->cityObject()->coords();
-        if($cityCoords->value())
+        if($cityCoords->value()) {
             return $cityCoords;
+        }
 
         // Если пользователь $thid - активный (user::active()), берем координаты из текущего ip
-        if($this->isActiveUser())
+        if($this->isActiveUser()) {
             return geo_ip::current()->city()->coords();
+        }
 
         // Если ничего не сработало, возвращаем пустую точку (0,0)
         return mod::field("point");

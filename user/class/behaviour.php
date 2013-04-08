@@ -5,6 +5,14 @@
  **/
 class user_behaviour extends mod_behaviour {
 
+	public function behaviourPriority() {
+	    return -1;
+	}
+	
+	public function addToClass() {
+	    return "user";
+	}
+
     public function reflex_table() {
         return "user_list";
     }
@@ -29,6 +37,10 @@ class user_behaviour extends mod_behaviour {
         return $check;
     }
 
+	/**
+	 * Метод, возвращающий имя объекта для рефлекса
+	 * Используется при вызове $this->title();
+	 **/
     public function reflex_title() {
     
         $ret = trim($this->firstName()." ".$this->lastName());
@@ -37,10 +49,34 @@ class user_behaviour extends mod_behaviour {
             $ret = "{$this->data(email)}";
         }
             
-        if(!$ret)
+        if(!$ret) {
             $ret = "user:{$this->id()}";
+		}
             
         return $ret;
     }
+    
+    /**
+     * Возвращает объект файла юзерпика пользователя
+     **/
+    public function userpick() {
 
+        if($this->data("userpick")!="") {
+           return $this->pdata("userpick");
+        }
+
+        $key = "userpick";
+        foreach($this->behaviours() as $b) {
+            if(get_class($b) != get_class($this)) {
+	            if(method_exists($b,$key)) {
+	                if($val = trim($b->$key())) {
+	                    return file::get($val);
+	                }
+	            }
+            }
+        }
+
+        return file::nonExistent();
+    }
+    
 }

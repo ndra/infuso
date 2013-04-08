@@ -5,6 +5,10 @@
  **/
 class user_social_userBehaviour extends mod_behaviour {
 
+	public function behaviourPriority() {
+	    return -10;
+	}
+
 	public function addToClass() {
 	    return mod::conf("user:social") ? "user" : null;
 	}
