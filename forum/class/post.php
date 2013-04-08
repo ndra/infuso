@@ -163,10 +163,11 @@ class forum_post extends reflex {
         
         $post->data("message", $p["message"]);
         
-        
         foreach (self::_normalizePostFiles($_FILES['file']) as $file) {
             
-            if (!$file['name']) continue;
+            if (!$file['name']) {
+				continue;
+			}
             
             $filePath = $post->storage()->addUploaded($file['tmp_name'], $file['name']);
             reflex::create("forum_postAttachments", array(
@@ -179,21 +180,28 @@ class forum_post extends reflex {
         
         $post->data("userID", user::active()->id());
         
-        
         $host = mod_url::current()->scheme()."://".mod_url::current()->host();
         
+        $params = array (
+            "message" => "Новое сообщение на форуме в теме: ".$post->topic()->title(),
+            "subject" => "Новое сообщение на форуме в теме: ".$post->topic()->title(),
+            "postMessage" => $post->message(),
+            "groupTitle" => $post->topic()->title(),
+            "url" => $post->url(),
+		);
+        
         //Подписываю автора на этот Topic
-        user::active()->subscribe("forum:topic:".$post->topic()->id(), "Новое сообщение на форуме в теме: " . $post->topic()->title());
+        user::active()->subscribe("forum:topic:".$post->topic()->id(), $params);
         
         //Рассылаем всем о том что создан ответ в теме
-        user_subscription::mailByKey("forum:topic:".$post->topic()->id(), "Новое сообщение в теме: <a href='".$host.$post->topic()->url()."'>" . $post->topic()->title() . "</a>", "Активность в форуме");
+        user_subscription::mailByKey("forum:topic:".$post->topic()->id(), $params);
         
         //Рассылаем всем о том что есть ответ в текущем разделе
-        user_subscription::mailByKey("forum:group:".$post->topic()->group()->id(), "Новое сообщение в разделе: <a href='".$host.$post->topic()->group()->url()."'>" . $post->topic()->group()->title() . "</a>", "Активность в форуме"); 
+        user_subscription::mailByKey("forum:group:".$post->topic()->group()->id(), $params);
         
         //Рассылаем всем о том что есть ответ в "Родительских" разделах
         foreach ($post->topic()->group()->parents() as $group) {
-            user_subscription::mailByKey("forum:group:".$group->id(), "Новое сообщение в разделе: <a href='".$host.$group->url()."'>" . $group->title() . "</a>", "Активность в форуме"); 
+            user_subscription::mailByKey("forum:group:".$group->id(), $params);
         }
         
         
