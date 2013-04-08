@@ -80,6 +80,7 @@ class user_init implements mod_handler {
             "title" => "Пользователи",
             "name" => "user",
             "icon" => "/user/res/icons/48/user.png",
+            "priority" => 500,
 		));
 
     }

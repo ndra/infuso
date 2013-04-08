@@ -27,6 +27,7 @@ class reflex_editor_init implements mod_handler {
             "title" => "Контент",
             "name" => "",
             "icon" => "/reflex/res/icons/48/content.png",
+            "priority" => 1000,
 		));
 		
         reflex_editor_rootTab::create(array(

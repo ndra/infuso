@@ -27,6 +27,10 @@ class reflex_editor_rootTab extends reflex {
 				  'type' => 'textfield',
 				),
 				array (
+				  'name' => 'priority',
+				  'type' => 'bigint',
+				),
+				array (
 				  'name' => 'icon',
 				  'type' => 'file',
 				),
@@ -35,7 +39,7 @@ class reflex_editor_rootTab extends reflex {
 	}
 	
 	public static function all() {
-	    return reflex::get(get_class());
+	    return reflex::get(get_class())->desc("priority");
 	}
 
 	public static function allVisible() {

@@ -67,8 +67,8 @@ class eshop_init implements mod_handler {
             "title" => "Магазин",
             "name" => "eshop",
             "icon" => "/eshop/res/icons/48/eshop.png",
+            "priority" => 2000,
 		));
 	    
 	}
-
 }
