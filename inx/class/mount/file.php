@@ -119,7 +119,6 @@ class inx_mount_file extends mod_component {
 			
 			$this->fullDirectives = array();
 			if(sizeof($include)) {
-			    mod::msg(implode(",",$include));
 				$this->fullDirectives[] = array("name"=>"include","value"=>implode(",",$include));
 			}
 
