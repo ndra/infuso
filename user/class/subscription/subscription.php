@@ -39,11 +39,28 @@ class user_subscription extends reflex {
     }   
     
     /**
-     * рассылка писем по ключу рассылки
+     * Рассылка писем по ключу рассылки
+     * Первый параметр - ключ рассылки (строка)
+     * Если второй параметр - массив, он используется как массив параметров для писем
+     * Если второй и третий параметры - строки, они используются как сообщение и тема соответственно
      **/
-    public static function mailByKey($key,$message,$subject){
-        reflex_task::add("user_subscription","`key`='".reflex_mysql::escape($key)."'","mail",array($message,$subject));
-        
+    public static function mailByKey($key,$second=null,$third=null) {
+    
+        if(func_get_args()==2 && is_array($second)) {
+            $params = $second;
+        } elseif(func_get_args()==3 && is_string($second) && is_string($third)) {
+            $params = array(
+                "message" => $second,
+                "subject" => $third,
+			);
+        }
+    
+        reflex_task::add(array(
+			"class" => "user_subscription",
+			"query" => "`key`='".reflex_mysql::escape($key)."'",
+			"method" => "mail",
+			"params" => $params,
+		));
     }
     
     /**

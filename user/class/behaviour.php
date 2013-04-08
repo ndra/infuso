@@ -62,7 +62,7 @@ class user_behaviour extends mod_behaviour {
     public function userpick() {
 
         if($this->data("userpick")!="") {
-           return $this->pdata("userpick");
+			return $this->pdata("userpick");
         }
 
         $key = "userpick";

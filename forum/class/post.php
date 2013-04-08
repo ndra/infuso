@@ -186,8 +186,7 @@ class forum_post extends reflex {
         user::active()->subscribe("forum:topic:".$post->topic()->id(), "Новое сообщение на форуме в теме: " . $post->topic()->title());
         
         //Рассылаем всем о том что создан ответ в теме
-        user_subscription::mailByKey("forum:topic:".$post->topic()->id(), "Новое сообщение в теме: <a href='".$host.$post->topic()->url()."'>" . $post->topic()->title() . "</a>", "Активность в форуме"); 
-        
+        user_subscription::mailByKey("forum:topic:".$post->topic()->id(), "Новое сообщение в теме: <a href='".$host.$post->topic()->url()."'>" . $post->topic()->title() . "</a>", "Активность в форуме");
         
         //Рассылаем всем о том что есть ответ в текущем разделе
         user_subscription::mailByKey("forum:group:".$post->topic()->group()->id(), "Новое сообщение в разделе: <a href='".$host.$post->topic()->group()->url()."'>" . $post->topic()->group()->title() . "</a>", "Активность в форуме"); 
