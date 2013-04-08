@@ -3,9 +3,20 @@
 /**
  * Класс для работы с массивами в ООП-стиле
  **/
-class util_array extends mod_component {
+class util_array extends mod_component implements iterator {
 
     private $data = array();
+
+    // Итераторская шняга
+    protected $items = array();
+    public function rewind() { reset($this->data); }
+    public function current() {
+        $ret = current($this->data);
+        return new self ($ret);
+    }
+    public function key() { return key($this->data); }
+    public function next() { return next($this->data); }
+    public function valid() { return current($this->data) !== false; }
 
     public function __construct(&$data) {
         $this->data = &self::toNativeArray($data);
@@ -16,6 +27,21 @@ class util_array extends mod_component {
      **/
     public function &asArray() {
         return $this->data;
+    }
+
+    /**
+     * Вызвано без параметров - возврашает данные
+     * Вызвано с одним параметром - изменяет данные
+     **/
+    public function &value($val=null) {
+
+        if(func_num_args()==0) {
+            return $this->data;
+        }
+
+        if(func_num_args()==1) {
+            $this->data = $val;
+        }
     }
 
     /**
@@ -56,6 +82,10 @@ class util_array extends mod_component {
         $this->set($key,$val);
     }
 
+    public function __tostring() {
+        return $this->data."";
+    }
+
     public function set($key,$val) {
         $val = self::toNativeArray($val);
         $this->data[$key] = &$val;
@@ -73,12 +103,11 @@ class util_array extends mod_component {
             $ret = &$ret[func_get_arg($i)];
         }
 
-        if(is_array($ret)) {
-            $x = new self($ret);
-            return $x;
-        }
+        return new self($ret);
+    }
 
-        return $ret;
+    public function keyExists($key) {
+        return array_key_exists($key,$this->data);
     }
 
     public function push() {
@@ -92,10 +121,7 @@ class util_array extends mod_component {
         $pushed = self::toNativeArray($pushed);
         $a[] = &$pushed;
 
-        if(is_array($pushed)) {
-            $ret = new self($pushed);
-            return $ret;
-        }
+        return new self($pushed);
     }
 
     /**
@@ -107,11 +133,7 @@ class util_array extends mod_component {
         $key = key($this->data);
         $ret = &$this->data[$key];
 
-        if(is_array($ret)) {
-            return new self($ret);
-        }
-
-        return $ret;
+        return new self($ret);
     }
 
     /**
@@ -123,11 +145,7 @@ class util_array extends mod_component {
         $key = key($this->data);
         $ret = &$this->data[$key];
 
-        if(is_array($ret)) {
-            return new self($ret);
-        }
-
-        return $ret;
+        return new self($ret);
     }
 
     public function eq($ekey,$eval) {
@@ -139,6 +157,7 @@ class util_array extends mod_component {
                 }
             }
         }
+
         return new self($ret);
     }
 
@@ -157,6 +176,7 @@ class util_array extends mod_component {
                 $ret[$key] = $this->data[$key];
             }
         }
+
         return new self($ret);
     }
 

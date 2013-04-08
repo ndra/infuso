@@ -45,23 +45,29 @@ class reflex_editor_root extends reflex {
         $hash = md5(user::active()->data("roles").":".user::active()->id().":".mod_superadmin::check());
         $rebuild = false;
         
+        // Если хэш изменился, очищаем кэш
         if($hash!=$session->get(self::$sessionHashKey)) {
 			self::clearCache();
         }
 			
         $session->set(self::$sessionHashKey,$hash);
 
-        $ids = $session->get(self::$sessionDataKey);
+        // Достаем сохраненные в сессии данные
+        if($session->keyExists(self::$sessionDataKey) && $session->get(self::$sessionDataKey)->value()!=null) {
 
-        if(!$ids) {
+            $ids = $session->get(self::$sessionDataKey)->value();
+
+        } else {
+
             $ids = array();
             foreach(self::buildMap() as $item) {
                 $ids[] = $item->hash();
             }
+
+            $session->set(self::$sessionDataKey, $ids);
+
         }
 
-        $session->set(self::$sessionDataKey, $ids);
-        
         reflex::storeAll();
 
         $ret = array();
@@ -121,8 +127,9 @@ class reflex_editor_root extends reflex {
         	return $r;
         }
         
-        if($r = strcmp($a->group(),$b->group()))
+        if($r = strcmp($a->group(),$b->group())) {
             return $r;
+        }
             
         return strcmp($a->title(),$b->title());
     
@@ -141,11 +148,13 @@ class reflex_editor_root extends reflex {
             $items = $obj->reflex_root();
             
             //Если не объект и не масив
-            if(!is_object($items) && !is_array($items))
+            if(!is_object($items) && !is_array($items)) {
                 throw new Exception("Метод reflex_root() класса {$class} вернул недопустимое значение");
+            }
             
-            if(is_object($items))
+            if(is_object($items)) {
                 $items = array($items);
+            }
             
             foreach($items as $collection) {
                 $editor = self::buildOne($collection);

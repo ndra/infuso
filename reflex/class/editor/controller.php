@@ -24,20 +24,22 @@ class reflex_editor_controller extends mod_controller {
      **/
     public static function index($p) {
         admin::header("Каталог");
+
+        reflex_editor_root::clearCache();
         
         inx::add(array(
             "type" => "inx.mod.reflex.editor",
             "menu" => $p["menu"],
             "tabData" => self::tabData(),
         ));
-        
+
         admin::footer();
     }
     
     private static function tabData() {
         $ret = array();
         
-        foreach(reflex_editor_rootTab::all() as $tab) {
+        foreach(reflex_editor_rootTab::allVisible() as $tab) {
 	        $ret[] = array(
 	            "text" => $tab->title(),
 	            "name" => $tab->data("name"),
@@ -117,11 +119,6 @@ class reflex_editor_controller extends mod_controller {
      * Загрузчик нод дерева в левом меню
      **/
     public static function post_views($p) {
-    
-        // При первом запросе дерева очищаем кэш
-        if($p["first"]) {
-            reflex_editor_root::clearCache();
-		}
 
         $p["expanded"][] = $p["id"]."";
 

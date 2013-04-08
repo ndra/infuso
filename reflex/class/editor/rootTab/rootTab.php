@@ -37,10 +37,38 @@ class reflex_editor_rootTab extends reflex {
 	public static function all() {
 	    return reflex::get(get_class());
 	}
+
+	public static function allVisible() {
+
+        $ret = array();
+        foreach(self::all() as $tab) {
+            if(sizeof($tab->roots())) {
+                $ret[] = $tab;
+            }
+        }
+        return $ret;
+
+	}
 	
 	public static function get($id) {
 	    return reflex::get(get_class(),$id);
 	}
+
+    public function roots() {
+        $ret = array();
+        foreach(reflex_editor_root::level0() as $root) {
+            if($root->tab()==$this->name()) {
+                $ret[] = $root;
+            }
+        }
+        return $ret;
+    }
+
+    public function dataWrappers() {
+        return array(
+            "name" => "mixed/data",
+        );
+    }
 	
 	/**
 	 * Создает новую вкладку
