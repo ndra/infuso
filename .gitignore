@@ -9,6 +9,9 @@
 /eshop/files
 /file/preview
 
+# Пользовательские файлы форума
+/forum/files
+
 /tmp/render
 
 /tmp/render-php
