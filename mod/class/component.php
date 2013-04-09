@@ -449,6 +449,15 @@ class mod_component {
         return $r;
     }
 
+    /**
+     * Выполняет код в контексте объенкта
+     * Разворачивает в область видимости кода массив переменных $params
+     **/
+    public function evalCode($code,$params = array()) {
+        extract($params);
+        eval($code);
+    }
+
 }
 
 register_shutdown_function(array("mod_component","callDeferedFunctions"));
