@@ -1,5 +1,5 @@
-<? 
+<?
 
-foreach(forum_group::all() as $group) {
-    <a href='{$group->url()}' >{$group->title()}</a>
-}
+tmp::add("center","content");
+tmp::exec("/tmp/layout");
+

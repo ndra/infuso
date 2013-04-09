@@ -26,13 +26,19 @@ class mod_post {
 	    if(mod::testClass($class,"mod_controller")) {
 
 	        $obj = new $class;
-		    if(call_user_func(array($obj,"postTest"),$p))
+		    if(call_user_func(array($obj,"postTest"),$p)) {
 			    if($obj->methodExists("post_".$method)) {
 			        $status = true;
-			        $ret = call_user_func_array(array($obj,"post_".$method),array($p,$files));
+			        try {
+			        	$ret = call_user_func_array(array($obj,"post_".$method),array($p,$files));
+			        } catch(mod_userLevelException $ex) {
+			            mod::msg($ex->getMessage());
+			        }
 			        mod_component::callDeferedFunctions();
 			        return $ret;
 			    }
+			}
+			
 		}
 
 	    $cmd = mod_superadmin::check() ? $cmd : "";

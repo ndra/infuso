@@ -37,6 +37,15 @@ class forum_post extends reflex {
     }
     
     /**
+     * Возвращает пост по id
+     *
+     * @return forum_post
+     **/
+    public static function get($id) {
+        return reflex::get(get_class(),$id);
+    }
+    
+    /**
      * Возвращает коллекцию последних сообщений
      *
      * @return reflex_list
@@ -116,7 +125,8 @@ class forum_post extends reflex {
      * @autor christiaan at baartse dot nl <http://php.net/manual/ru/features.file-upload.multiple.php#96365>
      * @return array
      **/
-    private static function _normalizePostFiles($entry) {
+    private static function normalizePostFiles($entry) {
+    
         if(isset($entry['name']) && is_array($entry['name'])) {
             $files = array();
             foreach($entry['name'] as $k => $name) {
@@ -130,6 +140,7 @@ class forum_post extends reflex {
             }
             return $files;
         }
+
         return $entry;
     }
     
@@ -142,17 +153,17 @@ class forum_post extends reflex {
     public function post_create($p = null) {
     
         if (!user::active()->exists()) {
-            throw new Exception("Вы не авторизовались");
+            throw new mod_userLevelException("Вы не авторизовались");
         }
 
         $topic = reflex::get("forum_topic", $p["topic"]); 
         
         if (!$topic->exists()) {
-            throw new Exception("Темы не существует");
+            throw new mod_userLevelException("Темы не существует");
         }
         
         if ($topic->close()) {
-            throw new Exception("Тема закрыта для новых сообщений");
+            throw new mod_userLevelException("Тема закрыта для новых сообщений");
         }
         
         $post = reflex::create("forum_post");
@@ -163,24 +174,26 @@ class forum_post extends reflex {
         
         $post->data("message", $p["message"]);
         
-        foreach (self::_normalizePostFiles($_FILES['file']) as $file) {
-            
-            if (!$file['name']) {
-				continue;
-			}
-            
-            $filePath = $post->storage()->addUploaded($file['tmp_name'], $file['name']);
-            reflex::create("forum_postAttachments", array(
-                "postId" => $post->id(),
-                "title" => $file['name'],
-                "file" => $filePath,
-            ));
-            
+        if(array_key_exists("file",$_FILES)) {
+	        foreach (self::normalizePostFiles($_FILES['file']) as $file) {
+
+	            if (!$file['name']) {
+					continue;
+				}
+
+	            $filePath = $post->storage()->addUploaded($file['tmp_name'], $file['name']);
+	            reflex::create("forum_postAttachments", array(
+	                "postId" => $post->id(),
+	                "title" => $file['name'],
+	                "file" => $filePath,
+	            ));
+
+	        }
         }
         
         $post->data("userID", user::active()->id());
-        
-        $host = mod_url::current()->scheme()."://".mod_url::current()->host();
+
+        //$host = mod_url::current()->scheme()."://".mod_url::current()->host();
         
         $params = array (
             "message" => "Новое сообщение на форуме в теме: ".$post->topic()->title(),
@@ -190,22 +203,21 @@ class forum_post extends reflex {
             "url" => $post->url(),
 		);
         
-        //Подписываю автора на этот Topic
+        // Подписываю автора на этот Topic
         user::active()->subscribe("forum:topic:".$post->topic()->id(), $params);
         
-        //Рассылаем всем о том что создан ответ в теме
+        // Рассылаем всем о том что создан ответ в теме
         user_subscription::mailByKey("forum:topic:".$post->topic()->id(), $params);
         
-        //Рассылаем всем о том что есть ответ в текущем разделе
+        // Рассылаем всем о том что есть ответ в текущем разделе
         user_subscription::mailByKey("forum:group:".$post->topic()->group()->id(), $params);
         
-        //Рассылаем всем о том что есть ответ в "Родительских" разделах
+        // Рассылаем всем о том что есть ответ в "Родительских" разделах
         foreach ($post->topic()->group()->parents() as $group) {
             user_subscription::mailByKey("forum:group:".$group->id(), $params);
         }
         
-        
-        header("Location: " . $post->topic()->latestPostURL());
+        header("Location: " . $post->url());
         die();
         
     }
@@ -213,6 +225,23 @@ class forum_post extends reflex {
     public function author() {
         return $this->pdata("userID");
     }
+    
+    /**
+     * Возвращает посты перед данным (из того же топика)
+     **/
+    public function postsBefore() {
+        return $this->topic()->posts()->lt("date",$this->date());
+    }
+    
+    /**
+     * Возвращает ссылку на пост
+     * Т.к. у постов нет отдельной страницы, то ссылка формируется следующим образом
+     * = {$topicURL}?page={$postPage}#post-{$postID}
+     **/
+    public function reflex_url() {
+        $page = floor($this->postsBefore()->count() / $this->postsBefore()->perPage()) + 1;
+        return $this->topic()->url()."?page=".$page."#post-".$this->id();
+	}
     
     
 } //END CLASS
