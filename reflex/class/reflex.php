@@ -186,8 +186,9 @@ class reflex extends mod_model {
      **/
     public final function url($params = array()) {
 
-        if(!is_array($params))
+        if(!is_array($params)) {
             $params = array();
+        }
 
         if($url = trim($this->reflex_url())) {
 
@@ -195,17 +196,17 @@ class reflex extends mod_model {
             if(preg_match("/action::/",$url)) {
                 $url = strtr($url,array("action::"=>""));
                 $action = mod_action::fromString($url);
-                return $action->url();
+                return mod::url($action->url());
             // В противном случае возвращаем адрес как есть
             } else {
-                return $url;
+                return mod::url($url);
             }
 
         } else {
 
             $params["id"] = $this->id();
             $action = mod_action::get(get_class($this),"item",$params);
-            return $action->url();
+            return mod::url($action->url());
 
         }
 
