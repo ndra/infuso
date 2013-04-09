@@ -17,10 +17,16 @@
                             echo $post->pdata("date")->text();
                         </div>
                         echo $post->message();
+                        tmp::exec("files",array(
+                            "post" => $post,
+                        ));
                     </div>
                 </td>
             </tr>
             
         }
     </table>
+    
+    tmp::exec("/reflex/navigation/pager",$posts);
+    
 </div>
