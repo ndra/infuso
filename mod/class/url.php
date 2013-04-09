@@ -15,14 +15,16 @@ class mod_url {
         // К примеру, parse_url() возвращает false, если в адресе есть двоеточие ":"
         // Это противоречит стандарту, но, нем не менее, используется на некоторых сайтах
 
+        $urlSymbols = "\w\/\-\:\.\=\&\%";
+
         $scheme  = "^(?:(?P<scheme>\w+):(//)?)";
         $login  = "(?:(?P<login>\w+):(?P<pass>\w+)@)?";
         $host = "(?P<host>[\w\.\-]+)";
         
         $port = "(?::(?P<port>\d+))?";
-        $path = "(?P<path>[\w\/\-\:\.]*)?";
-        $query = "(?:\?(?P<query>[\w=&\:\%\.\-]+))?";
-        $hash = "(?:#(?P<hash>\w+))?";
+        $path = "(?P<path>[{$urlSymbols}]*)?";
+        $query = "(?:\?(?P<query>[{$urlSymbols}]+))?";
+        $hash = "(?:#(?P<hash>.+))?";
         
         $r = "!($scheme$login$host)?$port$path$query$hash!";
 
