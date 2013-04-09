@@ -204,8 +204,6 @@ class forum_post extends reflex {
             "author" => $post->author()->title(),
             "code" => "forum/newPost",
 		);
-
-        mod::msg($params);
         
         // Подписываю автора на этот Topic
         user::active()->subscribe("forum:topic:".$post->topic()->id(), $params);
