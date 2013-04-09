@@ -52,7 +52,7 @@ inx.mod.moduleManager.tableManager.editor.fields = inx.list.extend({
     
         var item = this.info("item",id);
         
-        if(item.isGroup) {
+        if(item.isGroup) {    
         
             inx({
                 type:"inx.mod.moduleManager.tableManager.group",
@@ -62,7 +62,6 @@ inx.mod.moduleManager.tableManager.editor.fields = inx.list.extend({
             }).cmd("render");
         
         } else {   
-         
             inx({
                 type:"inx.mod.moduleManager.tableManager.field",
                 tableID:this.tableID,

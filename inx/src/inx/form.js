@@ -13,7 +13,7 @@ inx.form = inx.panel.extend({
         }
         
         if(!p.style.padding) {
-            p.style.padding = 10;
+            p.style.padding = 30;
         }
     
         if(p.labelWidth===undefined)

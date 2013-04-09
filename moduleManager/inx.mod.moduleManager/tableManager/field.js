@@ -26,7 +26,7 @@ inx.mod.moduleManager.tableManager.field = inx.dialog.extend({
         this.base(p);
         this.call({cmd:"moduleManager:tableManager:getField",tableID:this.tableID,fieldID:this.fieldID},[this.id(),"handleData"]);
         this.on("submit","save");
-        inx.hotkey("esc",this.id(),"destroy");
+        inx.hotkey("esc",[this.id(),"destroy"]);
     },
     
     /**
