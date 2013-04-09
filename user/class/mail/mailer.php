@@ -114,9 +114,11 @@ class user_mailer extends mod_component {
         
         // Подготавливаем параметры для подстановки в шаблон в стиле %%name%% 
         $replace = array();
-        foreach($this->params() as $key=>$val)
-            if(is_scalar($val))
+        foreach($this->params() as $key=>$val) {
+            if(is_scalar($val)) {
                 $replace["%%".$key."%%"] = $val;
+            }
+        }
                 
         $tmp->data("params",implode(", ",array_keys($replace)));
         
@@ -145,7 +147,7 @@ class user_mailer extends mod_component {
                         
                 // Выполним код шаблона                
                 ob_start();
-                eval(" ?>" . $message . "<?php ");
+                $this->evalCode(" ?>" . $message . "<?php ",$this->params());
                 $message = ob_get_clean();
                 
                 // Изменяем исходное сообщение                
