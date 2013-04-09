@@ -37,11 +37,14 @@
     4 => 
     array (
       'name' => 'params',
-      'type' => 'v324-89xr-24nk-0z30-r243',
+      'type' => 'kbd4-xo34-tnb3-4nxl-cmhu',
       'editable' => '1',
       'id' => 'xcv234ah3yv6n8gb78li3k1rdc92ty',
       'label' => 'Доп. параметры',
       'indexEnabled' => 0,
+      'group' => '',
+      'default' => '',
+      'help' => '',
     ),
     5 => 
     array (
@@ -81,5 +84,13 @@
   ),
   'indexes' => 
   array (
+  ),
+  'fieldGroups' => 
+  array (
+    0 => 
+    array (
+      'name' => NULL,
+      'title' => NULL,
+    ),
   ),
 ); ?>
