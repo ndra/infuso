@@ -192,16 +192,20 @@ class forum_post extends reflex {
         }
         
         $post->data("userID", user::active()->id());
-
-        //$host = mod_url::current()->scheme()."://".mod_url::current()->host();
         
         $params = array (
             "message" => "Новое сообщение на форуме в теме: ".$post->topic()->title(),
             "subject" => "Новое сообщение на форуме в теме: ".$post->topic()->title(),
             "postMessage" => $post->message(),
             "groupTitle" => $post->topic()->title(),
-            "url" => $post->url(),
+            "postUrl" => $post->url()->absolute()."",
+            "topicUrl" => $post->topic()->url()->absolute()."",
+            "topicTitle" => $post->topic()->title(),
+            "author" => $post->author()->title(),
+            "code" => "forum/newPost",
 		);
+
+        mod::msg($params);
         
         // Подписываю автора на этот Topic
         user::active()->subscribe("forum:topic:".$post->topic()->id(), $params);
