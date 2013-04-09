@@ -6,6 +6,7 @@ class mod_url {
     private $host = null;
     private $path = null;
     private $query = array();
+    private $hash = null;
 
     public function __construct($url) {
 
@@ -14,16 +15,16 @@ class mod_url {
         // К примеру, parse_url() возвращает false, если в адресе есть двоеточие ":"
         // Это противоречит стандарту, но, нем не менее, используется на некоторых сайтах
 
-        $scheme  = "^(?:(?P<scheme>\w+)://)";
+        $scheme  = "^(?:(?P<scheme>\w+):(//)?)";
         $login  = "(?:(?P<login>\w+):(?P<pass>\w+)@)?";
         $host = "(?P<host>[\w\.\-]+)";
         
         $port = "(?::(?P<port>\d+))?";
         $path = "(?P<path>[\w\/\-\:\.]*)?";
         $query = "(?:\?(?P<query>[\w=&\:\%\.\-]+))?";
-        $anchor = "(?:#(?P<anchor>\w+))?";
+        $hash = "(?:#(?P<hash>\w+))?";
         
-        $r = "!($scheme$login$host)?$port$path$query$anchor!";
+        $r = "!($scheme$login$host)?$port$path$query$hash!";
 
         preg_match ( $r, $url, $matches);
 
@@ -32,6 +33,7 @@ class mod_url {
         $this->path = urldecode($matches["path"]);
         parse_str($matches["query"],$query);
         $this->query = $query;
+        $this->hash = $matches["hash"];
     }
 
     /**
@@ -90,6 +92,23 @@ class mod_url {
 
         if(func_num_args()==1) {
             $this->host = $host;
+            return $this;
+        }
+
+    }
+
+    /**
+     * Без параметров - возвращает хэш
+     * С одним параметром - меняет хэш
+     **/
+    public function hash($hash=null) {
+
+        if(func_num_args()==0) {
+            return $this->hash;
+        }
+
+        if(func_num_args()==1) {
+            $this->hash = $hash;
             return $this;
         }
 
@@ -172,15 +191,28 @@ class mod_url {
      * Возвращает полный url
      **/
     public function url() {
+
         $ret = "";
-        if($this->scheme())
+        if($this->scheme()) {
             $ret.= $this->scheme()."://";
-        if($this->host())
+        }
+
+        if($this->host()) {
             $ret.= $this->host();
-        if($this->path())
+        }
+
+        if($this->path()) {
             $ret.= $this->path();
-        if($this->queryString())
+        }
+
+        if($this->queryString()) {
             $ret.= "?".$this->queryString();
+        }
+
+        if($this->hash()) {
+            $ret.= "#".$this->hash();
+        }
+
         return $ret;
     }
 
@@ -202,6 +234,16 @@ class mod_url {
         if($this->queryString())
             $ret.= "?".$this->queryString();
         return $ret;
+    }
+
+    public function absolute() {
+        if(!$this->scheme()) {
+            $this->scheme(mod_url::current()->scheme());
+        }
+        if(!$this->host()) {
+            $this->host(mod_url::current()->host());
+        }
+        return $this;
     }
 
     /**
