@@ -68,14 +68,6 @@
       'label' => 'Просмотров',
       'indexEnabled' => 0,
     ),
-    7 => 
-    array (
-      'name' => 'x_topic_id',
-      'type' => 'v324-89xr-24nk-0z30-r243',
-      'editable' => 2,
-      'id' => 'qtvfiuirtb6pl1pf6vzutf5jqtghqy',
-      'indexEnabled' => 0,
-    ),
   ),
   'indexes' => 
   array (

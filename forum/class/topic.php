@@ -136,8 +136,7 @@ class forum_topic extends reflex {
      * Возвращает url последнего поста (с учетом пейджера и хэштэга)
      **/
     public function latestPostURL() {     
-        $posts = $this->posts();    
-        return $this->url()."?page=".$posts->pages()."#post-".$posts->one()->id();
+		return $this->latestPost()->url();
     }
     
     /**
@@ -160,7 +159,7 @@ class forum_topic extends reflex {
      * @return integer
      **/
     public function incrementViews() {
-        $views = (integer)$this->data("views");
+        $views = (integer) $this->data("views");
         $this->data("views", $views + 1);
     }
     

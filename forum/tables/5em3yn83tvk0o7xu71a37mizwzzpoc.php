@@ -56,32 +56,16 @@
       'indexEnabled' => 0,
       'class' => 'user',
     ),
-    6 => 
-    array (
-      'name' => 'x_post_id',
-      'type' => 'v324-89xr-24nk-0z30-r243',
-      'editable' => 2,
-      'id' => '4nj7llvy0mugbl5uxkrl1gtpb95vzf',
-      'indexEnabled' => 0,
-    ),
-    7 => 
-    array (
-      'name' => 'x_topic_id',
-      'type' => 'v324-89xr-24nk-0z30-r243',
-      'editable' => 2,
-      'id' => 'ma9ub96o3qbdiovukrelobhi816hbt',
-      'indexEnabled' => 0,
-    ),
-    8 => 
-    array (
-      'name' => 'x_forum_id',
-      'type' => 'v324-89xr-24nk-0z30-r243',
-      'editable' => 2,
-      'id' => 'v1kv1bq2yu1pfjbfahzde11x4x57gp',
-      'indexEnabled' => 0,
-    ),
   ),
   'indexes' => 
   array (
+  ),
+  'fieldGroups' => 
+  array (
+    0 => 
+    array (
+      'name' => NULL,
+      'title' => NULL,
+    ),
   ),
 ); ?>

@@ -45,24 +45,16 @@
       'label' => 'Описание',
       'indexEnabled' => '0',
     ),
-    5 => 
-    array (
-      'name' => 'x_forum_id',
-      'type' => 'v324-89xr-24nk-0z30-r243',
-      'editable' => 2,
-      'id' => '3msvsaywvxs821whergk171apb11ze',
-      'indexEnabled' => 0,
-    ),
-    6 => 
-    array (
-      'name' => 'x_parent_id',
-      'type' => 'v324-89xr-24nk-0z30-r243',
-      'editable' => 2,
-      'id' => 'gibmrfl4b5r0fwfu1vopf3as1e8yof',
-      'indexEnabled' => 0,
-    ),
   ),
   'indexes' => 
   array (
+  ),
+  'fieldGroups' => 
+  array (
+    0 => 
+    array (
+      'name' => NULL,
+      'title' => NULL,
+    ),
   ),
 ); ?>
