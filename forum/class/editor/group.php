@@ -18,7 +18,7 @@ class forum_editor_group extends reflex_editor {
      }
         
     public function beforeEdit() {
-        return user::active()->checkAccess("admin:editGroup");
+        return user::active()->checkAccess("forum:editGroup");
     }   
         
 }

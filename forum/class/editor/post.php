@@ -32,7 +32,7 @@ class forum_editor_post extends reflex_editor {
     }
     
     public function beforeEdit() {
-        return user::active()->checkAccess("admin:editPost");
+        return user::active()->checkAccess("forum:editPost");
     }
     
     

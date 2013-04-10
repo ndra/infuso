@@ -7,6 +7,6 @@ class forum_editor_topic extends reflex_editor {
     }
     
      public function beforeEdit() {
-        return user::active()->checkAccess("admin:editTopic");
+        return user::active()->checkAccess("forum:editTopic");
     }
 }

@@ -13,13 +13,13 @@ class forum_handler implements mod_handler {
         user_operation::get("user:editorCollectionView")
             ->appendTo("forum:admin");
             
-        user_operation::create("admin:editTopic", "Операция редактирование топиков")
+        user_operation::create("forum:editTopic", "Операция редактирование топиков")
             ->appendTo("forum:admin"); 
             
-        user_operation::create("admin:editPost", "Операция редактирование постов")
+        user_operation::create("forum:editPost", "Операция редактирование постов")
             ->appendTo("forum:admin");
         
-        user_operation::create("admin:editGroup", "Операция редактирование групп")
+        user_operation::create("forum:editGroup", "Операция редактирование групп")
             ->appendTo("forum:admin");            
         
     }    
