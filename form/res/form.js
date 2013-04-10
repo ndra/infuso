@@ -22,9 +22,25 @@ var form = function(selector,hash) {
 
             // Если форма валидна, отправляем ее
             if(d.valid) {
-                form.unbind("submit");
-                form.submit();
-
+               
+               //При срабатывании события afterValidation достаем событие 
+               var event;
+               $(selector).on("afterValidation.eventSaver", function(e){
+                   event = e;
+               });
+               
+               //запускаем событие afterValidation
+               $(selector).trigger("afterValidation", data);
+              
+               
+               //Если событие неыбло прервано то сабмитим форму
+               if(!event.isDefaultPrevented()){
+                   form.unbind("submit");
+                   form.submit();        
+               } 
+               
+               $(selector).off("afterValidation.eventSaver");     
+                
             // Если форма не валидна, показываем сообщение об ошибке
             } else {
 
