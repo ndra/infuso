@@ -4,7 +4,7 @@ class tmp_template extends tmp_generic {
 
     private static $exists = array();
     private static $current = null;
-    
+
     public $cache = null;
 
     public function __construct($name=null) {
@@ -28,31 +28,31 @@ class tmp_template extends tmp_generic {
         }
 
     }
-    
+
     /**
      * Возвращает/меняет шаблон базовый шаблон
      **/
     public function base($base=null) {
-    
+
         if(func_num_args()==0) {
             return $this->param("*base");
         }
-        
-		if(func_num_args()==1) {
+
+        if(func_num_args()==1) {
             $this->param("*base",$base);
             return $this;
         }
-        
+
         throw new Exception("tmp_template::base() wrong arguments count");
-        
+
     }
 
-	/**
-	 * Обрабатывает имя шаблона и преобразует относительный путь в абсолютный
-	 * Понимает ../ - вернуться на уровень назад
-	 **/
+    /**
+     * Обрабатывает имя шаблона и преобразует относительный путь в абсолютный
+     * Понимает ../ - вернуться на уровень назад
+     **/
     public static function handleName($name) {
-    
+
         $base = self::$current ? self::$current->template() : "/";
 
         $name = trim($name);
@@ -100,7 +100,7 @@ class tmp_template extends tmp_generic {
 
         $name = "/".trim($name,"/");
         return $name;
-        
+
     }
 
     /**
@@ -132,7 +132,7 @@ class tmp_template extends tmp_generic {
 
             // Если в кэше еще нет шаблона
             if(!$cached) {
-            
+
                 mod_profiler::beginOperation("tmp","cached miss",$this->template());
 
                 tmp::pushConveyor();
@@ -144,14 +144,14 @@ class tmp_template extends tmp_generic {
                 if(!$conveyor->preventCaching()) {
                     mod_cache::set($hash,$cached);
                     mod_cache::set($hash.":conveyor",$conveyor->serialize());
-                }                
-                
+                }
+
                 mod_profiler::endOperation();
-                
+
 
             // Если шаблон в кэше
             } else {
-            
+
                 mod_profiler::beginOperation("tmp","cached hit",$this->template());
 
                 // Выводим содержимое из кэша
@@ -162,7 +162,7 @@ class tmp_template extends tmp_generic {
                 $conveyor = tmp_conveyor::unserialize($conveyorData);
 
                 tmp::conveyor()->mergeWith($conveyor);
-                
+
                 mod_profiler::endOperation();
             }
         }
@@ -180,16 +180,16 @@ class tmp_template extends tmp_generic {
     public static function currentParams() {
         if(self::$current) {
             return self::$current->params();
-		}
+        }
         return array();
     }
-    
+
     private function aexec($params) {
 
         // Запоминаем предыдущий шаблон
         $last = self::$current;
 
-        self::$current = $this->base() ? tmp_template::get($this->base()) : $this;
+        self::$current = $this->base() ? tmp::get($this->base()) : $this;
 
         foreach($params as $key=>$val) {
             $$key = $val;
@@ -206,9 +206,9 @@ class tmp_template extends tmp_generic {
         if(mod::debug()) {
             echo "<!-- ".$this->template()." -->";
         }
-        
+
         include $this->file()->native();
-        
+
         if(mod::debug()) {
             echo "<!-- end of ".$this->template()." -->";
         }
@@ -216,7 +216,7 @@ class tmp_template extends tmp_generic {
         self::$current = $last;
 
     }
-    
+
     /**
      * Возвращает контент шаблона для отправки через ajax
      * В этом случае все скрипты и стили будут добавлены к html-коду, возаращаемому шаблоном
@@ -225,15 +225,15 @@ class tmp_template extends tmp_generic {
     public function getContentForAjax() {
         tmp::pushConveyor();
         $html = $this->rexec();
-		$conveyor = tmp::popConveyor();
-		$html = $conveyor->processDelayed($html);
+        $conveyor = tmp::popConveyor();
+        $html = $conveyor->processDelayed($html);
         $html.= $conveyor->getContentForAjax();
         return $html;
     }
 
-	/**
-	 * Включает кэширование этого шаблона
-	 **/
+    /**
+     * Включает кэширование этого шаблона
+     **/
     public function cache($hash=-1) {
         $this->cache = $hash;
         return $this;
