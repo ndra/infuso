@@ -453,9 +453,11 @@ class mod_component {
      * Выполняет код в контексте объенкта
      * Разворачивает в область видимости кода массив переменных $params
      **/
-    public function evalCode($code,$params = array()) {
-        extract($params);
-        eval($code);
+    public function evalCode() {
+        if(func_num_args()==2 && is_array(func_get_arg(1))) {
+            extract(func_get_arg(1));
+        }
+        eval(func_get_arg(0));
     }
 
 }
