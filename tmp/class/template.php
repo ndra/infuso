@@ -4,7 +4,8 @@ class tmp_template extends tmp_generic {
 
     private static $exists = array();
     private static $current = null;
-    private $cache = null;
+    
+    public $cache = null;
 
     public function __construct($name=null) {
 
@@ -27,8 +28,32 @@ class tmp_template extends tmp_generic {
         }
 
     }
+    
+    /**
+     * Возвращает/меняет шаблон базовый шаблон
+     **/
+    public function base($base=null) {
+    
+        if(func_num_args()==0) {
+            return $this->param("*base");
+        }
+        
+		if(func_num_args()==1) {
+            $this->param("*base",$base);
+            return $this;
+        }
+        
+        throw new Exception("tmp_template::base() wrong arguments count");
+        
+    }
 
+	/**
+	 * Обрабатывает имя шаблона и преобразует относительный путь в абсолютный
+	 * Понимает ../ - вернуться на уровень назад
+	 **/
     public static function handleName($name) {
+    
+        $base = self::$current ? self::$current->template() : "/";
 
         $name = trim($name);
         $name = rtrim($name,"/");
@@ -56,11 +81,11 @@ class tmp_template extends tmp_generic {
 
         switch($axis) {
             case "children":
-                $name = "/".self::$current->template()."/".$name;
+                $name = "/".$base."/".$name;
                 $name = preg_replace("/[\.\/]+/","/",$name);
                 break;
             case "back":
-                $back = self::$current->template();
+                $back = $base;
                 for($i=0;$i<$backStep;$i++)
                     $back = preg_replace("/[\da-zA-Z\_\-\.]+\/?$/","",$back);
                 $name = $back."/".$name;
@@ -74,9 +99,8 @@ class tmp_template extends tmp_generic {
         }
 
         $name = "/".trim($name,"/");
-
         return $name;
-
+        
     }
 
     /**
@@ -154,8 +178,9 @@ class tmp_template extends tmp_generic {
      * Возвращает параметры текущего шаблона
      **/
     public static function currentParams() {
-        if(self::$current)
+        if(self::$current) {
             return self::$current->params();
+		}
         return array();
     }
     
@@ -164,17 +189,18 @@ class tmp_template extends tmp_generic {
         // Запоминаем предыдущий шаблон
         $last = self::$current;
 
-        self::$current = $this;
+        self::$current = $this->base() ? tmp_template::get($this->base()) : $this;
 
         foreach($params as $key=>$val) {
             $$key = $val;
         }
 
-        // Проверяем наличие шаблона если мы суперадмин
+        // Проверяем наличие шаблона если мы в режиме отладки
         // Если пользователь не суперадмин - сразу выполняем шаблон
-        if(mod_superadmin::check()) {
-            if(!$this->file()->exists())
+        if(mod::debug()) {
+            if(!$this->file()->exists()) {
                 throw new Exception("Шаблон '{$this->template()}' не найден.");
+            }
         }
 
         if(mod::debug()) {
