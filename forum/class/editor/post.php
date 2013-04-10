@@ -9,7 +9,7 @@ class forum_editor_post extends reflex_editor {
     /**
      * @todo Petr Grishin Мне не нравиться как реализован метод, плюс ко всему что он зафиксирован в svn 
      */
-    public function renderListData() {
+    public function _renderListData() {
     
         $topic = $this->item()->topic();
     
