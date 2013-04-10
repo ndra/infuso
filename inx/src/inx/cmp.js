@@ -4,9 +4,9 @@ inx.cmp = function(id) {
 
     this.ids = id instanceof Array ? id : [id];
     this.xyaz3m9ijf1hnw5zt890 = true; // Подпись inx.cmp
-    
+
 }
-    
+
 // Отправляет компоненту комаду
 inx.cmp.prototype.cmd = function(name) {
 
@@ -29,7 +29,7 @@ inx.cmp.prototype.cmd = function(name) {
 inx.cmp.prototype.task = function(name,time) {
 
     for(var i in this.ids) {
-    
+
         var id = this.ids[i]
         var cmp = inx.cmp.buffer[id];
         if(cmp)
@@ -37,7 +37,7 @@ inx.cmp.prototype.task = function(name,time) {
         if(cmp)
             cmp.task(name,time);
     }
-        
+
     return this;
 }
 
@@ -105,11 +105,11 @@ inx.cmp.prototype.axis = function(name) {
     var cmp = inx.cmp.buffer[id];
     if(cmp) cmp = cmp.obj;
     var a = []; for(var i=1;i<arguments.length;i++) a[i-1]=arguments[i];
-    
+
     var ret = null;
     if(cmp && cmp[name] && typeof(cmp[name]=="function"))
         ret = cmp[name].apply(cmp,a);
-        
+
     return inx(ret);
 },
 
@@ -124,7 +124,7 @@ inx.cmp.prototype.data = function(key,val) {
         if(b)
             return b[key];
     }
-    
+
     if(arguments.length==2) {
         var b = inx.cmp.buffer[this.id()];
         if(b) {
@@ -198,10 +198,10 @@ inx.cmp.prototype.fire = function(event,p1,p2,p3) {
             retFalse = ret===false;
         }
     }
-    
+
     if(retFalse)
         ret = false;
-    
+
     return ret;
 },
 
@@ -243,33 +243,36 @@ inx.cmp.prototype.call = function(p,success,error,meta) {
         meta:meta,
         source:this.id()
     });
-    
+
     if(success)
         cmd.on("success",success);
-        
+
     if(error)
         cmd.on("error",error);
-        
+
     cmd.cmd("exec");
-    
+
     return cmd.id();
-    
+
 }
+
+// Глобальный вызов команд
+inx.call = inx.cmp.prototype.call;
 
 inx.cmp.prototype.here = function() {
     var id = this.ids[0];
     document.write("<div id='"+id+"' ></div>");
-    
+
     var fn = function() {
         var id2 = $(inx(id).info("container")).attr("id");
-        if(id2=="id")       
+        if(id2=="id")
             inx(id).cmd("width",$("#"+id).width());
     };
-    
+
     this.cmd("render");
     this.cmd("appendTo","#"+id);
-    this.on("componentLoaded",fn);   
-    
+    this.on("componentLoaded",fn);
+
     $(window).resize(fn)
 }
 
@@ -286,11 +289,11 @@ inx.cmp.prototype.side = function() {
 }
 
 inx.cmp.prototype.each = function(fn) {
-    
+
     var ids = [];
     for(var i=0;i<this.ids.length;i++)
         ids.push(this.ids[i]);
-    
+
     for(var i=0;i<ids.length;i++) {
         fn.apply(inx(ids[i]),[i]);
     }
