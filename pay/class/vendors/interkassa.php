@@ -3,9 +3,10 @@
  * Драйвер системы оплаты Interkassa
  * http://interkassa.ru
  *
- * @version 0.1
+ * @version 0.2
  * @package pay
  * @author Alexey.Dvourechesnky <alexey@ndra.ru>
+ * @author Petr.Grishin <petr.grishin@grishini.ru>
  **/
 class pay_vendors_interkassa extends pay_vendors {
 
@@ -64,10 +65,12 @@ class pay_vendors_interkassa extends pay_vendors {
 
         // Загружаем счет
         $invoice = pay_invoice::get((integer)$inv_id);
-
-        // Зачисляем средства
-        $invoice->incoming($out_summ);
         
+        //Зачисляем средства
+        $invoice->incoming(array(
+            "sum" => (string)$out_summ,
+            "driver" => "Interkassa")
+        );
     }
 
     /**
@@ -80,7 +83,9 @@ class pay_vendors_interkassa extends pay_vendors {
        self::loadConf();
        $inv_id = $_REQUEST["ik_payment_id"];
        $invoice = pay_invoice::get((integer)$inv_id);
-       tmp::exec("pay:success", $invoice);
+       
+       header("location: {$invoice->url()}");
+       die();
     }
 
     /**
@@ -90,8 +95,12 @@ class pay_vendors_interkassa extends pay_vendors {
     * @todo Нужно переписать методы index_success и index_fail что бы они возвращали редирект на страницу счета.
     **/
     public function index_fail($p = null) {
-        //Выводим шаблон ошибки и отправляем в лог
-        tmp::exec("pay:fail");
+       self::loadConf();
+       $inv_id = $_REQUEST["ik_payment_id"];
+       $invoice = pay_invoice::get((integer)$inv_id);
+       
+       header("location: {$invoice->url()}");
+       die();
     }
 
 
