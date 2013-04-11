@@ -82,7 +82,7 @@ class mod_file_filesystem extends mod_file {
 	    $ret = array();
 	    if($scandir)
 	        foreach($scandir as $file)
-	            if($file!="." && $file!=".." && $file!=".svn")
+	            if($file!="." && $file!=".." && $file!=".svn" && $file!=".git" && $file!=".DS_Store")
 	                $ret[] = self::get($this->path."/".$file);
 	    $ret = new mod_file_list($ret);
 	    
@@ -101,7 +101,11 @@ class mod_file_filesystem extends mod_file {
 				continue;
 			if($file==".svn")
 			    continue;
-
+			if($file==".git")
+			    continue;
+    		if($file==".DS_Store")
+    		    continue;
+            
 			$path = self::normalizePath("/".$dir."/".$file);
 
 		    if(strcmp($path,$from)<0)

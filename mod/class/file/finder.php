@@ -145,6 +145,11 @@ private function scandir() {
 			continue;
 		if($file==".svn")
 		    continue;
+		if($file==".git")
+		    continue;
+		if($file==".DS_Store")
+		    continue;
+        
 		    
 		$file = mod_file::get("/".$dir."/".$file);
 		if(!$file->folder())
