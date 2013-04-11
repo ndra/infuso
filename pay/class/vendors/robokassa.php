@@ -3,7 +3,7 @@
  * Драйвер системы оплаты Robokassa
  * http://robokassa.ru
  *
- * @version 0.2
+ * @version 0.3
  * @package pay
  * @author Petr.Grishin <petr.grishin@grishini.ru>
  **/
@@ -62,14 +62,25 @@ class pay_vendors_robokassa extends pay_vendors {
         //Загружаем счет
         $invoice = pay_invoice::get((integer)$inv_id);
         
+        if (!$invoice->exists())
+            throw new Exception("Не нашли счет с указанным номером");
+            
+        if ($invoice->paid()) {
+            $invoice->log("Не доступен для оплаты, т.к. счет уже был оплачен ранее");
+            throw new Exception("Robokassa: Не доступен для оплаты, т.к. счет уже был оплачен ранее");
+        }
+        
         if ($invoice->data("currency") != self::$currency) {
             $invoice->log("Счет выставлен в другой валюте, код " . $invoice->data("currency"));
             throw new Exception("Счет выставлен в другой валюте, код " . $invoice->data("currency"));
         }
         
         //Зачисляем средства
-        $invoice->incoming($out_summ);
-     
+        $invoice->incoming(array(
+            "sum" => (string)$out_summ,
+            "driver" => "Robokassa")
+        );
+         
     }
     
     /**
@@ -86,14 +97,16 @@ class pay_vendors_robokassa extends pay_vendors {
         $inv_id = $_REQUEST["InvId"];
         $crc = strtoupper($_REQUEST["SignatureValue"]);
         
-        $my_crc = strtoupper(md5("$out_summ:$inv_id:".self::$passSecure1));
+        $my_crc = strtoupper(md5("$out_summ:$inv_id:" . self::$passSecure1));
         
         if (strtoupper($my_crc) != strtoupper($crc))
             throw new Exception("Неверная подпись CRC");
         
+        // Загружаем счет
         $invoice = pay_invoice::get((integer)$inv_id);
         
-        tmp::exec("pay:success", $invoice);
+        header("location: {$invoice->url()}");
+        die();
     }
     
     /**
@@ -103,8 +116,22 @@ class pay_vendors_robokassa extends pay_vendors {
     * @todo Нужно переписать методы index_success и index_fail что бы они возвращали редирект на страницу счета.
     **/
     public function index_fail($p = NULL) {
-        //Выводим шаблон ошибки и отправляем в лог
-        tmp::exec("pay:fail");
+        self::loadConf();
+       
+        $out_summ = $_REQUEST["OutSum"];
+        $inv_id = $_REQUEST["InvId"];
+        $crc = strtoupper($_REQUEST["SignatureValue"]);
+        
+        $my_crc = strtoupper(md5("$out_summ:$inv_id:" . self::$passSecure1));
+        
+        if (strtoupper($my_crc) != strtoupper($crc))
+            throw new Exception("Неверная подпись CRC");
+        
+        // Загружаем счет
+        $invoice = pay_invoice::get((integer)$inv_id);
+        
+        header("location: {$invoice->url()}");
+        die();
     }    
     
     /**
