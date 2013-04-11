@@ -55,7 +55,9 @@ class pay_behaviour_user extends mod_behaviour {
         
     }
     
-    // Взять все записи изменения внутреннего счета пользователя
+    /**
+     * Взять все записи изменения внутреннего счета пользователя
+     **/
     public function payAccountOperationLog() {
         return pay_operationLog::all()->eq("userId", $this->id());
     }
@@ -80,7 +82,6 @@ class pay_behaviour_user extends mod_behaviour {
     
         return $this->data("userCash");
     }
-    
     
     /**
      * Возвращает валюту личного кабинета
