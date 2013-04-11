@@ -21,18 +21,6 @@ class pay_vendors_interkassa extends pay_vendors {
     private static $currency = 643;
 
     /**
-     * Возвращает все параметры конфигурации
-     *
-     * @return array
-     **/
-    public static function configuration() {
-        return array(
-            array("id"=>"pay:interkasssa-key","title"=>"Interkasssa: секретный ключ"),
-            array("id"=>"pay:interkasssa-shopid","title"=>"Interkasssa: Идентификатор магазина"),
-        );
-    }
-
-    /**
     * Заполняем данные по умолчанию для драйвера Interkassa
     *
     * @return void
@@ -48,7 +36,7 @@ class pay_vendors_interkassa extends pay_vendors {
     * Зачисление денежных средств для драйвера Interkassa
     *
     * @return void
-	* @todo Изменить вызов метода incoming у инвойса
+    * @todo Изменить вызов метода incoming у инвойса
     **/
     public function index_result($p = null) {
 
@@ -86,7 +74,7 @@ class pay_vendors_interkassa extends pay_vendors {
     * Выполнено зачисление средств
     *
     * @return void
-	* @todo Нужно переписать методы index_success и index_fail что бы они возвращали редирект на страницу счета.
+    * @todo Нужно переписать методы index_success и index_fail что бы они возвращали редирект на страницу счета.
     **/
     public function index_success($p = null) {
        self::loadConf();
@@ -99,7 +87,7 @@ class pay_vendors_interkassa extends pay_vendors {
     * Ошибка при зачисление денежных средств
     *
     * @return void
-	* @todo Нужно переписать методы index_success и index_fail что бы они возвращали редирект на страницу счета.
+    * @todo Нужно переписать методы index_success и index_fail что бы они возвращали редирект на страницу счета.
     **/
     public function index_fail($p = null) {
         //Выводим шаблон ошибки и отправляем в лог

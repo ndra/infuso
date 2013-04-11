@@ -23,20 +23,6 @@ class pay_vendors_robokassa extends pay_vendors {
     private static $currency = 643;
     
     /**
-     * Возвращает все параметры конфигурации
-     *
-     * @return array
-     **/
-    public static function configuration() {
-        return array(
-            array("id"=>"pay:robokassa-key","title"=>"Robokassa: секретный ключ"),
-            array("id"=>"pay:robokassa-login","title"=>"Robokassa: логин"),
-            array("id"=>"pay:robokassa-secure-1","title"=>"Robokassa: подпись 1"),
-            array("id"=>"pay:robokassa-secure-2","title"=>"Robokassa: подпись 2"),
-        );
-    }
-    
-    /**
     * Заполняем данные по умолчанию для драйвера Robokassa
     *
     * @return void
@@ -56,7 +42,7 @@ class pay_vendors_robokassa extends pay_vendors {
     * Зачисление денежных средств для драйвера Robokassa
     *
     * @return void
-	* @todo Изменить вызов метода incoming у инвойса
+    * @todo Изменить вызов метода incoming у инвойса
     **/
     public function index_result($p = NULL) {
         
@@ -90,7 +76,7 @@ class pay_vendors_robokassa extends pay_vendors {
     * Выполнено зачисление средств
     *
     * @return void
-	* @todo Нужно переписать методы index_success и index_fail что бы они возвращали редирект на страницу счета.
+    * @todo Нужно переписать методы index_success и index_fail что бы они возвращали редирект на страницу счета.
     **/
     public function index_success($p = NULL) {
     
@@ -114,7 +100,7 @@ class pay_vendors_robokassa extends pay_vendors {
     * Ошибка при зачисление денежных средств
     *
     * @return void
-	* @todo Нужно переписать методы index_success и index_fail что бы они возвращали редирект на страницу счета.
+    * @todo Нужно переписать методы index_success и index_fail что бы они возвращали редирект на страницу счета.
     **/
     public function index_fail($p = NULL) {
         //Выводим шаблон ошибки и отправляем в лог

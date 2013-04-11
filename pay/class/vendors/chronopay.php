@@ -28,34 +28,6 @@ class pay_vendors_chronopay extends pay_vendors {
     
     
     /**
-     * Возвращает все параметры конфигурации
-     * UPD: добавлена возможность использовать несколько конфигураций
-     *
-     * @return array
-     **/
-    public static function configuration() {
-        
-        $ret = array();
-        
-        $ret[] = array("id"=>"pay:chronopay-num-conf","title"=>"Chronopay: кол-во аккаунтов");
-        
-        $ret[] = array("id"=>"pay:chronopay-key","title"=>"Chronopay: секретный ключ");
-        $ret[] = array("id"=>"pay:chronopay-id-site","title"=>"Chronopay: id сайта");
-        $ret[] = array("id"=>"pay:chronopay-secure-1","title"=>"Chronopay: подпись");
-        
-        if (mod::conf("pay:chronopay-num-conf") != NULL && mod::conf("pay:chronopay-num-conf") > 1) {
-            for ($i=2; $i <= mod::conf("pay:chronopay-num-conf"); $i++) {
-                $ret[] = array("id"=>"pay:chronopay{$i}-key","title"=>"Chronopay {$i}: секретный ключ");
-                $ret[] = array("id"=>"pay:chronopay{$i}-id-site","title"=>"Chronopay {$i}: id сайта");
-                $ret[] = array("id"=>"pay:chronopay{$i}-secure-1","title"=>"Chronopay {$i}: подпись");               
-            }
-        }
-        
-        return $ret;
-    }
-    
-    
-    /**
     * Заполняем данные по умолчанию для драйвера Robokassa
     *
     * @return void
@@ -87,14 +59,14 @@ class pay_vendors_chronopay extends pay_vendors {
     * Зачисление денежных средств для драйвера
     *
     * @return void
-	* @todo Изменить вызов метода incoming у инвойса
+    * @todo Изменить вызов метода incoming у инвойса
     **/
     public function index_result($p = NULL) {
         
         self::loadConf();
         
         if ($p["key"] != self::$key)
-			throw new Exception("Неверный защитный ключ");
+            throw new Exception("Неверный защитный ключ");
 
         $out_summ = $_REQUEST["total"];
         
@@ -103,7 +75,7 @@ class pay_vendors_chronopay extends pay_vendors {
         
         
         if ($my_crc != $crc)
-			throw new Exception("Неверная подпись CRC");
+            throw new Exception("Неверная подпись CRC");
         
         // Загружаем счет
         $invoice = pay_invoice::get((integer)$_REQUEST["cs1"]);
@@ -123,7 +95,7 @@ class pay_vendors_chronopay extends pay_vendors {
     * Выполнено зачисление средств
     *
     * @return void
-	* @todo Нужно переписать методы index_success и index_fail что бы они возвращали редирект на страницу счета.
+    * @todo Нужно переписать методы index_success и index_fail что бы они возвращали редирект на страницу счета.
     **/
     public function index_success($p = NULL) {
     
@@ -137,7 +109,7 @@ class pay_vendors_chronopay extends pay_vendors {
     * Ошибка при зачисление денежных средств
     *
     * @return void
-	* @todo Нужно переписать методы index_success и index_fail что бы они возвращали редирект на страницу счета.
+    * @todo Нужно переписать методы index_success и index_fail что бы они возвращали редирект на страницу счета.
     **/
     public function index_fail($p = NULL) {
         //Выводим шаблон ошибки и отправляем в лог
