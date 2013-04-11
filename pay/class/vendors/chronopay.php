@@ -3,7 +3,7 @@
  * Драйвер системы оплаты Chronopay
  * http://chronopay.com
  *
- * @version 0.3
+ * @version 0.4
  * @package pay
  * @author Petr.Grishin <petr.grishin@grishini.ru>
  **/
@@ -86,9 +86,11 @@ class pay_vendors_chronopay extends pay_vendors {
             throw new Exception("Счет выставлен в другой валюте, код " . $invoice->data("currency"));
         }
         
-        // Зачисляем средства
-        $invoice->incoming($out_summ);
-
+        //Зачисляем средства
+        $invoice->incoming(array(
+            "sum" => (string)$out_summ,
+            "driver" => "Chronopay")
+        );
     }
     
     /**
@@ -100,9 +102,11 @@ class pay_vendors_chronopay extends pay_vendors {
     public function index_success($p = NULL) {
     
        self::loadConf();
-       $invoice = pay_invoice::get((integer)$_REQUEST["cs1"]);
-       tmp::exec("pay:success", $invoice);
        
+       $invoice = pay_invoice::get((integer)$_REQUEST["cs1"]);
+       
+       header("location: {$invoice->url()}");
+       die();
     }
     
     /**
@@ -112,8 +116,12 @@ class pay_vendors_chronopay extends pay_vendors {
     * @todo Нужно переписать методы index_success и index_fail что бы они возвращали редирект на страницу счета.
     **/
     public function index_fail($p = NULL) {
-        //Выводим шаблон ошибки и отправляем в лог
-        tmp::exec("pay:fail");
+       self::loadConf();
+       
+       $invoice = pay_invoice::get((integer)$_REQUEST["cs1"]);
+       
+       header("location: {$invoice->url()}");
+       die();
     }
     
     /**
@@ -146,8 +154,6 @@ class pay_vendors_chronopay extends pay_vendors {
         return $url;
     }
     
-    
-    
-    
+
     
 } // END class
