@@ -209,10 +209,11 @@ class mod_console extends mod_controller{
 			"user",
 			"lang",
 			"util",
-	        "seotools",
 		);
-		foreach($base as $mod)
+		
+		foreach($base as $mod) {
 			mod_file::mkdir($mod);
+		}
 	}
 
 	public static function generateHtaccess() {
