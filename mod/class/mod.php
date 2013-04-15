@@ -2,6 +2,12 @@
 
 class mod extends mod_controller {
 
+	private static $info = array();
+
+	private static $debug = null;
+	
+	private static $extends = array();
+
 	public static function indexTest() {
 		return true;
 	}
@@ -16,8 +22,6 @@ class mod extends mod_controller {
 
 	}
 	
-	private static $info = array();
-
 	/**
 	 * Возвращает параметр из файла конфигурации модуля info.ini
 	 * Первый параметр - модуль
@@ -52,8 +56,9 @@ class mod extends mod_controller {
 	 **/
 	public static function all() {
 		if(!self::$modules) {
-		    foreach(mod_file::get("/")->dir()->folders() as $folder)
+		    foreach(mod_file::get("/")->dir()->folders() as $folder) {
 		        self::$modules[] = $folder->name();
+		    }
 		}
 	    return self::$modules;
 	}
@@ -73,8 +78,6 @@ class mod extends mod_controller {
 	public static function conf($key) {
 	    return mod_conf::get($key);
 	}
-
-	private static $debug = null;
 
 	/**
 	 * Включен ли режим отладки
@@ -102,8 +105,6 @@ class mod extends mod_controller {
 	
 		return self::$debug;
 	}
-
-	private static $extends = array();
 
 	/**
 	 * @return Возвращает список всех классов
@@ -192,8 +193,9 @@ class mod extends mod_controller {
 		$name = strtr($name,array("::"=>":"));
 
 		$p = array();
-		for($i=1;$i<func_num_args();$i++)
+		for($i=1;$i<func_num_args();$i++) {
 		    $p[] = func_get_arg($i);
+		}
 
 		list($class,$method) = explode(":",$name);
 		return call_user_func_array(array($class,$method),$p);
@@ -205,8 +207,9 @@ class mod extends mod_controller {
 	public static function id($length=30) {
 		$chars = "1234567890qwertyuiopasdfghjklzxcvbnm";
 		$ret = "";
-		for($i=0;$i<$length;$i++)
+		for($i=0;$i<$length;$i++) {
 		    $ret.= $chars[rand()%strlen($chars)];
+		}
 		return $ret;
 	}
 
@@ -266,7 +269,7 @@ class mod extends mod_controller {
 	}
 
 	/**
-	 * Подключает библиотеку mod.js
+	 * Подключает библиотеку core.js
 	 **/
 	public static function coreJS() {
 		tmp::js("/mod/res/core.js",-900);
@@ -287,12 +290,15 @@ class mod extends mod_controller {
 	}
 
 	/**
-	 * Врзвращает экшн
+	 * Возвращает экшн (класс mod_action)
 	 **/
 	public static function action($a,$b=null,$c=array()) {
 		return mod_action::get($a,$b,$c);
 	}
 
+	/**
+	 * Создает и возвращает экземпляр класса mod_event
+	 **/
 	public function event($eventName,$params=array()) {
 		return new mod_event($eventName,$params);
 	}
@@ -312,15 +318,18 @@ class mod extends mod_controller {
 	 * Обертка для mod_cooke::set() и mod_cookie::get()
 	 **/
 	public static function cookie($key,$val=null) {
-  		if(func_num_args()==1)
+  		if(func_num_args()==1) {
 		    return mod_cookie::get($key);
-		if(func_num_args()==2)
+		}
+		if(func_num_args()==2) {
 	    	mod_cookie::set($key,$val);
+	    }
 	}
 
 	public static function session($key,$val=null) {
-		if(func_num_args()==1)
+		if(func_num_args()==1) {
 		    return mod_session::get($key);
+		}
 	    mod_session::set($key,$val);
 	}
 
@@ -336,8 +345,9 @@ class mod extends mod_controller {
 	 * @return object mod_url При вызове без параметра, вернет текущий урл
 	 **/
 	public function url($url=null) {
-		if(func_num_args()==0)
+		if(func_num_args()==0) {
 		    return mod_url::current();
+		}
 		return mod_url::get($url);
 	}
 
@@ -351,7 +361,7 @@ class mod extends mod_controller {
 	}
 	
 	/**
-	 * Возвращает службу по ее имени\
+	 * Возвращает службу по ее имени
 	 **/
 	public function service($serviceName) {
 	    return mod_service::get($serviceName);
@@ -364,8 +374,6 @@ class mod extends mod_controller {
 	function base64URLDecode($data) {
 		return base64_decode(str_pad(strtr($data, '-_', '+/'), strlen($data) % 4, '=', STR_PAD_RIGHT));
 	}
-	
-	
 	
 	public static function splitAndTrim($str,$separator) {
         $ret = array();

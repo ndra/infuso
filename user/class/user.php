@@ -412,17 +412,9 @@ class user extends reflex {
      * Отправляет пользователю письмо
      **/
     public final function mail($message,$subject) {
-
-       // $mail = new user_mailer();
-        //$mail->to($this->data("email"));
-        
         $mail = $this->mailer();
-        
         $mail->message($message);
         $mail->subject($subject);
-        //$mail->from(mod::conf("user:email_from"));
-        //$mail->template(mod::conf("user:email_template"));
-
         $mail->send();
     }
 
