@@ -15,7 +15,7 @@ class mod_update {
         if($bundles && array_key_exists($mod,$bundles)) {
             $url = $bundles[$mod];
         } else {
-            $url = mod::url(mod::conf("mod:updateURL"))->path("/mod.zip")."";
+            $url = mod::url(mod::conf("mod:updateURL"))->path("/$mod.zip")."";
     		$url = preg_replace("//","",$url);
         }
 
