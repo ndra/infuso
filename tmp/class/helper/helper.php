@@ -9,20 +9,30 @@ class tmp_helper extends tmp_widget {
         $this->param("*style",array());
     }
 
-	/**
-	 * Устанавливает тэг для выбранного элемента
-	 **/
+    public static function fromHTML($html) {
+        $xml = end(util::str($html)->html()->body->children());
+        $h = new tmp_helper();
+        $h->tag($xml->getName());
+        foreach($xml->attributes() as $key=>$val) {
+            $h->attr($key,$val);
+        }
+        return $h;
+    }
+
+    /**
+     * Устанавливает тэг для выбранного элемента
+     **/
     public function tag($name) {
         $this->param("tag",$name);
         return $this;
     }
 
-	/**
-	 * Вызвана без параметров - вернет массив стилей (ключ-значение)
-	 * Один параметр скаляр - вернет значение стиля для переданного ключа
-	 * Один параметр массив добавит в элемент массив стилей из массива
-	 * Два параметра - ключ, значение - добавит стиль
-	 **/
+    /**
+     * Вызвана без параметров - вернет массив стилей (ключ-значение)
+     * Один параметр скаляр - вернет значение стиля для переданного ключа
+     * Один параметр массив добавит в элемент массив стилей из массива
+     * Два параметра - ключ, значение - добавит стиль
+     **/
     public final function style($key=null, $val=null) {
 
         if(func_num_args()==0) {
@@ -30,21 +40,21 @@ class tmp_helper extends tmp_widget {
         }
 
         if(func_num_args()==1) {
-        
+
             if(is_array($key) ) {
-            
-				foreach($key as $_key=>$_val) {
+
+                foreach($key as $_key=>$_val) {
                     $this->style($_key,$_val);
                 }
-                
+
                 return $this;
-                
+
             } else {
-            
+
                 $style = $this->param("*style");
                 return $style[$key];
-                
-            }    
+
+            }
         }
 
         if(func_num_args()==2) {
@@ -68,7 +78,7 @@ class tmp_helper extends tmp_widget {
 
     }
 
-    public final function attr($key,$val=null) {
+    public final function attr($key,$val=null,$processStyles = true) {
 
         if(func_num_args()==0) {
             $attributes = $this->param("attributes");
@@ -80,10 +90,19 @@ class tmp_helper extends tmp_widget {
             return $attributes[$key];
         }
 
-        if(func_num_args()==2) {
-            $attributes = $this->param("attributes");
-            $attributes[$key] = $val;
-            $this->param("attributes",$attributes);
+        if(func_num_args()>=2) {
+
+            if($key=="style" && $processStyles) {
+                foreach(explode(";",$val) as $style) {
+                    $style = trim($style);
+                    list($skey,$sval) = explode(":",$style);
+                    $this->style($skey,$sval);
+                }
+            } else {
+                $attributes = $this->param("attributes");
+                $attributes[$key] = $val;
+                $this->param("attributes",$attributes);
+            }
             return $this;
         }
 
@@ -104,12 +123,15 @@ class tmp_helper extends tmp_widget {
     public function execWidget() {
 
         $style = array();
-        foreach($this->param("*style") as $key=>$val)
+        foreach($this->param("*style") as $key=>$val) {
             $style[] = $key.":".$val;
+        }
+
         $style = implode(";",$style);
 
-        if($style)
-            $this->attr("style",$style);
+        if($style) {
+            $this->attr("style",$style,false);
+        }
 
         if(!$this->param("attributes"))
             $this->param("attributes",array());
