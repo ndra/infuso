@@ -21,9 +21,9 @@ class reflex_editor_collection extends mod_behaviour {
 	    
         // Учитываем поиск
         $s = trim(mb_strtolower($p["quickSearch"],"utf-8"));
-        $name = $this->editor()->quickSearch();
-        if($name && $s)
-            $this->like($name,$s);
+        if($s) {
+            $this->editor()->applyQuickSearch($this->component(),$s);
+        }
             
 		// Запоминаем коллекцию до наложения фильтров
 		// Это потребуется при расчете количества элементов в разных фильтрах
