@@ -422,14 +422,14 @@ class pay_invoice extends reflex implements mod_handler {
      * Через какое время проверять статус заказа
      * Например "15 minute", "1 hourly",  "1 day" или "1 week" и т.п.
      **/
-    private function getCheckRefreshTime() {
+    public function getCheckRefreshTime() {
         return strtotime("-15 minute");
     }
     
     /**
      * Сколько счетов одновременно проверять статус
      **/
-    private function getCheckRefreshLimit() {
+    public function getCheckRefreshLimit() {
         return 5;
     }
     
