@@ -1,4 +1,9 @@
-<? class mod_update {
+<?
+
+/**
+ * Класс, выполняющий обновление модулей
+ **/
+class mod_update {
 
     /**
      * Проверяет обновление данного модуля на сервере
@@ -6,8 +11,13 @@
      **/
     public static function search($mod) {
 
-        $url = mod::url(mod::conf("mod:updateURL"))->path("/mod.zip")."";
-		$url = preg_replace("//","",$url);
+        $bundles = mod_conf::general("update","bundles");
+        if($bundles && array_key_exists($mod,$bundles)) {
+            $url = $bundles[$mod];
+        } else {
+            $url = mod::url(mod::conf("mod:updateURL"))->path("/$mod.zip")."";
+    		$url = preg_replace("//","",$url);
+        }
 
         if(mod_file::http($url)->exists()) {
             return $url."";

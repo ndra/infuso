@@ -187,6 +187,15 @@ class reflex_editor_behaviourDefault extends mod_behaviour {
         }
     }
 
+    public function applyQuickSearch($list,$query) {
+
+        $name = $this->component()->quickSearch();
+
+        if($name) {
+            $list->like($name,$query);
+        }
+    }
+
     public function placeWidget() {
 
         tmp_widget::get("reflex_editor_widget")

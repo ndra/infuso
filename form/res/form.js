@@ -63,6 +63,8 @@ var form = function(selector,hash) {
                 }
 
                 msg.html(d.html).hide().addClass("lbdmv238az").show("fast");
+                
+                field.addClass("error");
             }
         });
     });

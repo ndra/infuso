@@ -1,5 +1,8 @@
 <?
 
+/**
+ * Класс для загрузки конфигурации
+ **/
 class mod_conf extends mod_component {
 
 	private static $path = "/mod/conf/conf.xml";
@@ -24,10 +27,11 @@ class mod_conf extends mod_component {
 	}
 	
 	/**
-	 * Возвращает параметр из общей конфигурации
+	 * Возвращает параметр из общей конфигурации components.yml
 	 **/
 	public function general() {
 	
+        // Если в буфере нет конфигурации - загружаем ее
         if(self::$generalConf===null) {
 
             $reader = new mod_confLoader_yaml();
@@ -39,6 +43,7 @@ class mod_conf extends mod_component {
 			}
         }
 
+        // Если переданы параметры - извлекаем значения по ключам
         $ret = self::$generalConf;
         foreach(func_get_args() as $key) {
             $ret = $ret[$key];
