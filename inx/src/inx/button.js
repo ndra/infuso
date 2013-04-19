@@ -1,6 +1,8 @@
 // @include inx.dialog
 
-inx.css(".inx-toolbar_button{cursor:pointer;white-space:nowrap;background:none;border:none;float:left;padding:3px 4px 3px 4px;height:16px;}");
+inx.css(".vbjm1zdmgr-button{cursor:pointer;white-space:nowrap;border:none;float:left;padding:3px 4px 3px 4px;height:16px;border-radius:5px;}");
+inx.css(".vbjm1zdmgr-button-hover{box-shadow:0 0 2px rgba(0,0,0,.4) inset;}");
+
 
 inx.button = inx.box.extend({
 
@@ -24,8 +26,8 @@ inx.button = inx.box.extend({
 
     cmd_render:function(c) {
         this.base(c);
-        this.private_input = $("<div class='inx-toolbar_button' >").appendTo(this.el);
-        this.el.addClass("inx-unselectable");
+        this.private_input = $("<div class='vbjm1zdmgr-button' >").appendTo(this.el);
+        this.el.addClass("inx-unselectable");        
         this.el.mouseover(inx.cmd(this,"private_handleMouseover"));
         this.cmd("updateHTML");
     },
@@ -38,7 +40,11 @@ inx.button = inx.box.extend({
         // Иконка
         icon = inx.img(this.icon);
         if(icon) {
-            this.private_input.css({background:"url("+icon+") no-repeat 3px center"});
+            this.private_input.css({
+                backgroundPosition:"3px center",
+                backgroundRepeat:"no-repeat",
+                backgroundImage:"url("+icon+")"
+            });
             this.private_input.css({paddingLeft:18+(this.text ? 3 : 0)});
         }
 
@@ -71,15 +77,7 @@ inx.button = inx.box.extend({
 
     cmd_showFrame:function() {
 
-        if(!this.lbg) {
-            this.lbg = $("<div />").css("position","absolute").css({left:0}).prependTo(this.el).height(this.info("height")).css("background","url("+inx.conf.url+"inx/panel/toolbar_button_left.png)");
-            this.rbg = $("<div />").css("position","absolute").prependTo(this.el).width(11).height(this.info("height")).css("background","url("+inx.conf.url+"inx/panel/toolbar_button_right.png)");
-        }
-
-        this.lbg.css({display:"block",width:this.info("width")-11});
-        this.rbg.css({display:"block",left:this.info("width")-11});
-
-        this.private_input.css({position:"relative"});
+        this.private_input.addClass("vbjm1zdmgr-button-hover");
 
         if(this.el.data("__extended")) return;
         this.el.data("__extended",true);
@@ -88,8 +86,7 @@ inx.button = inx.box.extend({
     },
 
     cmd_hideFrame:function() {
-        this.lbg.css("display","none");
-        this.rbg.css("display","none");
+        this.private_input.removeClass("vbjm1zdmgr-button-hover");
     },
 
     cmd_resizeToContents:function() {

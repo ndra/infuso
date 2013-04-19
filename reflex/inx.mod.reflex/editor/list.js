@@ -37,6 +37,7 @@ inx.mod.reflex.editor.list = inx.tabs.extend({
                     tbar.push({
                         icon:"plus",
                         help:"Добавить элемент",
+                        air:true,
                         onclick:[this.id(),"createItem"]
                     });
                     break;
@@ -85,6 +86,7 @@ inx.mod.reflex.editor.list = inx.tabs.extend({
                 case "up":
                     tbar.push({
                         icon:"up",
+                        air:true,
                         onclick:[this.id(),"moveUp"],
                         help:"Переместить выделенный объект выше"
                     });
@@ -93,6 +95,7 @@ inx.mod.reflex.editor.list = inx.tabs.extend({
                 case "down":
                     tbar.push({
                         icon:"down",
+                        air:true,
                         onclick:[this.id(),"moveDown"],
                         help:"Переместить выделенный объект ниже"
                     });
@@ -101,6 +104,7 @@ inx.mod.reflex.editor.list = inx.tabs.extend({
                 case "filter":
                     tbar.push({
                         icon:"filter",
+                        air:true,
                         onclick:[this.id(),"toggleFilter"]
                     });
                     break;
@@ -124,6 +128,7 @@ inx.mod.reflex.editor.list = inx.tabs.extend({
                 case "edit":
                     tbar.push({
                         icon:"edit",
+                        air:true,
                         help:"Редактировать элемент",
                         onclick:[this.id(),"editItem"]
                     });
@@ -132,6 +137,7 @@ inx.mod.reflex.editor.list = inx.tabs.extend({
                 case "delete":
                     tbar.push({
                         icon:"delete",
+                        air:true,
                         text:"Удалить",
                         onclick:[this.id(),"deleteItem"]
                     });
@@ -150,6 +156,7 @@ inx.mod.reflex.editor.list = inx.tabs.extend({
                 case "refresh":
                     tbar.push({
                         icon:"refresh",
+                        air:true,
                         onclick:[this.id(),"load"]
                     })
                     break;

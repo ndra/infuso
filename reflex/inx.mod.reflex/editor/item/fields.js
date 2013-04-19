@@ -23,6 +23,7 @@ inx.mod.reflex.editor.item.fields = inx.panel.extend({
                     tbar.push({
                         text:"Сохранить (Ctrl+S)",
                         icon:"save",
+                        air:true,
                         onclick:[this.id(),"save"]
                     });
                     break;
@@ -31,6 +32,7 @@ inx.mod.reflex.editor.item.fields = inx.panel.extend({
                     tbar.push({
                         text:"Удалить",
                         icon:"delete",
+                        air:true,
                         onclick:[this.id(),"deleteSelf"]
                     });
                     break; 
