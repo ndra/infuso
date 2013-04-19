@@ -9,7 +9,7 @@
         $url = mod::url(mod::conf("mod:updateURL"))->path("/mod.zip")."";
 		$url = preg_replace("//","",$url);
 
-        if(file::http($url)->exists()) {
+        if(mod_file::http($url)->exists()) {
             return $url."";
         }
 
