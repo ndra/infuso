@@ -19,6 +19,7 @@ var form = function(selector,hash) {
         },function(d) {
 
             form.find(".lbdmv238az").hide("fast");
+            form.find("input.error, textarea.error").removeClass("error");
 
             // Если форма валидна, отправляем ее
             if(d.valid) {
