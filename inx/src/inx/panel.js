@@ -156,7 +156,7 @@ inx.panel = inx.box.extend({
         
         this.cmd("updateSidePanels");
         
-        this.private_layoutManager().sync.apply(this);   
+        this.cmd("updateItemsLayout");
         
         this.task("updateBox");
             
@@ -170,7 +170,11 @@ inx.panel = inx.box.extend({
         }
             
         this.base();        
-    },    
+    }, 
+    
+    cmd_updateItemsLayout:function() {
+        this.private_layoutManager().sync.apply(this);   
+    },
 
     // Загружает сохраненный лайаут
     cmd_restoreLayout:function() {

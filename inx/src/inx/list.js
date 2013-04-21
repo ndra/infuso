@@ -667,35 +667,39 @@ inx.list = inx.panel.extend({
             return;
         }
         
+        var xid = this.info("itemComponent",id).id();
+        
         pos = this.info("position",id);
         if(pos==position)
             return;
             
-        var newData = [];
+        var newItems = [];
         var set = false;
         var n = 0;
         
-        for(var i=0;i<this.data.length;i++) {
+        
+        for(var i=0;i<this.private_items.length;i++) {
         
             if(n==position) {
-                newData.push(item);
+                newItems.push(xid);
                 set = true;
                 n++;
             }
         
-            if(this.data[i].id!=id) {
-                newData.push(this.data[i]);
+            if(this.private_items[i]!=xid) {
+                newItems.push(this.private_items[i]);
                 n++;
             }
                 
         }
        
         if(!set)
-            newData.push(item);
+            newItems.push(xid);
             
-        this.private_newData = newData;
+            
+        this.private_items = newItems;
           
-        this.task("updateData",100);
+        this.task("updateItemsLayout");
 
     },
     

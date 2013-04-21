@@ -71,7 +71,7 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
             this.cmd("requestData");
         }
             
-        inx.hotkey("esc",this.id(),"destroy");        
+        inx.hotkey("esc",[this.id(),"destroy"]);        
         this.on("submit",[this.id(),"save"]);    
         this.on("smoothBlur",[this.id(),"destroy"]);    
     },
