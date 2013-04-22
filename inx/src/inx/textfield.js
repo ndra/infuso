@@ -1,5 +1,5 @@
 inx.css(
-    ".dfehopg6{line-height:20px;height:20px;padding:0px;margin:0px;width:100%;border:none;background:none;outline:none;}"
+    ".dfehopg6{box-shadow:0 5px 10px rgba(0,0,0,.1) inset ;line-height:20px;height:20px;padding:0px;margin:0px;width:100%;border:none;background:none;outline:none;}"
 );
 
 inx.textfield = inx.box.extend({

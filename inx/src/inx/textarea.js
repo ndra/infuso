@@ -1,7 +1,7 @@
 // @include inx.textfield
 
 inx.css(
-    ".inx-textarea{position:relative;resize:none;font-size:12px;font-family:Consolas,Courier New,monospace;border:none;margin:0px;padding:5px;overflow-y:auto;outline:none;}"
+    ".inx-textarea{box-shadow:0 5px 10px rgba(0,0,0,.1) inset;position:relative;resize:none;font-size:12px;font-family:Consolas,Courier New,monospace;border:none;margin:0px;padding:5px;overflow-y:auto;outline:none;}"
 );
 
 inx.textarea = inx.textfield.extend({
