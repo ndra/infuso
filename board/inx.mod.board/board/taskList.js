@@ -51,7 +51,15 @@ inx.mod.board.board.taskList = inx.list.extend({
         this.cmd("editTask",id);
     },
     
+    /**
+     * Открывает диалог редактирования задачи
+     **/
     cmd_editTask:function(taskID) {
+    
+        if(taskID=="new") {
+            this.cmd("newTask");
+            return;
+        }
     
         var clip = this.info("itemComponent",taskID).info("param","el");
     
@@ -62,6 +70,12 @@ inx.mod.board.board.taskList = inx.list.extend({
         }).on("change",[this.id(),"load"]);
         
         task.cmd("render");
+    },
+    
+    cmd_newTask:function() {
+        this.call({
+            cmd:"board/controller/task/newTask"
+        },[this.id(),"editTask"]);
     }
          
 });

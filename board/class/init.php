@@ -39,6 +39,9 @@ class board_init implements mod_handler {
 
         user_operation::create("board/changeTaskStatus","Изменение статуса задачи")
             ->appendTo("board/editTask");
+
+        user_operation::create("board/newTask","Создание задачи")
+            ->appendTo("boardUser");
         
     }
 

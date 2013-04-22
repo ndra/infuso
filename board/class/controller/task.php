@@ -41,6 +41,9 @@ class board_controller_task extends mod_controller {
         return $ret;
     }
 
+    /**
+     * Возвращает список статусов для табов вверху страницы
+     **/
     public static function post_taskStatusList($p) {
         $ret = array();
         foreach(board_task_status::all() as $status) {
@@ -72,6 +75,45 @@ class board_controller_task extends mod_controller {
             "title" => "Задача #".$task->id()." (".$task->project()->title().")",
             "text" => $task->data("text"),
         );
+    }
+
+    /**
+     * Контроллер сохранения задачи
+     **/
+    public static function post_saveTask($p) {
+
+        $task = board_task::get($p["taskID"]);
+        $data = util::a($p["data"])->filter("text")->asArray();
+
+        // Параметры задачи
+        if(!user::active()->checkAccess("board/updateTaskParams",array(
+            "task" => $task
+        ))) {
+            mod::msg(user::active()->errorText(),1);
+            return;
+        }
+
+        foreach($data as $key=>$val) {
+            $task->data($key,$val);
+        }
+
+        $task->logCustom("Изменение данных");
+
+        return true;
+    }
+
+    public function post_newTask() {
+
+        // Параметры задачи
+        if(!user::active()->checkAccess("board/newTask",array(
+            "task" => $task
+        ))) {
+            mod::msg(user::active()->errorText(),1);
+            return;
+        }
+
+        $task = reflex::create("board_task");
+        return $task->id();
     }
 
     /**
@@ -131,31 +173,6 @@ class board_controller_task extends mod_controller {
     }
 
     /**
-     * Контроллер сохранения задачи
-     **/
-    public static function post_saveTask($p) {
-
-        $task = board_task::get($p["taskID"]);
-        $data = util::a($p["data"])->filter("text")->asArray();
-
-        // Параметры задачи
-        if(!user::active()->checkAccess("board/updateTaskParams",array(
-            "task"=>$task
-        ))) {
-            mod::msg(user::active()->errorText(),1);
-            return;
-        }
-
-        foreach($data as $key=>$val) {
-            $task->data($key,$val);
-        }
-
-        $task->logCustom("Изменение данных");
-
-        return true;
-    }
-
-    /**
      * Меняет статус задачи
      **/
     public static function post_changeTaskStatus($p) {
@@ -176,8 +193,6 @@ class board_controller_task extends mod_controller {
         if($task->status()->id()==1) {
             $task->data("responsibleUser",user::active()->id());
         }
-
-        mod::msg($task->data("status"));
 
         $time = $p["time"];
 
