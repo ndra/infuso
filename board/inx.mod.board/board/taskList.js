@@ -10,22 +10,12 @@ inx.mod.board.board.taskList = inx.list.extend({
             status:p.status
         };
         
-        /*this.pager = inx({
-            type:"inx.pager"
-        });
-        
-        p.tbar = [
-            {
-                type:"inx.textfield",
-                width:150
-            },
-            this.pager
-        ] */
-        
         p.layout = "inx.layout.column";
         
-        if(!p.style)
+        if(!p.style) {
             p.style = {};
+        }
+        
         p.style.spacing = 10;
         
         p.sortable = true;

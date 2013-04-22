@@ -13,11 +13,26 @@ inx.ns("inx.mod.board").board = inx.panel.extend({
                 border:0,
                 height:"parent"
             }
-        })
+        });
         
         p.items = [this.taskList];
+        
+        this.taskList.on("beforeload",[this.id(),"handleBeforeLoad"]);
+        this.taskList.on("load",[this.id(),"handleLoad"]);
     
         this.base(p);
+    },
+    
+    cmd_handleBeforeLoad:function(data) {
+        this.fire("beforeload",data);
+    },
+    
+    cmd_handleLoad:function(data) {
+        this.fire("load",data);
+    },
+    
+    cmd_load:function() {
+        this.taskList.cmd("load");
     }
 
          

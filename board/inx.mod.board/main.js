@@ -10,7 +10,6 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
             type:"inx.tabs",
             headComponent:"inx.mod.board.main.headComponent",
             selectNew:false,
-            onselect:[this.head,"update"],
             style:{
                 height:"parent"
             }
@@ -22,6 +21,11 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
         this.cmd("load");
         this.on("editProject",[this.id(),"editProject"]);
         inx.direct.bind(this,"handleDirect");
+        
+        this.on("updateTaskList",function() {
+            this.tabs.axis("selected").cmd("load");
+        })
+        
     },
     
     cmd_handleDirect:function(taskID) {
@@ -55,6 +59,10 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
                 title:data[i].title,
                 lazy:true,
                 status:data[i].id,
+                listeners:{
+                    beforeload:[this.tabs.axis("head").id(),"extendLoader"],
+                    load:[this.tabs.axis("head").id(),"handleTaskLoad"],
+                }
             });
         }
             

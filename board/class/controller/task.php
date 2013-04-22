@@ -22,12 +22,21 @@ class board_controller_task extends mod_controller {
         $tasks = board_task::visible()->orderByExpr($status->order())->limit($limit);
         $tasks->eq("status",$p["status"]);
 
+        if($search = trim($p["search"])) {
+            $tasks->joinByField("projectID");
+            $tasks->like("text",$search)->orr()->like("board_project.title",$search);
+        }
+
+        $tasks->page($p["page"]);
+
         // Задачи по цветам
         $stickerParams = $status->stickerParams();
         $stickerParams["showProject"] = true;
         foreach($tasks as $task) {
             $ret["data"][] = $task->stickerData($stickerParams);
         }
+
+        $ret["pages"] = $tasks->pages();
 
         return $ret;
     }
