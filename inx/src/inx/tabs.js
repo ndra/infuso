@@ -4,14 +4,22 @@ inx.tabs = inx.panel.extend({
 
     constructor:function(p) {
         p.layout = "inx.layout.fit";
+        
+        if(!p.headComponent) {
+            p.headComponent = "inx.tabs.head";
+        }
+        
         if(!p.side)
             p.side = [];
         p.showHead = p.showHead===undefined ? true : p.showHead;
         p.selectNew = p.selectNew===undefined ? true : p.selectNew;
         if(p.showHead) {
             this.tabs = inx.cmp.create({
-                type:"inx.tabs.head",
-                region:"top"
+                type:p.headComponent,
+                region:"top",
+                listeners:{
+                    select:[this.id(),"handleUserSelect"]
+                }
             });
             p.side.push(this.tabs);
         }

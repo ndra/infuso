@@ -21,6 +21,8 @@ inx.tabs.head = inx.panel.extend({
 
     cmd_update:function(items) {
     
+        console.log(items);
+    
         if(!this.__body) {
             return;    
         }
@@ -72,7 +74,7 @@ inx.tabs.head = inx.panel.extend({
 
         // Выделяем табу
         var id = $(e.target).parents().andSelf().filter(".inx-tabs-tab").data("id");
-        id && this.owner().cmd("handleUserSelect",id);
+        id && this.fire("select",id);
 
     }
 
