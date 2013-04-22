@@ -38,8 +38,6 @@ inx.mod.board.board.taskList = inx.list.extend({
     
     cmd_handleData:function(data,fullData) {
     
-        //inx.msg(fullData.pages);
-    
         for(var i in data) {
             if(data[i].id=="new") {
                 return;
@@ -71,7 +69,7 @@ inx.mod.board.board.taskList = inx.list.extend({
             type:"inx.mod.board.task",
             taskID:taskID,
             clipTo:clip
-        });
+        }).on("change",[this.id(),"load"]);
         
         task.cmd("render");
     }

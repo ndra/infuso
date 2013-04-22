@@ -51,96 +51,136 @@ class board_controller_task extends mod_controller {
 
         $task = board_task::get($p["taskID"]);
 
-        $log = "";
-        foreach($task->getLogCustom() as $item) {
-            $log.= $item->editor()->render();
-        }
-
-        $statuses = array();
-        foreach(board_task_status::all() as $status) {
-            if($status->id()!=$task->status()->id())
-                $statuses[] = array(
-                    "id" => $status->id(),
-                    "title" => $status->action(),
-                );
+        // Параметры задачи
+        if(!user::active()->checkAccess("board/getTaskParams",array(
+            "task" => $task
+        ))) {
+            mod::msg(user::active()->errorText(),1);
+            return;
         }
 
         return array(
             "title" => "Задача #".$task->id()." (".$task->project()->title().")",
             "text" => $task->data("text"),
-            "priority" => $task->data("priority"),
-            "color" => $task->data("color"),
-            "bonus" => $task->data("bonus"),
-            "timeSceduled" => $task->data("timeSceduled"),
-            "project" => $task->data("projectID"),
-            "status" => $task->data("status"),
-            "deadline" => $task->data("deadline"),
-            "deadlineDate" => $task->data("deadlineDate"),
-            "statuses" => $statuses,
-            "nextStatus" => $task->status()->next(),
-            "log" => $log,
         );
     }
 
-    public static function post_saveTask($p) {
+    /**
+     * Возвращает задачи эпика
+     **/
+    public function post_getEpicSubtasks($p) {
 
-        $data = array();
-
-        // Описание задачи
-        if(user::active()->checkAccess("board:updateTaskText",array("task"=>$task))) {
-
-            if($text = trim($p["data"]["text"])) {
-                $data["text"] = $text;
-            } else {
-                mod::msg("Текст обязателен для заполнения",1);
-                return;
-            }
-        }
+        $task = board_task::get($p["taskID"]);
 
         // Параметры задачи
-        if(user::active()->checkAccess("board:updateTaskParams",array("task"=>$task))) {
-
-            // Цвет
-            $data["color"] = $p["data"]["color"];
-
-            // Планируемое время
-            $data["timeSceduled"] = $p["data"]["timeSceduled"];
-
-            // Затраченное время
-            $data["bonus"] = $p["data"]["bonus"];
-
-            // Дэдлайн
-            $data["deadline"] = $p["data"]["deadline"];
-            $data["deadlineDate"] = $p["data"]["deadlineDate"];
-
-            // Проект
-            $project = board_project::get($p["data"]["project"]);
-            if(!$project->exists()) {
-                mod::msg("Указанный проект не существует",1);
-                return;
-            }
-            $data["projectID"] = $project->id();
-        }
-
-        if(!sizeof($data)) {
-            mod::msg("Вы не можете редактировать эту задачу",1);
+        if(!user::active()->checkAccess("board/getEpicSubtasks",array(
+            "task" => $task
+        ))) {
+            mod::msg(user::active()->errorText(),1);
             return;
         }
 
-        if($p["taskID"]=="new")
-            $task = reflex::create("board_task",array("status"=>$p["status"]));
-        else
-            $task = board_task::get($p["taskID"]);
+        $ret = array();
 
-        foreach($data as $key=>$val)
+        $statusList = array(
+            board_task_status::STATUS_NEW,
+            board_task_status::STATUS_IN_PROGRESS,
+            board_task_status::STATUS_COMPLETED,
+            board_task_status::STATUS_CHECKOUT
+        );
+
+        foreach($task->subtasks()->eq("status",$statusList) as $subtask) {
+            $ret[] = array(
+                "id" => $subtask->id(),
+                "text" => $subtask->data("status").": ".$subtask->data("text"),
+                "timeSheduled" => $subtask->data("timeScheduled"),
+                "completed" => $subtask->data("status") == 2,
+            );
+        }
+        return $ret;
+
+    }
+
+    public function post_addEpicSubtask($p) {
+
+        $task = board_task::get($p["taskID"]);
+
+        // Параметры задачи
+        if(!user::active()->checkAccess("board/addEpicSubtask",array(
+            "task" => $task
+        ))) {
+            mod::msg(user::active()->errorText(),1);
+            return;
+        }
+
+        reflex::create("board_task",array(
+            "text" => $p["data"]["text"],
+            "timeScheduled" => $p["data"]["timeScheduled"],
+            "epicParentTask" => $task->id(),
+        ));
+
+    }
+
+    /**
+     * Контроллер сохранения задачи
+     **/
+    public static function post_saveTask($p) {
+
+        $task = board_task::get($p["taskID"]);
+        $data = util::a($p["data"])->filter("text")->asArray();
+
+        // Параметры задачи
+        if(!user::active()->checkAccess("board/updateTaskParams",array(
+            "task"=>$task
+        ))) {
+            mod::msg(user::active()->errorText(),1);
+            return;
+        }
+
+        foreach($data as $key=>$val) {
             $task->data($key,$val);
+        }
 
         $task->logCustom("Изменение данных");
 
         return true;
     }
 
-    public static function post_changeTaskPriority($p) {
+    /**
+     * Меняет статус задачи
+     **/
+    public static function post_changeTaskStatus($p) {
+
+        $task = board_task::get($p["taskID"]);
+
+        // Параметры задачи
+        if(!user::active()->checkAccess("board/changeTaskStatus",array(
+            "task" => $task
+        ))) {
+            mod::msg(user::active()->errorText(),1);
+            return;
+        }
+
+        $task->data("status",$p["status"]);
+
+        // Если статус задачи "к исполнению", ответственным лицом становится текущий пользователь.
+        if($task->status()->id()==1) {
+            $task->data("responsibleUser",user::active()->id());
+        }
+
+        mod::msg($task->data("status"));
+
+        $time = $p["time"];
+
+        // Текст про изменение статуса
+        $statusText = $task->status()->action();
+
+        $task->logCustom($statusText,$time);
+
+        return true;
+    }
+
+/*    public static function post_changeTaskPriority($p) {
 
         if(!board_security::test("board:changeTaskPriority")) {
             mod::msg("Вы не можете изменять приоритет заданий",1);
@@ -158,29 +198,7 @@ class board_controller_task extends mod_controller {
         board_task::get($p["taskID"])->data("priority",$p["position"]*2-1);
     }
 
-    public static function post_changeTaskStatus($p) {
 
-        $task = board_task::get($p["taskID"]);
-
-        if(!board_security::test("board:changeTaskStatus",array("task"=>$task,"status"=>$p["status"]))) {
-            mod::msg("Вы не можете изменять статус этого задания",1);
-            return;
-        }
-
-        $task->data("status",$p["status"]);
-
-        // Если статус задачи "к исполнению", ответственным лицом становится текущий пользователь.
-        if($task->status()->id()==1)
-            $task->data("responsibleUser",user::active()->id());
-
-        $time = $p["time"];
-
-        // Текст про изменение статуса
-        $statusText = $task->status()->action();
-
-        $task->logCustom($statusText,$time);
-        return true;
-    }
 
     public static function post_taskSendMessage($p) {
 
@@ -198,7 +216,7 @@ class board_controller_task extends mod_controller {
             "text" => $p["text"],
             "blah" => true,
         ));
-    }
+    }  */
 
 
 }

@@ -27,9 +27,16 @@ public static function indexFailed() { admin::fuckoff(); }
 // -----------------------------------------------------------------------------
 
 public static function sendQuery($q) {
-    reflex_mysql::query($q);
+
     $ret = "";
-    $arr = reflex_mysql::get_array();
+
+    try {
+        reflex_mysql::query($q);
+        $arr = reflex_mysql::get_array();
+    } catch (Exception $ex) {
+        mod::msg($ex->getMessage(),1);
+        return;
+    }
 
     $ret.= sizeof($arr)." rows: <br/>";
 

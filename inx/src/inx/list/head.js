@@ -1,6 +1,6 @@
 // @link_with_parent
 
-inx.css(".qmazoce2d {position:absolute;top:4px;overflow:hidden;text-overflow:ellipsis;}");
+inx.css(".qmazoce2d {position:absolute;top:4px;overflow:hidden;text-overflow:ellipsis;font-style:italic;}");
 inx.css(".qmazoce2d-separator { width:6px; height:22px; cursor:move; opacity:.2; top:0; position:absolute; }");
 
 inx.list.head = inx.panel.extend({

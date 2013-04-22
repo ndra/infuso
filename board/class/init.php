@@ -20,14 +20,25 @@ class board_init implements mod_handler {
         $o->appendTo("boardUser");
         
         // Операции с задачами
+
+        $o = user_operation::create("board/editTask","Редактирование задачи")
+            ->addBusinessRule('if(!$task->exists()) $this->error("Задача не существует"); ')
+            ->addBusinessRule('return true;');
         
-        $o = user_operation::create("board:updateTaskText");
-        $o->appendTo("boardUser");
+        user_operation::create("board/updateTaskParams","Обновление полей задачи")
+            ->appendTo("board/editTask");
         
-        $o = user_operation::create("board:updateTaskParams");
-        $o->appendTo("boardUser");
-        
-        
+        user_operation::create("board/getTaskParams","Получение полей задачи")
+            ->appendTo("board/editTask");
+
+        user_operation::create("board/getEpicSubtasks","Получение списка подзадач эпика")
+            ->appendTo("board/editTask");
+
+        user_operation::create("board/addEpicSubtask","Добавление подзадачи эпика")
+            ->appendTo("board/editTask");
+
+        user_operation::create("board/changeTaskStatus","Изменение статуса задачи")
+            ->appendTo("board/editTask");
         
     }
 

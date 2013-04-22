@@ -1,6 +1,5 @@
 <? return array (
   'name' => 'board_task',
-  'parent' => '',
   'fields' => 
   array (
     0 => 
@@ -109,13 +108,14 @@
     9 => 
     array (
       'id' => 'faijmu0npesqy12tya0tfasjpghjp5',
-      'name' => 'timeSceduled',
+      'name' => 'timeScheduled',
       'type' => 'yvbj-cgin-m90o-cez7-mv2j',
       'editable' => '1',
       'label' => 'Планируемое время',
       'default' => '',
-      'indexEnabled' => '1',
+      'indexEnabled' => 1,
       'help' => '',
+      'group' => '',
     ),
     10 => 
     array (
@@ -164,8 +164,44 @@
       'indexEnabled' => '1',
       'help' => '',
     ),
+    14 => 
+    array (
+      'editable' => 1,
+      'id' => 'usdyaztmlhdkgsqpe6ncab3p1rofu0',
+      'name' => 'epic',
+      'type' => 'fsxp-lhdw-ghof-1rnk-5bqp',
+      'label' => 'Эпик',
+      'group' => '',
+      'default' => '',
+      'indexEnabled' => 1,
+      'help' => '',
+    ),
+    15 => 
+    array (
+      'editable' => 1,
+      'id' => '523flbxm1hqma63fahqwe67klh3456',
+      'name' => 'epicParentTask',
+      'type' => 'pg03-cv07-y16t-kli7-fe6x',
+      'label' => 'reflex_task',
+      'group' => '',
+      'default' => '',
+      'indexEnabled' => 1,
+      'help' => '',
+      'class' => '',
+      'foreignKey' => '',
+      'collection' => '',
+      'titleMethod' => '',
+    ),
   ),
   'indexes' => 
   array (
+  ),
+  'fieldGroups' => 
+  array (
+    0 => 
+    array (
+      'name' => NULL,
+      'title' => NULL,
+    ),
   ),
 ); ?>

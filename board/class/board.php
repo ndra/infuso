@@ -17,4 +17,8 @@ class board extends mod_controller {
         tmp::footer();
     }
 
+    public function index_test() {
+        echo board_task::get(1514)->subtasks()->count();
+    }
+
 }

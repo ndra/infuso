@@ -339,7 +339,9 @@ inx.panel = inx.box.extend({
         
         panels.each(function() {
             var r = this.info("region");     
-            var th = this.info("resizable") ? 6 : 2;
+            
+            var th = this.info("resizable") ? 6 : 0;
+            
             this.data("separatorThickness",th)
             switch(r) {
                 case "left":
@@ -493,17 +495,17 @@ inx.panel = inx.box.extend({
                 html:"Ленивый компонент",
                 listeners:{
                     show:function() {
-                            var proxy = this;
-                            lazyData.hidden = false;    
-                            var c = inx(lazyData,"inx.panel");                            
-                            var position = 0;
-                            parent.items().each(function(n) {
-                                if(this.id()==proxy.id())
-                                    position = n;
-                            })
-                            this.cmd("destroy");
-                            parent.cmd("add",c,position);
-                            c.fire("lazyGoesActive")
+                        var proxy = this;
+                        lazyData.hidden = false;    
+                        var c = inx(lazyData,"inx.panel");                            
+                        var position = 0;
+                        parent.items().each(function(n) {
+                            if(this.id()==proxy.id())
+                                position = n;
+                        })
+                        this.cmd("destroy");
+                        parent.cmd("add",c,position);
+                        c.fire("lazyGoesActive")
                             
                         }
                     }

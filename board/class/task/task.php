@@ -7,9 +7,7 @@ class board_task extends reflex {
      **/
 	public static function all() {
 	    return reflex::get(get_class())
-	        ->desc("priority")
-	        ->joinByField("projectID")
-	        ->neq("board_project.id",0);
+	        ->desc("priority");
 	}
 
     /**
@@ -29,13 +27,6 @@ class board_task extends reflex {
         return reflex::get(get_class(),$id);
     }
 
-	public static function statusList() {
-	    return array(
-	        "0" => "Не готово",
-	        "1" => "Готово",
-	    );
-	}
-
 	public function project() {
         return $this->pdata("projectID");
     }
@@ -51,6 +42,7 @@ class board_task extends reflex {
 	public function reflex_children() {
 	    return array(
 	        $this->getLogCustom()->title("Затраченное время"),
+            $this->subtasks()->title("Подзадачи")
 	    );
 	}
 
@@ -58,7 +50,9 @@ class board_task extends reflex {
 	    return util::str($this->data("text"))->ellipsis(50)."";
 	}
 
-	public function text() { return $this->data("text"); }
+	public function text() {
+        return $this->data("text");
+    }
 
 	public function responsibleUser() {
         return $this->pdata("responsibleUser");
@@ -77,22 +71,21 @@ class board_task extends reflex {
 
 	    // Устанавливаем новую дату изменения только если задача активна
 	    // Иначе мы можем влезть в статистику по прошлому периоду
-	    if($this->field("status")->changed())
-	        if($this->status()->active())
+	    if($this->field("status")->changed()) {
+	        if($this->status()->active()) {
 	            $this->data("changed",util::now());
+            }
+        }
 	}
 
 	public function updateTimeSpent() {
 	    $this->data("timeSpent",$this->getLogCustom()->sum("timeSpent"));
 	}
 
-	public function reflex_repair() {
-	    $this->updateTImeSpent();
-	}
+	public function getLogCustom() {
+        return board_task_log::all()->eq("taskID",$this->id());
+    }
 
-	// ----------------------------------------------------------------------------- Затраченное время
-
-	public function getLogCustom() { return board_task_log::all()->eq("taskID",$this->id()); }
 	public function logCustom($text,$time=0) {
 	    $this->getLogCustom()->create(array(
 	        "taskID" => $this->id(),
@@ -101,13 +94,37 @@ class board_task extends reflex {
 	    ));
 	}
 
-	public function timeSpent() { return $this->data("timeSpent"); }
-	public function timeSceduled() { return $this->data("timeSceduled"); }
+    /**
+     * Возвращает время, потраченное на задачу
+     **/
+	public function timeSpent() {
+        return $this->data("timeSpent");
+    }
 
+    /**
+     * Возвращает планируемое время
+     **/
+	public function timeSceduled() {
+        return $this->data("timeSceduled");
+    }
+
+    /**
+     * Возвращает статус задача (объект)
+     **/
 	public function status() {
 	    return board_task_status::get($this->data("status"));
 	}
 
+    /**
+     * Возвращает коллекцию подзадач
+     **/
+    public function subtasks() {
+        return self::all()->eq("epicParentTask",$this->id());
+    }
+
+    /**
+     * Возвращает число, показывающее сколько дней задача не меняла статус
+     **/
 	public function hangDays() {
 	    return round((util::now()->stamp() - $this->pdata("changed")->stamp())/60/60/24);
 	}
@@ -173,30 +190,6 @@ class board_task extends reflex {
 	        $ret["sort"] = false;
 
 	    return $ret;
-	}
-
-	public static function postTest() {
-		return true;
-	}
-	
-	public static function post_send($p) {
-	    $text = util::str($p["text"])->secure()->trim()."";
-	    if(!$text) return;
-	    reflex::create(get_class(),array(
-	        "text" => $text,
-	    ));
-	    header("location:./");
-	}
-
-	public static function post_setStatus($p) {
-	    self::get($p["taskID"])->setStatus($p["status"]);
-	}
-
-	public function setStatus($status) {
-	    $list = self::statusList();
-	    $statusName = $list[$status];
-	    $this->data("status",$status);
-	    $this->log($statusName);
 	}
 	
 }

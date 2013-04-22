@@ -36,9 +36,11 @@ inx.list = inx.panel.extend({
         
         // Стили о умолчанию
         if(!p.style)
-            p.style = {}            
+            p.style = {}        
+                
         p.style.vscroll = true;
         p.style.hscroll = true;
+        
         if(p.style.padding === undefined) {
             p.style.padding = 10;
         }
@@ -321,7 +323,11 @@ inx.list = inx.panel.extend({
         this.privateLoadCommand = this.call(this.loader,[this.id(),"handleLoadNative"] );
     },
     
-    cmd_handleLoadNative:function(data) {    
+    cmd_handleLoadNative:function(data) {   
+    
+        if(!data) {
+            return;
+        }
     
         if(!data.data)
             data.data = inx.deepCopy(data);

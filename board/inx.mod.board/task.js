@@ -37,12 +37,8 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
         }];
         
         this.base(p);
-        
-        if(p.taskID=="new") {
-            this.cmd("handleData",{text:"",project:p.projectID,status:p.status});
-        } else {
-            this.cmd("requestData");
-        }
+
+        this.cmd("requestData");
             
         inx.hotkey("esc",[this.id(),"destroy"]);        
         this.on("submit",[this.id(),"save"]);    
@@ -51,17 +47,23 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
     
     cmd_requestData:function() {
         this.call({
-            cmd:"board:controller:task:getTask",
+            cmd:"board/controller/task/getTask",
             taskID:this.taskID
         },[this.id(),"handleData"])
     },
     
     cmd_handleData:function(data) {
     
+        if(!data) {
+            this.task("destroy");
+            return;
+        }
+    
         this.cmd("setTitle",data.title);
     
         this.data = data;
     
+        // Описание задачи
         this.form.cmd("add",{
             type:"inx.textarea",
             value:data.text,
@@ -72,23 +74,12 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
                 height:"content"
             }
         }).cmd("focus");
-        
-        var cmp = this;
+       
+
         this.form.cmd("add",{
-            type:"inx.checkbox",
-            label:"Эпик",
-            labelWidth:0,
-            onchange:function() {
-                if(this.info("value")) {
-                    cmp.cmd("showSubtasks");
-                } else {
-                    cmp.cmd("hideSubtasks");
-                }
-            }
-        });
-        
-        this.subtasks = this.form.cmd("add",{
-            type:"inx.mod.board.task.subtasks"
+            type:"inx.mod.board.task.subtasks",
+            name:"subtasks",
+            taskID:this.taskID
         });
         
         this.form.cmd("add",{
@@ -99,43 +90,10 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
         }); 
         
     },
-    
-    /**
-     * Показывает список подзадач
-     **/
-    cmd_showSubtasks:function() {
-        this.subtasks.cmd("show");
-    },
-    
-    /**
-     * Скрывает список подзадач
-     **/
-    cmd_hideSubtasks:function() {
-        this.subtasks.cmd("hide");
-    },
-    
-    cmd_changeStatus:function(status) {
-    
-        if(this.data.status==1) {
-            var t = window.prompt("Сколько было потрачено времени (в часах)?");
-            t = parseFloat(t);
-            if(!t) {
-                inx.msg("Вы не можете перевести задание в категорию «Выполнено», не указав потраченное время.",1);
-                return;
-            }
-        }
-    
-        this.call({
-            cmd:"board:controller:changeTaskStatus",
-            taskID:this.taskID,
-            status:status,
-            time:t
-        },[this.id(),"handleSave"]);
-    },
-    
+ 
     cmd_handleSave:function(ret) {
         if(ret) {
-            this.task("destroy");
+            //this.task("destroy");
             this.fire("change");
         }
     },

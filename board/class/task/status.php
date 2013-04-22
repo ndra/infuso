@@ -2,6 +2,13 @@
 
 class board_task_status extends mod_controller {
 
+    const STATUS_NEW = 0;
+    const STATUS_IN_PROGRESS = 1;
+    const STATUS_CHECKOUT = 2;
+    const STATUS_COMPLETED = 3;
+    const STATUS_DRAFT = 10;
+    const STATUS_CANCELLED = 100;
+
     private static $all = array(
         -1 => array(
     		"title" => "-",
@@ -10,7 +17,7 @@ class board_task_status extends mod_controller {
     		    "showVoidProjects" => false,
     		),
     	),
-        0 => array(
+        self::STATUS_NEW => array(
     		"title" => "К исполнению",
     		"action" => "К исполнению",
     		"next" => 1,
@@ -21,7 +28,7 @@ class board_task_status extends mod_controller {
     		    "showHang" => true,
     		),
     	),
-        1 => array(
+        self::STATUS_IN_PROGRESS => array(
     		"title" => "Выполняется",
     		"action" => "Буду делать",
     		"next" => 2,
@@ -30,7 +37,7 @@ class board_task_status extends mod_controller {
     		    "showHang" => true,
     		),
     	),
-        2 => array(
+        self::STATUS_CHECKOUT => array(
     		"title" => "На проверке",
     		"action" => "Я все сделал, проверьте",
     		"next" => 3,
@@ -40,12 +47,12 @@ class board_task_status extends mod_controller {
     		    "showHang" => true,
     		),
     	),
-        3 => array(
+        self::STATUS_COMPLETED => array(
     		"title" => "Выполнено",
     		"action" => "Закрываю задачу",
     		"order" => "changed desc",
     	),
-        10 => array(
+        self::STATUS_DRAFT => array(
     		"title" => "Черновик",
     		"action" => "Черновик",
     		"next" => 0,
@@ -55,7 +62,7 @@ class board_task_status extends mod_controller {
     		    "showVoidProjects" => true,
     		),
     	),
-        100 => array(
+        self::STATUS_CANCELLED => array(
     		"title" => "Отменено",
     		"action" => "Отменяю",
     		"order" => "changed desc",
@@ -79,8 +86,12 @@ class board_task_status extends mod_controller {
     	return $ret;
     }
 
-    // Возвращает название стстуса
-    public function title() { return self::$all[$this->status]["title"]; }
+    /**
+     * Возвращает название стстуса
+     **/
+    public function title() {
+        return self::$all[$this->status]["title"];
+    }
 
     // Возвращает текст следующего действия
     public function action() { return self::$all[$this->status]["action"]; }
