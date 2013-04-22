@@ -23,8 +23,8 @@ inx.layout.form = {
     },
 
     remove:function(cmp) {
-        $(cmp.data("container")).remove();
-        $(cmp.data("label")).remove();
+        $(cmp.data("container")).detach();
+        $(cmp.data("label")).detach();
         cmp.data("ij89238v67",false);
     },
     
@@ -43,6 +43,9 @@ inx.layout.form = {
             var label = item.data("label");
         
             if(this.info("visible")) {
+            
+                container.css("display","block");
+                label.css("display","block");
         
                 label.html(item.info("param","label") || "");
                 
