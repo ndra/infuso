@@ -19,7 +19,7 @@ inx.tabs.head = inx.panel.extend({
         this.base(p);
     },
 
-    cmd_update:function(items) {
+    cmd_update:function(items,selected) {
     
         console.log(items);
     

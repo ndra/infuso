@@ -66,13 +66,6 @@ inx.tabs = inx.panel.extend({
         this.task("syncLayout");
     },
 
-    /*cmd_remove:function(c) {
-        var id = inx(c).id();
-        this.base(c);
-        if(this.info("selected")==id)
-            this.cmd("selectLast");
-    }, */
-
     cmd_handleUserSelect:function(id) {
         if(this.keepSelection)
             inx.storage.set(this.keepSelection,inx(id).info("name"));
@@ -88,8 +81,9 @@ inx.tabs = inx.panel.extend({
             else cmp.cmd("hide");
         }
         
-        if(this.tabs)
-            this.tabs.cmd("update",this.private_items);
+        if(this.tabs) {
+            this.tabs.cmd("update",this.private_items,this.info("selected"));
+        }
     },
 
     // Возвращает активный компонент
@@ -99,7 +93,7 @@ inx.tabs = inx.panel.extend({
 
     cmd_handleComponentLoaded:function() {
         if(this.tabs)
-            this.tabs.cmd("update",this.private_items);
+            this.tabs.cmd("update",this.private_items,this.info("selected"));
     },
 
     cmd_restoreSelection:function() {

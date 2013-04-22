@@ -11,7 +11,7 @@ inx.ns("inx.mod.board").board = inx.panel.extend({
             status:p.status,
             style:{
                 border:0,
-                height:400
+                height:"parent"
             }
         })
         

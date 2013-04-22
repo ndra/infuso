@@ -4,11 +4,16 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
 
     constructor:function(p) {
     
+        layout = "inx.layout.fit";
+    
         this.tabs = inx({
             type:"inx.tabs",
             headComponent:"inx.mod.board.main.headComponent",
             selectNew:false,
-            onselect:[this.head,"update"]
+            onselect:[this.head,"update"],
+            style:{
+                height:"parent"
+            }
         });        
         
         p.items = [this.tabs];
