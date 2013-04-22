@@ -39,7 +39,9 @@ inx.list = inx.panel.extend({
             p.style = {}            
         p.style.vscroll = true;
         p.style.hscroll = true;
-        p.style.padding = 10;
+        if(p.style.padding === undefined) {
+            p.style.padding = 10;
+        }
         
         if(!p.side)
             p.side = [];

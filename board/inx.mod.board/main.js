@@ -6,6 +6,7 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
     
         this.tabs = inx({
             type:"inx.tabs",
+            headComponent:"inx.mod.board.main.headComponent",
             selectNew:false,
             onselect:[this.head,"update"]
         });        

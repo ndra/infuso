@@ -10,7 +10,8 @@ inx.ns("inx.mod.board").board = inx.panel.extend({
             type:"inx.mod.board.board.taskList",
             status:p.status,
             style:{
-                border:0
+                border:0,
+                height:400
             }
         })
         

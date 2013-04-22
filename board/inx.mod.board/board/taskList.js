@@ -10,7 +10,7 @@ inx.mod.board.board.taskList = inx.list.extend({
             status:p.status
         };
         
-        this.pager = inx({
+        /*this.pager = inx({
             type:"inx.pager"
         });
         
@@ -20,7 +20,7 @@ inx.mod.board.board.taskList = inx.list.extend({
                 width:150
             },
             this.pager
-        ]
+        ] */
         
         p.layout = "inx.layout.column";
         

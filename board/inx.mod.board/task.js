@@ -5,62 +5,35 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
     constructor:function(p) {
     
         p.title = "Редактирование задачи";
-        p.width = 900;
-        p.resizable = true;        
-        p.modal = false;
+        p.width = 500;   
+        p.modal = true;
         
         p.style = {
             border:0,
-            background:"#cccccc"
+            background:"#ededed",
+            padding:5
         }
-        
-        this.actions = inx({
-            type:"inx.panel",
-            region:"bottom",
-            layout:"inx.layout.column",
-            style:{
-                padding:15,
-                background:"none"
-            }
-            
-        });
         
         this.form = inx({
             type:"inx.form",
             style: {
                 border:0,
-                background:"#ededed"
+                background:"none",
+                padding:0
             },
-            labelWidth:120,
-            side:[this.actions]
+            labelWidth:120
         });
         p.items = [this.form];
         
-        this.log = inx({
-            title:"Лог",
-            type:"inx.mod.board.task.log",
-            taskID:p.taskID,            
-            lazy:true
-        });
-        
-        p.keepLayout = "x456qmab";
-        
         p.side = [{
-            type:"inx.tabs",
+            type:"inx.panel",
+            width:100,
             region:"right",
-            selectNew:false,
-            width:500,
-            resizable:true,
-            items:[
-                this.log,
-                {title:"Расход времени",lazy:true}
-            ]
-        },{
-            type:"inx.mod.file.manager",
-            storage:"board_task:"+p.taskID,
-            region:"bottom",
-            hideControls:true,
-            maxHeight:150            
+            items:[{
+                html:"Тэги"
+            },{
+                html:"Время"
+            }]
         }];
         
         this.base(p);
@@ -95,60 +68,27 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
             label:"Описание задачи",
             name:"text",
             style : {
-                autoWidth:true,
+                width:"parent",
                 height:"content"
             }
         }).cmd("focus");
         
-        this.form.cmd("add",{
-            type:"inx.mod.board.task.color",
-            value:data.color,
-            label:"Цвет",
-            name:"color"
-        });
-        
-        this.form.cmd("add",{
-            type:"inx.textfield",
-            value:data.timeSceduled,
-            width:50,
-            label:"Планирую сделать&nbsp;за&nbsp;(ч.)",
-            name:"timeSceduled",
-            autoHeight:true
-        });
-        
-        this.form.cmd("add",{
-            type:"inx.panel",
-            labelAlign:"left",
-            label:"Дэдлайн ",
-            border:0,
-            background:"none",
-            layout:"inx.layout.column",
-            items:[{
-                type:"inx.checkbox",
-                label:"Дэдлайн",
-                value:data.deadline,
-                name:"deadline"
-            },{
-                type:"inx.date",
-                value:data.deadlineDate,
-                name:"deadlineDate"
-            }]
-        });
-        
-        this.form.cmd("add",{
-            type:"inx.select",
-            width:200,
-            name:"project",
-            value:data.project,
-            loader:{cmd:"board/controller/project/listProjectsSimple"},
-            label:"Проект"
-        });
-        
+        var cmp = this;
         this.form.cmd("add",{
             type:"inx.checkbox",
-            name:"bonus",
-            value:data.bonus,
-            label:"Бонус (гарантия)"
+            label:"Эпик",
+            labelWidth:0,
+            onchange:function() {
+                if(this.info("value")) {
+                    cmp.cmd("showSubtasks");
+                } else {
+                    cmp.cmd("hideSubtasks");
+                }
+            }
+        });
+        
+        this.subtasks = this.form.cmd("add",{
+            type:"inx.mod.board.task.subtasks"
         });
         
         this.form.cmd("add",{
@@ -158,20 +98,20 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
             onclick:[this.id(),"save"]
         }); 
         
-        var menu = [];
-        for(var i in data.statuses) {
-            var button = {
-                type:"inx.button",
-                text:data.statuses[i].title,
-                onclick:inx.cmd(this.id(),"changeStatus",data.statuses[i].id)
-            };
-            if(data.nextStatus==data.statuses[i].id)
-                this.actions.cmd("add",button);
-            else
-                menu.push(button);
-        }
-        
-        this.actions.cmd("add",{type:"inx.button",text:"Другой статус",icon:"trigger",air:true,menu:menu});
+    },
+    
+    /**
+     * Показывает список подзадач
+     **/
+    cmd_showSubtasks:function() {
+        this.subtasks.cmd("show");
+    },
+    
+    /**
+     * Скрывает список подзадач
+     **/
+    cmd_hideSubtasks:function() {
+        this.subtasks.cmd("hide");
     },
     
     cmd_changeStatus:function(status) {

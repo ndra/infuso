@@ -2,6 +2,9 @@
 
 class board_task extends reflex {
 
+    /**
+     * Возвращает список всех задач
+     **/
 	public static function all() {
 	    return reflex::get(get_class())
 	        ->desc("priority")
@@ -9,6 +12,9 @@ class board_task extends reflex {
 	        ->neq("board_project.id",0);
 	}
 
+    /**
+     * Возвращает список видимых задач
+     **/
 	public static function visible() {
 	    $list = self::all();
 	    $projects = board_project::visible()->limit(0)->idList();
@@ -16,15 +22,12 @@ class board_task extends reflex {
 	    return $list;
 	}
 
-	public function reflex_beforeStorageChange() {
-	    return board_security::test("board:upload");
-	}
-
-	public function reflex_beforeStorageView() {
-	    return user::active()->checkAccess("board:upload");
-	}
-
-	public static function get($id) { return reflex::get(get_class(),$id); }
+    /**
+     * Возвращает задлачу по id
+     **/
+	public static function get($id) {
+        return reflex::get(get_class(),$id);
+    }
 
 	public static function statusList() {
 	    return array(
@@ -33,8 +36,13 @@ class board_task extends reflex {
 	    );
 	}
 
-	public function project() { return $this->pdata("projectID"); }
-	public function reflex_parent() { return $this->project(); }
+	public function project() {
+        return $this->pdata("projectID");
+    }
+
+	public function reflex_parent() {
+        return $this->project();
+    }
 
 	public static function reflex_root() {
 	    return self::all()->title("Все задачи")->param("tab","system");
@@ -52,9 +60,9 @@ class board_task extends reflex {
 
 	public function text() { return $this->data("text"); }
 
-	public function responsibleUser() { return $this->pdata("responsibleUser"); }
-
-	// ----------------------------------------------------------------------- Триггеры
+	public function responsibleUser() {
+        return $this->pdata("responsibleUser");
+    }
 
 	public function reflex_beforeCreate() {
 	    $this->data("changed",util::now());
@@ -96,13 +104,9 @@ class board_task extends reflex {
 	public function timeSpent() { return $this->data("timeSpent"); }
 	public function timeSceduled() { return $this->data("timeSceduled"); }
 
-	// ----------------------------------------------------------------------------- Статус
-
 	public function status() {
 	    return board_task_status::get($this->data("status"));
 	}
-
-	// ----------------------------------------------------------------------------- Стикер
 
 	public function hangDays() {
 	    return round((util::now()->stamp() - $this->pdata("changed")->stamp())/60/60/24);

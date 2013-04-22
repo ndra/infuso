@@ -8,11 +8,11 @@ inx.form = inx.panel.extend({
             p.style = {};
         }
     
-        if(!p.style.spacing) {
+        if(p.style.spacing===undefined) {
             p.style.spacing = 10;
         }
         
-        if(!p.style.padding) {
+        if(p.style.padding===undefined) {
             p.style.padding = 30;
         }
     
