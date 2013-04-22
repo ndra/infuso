@@ -63,7 +63,10 @@ var form = function(selector,hash) {
                     $("<input>").appendTo(msg).focus().remove();
                 }
 
-                msg.html(d.html).hide().addClass("lbdmv238az").show("fast");
+                msg.html(d.html).hide().addClass("lbdmv238az").show("fast", function(){
+                    //запускаем событие fieldError
+                    $(selector).trigger("fieldError", data);    
+                });
                 
                 field.addClass("error");
             }
