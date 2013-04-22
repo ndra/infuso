@@ -312,6 +312,11 @@ inx.cmp.prototype.last = function() {
     return inx(id);
 }
 
+inx.cmp.prototype.get = function(n) {
+    var id = this.ids[n];
+    return inx(id);
+}
+
 inx.cmp.prototype.neq = function(key,val) {
     var ids = [];
     for(var i=0;i<this.ids.length;i++)

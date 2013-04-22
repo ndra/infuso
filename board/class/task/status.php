@@ -93,13 +93,23 @@ class board_task_status extends mod_controller {
         return self::$all[$this->status]["title"];
     }
 
-    // Возвращает текст следующего действия
-    public function action() { return self::$all[$this->status]["action"]; }
+    /**
+     * Возвращает текст следующего действия
+     **/
+    public function action() {
+        return self::$all[$this->status]["action"];
+    }
 
-    // Возвращает номер следующего статуса
-    public function next() { return self::$all[$this->status]["next"]; }
+    /**
+     * Возвращает объект следующего статуса
+     **/
+    public function next() {
+        return self::get(self::$all[$this->status]["next"]);
+    }
 
-    // Возвращает сортировку задач в этом статусе
+    /**
+     * Возвращает сортировку задач в этом статусе
+     **/
     public function order() {
     	$ret = self::$all[$this->status]["order"];
     	if(!$ret)
@@ -107,13 +117,30 @@ class board_task_status extends mod_controller {
     	return $ret;
     }
 
-    // Возвращает id статуса
-    public function id() { return $this->status; }
+    public function sortable() {
+        if(in_array($this->id(),array(self::STATUS_NEW))) {
+            return true;
+        }
+        return false;
+    }
 
-    // Возвращает активный статус
-    public function active() { return  self::$all[$this->status]["active"]; }
+    /**
+     * Возвращает id статуса
+     **/
+    public function id() {
+        return $this->status;
+    }
 
-    // Возвращает параметры стикера с задачей
+    /**
+     * Возвращает активный статус
+     **/
+    public function active() {
+        return  self::$all[$this->status]["active"];
+    }
+
+    /**
+     * Возвращает параметры стикера с задачей
+     **/
     public function stickerParams() {
         $ret = self::$all[$this->status]["stickerParams"];
         if(!$ret)
@@ -121,7 +148,9 @@ class board_task_status extends mod_controller {
     	return $ret;
     }
 
-    // Возвращает параметры стикера с задачей
+    /**
+     * Возвращает параметры стикера с задачей
+     **/
     public function stickerParam($key) {
         $ret = $this->stickerParams();
         return $ret[$key];

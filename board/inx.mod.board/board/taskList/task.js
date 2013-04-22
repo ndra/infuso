@@ -33,12 +33,12 @@ inx.mod.board.board.taskList.task = inx.box.extend({
         // При наведении на задачу, подсвечиваем все задачи из того же проекта
         var taskContainer = $("<div>")
             .addClass("qm5btw9-task")
-            .data("taskID",task.id)
-            .mouseover(function() {
+            .data("taskID",task.id);
+            /*.mouseover(function() {
                 $(".qm5btw9-"+task.projectID).addClass("qm5btw9-hover-group");
             }).mouseout(function() {
                 $(".qm5btw9-"+task.projectID).removeClass("qm5btw9-hover-group");
-            });
+            }); */
     
         var e = $("<div>")
             .addClass("qm5btw9")
@@ -68,18 +68,33 @@ inx.mod.board.board.taskList.task = inx.box.extend({
         $("<div>").css({height:77,padding:4,overflow:"hidden"}).html(task.text+"").appendTo(e);
 
         // Статус листика
-        $("<div>").html(task.info+"").appendTo(e).addClass("qm5btw9-status");    
+        $("<div>").html(task.info+"").appendTo(e).addClass("qm5btw9-status");  
         
-        if(task.bottom)
+        // Процент выполнения
+        if(task.percentCompleted) {
+            $("<div>")
+                .html("&nbsp;")
+                .appendTo(e)
+                .css({
+                    width:task.percentCompleted+"%"
+                }).addClass("qm5btw9-status"); 
+        }
+        
+        // Подпись под листиком
+        if(task.bottom) {
             $("<div>").html(task.bottom+"").css({marginTop:4,opacity:.5}).appendTo(taskContainer);
-            
+        }
             
         taskContainer.appendTo(this.el);
         
         // Влючаем перетаскивание файлов в задачу
         inx({
             type:"inx.file",
-            dropArea:e
+            dropArea:e,
+            loader:{
+                cmd:"board/controller/task/uploadFile",
+                taskID:this.taskID
+            }
         }).cmd("render");
             
     }

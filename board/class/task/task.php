@@ -7,14 +7,19 @@ class board_task extends reflex {
      **/
 	public static function all() {
 	    return reflex::get(get_class())
-	        ->desc("priority");
+	        ->asc("priority");
 	}
 
     /**
-     * Возвращает список видимых задач
+     * Возвращает список видимых задач для активного пользователя
      **/
 	public static function visible() {
 	    $list = self::all();
+
+        if(user::active()->checkAccess("board/viewAllTasks")) {
+            return $list;
+        }
+
 	    $projects = board_project::visible()->limit(0)->idList();
 	    $list->eq("projectID",$projects);
 	    return $list;
@@ -129,6 +134,21 @@ class board_task extends reflex {
 	    return round((util::now()->stamp() - $this->pdata("changed")->stamp())/60/60/24);
 	}
 
+    /**
+     * Возвращает процент выполненния задачи
+     **/
+    public function percentCompleted() {
+
+        $a = $this->subtasks()->eq("status",array(2,3))->sum("timeScheduled");
+        $b = $this->subtasks()->eq("status",array(0,1,2,3))->sum("timeScheduled");
+
+        if(!$b) {
+            return 0;
+        }
+
+        return $a / $b * 100;
+    }
+
 	public function stickerData($p=array()) {
 
 	    $ret = array();
@@ -185,9 +205,13 @@ class board_task extends reflex {
 
 	    $ret["projectID"] = $this->project()->id();
 
+        // Сортируются ли задачи в этом статусе
 	    $ret["sort"] = $this->status()->stickerParam("sort");
-	    if($p["sort"]===false || $p["sort"]===0)
+	    if($p["sort"]===false || $p["sort"]===0) {
 	        $ret["sort"] = false;
+        }
+
+        $ret["percentCompleted"] = $this->percentCompleted();
 
 	    return $ret;
 	}

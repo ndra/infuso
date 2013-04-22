@@ -5,14 +5,14 @@
  **/
 class board_controller_project extends mod_controller {
 
-    public function postTest() {
+    /*public function postTest() {
         return user::active()->exists();
-    }
+    } */
 
     /**
      * Возвращает список проектов
      **/
-    public function post_listProjects() {
+    /*public function post_listProjects() {
 
         $ret = array();
 
@@ -27,12 +27,12 @@ class board_controller_project extends mod_controller {
         
         return $ret;
 
-    }
+    }  */
     
     /**
      * Возвращает простой список проектов (для выбиралки)
      **/    
-    public static function post_listProjectsSimple($p) {
+    /*public static function post_listProjectsSimple($p) {
         $ret = array();
 
         if($p["optionAll"])
@@ -50,18 +50,18 @@ class board_controller_project extends mod_controller {
             );
         }
         return $ret;
-    }    
+    }  */
     
-    public static function post_getProject($p) {
+    /*public static function post_getProject($p) {
         $project = board_project::get($p["projectID"]);
         return array(
             "title" => $project->data("title"),
             "priority" => $project->data("priority"),
             "customerEmail" => $project->pdata("customerUserID")->data("email"),
         );
-    }
+    }  */
 
-    public static function post_saveProject($p) {
+   /* public static function post_saveProject($p) {
 
         // Название проекта
         $data = array();
@@ -109,12 +109,12 @@ class board_controller_project extends mod_controller {
         }
 
         return true;
-    }
+    }  */
 
     /**
      * Экшн удаления проекта
      **/
-    public static function post_deleteProject($p) {
+   /* public static function post_deleteProject($p) {
     
         mod::msg($p);
         return;
@@ -133,6 +133,6 @@ class board_controller_project extends mod_controller {
         if(!sizeof($a["tasks"]))
             return 1;
         return board_project::get($b["id"])->data("priority") - board_project::get($a["id"])->data("priority");
-    }
+    }  */
 
 }

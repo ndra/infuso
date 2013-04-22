@@ -30,6 +30,8 @@ inx.mod.board.task.subtasks = inx.list.extend({
         
         this.base(p);
         
+        this.on("sortcomplete",[this.id(),"handleSortComplete"]);
+        
     },
     
     cmd_handleItemMouseOver:function(e,data) {
@@ -44,18 +46,31 @@ inx.mod.board.task.subtasks = inx.list.extend({
                     top:0
                 })
                 .appendTo(e);
-                
+
+            $("<div title='Буду делать' >").css({
+                position:"absolute",
+                width:16,
+                height:16,
+                right:40,
+                top:0,
+                cursor:"pointer",
+                background:"url(/board/res/img/icons16/runner.png)"
+            }).click(function() {
+                cmp.cmd("doEpicSubtask",data.id);
+            }).appendTo(controls);
+            
             $("<div>").css({
                 position:"absolute",
                 width:16,
                 height:16,
-                right:16,
+                right:20,
                 top:0,
+                cursor:"pointer",
                 background:"url("+inx.img("ok")+")"
             }).click(function() {
                 cmp.cmd("completeEpicSubtask",data.id);
             }).appendTo(controls);
-            
+         
             $("<div>").css({
                 position:"absolute",
                 width:16,
@@ -66,23 +81,30 @@ inx.mod.board.task.subtasks = inx.list.extend({
             }).click(function() {
                 cmp.cmd("cancelEpicSubtask",data.id);
             }).appendTo(controls);
+            
         
             e.data("bnfgh3-controls",controls);
+            
+            var cmp = this;
+            e.mouseleave(function() {
+                cmp.cmd("handleItemMouseOut",e);
+            })
         }
         
         e.data("bnfgh3-controls").stop(true,true).fadeIn("fast");
-        
-        var cmp = this;
-        e.mouseleave(function() {
-            cmp.cmd("handleItemMouseOut",e);
-        })
+        e.data("time").stop(true,true).fadeOut("fast");
     },
     
     cmd_handleItemMouseOut:function(e) {
         e.data("bnfgh3-controls").stop(true,true).fadeOut("fast");
+        e.data("time").stop(true,true).fadeIn("fast");
     },
     
     renderer:function(e,data) {
+    
+        e.css({
+            paddingRight:50
+        });
     
         // Текст задачи
         var text = $("<div>")
@@ -95,9 +117,16 @@ inx.mod.board.task.subtasks = inx.list.extend({
             });
         }
             
-        $("<div>")
+        var time = $("<div>")
+            .css({
+                position:"absolute",
+                right:0,
+                top:0
+            })
             .html(data.timeScheduled)
             .appendTo(e);
+            
+        e.data("time",time);
             
         var cmp = this;
         e.mouseenter(function() {
@@ -131,19 +160,43 @@ inx.mod.board.task.subtasks = inx.list.extend({
      **/
     cmd_cancelEpicSubtask:function(taskID) {
     
-        var h = window.prompt("удалить подзадачу?");
-    
-        if(h===null) {
+        if(!window.confirm("удалить подзадачу?")) {
             return;
         }
         
         this.call({
             cmd:"board/controller/task/changeTaskStatus",
             taskID:taskID,
-            status:100,
-            time:h
+            status:100
         },[this.id(),"load"])
         
+    },
+    
+    /**
+     * Удаление подзадачи. Открывает окно с подтверждением
+     **/
+    cmd_doEpicSubtask:function(taskID) {
+        
+        this.call({
+            cmd:"board/controller/task/changeTaskStatus",
+            taskID:taskID,
+            status:1
+        },[this.id(),"load"])
+        
+    },
+    
+    cmd_handleSortComplete:function() {
+    
+        var idList = [];
+        this.items().each(function() {
+            idList.push(this.data("itemID"));
+        });
+    
+        this.call({
+            cmd:"board/controller/task/saveSort",
+            idList:idList
+        });
     }
+    
      
 });

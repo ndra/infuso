@@ -2,7 +2,7 @@
 
 class board_controller extends mod_controller {
 
-    public static function postTest() {
+   /* public static function postTest() {
         return user::active()->exists();
     }
     
@@ -190,7 +190,6 @@ class board_controller extends mod_controller {
 
     public static function post_reportInfograph($p) {
 
-        /*ob_start();
         foreach(user::all() as $user)
             if($user->check("board:access")) {
                 echo "<div style='width:200px;margin:20px;display:inline-block;' >";
@@ -206,7 +205,7 @@ class board_controller extends mod_controller {
                 echo "</div>";
             }
         return ob_get_clean();
-        */
-    }
+
+    }  */
 
 }

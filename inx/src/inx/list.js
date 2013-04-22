@@ -163,6 +163,8 @@ inx.list = inx.panel.extend({
        
         if(params.phase=="start") {
             this.dragItemID =  inx(params.itemID).data("itemID");
+            if(this.fire("sortbegin",this.dragItemID)===false)
+                return false;
         }
     
         var position = 0;

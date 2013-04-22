@@ -37,6 +37,7 @@ class board_controller_task extends mod_controller {
         }
 
         $ret["pages"] = $tasks->pages();
+        $ret["sortable"] = $status->sortable();
 
         return $ret;
     }
@@ -57,6 +58,20 @@ class board_controller_task extends mod_controller {
     }
 
     /**
+     * Возвращает список статусов для селекта
+     **/
+    public function post_enumStatuses() {
+        $ret = array();
+        foreach(board_task_status::all() as $status) {
+            $ret[] = array(
+                "id" => $status->id(),
+                "text" => $status->title(),
+            );
+        }
+        return $ret;
+    }
+
+    /**
      * Возвращает параметры одной задачи
      **/     
     public static function post_getTask($p) {
@@ -71,9 +86,20 @@ class board_controller_task extends mod_controller {
             return;
         }
 
+        $statuses = array();
+        foreach(board_task_status::all() as $status) {
+            $statuses[] = array(
+                "id" => $status->id(),
+                "text" => $task->status()->id() == $status->id() ? "<u>".$status->title()."</u>" : $status->title(),
+            );
+        }
+
         return array(
             "title" => "Задача #".$task->id()." (".$task->project()->title().")",
             "text" => $task->data("text"),
+            "nextStatusID" => $task->status()->next()->id(),
+            "nextStatusText" => $task->status()->next()->action(),
+            "statuses" => $statuses
         );
     }
 
@@ -141,10 +167,18 @@ class board_controller_task extends mod_controller {
         );
 
         foreach($task->subtasks()->eq("status",$statusList) as $subtask) {
+
+            $text = $subtask->data("text");
+
+            if($subtask->status()->id()==board_task_status::STATUS_IN_PROGRESS) {
+                $text.= " <nobr><img style='vertical-align:middle;' src='{$subtask->responsibleUser()->userpick()->preview()}' /> ";
+                $text.= "{$subtask->responsibleUser()->title()}</nobr>";
+            }
+
             $ret[] = array(
                 "id" => $subtask->id(),
-                "text" => $subtask->data("status").": ".$subtask->data("text"),
-                "timeSheduled" => $subtask->data("timeScheduled"),
+                "text" => $subtask->data("priority").". ".$text,
+                "timeScheduled" => $subtask->data("timeScheduled"),
                 "completed" => $subtask->data("status") == 2,
             );
         }
@@ -164,7 +198,7 @@ class board_controller_task extends mod_controller {
             return;
         }
 
-        reflex::create("board_task",array(
+        $task = reflex::create("board_task",array(
             "text" => $p["data"]["text"],
             "timeScheduled" => $p["data"]["timeScheduled"],
             "epicParentTask" => $task->id(),
@@ -204,23 +238,31 @@ class board_controller_task extends mod_controller {
         return true;
     }
 
-/*    public static function post_changeTaskPriority($p) {
+    /**
+     * Сохраняет сортировку набора задач
+     **/
+    public function post_saveSort($p) {
 
-        if(!board_security::test("board:changeTaskPriority")) {
-            mod::msg("Вы не можете изменять приоритет заданий",1);
+        // Параметры задачи
+        if(!user::active()->checkAccess("board/sortTasks")) {
+            mod::msg(user::active()->errorText(),1);
             return;
         }
 
-        // Выстраиваем задачи по приоритету
-        $n = 0;
-        foreach($p["idList"] as $taskID) {
-            if($taskID!=$p["taskID"]) {
-                board_task::get($taskID)->data("priority",$n*2);
-                $n++;
-            }
+        foreach($p["idList"] as $n=>$id) {
+            $task = board_task::get($id);
+            $task->data("priority",$n);
         }
-        board_task::get($p["taskID"])->data("priority",$p["position"]*2-1);
+
+        mod::msg("Сортировка сохранена");
+
     }
+
+    public function post_uploadFile($p) {
+        mod::msg($_FILES);
+    }
+
+/*
 
 
 

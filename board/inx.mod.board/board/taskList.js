@@ -19,11 +19,19 @@ inx.mod.board.board.taskList = inx.list.extend({
         p.style.spacing = 10;
         
         p.sortable = true;
+        this.on("sortcomplete",[this.id(),"handleSortComplete"]);
+        this.on("sortbegin",[this.id(),"handleSortBegin"]);
     
         this.base(p);
         
         this.on("itemclick",[this.id(),"handleItemClick"]);
         this.on("data",[this.id(),"handleData"]);
+        this.on("load",[this.id(),"handleLoad"])
+        
+    },
+    
+    cmd_handleLoad:function(data) {
+        this.sortEnabled = data.sortable;
     },
     
     cmd_handleData:function(data,fullData) {
@@ -76,6 +84,30 @@ inx.mod.board.board.taskList = inx.list.extend({
         this.call({
             cmd:"board/controller/task/newTask"
         },[this.id(),"editTask"]);
+    },
+    
+    cmd_handleSortBegin:function(itemID) {
+    
+        if(!this.sortEnabled) {
+            return false;
+        }
+    
+        if(itemID==="new") {
+            return false;
+        }
+    },
+    
+    cmd_handleSortComplete:function() {
+    
+        var idList = [];
+        this.items().each(function() {
+            idList.push(this.data("itemID"));
+        });
+    
+        this.call({
+            cmd:"board/controller/task/saveSort",
+            idList:idList
+        });
     }
          
 });

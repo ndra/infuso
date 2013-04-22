@@ -108,9 +108,8 @@ inx.file = inx.button.extend({
         }
     },
     
-    cmd_showArea:function(el) {
-    
-        el.preventDefault();
+    cmd_showArea:function() {
+
         if(!this.dropZone) {
             this.dropZone = $("<div>").appendTo("body").addClass("p9hjmvijmg-area");
             this.dropZone.bind("drop",inx.cmd(this,"dropFile"));
@@ -142,7 +141,7 @@ inx.file = inx.button.extend({
         clearInterval(this.rjf90op10d4v0tm5rxy5);        
     },
     
-    cmd_hideArea:function(el) {
+    cmd_hideArea:function() {
         clearInterval(this.rjf90op10d4v0tm5rxy5);
         this.rjf90op10d4v0tm5rxy5 = setInterval(inx.cmd(this,"realHideDropZone"),100);
     },
@@ -172,17 +171,63 @@ inx.file = inx.button.extend({
 
 })
 
-inx.file.showArea = function(el) {
-    for(var i in inx.file.dd) {
-        inx(i).cmd("showArea",el)
+inx.file.showArea = function(e) {
+
+    e.preventDefault();    
+
+    if(inx.file.o)  {
+        return;
     }
+    inx.file.o = true;
+    inx.file.updateAreaVisibility();
 }
-inx.file.hideArea = function(el) {
-    for(var i in inx.file.dd)
-        inx(i).cmd("hideArea",el)
+
+inx.file.hideArea = function(e) {
+
+    e.preventDefault();    
+
+    if(!inx.file.o)  {
+        return;
+    }
+    inx.file.o = false;
+    inx.file.updateAreaVisibility();
 }
+
+/**
+ * Обновляет видимость дроп-арии
+ **/
+inx.file.updateAreaVisibility = function() {
+
+    var d = (new Date()).getTime() - (inx.file.areaLast || 0) 
+    
+    var delay = 150;
+
+    if(d > delay) {
+    
+        if(inx.file.areaLastVisibility == inx.file.o) {
+            return;
+        }
+    
+        for(var i in inx.file.dd) {
+            inx(i).cmd(inx.file.o ? "showArea" : "hideArea");
+        }
+        
+        inx.file.areaTimer = false;
+        inx.file.areaLast = (new Date()).getTime();
+        inx.file.areaLastVisibility = inx.file.o;
+        
+    } else if (!inx.file.areaTimer) {
+    
+        inx.file.areaTimer = setTimeout(inx.file.updateAreaVisibility,delay+1);
+        
+    } else {
+        return;
+    }
+    
+}
+
 inx.file.dd = [];
 
-$(document).bind("dragover",inx.file.showArea);        
-$(document).bind("dragleave",inx.file.hideArea);
-$(document).bind("drop",inx.file.hideArea);
+$(document).on("dragover",inx.file.showArea);        
+$(document).on("dragleave",inx.file.hideArea);
+$(document).on("drop",inx.file.hideArea);
