@@ -220,6 +220,7 @@ class board_task extends reflex {
 	        $ret["sort"] = false;
         }
 
+        // Наличие прикрепленных файлов
         if($this->storage()->files()->count()) {
             $ret["attachment"] = true;
         }

@@ -7,9 +7,11 @@ inx.ns("inx.mod.board").projects = inx.list.extend({
         p.tbar = [{
             icon:"plus",
             text:"Новый проект",
+            air:true,
             onclick:[this.id(),"newProject"]
         },"|",{
             icon:"delete",
+            air:true,
             onclick:[this.id(),"deleteProject"]
         }]
     

@@ -5,14 +5,20 @@
  **/
 class board_controller_project extends mod_controller {
 
-    /*public function postTest() {
-        return user::active()->exists();
-    } */
+    public function postTest() {
+        return true;
+    }
 
     /**
      * Возвращает список проектов
      **/
-    /*public function post_listProjects() {
+    public function post_listProjects() {
+
+        // Параметры задачи
+        if(!user::active()->checkAccess("board/viewProjectList")) {
+            mod::msg(user::active()->errorText(),1);
+            return;
+        }
 
         $ret = array();
 
@@ -27,7 +33,7 @@ class board_controller_project extends mod_controller {
         
         return $ret;
 
-    }  */
+    }
     
     /**
      * Возвращает простой список проектов (для выбиралки)

@@ -16,8 +16,11 @@ class board_init implements mod_handler {
         
         // Операции с проектами
         
-        $o = user_operation::create("board:createProject","Создание проекта в доске");
-        $o->appendTo("boardUser");
+        user_operation::create("board/createProject","Создание проекта в доске")
+            ->appendTo("boardUser");
+
+        user_operation::create("board/viewProjectList","Создание проекта в доске")
+            ->appendTo("boardUser");
         
         // Операции с задачами
 
