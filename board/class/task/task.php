@@ -81,6 +81,12 @@ class board_task extends reflex {
 	            $this->data("changed",util::now());
             }
         }
+        
+        // Если это подзадача, ставим проект как у эпика
+        if($this->data("epicParentTask")) {
+            $this->data("projectID",$this->pdata("epicParentTask")->data("projectID"));
+        }
+        
 	}
 
 	public function updateTimeSpent() {
