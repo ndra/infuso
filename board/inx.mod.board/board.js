@@ -19,6 +19,7 @@ inx.ns("inx.mod.board").board = inx.panel.extend({
         
         this.taskList.on("beforeload",[this.id(),"handleBeforeLoad"]);
         this.taskList.on("load",[this.id(),"handleLoad"]);
+        this.on("show",[this.id(),"handleShow"]);
     
         this.base(p);
     },
@@ -33,6 +34,13 @@ inx.ns("inx.mod.board").board = inx.panel.extend({
     
     cmd_load:function() {
         this.taskList.cmd("load");
+    },
+    
+    /**
+     * При открытии вкладки, перезагружаем содержимое
+     **/
+    cmd_handleShow:function() {
+        this.task("load");
     }
 
          
