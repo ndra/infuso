@@ -117,8 +117,21 @@ class board_task_status extends mod_controller {
     	return $ret;
     }
 
+	/**
+	 * Сортируются ли задачи в этом статусе
+	 **/
     public function sortable() {
         if(in_array($this->id(),array(self::STATUS_NEW))) {
+            return true;
+        }
+        return false;
+    }
+    
+	/**
+	 * Показывать ли подзадачи эпика в этом статусе
+	 **/
+    public function showEpicSubtasks() {
+        if(in_array($this->id(),array(self::STATUS_IN_PROGRESS))) {
             return true;
         }
         return false;
