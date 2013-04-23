@@ -22,9 +22,14 @@ class board_controller_task extends mod_controller {
         $tasks = board_task::visible()->orderByExpr($status->order())->limit($limit);
         $tasks->eq("status",$p["status"]);
 
+		// Учитываем поиск
         if($search = trim($p["search"])) {
             $tasks->joinByField("projectID");
             $tasks->like("text",$search)->orr()->like("board_project.title",$search);
+        }
+        
+        if(!$status->showEpicSubtasks()) {
+            $tasks->eq("epicParentTask",0);
         }
 
         $tasks->page($p["page"]);
