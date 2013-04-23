@@ -100,7 +100,7 @@ class board_controller_task extends mod_controller {
         }
 
         return array(
-            "title" => "Задача #".$task->id()." (".$task->project()->title().")",
+            "title" => "Задача #".$task->id()." / ".$task->project()->title()." ({$task->status()->title()})",
             "text" => $task->data("text"),
             "nextStatusID" => $task->status()->next()->id(),
             "nextStatusText" => $task->status()->next()->action(),

@@ -70,6 +70,7 @@ class board_task_status extends mod_controller {
     );
 
     private $status;
+    
     public function __construct($status=null) {
     	$this->status = $status;
     }
