@@ -19,6 +19,7 @@ function __autoload($class) {
         "mod_component" => "/mod/class/component.php",
         "mod_file" => "/mod/class/file/file.php",
         "mod_file_filesystem" => "/mod/class/file/filesystem.php",
+        "mod_file_http" => "/mod/class/file/http.php",
         "mod_file_list" => "/mod/class/file/list.php",
         "mod_crypt" => "/mod/class/crypt.php",
         "mod_post" => "/mod/class/post.php",
