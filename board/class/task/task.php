@@ -166,19 +166,22 @@ class board_task extends reflex {
 	    if($this->status()->active()) {
 	        $d = (util::now()->stamp() - $this->pdata("changed")->stamp())/60/60/24;
 	        $d = round($d);
-	        if($d>=3)
+	        if($d>=3) {
 	            $data["text"].= "<span style='background:red;color:white;display:inline-block;padding:0px 4px;' >$d</span> ";
+            }
 	    }
 
 	    // Бонусные задачи
-	    if($this->data("bonus"))
+	    if($this->data("bonus")) {
 	        $ret["text"].= "<span style='color:white;background:green;font-style:italic;padding:0px 4px;'>б</span> ";
+        }
 
 	    // Просрочка
 	    if($p["showHang"]) {
 	        $h = $this->hangDays();
-	        if($h>3)
+	        if($h>3) {
 	            $ret["text"].= "<span style='color:white;background:red;padding:0px 4px;'>$h</span> ";
+            }
 	    }
 
 	    if($p["showProject"])
@@ -215,6 +218,10 @@ class board_task extends reflex {
 	    $ret["sort"] = $this->status()->stickerParam("sort");
 	    if($p["sort"]===false || $p["sort"]===0) {
 	        $ret["sort"] = false;
+        }
+
+        if($this->storage()->files()->count()) {
+            $ret["attachment"] = true;
         }
 
         $ret["percentCompleted"] = $this->percentCompleted();

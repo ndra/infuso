@@ -266,18 +266,23 @@ class board_controller_task extends mod_controller {
     }
 
 	/**
-	 * Закачивает файл в
+	 * Закачивает файл в задачу
+	 **/
     public function post_uploadFile($p) {
     
         $task = board_task::get($p["taskID"]);
         
         // Параметры задачи
-        if(!user::active()->checkAccess("board/changeTaskStatus",array(
+        if(!user::active()->checkAccess("board/uploadFile",array(
             "task" => $task
         ))) {
             mod::msg(user::active()->errorText(),1);
             return;
         }
+
+        $file = $_FILES["file"];
+        $task->storage()->addUploaded($file["tmp_name"],$file["name"]);
+
     }
 
 /*

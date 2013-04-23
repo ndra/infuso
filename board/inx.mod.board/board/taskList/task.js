@@ -76,7 +76,16 @@ inx.mod.board.board.taskList.task = inx.box.extend({
             $("<div>").css({height:77,padding:4,overflow:"hidden"}).html(task.text+"").appendTo(e);
     
             // Статус листика
-            $("<div>").html(task.info+"").appendTo(e).addClass("qm5btw9-status");  
+            var status = $("<div>").html(task.info+"").appendTo(e).addClass("qm5btw9-status");  
+            
+            if(task.attachment) {
+                $("<img src='/board/res/img/icons16/attachment.png' />")
+                    .css({
+                        position:"absolute",
+                        right:4,
+                        top:0
+                    }).appendTo(status);
+            }
             
             // Процент выполнения
             if(task.percentCompleted) {
@@ -90,12 +99,16 @@ inx.mod.board.board.taskList.task = inx.box.extend({
             
             // Подпись под листиком
             if(task.bottom) {
-                $("<div>").html(task.bottom+"").css({marginTop:4,opacity:.5}).appendTo(taskContainer);
+                var bottom = $("<div>").html(task.bottom+"")
+                    .css({marginTop:4,opacity:.5,position:"relative"})
+                    .appendTo(taskContainer);
             }
                 
             taskContainer.appendTo(this.el);
         
         }
+        
+        var cmp = this;
         
         // Влючаем перетаскивание файлов в задачу
         inx({
@@ -104,6 +117,8 @@ inx.mod.board.board.taskList.task = inx.box.extend({
             loader:{
                 cmd:"board/controller/task/uploadFile",
                 taskID:this.data.id
+            },oncomplete:function() {
+                cmp.owner().cmd("load");
             }
         }).cmd("render");
             
