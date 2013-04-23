@@ -143,7 +143,9 @@ class board_controller_task extends mod_controller {
             return;
         }
 
-        $task = reflex::create("board_task");
+        $task = reflex::create("board_task",array(
+            "status" => board_task_status::STATUS_DRAFT,
+		));
         return $task->id();
     }
 

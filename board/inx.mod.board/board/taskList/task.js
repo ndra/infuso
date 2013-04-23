@@ -11,13 +11,16 @@ inx.css(".qm5btw9-status{position:absolute;bottom:0;left:0;width:100%;background
 
 inx.css(".qm5btw9-hover-group .qm5btw9-background{background:rgba(255,255,0,.2);}");
 
+inx.css(".qm5btw9-new{width:100px;height:100px;cursor:pointer;background:url(/board/res/img/icons64/plus.png) center center no-repeat;opacity:.7;}");
+inx.css(".qm5btw9-new:hover{opacity:1;}");
+
 inx.mod.board.board.taskList.task = inx.box.extend({
 
     constructor:function(p) {    
-        p.width = 100;
-        p.height = 100;
         p.style = {
-            border:0
+            border:0,
+            width:100,
+            height:100
         }
         this.base(p);
     },
@@ -25,10 +28,14 @@ inx.mod.board.board.taskList.task = inx.box.extend({
     cmd_render:function() {
     
         this.base();
-        
         this.el.css({overflow:"visible"})
-    
+
         var task = this.data.data;
+        
+        if(this.data.id=="new") {
+            $("<div class='qm5btw9-new' >").appendTo(this.el);
+            return;
+        }
     
         // При наведении на задачу, подсвечиваем все задачи из того же проекта
         var taskContainer = $("<div>")

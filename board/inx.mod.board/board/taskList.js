@@ -43,10 +43,7 @@ inx.mod.board.board.taskList = inx.list.extend({
         }
                 
         data.unshift({
-            id:"new",
-            data:{
-                text:"Новая задача"
-            }            
+            id:"new"     
         });
         
     },
