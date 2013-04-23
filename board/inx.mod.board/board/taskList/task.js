@@ -33,74 +33,77 @@ inx.mod.board.board.taskList.task = inx.box.extend({
         var task = this.data.data;
         
         if(this.data.id=="new") {
+        
             $("<div class='qm5btw9-new' >").appendTo(this.el);
-            return;
-        }
+            
+        } else {
     
-        // При наведении на задачу, подсвечиваем все задачи из того же проекта
-        var taskContainer = $("<div>")
-            .addClass("qm5btw9-task")
-            .data("taskID",task.id);
-            /*.mouseover(function() {
-                $(".qm5btw9-"+task.projectID).addClass("qm5btw9-hover-group");
-            }).mouseout(function() {
-                $(".qm5btw9-"+task.projectID).removeClass("qm5btw9-hover-group");
-            }); */
+            // При наведении на задачу, подсвечиваем все задачи из того же проекта
+            var taskContainer = $("<div>")
+                .addClass("qm5btw9-task")
+                .data("taskID",task.id);
+                /*.mouseover(function() {
+                    $(".qm5btw9-"+task.projectID).addClass("qm5btw9-hover-group");
+                }).mouseout(function() {
+                    $(".qm5btw9-"+task.projectID).removeClass("qm5btw9-hover-group");
+                }); */
+        
+            var e = $("<div>")
+                .addClass("qm5btw9")
+                .appendTo(taskContainer)
+                .addClass("qm5btw9-"+task.projectID);
+                
+            if(task.my)
+                e.addClass("qm5btw9-my");
+            
+            // Цвет листика
+            if(task.color)
+                e.css({background:task.color});
+            
+            // Задачи с дэдлайном    
+            if(task.deadline) {
+                e.css({"background-image":"url(/board/res/task-time.png)"});
+            }
+            
+            // Задачи с просранным дэдлайном   
+            if(task.fuckup) {
+                e.css({"background-image":"url(/board/res/task-time-fuckup.png)"});
+            }
+                
+            var e = $("<div>").css({height:100}).addClass("qm5btw9-background").appendTo(e);
+                
+            e.click(inx.cmd(this,"editTask",{taskID:task.id}));
+            $("<div>").css({height:77,padding:4,overflow:"hidden"}).html(task.text+"").appendTo(e);
     
-        var e = $("<div>")
-            .addClass("qm5btw9")
-            .appendTo(taskContainer)
-            .addClass("qm5btw9-"+task.projectID);
+            // Статус листика
+            $("<div>").html(task.info+"").appendTo(e).addClass("qm5btw9-status");  
             
-        if(task.my)
-            e.addClass("qm5btw9-my");
+            // Процент выполнения
+            if(task.percentCompleted) {
+                $("<div>")
+                    .html("&nbsp;")
+                    .appendTo(e)
+                    .css({
+                        width:task.percentCompleted+"%"
+                    }).addClass("qm5btw9-status"); 
+            }
+            
+            // Подпись под листиком
+            if(task.bottom) {
+                $("<div>").html(task.bottom+"").css({marginTop:4,opacity:.5}).appendTo(taskContainer);
+            }
+                
+            taskContainer.appendTo(this.el);
         
-        // Цвет листика
-        if(task.color)
-            e.css({background:task.color});
-         
-        // Задачи с дэдлайном    
-        if(task.deadline) {
-            e.css({"background-image":"url(/board/res/task-time.png)"});
         }
-         
-        // Задачи с просранным дэдлайном   
-        if(task.fuckup) {
-            e.css({"background-image":"url(/board/res/task-time-fuckup.png)"});
-        }
-            
-        var e = $("<div>").css({height:100}).addClass("qm5btw9-background").appendTo(e);
-            
-        e.click(inx.cmd(this,"editTask",{taskID:task.id}));
-        $("<div>").css({height:77,padding:4,overflow:"hidden"}).html(task.text+"").appendTo(e);
-
-        // Статус листика
-        $("<div>").html(task.info+"").appendTo(e).addClass("qm5btw9-status");  
-        
-        // Процент выполнения
-        if(task.percentCompleted) {
-            $("<div>")
-                .html("&nbsp;")
-                .appendTo(e)
-                .css({
-                    width:task.percentCompleted+"%"
-                }).addClass("qm5btw9-status"); 
-        }
-        
-        // Подпись под листиком
-        if(task.bottom) {
-            $("<div>").html(task.bottom+"").css({marginTop:4,opacity:.5}).appendTo(taskContainer);
-        }
-            
-        taskContainer.appendTo(this.el);
         
         // Влючаем перетаскивание файлов в задачу
         inx({
             type:"inx.file",
-            dropArea:e,
+            dropArea:this.el,
             loader:{
                 cmd:"board/controller/task/uploadFile",
-                taskID:this.taskID
+                taskID:this.data.id
             }
         }).cmd("render");
             

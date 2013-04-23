@@ -265,8 +265,19 @@ class board_controller_task extends mod_controller {
 
     }
 
+	/**
+	 * Закачивает файл в
     public function post_uploadFile($p) {
-        mod::msg($_FILES);
+    
+        $task = board_task::get($p["taskID"]);
+        
+        // Параметры задачи
+        if(!user::active()->checkAccess("board/changeTaskStatus",array(
+            "task" => $task
+        ))) {
+            mod::msg(user::active()->errorText(),1);
+            return;
+        }
     }
 
 /*
