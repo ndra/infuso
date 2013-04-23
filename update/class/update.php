@@ -28,6 +28,17 @@ class update extends mod_controller{
         return $ret;
 	}
 
+	/**
+	 * push:
+	 * server: dev.xxx.com
+	 * login: mylogin
+	 * password: qwerty
+	 * path: ---
+	 * bundles:
+	 *   -admin
+	 *   -board
+	 *   ...
+	 **/
 	public static function post_upload() {
 		set_time_limit(0);
 		self::post_pack();
