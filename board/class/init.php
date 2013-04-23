@@ -23,7 +23,8 @@ class board_init implements mod_handler {
 
         $o = user_operation::create("board/editTask","Редактирование задачи")
             ->addBusinessRule('if(!$task->exists()) $this->error("Задача не существует"); ')
-            ->addBusinessRule('return true;');
+            ->addBusinessRule('return true;')
+			->appendTo('boardUser');
         
         user_operation::create("board/updateTaskParams","Обновление полей задачи")
             ->appendTo("board/editTask");
