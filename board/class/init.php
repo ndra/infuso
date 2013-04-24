@@ -46,6 +46,9 @@ class board_init implements mod_handler {
 
         user_operation::create("board/newTask","Создание задачи")
             ->appendTo("boardUser");
+            
+        user_operation::create("board/newHindrance","Создание помехи")
+            ->appendTo("boardUser");
 
         user_operation::create("board/sortTasks","Сортировка задач")
             ->appendTo("boardUser");

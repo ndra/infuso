@@ -138,16 +138,28 @@ class board_controller_task extends mod_controller {
 
     public function post_newTask() {
 
-        // Параметры задачи
-        if(!user::active()->checkAccess("board/newTask",array(
-            "task" => $task
-        ))) {
+        if(!user::active()->checkAccess("board/newTask")) {
             mod::msg(user::active()->errorText(),1);
             return;
         }
 
         $task = reflex::create("board_task",array(
             "status" => board_task_status::STATUS_DRAFT,
+		));
+        return $task->id();
+    }
+    
+    public function post_newDrawback() {
+
+        // Параметры задачи
+        if(!user::active()->checkAccess("board/newHindrance")) {
+            mod::msg(user::active()->errorText(),1);
+            return;
+        }
+
+        $task = reflex::create("board_task",array(
+            "status" => board_task_status::STATUS_DRAFT,
+            "hindrance" => true,
 		));
         return $task->id();
     }

@@ -218,6 +218,10 @@ class board_task extends reflex {
 
 	    $d = util::now()->stamp() - $this->pdata("deadlineDate")->stamp();
 	    $ret["fuckup"] = $ret["deadline"] && $d>0;
+	    
+	    if($this->data("hindrance")) {
+			$ret["hindrance"] = true;
+	    }
 
 	    $ret["projectID"] = $this->project()->id();
 

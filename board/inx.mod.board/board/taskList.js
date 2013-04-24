@@ -43,6 +43,10 @@ inx.mod.board.board.taskList = inx.list.extend({
         }
                 
         data.unshift({
+            id:"drawback"
+        });
+        
+        data.unshift({
             id:"new"     
         });
         
@@ -65,6 +69,11 @@ inx.mod.board.board.taskList = inx.list.extend({
             this.cmd("newTask");
             return;
         }
+        
+        if(taskID=="drawback") {
+            this.cmd("newDrawback");
+            return;
+        }
     
         var clip = this.info("itemComponent",taskID).info("param","el");
     
@@ -80,6 +89,15 @@ inx.mod.board.board.taskList = inx.list.extend({
     cmd_newTask:function() {
         this.call({
             cmd:"board/controller/task/newTask"
+        },[this.id(),"editTask"]);
+    },
+    
+    /**
+     * Создает новую помеху
+     **/
+    cmd_newDrawback:function() {
+        this.call({
+            cmd:"board/controller/task/newDrawback"
         },[this.id(),"editTask"]);
     },
     

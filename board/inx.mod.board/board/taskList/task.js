@@ -14,6 +14,9 @@ inx.css(".qm5btw9-hover-group .qm5btw9-background{background:rgba(255,255,0,.2);
 inx.css(".qm5btw9-new{width:100px;height:100px;cursor:pointer;background:url(/board/res/img/icons64/plus.png) center center no-repeat;opacity:.7;}");
 inx.css(".qm5btw9-new:hover{opacity:1;}");
 
+inx.css(".qm5btw9-drawback{width:100px;height:100px;cursor:pointer;background:url(/board/res/img/icons64/drawback.png) center center no-repeat;opacity:.7;}");
+inx.css(".qm5btw9-drawback:hover{opacity:1;}");
+
 inx.mod.board.board.taskList.task = inx.box.extend({
 
     constructor:function(p) {    
@@ -32,10 +35,18 @@ inx.mod.board.board.taskList.task = inx.box.extend({
 
         var task = this.data.data;
         
-        if(this.data.id=="new") {
+        if (this.data.id=="new") {
         
-            $("<div class='qm5btw9-new' >").appendTo(this.el);
+            $("<div class='qm5btw9-new' >")
+                .attr("title","Новая задача")
+                .appendTo(this.el);
             
+        } else if (this.data.id=="drawback") {
+        
+            $("<div class='qm5btw9-drawback' >")
+                .attr("title","Помеха")
+                .appendTo(this.el);
+        
         } else {
     
             // При наведении на задачу, подсвечиваем все задачи из того же проекта
@@ -63,11 +74,20 @@ inx.mod.board.board.taskList.task = inx.box.extend({
             // Задачи с дэдлайном    
             if(task.deadline) {
                 e.css({"background-image":"url(/board/res/task-time.png)"});
-            }
+            }            
             
             // Задачи с просранным дэдлайном   
             if(task.fuckup) {
                 e.css({"background-image":"url(/board/res/task-time-fuckup.png)"});
+            }
+            
+            // Помехи
+            if(task.hindrance) {
+                e.css({
+                    "background-image":"url(/board/res/img/hindrance.png)",
+                    backgroundRepeat:"no-repeat",
+                    backgroundPosition:"center center"
+                });
             }
                 
             var e = $("<div>").css({height:100}).addClass("qm5btw9-background").appendTo(e);

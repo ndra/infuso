@@ -192,6 +192,18 @@
       'collection' => '',
       'titleMethod' => '',
     ),
+    16 => 
+    array (
+      'editable' => 1,
+      'id' => 'inm90ocez7mv2j8g2tpaiqce6dfgi7',
+      'name' => 'hindrance',
+      'type' => 'fsxp-lhdw-ghof-1rnk-5bqp',
+      'label' => 'Помеха',
+      'group' => '',
+      'default' => '',
+      'indexEnabled' => 1,
+      'help' => '',
+    ),
   ),
   'indexes' => 
   array (
