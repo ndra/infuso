@@ -59,16 +59,6 @@ $ret = array(
 	"completed" => !!$status
 );
 
-// Если включен режим отладки, добавляем данные профайлера
-if(mod::debug()) {
-	/*
-	ob_start();
-	tmp::header();
-	tmp::footer();
-	util::profiler();
-	$r = ob_get_clean();
-	$ret["profiler"] = $r;
-	*/
-}
 
-echo json_encode($ret);
+$json = new mod_confLoader_json();
+echo $json->write($ret);
