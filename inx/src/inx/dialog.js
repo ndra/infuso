@@ -121,8 +121,9 @@ inx.dialog = inx.panel.extend({
     cmd_updatePosition:function() {
     
         // Прикрепление к родителю
-        if(this.clipToOwner) 
+        if(this.clipToOwner) {
             this.clipTo = this.owner().info("param","el");
+        }
             
         // Прикрепление к элементу            
         if(this.clipTo) {
@@ -146,12 +147,16 @@ inx.dialog = inx.panel.extend({
 
     // При синхронизации окна, обновляем его позицию    
     cmd_syncLayout:function() {
-        //this.task("updatePosition");
         this.base();
     },
     
     // Выставляем окно по прищепке
     cmd_updateClip:function() {
+    
+        if(!$(this.clipTo).filter(":visible").length) {
+            return;
+        }
+    
         var p = $(this.clipTo).offset();
         p.top += + $(this.clipTo).outerHeight();
         p.top -= $(window).scrollTop();

@@ -102,6 +102,8 @@ class board_controller_task extends mod_controller {
         return array(
             "title" => "Задача #".$task->id()." / ".$task->project()->title()." ({$task->status()->title()})",
             "text" => $task->data("text"),
+            "timeScheduled" => $task->data("timeScheduled"),
+            "projectID" => $task->data("projectID"),
             "nextStatusID" => $task->status()->next()->id(),
             "nextStatusText" => $task->status()->next()->action(),
             "statuses" => $statuses
@@ -112,9 +114,9 @@ class board_controller_task extends mod_controller {
      * Контроллер сохранения задачи
      **/
     public static function post_saveTask($p) {
-
+    
         $task = board_task::get($p["taskID"]);
-        $data = util::a($p["data"])->filter("text")->asArray();
+        $data = util::a($p["data"])->filter("text","timeScheduled","projectID")->asArray();
 
         // Параметры задачи
         if(!user::active()->checkAccess("board/updateTaskParams",array(
@@ -123,12 +125,13 @@ class board_controller_task extends mod_controller {
             mod::msg(user::active()->errorText(),1);
             return;
         }
-
+        
         foreach($data as $key=>$val) {
             $task->data($key,$val);
         }
 
         $task->logCustom("Изменение данных");
+        mod::msg("Задача сохранена");
 
         return true;
     }

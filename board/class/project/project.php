@@ -44,11 +44,11 @@ class board_project extends reflex {
 	}
 
 	// Возвращает количество отведенного на проект времени
-	public function timeSceduled($status=null) {
+	public function timeScheduled($status=null) {
 		$tasks = $this->tasks();
 		if($status!==null)
 			$tasks->eq("board_task.status",$status);
-		return $tasks->sum("timeSceduled");
+		return $tasks->sum("timeScheduled");
 	}
 
 	public function customer() {
@@ -65,11 +65,11 @@ class board_project extends reflex {
 			case 10:
 			    $count = $this->tasks()->eq(status,$status)->count();
 			    if($count)
-					$info.= "Ожидает запуска $count задач на ".$this->timeSceduled($status)." ч.";
+					$info.= "Ожидает запуска $count задач на ".$this->timeScheduled($status)." ч.";
 				break;
 
 			default:
-				$info.= "потрачено ".$this->timeSpent($status)." / ".$this->timeSceduled($status)." ч.";
+				$info.= "потрачено ".$this->timeSpent($status)." / ".$this->timeScheduled($status)." ч.";
 				break;
 		}
 		return $info;

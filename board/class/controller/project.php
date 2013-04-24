@@ -30,7 +30,7 @@ class board_controller_project extends mod_controller {
                 "text" => $project->title(),
             );
         }
-        
+
         return $ret;
 
     }
@@ -38,14 +38,14 @@ class board_controller_project extends mod_controller {
     /**
      * Возвращает простой список проектов (для выбиралки)
      **/    
-    /*public static function post_listProjectsSimple($p) {
-        $ret = array();
+    public static function post_listProjectsSimple($p) {
+    
+        if(!user::active()->checkAccess("board/viewProjectList")) {
+            mod::msg(user::active()->errorText(),1);
+            return;
+        }
 
-        if($p["optionAll"])
-            $ret[] = array(
-                "id" => "*",
-                "text" => "Все проекты",
-            );
+        $ret = array();
 
         $projects = board_project::visible()->limit(0);
 
@@ -55,8 +55,10 @@ class board_controller_project extends mod_controller {
                 "text" => $project->title(),
             );
         }
+
         return $ret;
-    }  */
+
+    }
     
     /*public static function post_getProject($p) {
         $project = board_project::get($p["projectID"]);

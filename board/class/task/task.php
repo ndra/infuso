@@ -115,8 +115,8 @@ class board_task extends reflex {
     /**
      * Возвращает планируемое время
      **/
-	public function timeSceduled() {
-        return $this->data("timeSceduled");
+	public function timeScheduled() {
+        return $this->data("timeScheduled");
     }
 
     /**
@@ -190,7 +190,7 @@ class board_task extends reflex {
 
 	    // Статусная часть стикера
 	    $ret["info"] = "";
-	    $ret["info"].= $this->timeSpent()."/".$this->timeSceduled()."ч. ";
+	    $ret["info"].= $this->timeSpent()."/".$this->timeScheduled()."ч. ";
 
 	    // Цвет стикера
 	    $ret["color"] = $this->data("color");

@@ -14,17 +14,6 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
             padding:5
         }
         
-        p.side = [{
-            type:"inx.panel",
-            width:100,
-            region:"right",
-            items:[{
-                html:"Тэги"
-            },{
-                html:"Время"
-            }]
-        }];
-        
         this.base(p);
 
         this.cmd("requestData");
@@ -108,8 +97,7 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
             onclick:[this.id(),"save"]
         });
         
-        buttons.cmd("add",{
-            type:"inx.panel",
+        buttons.cmd("add",{            
             width:120,
             style:{
                 border:0,
@@ -123,35 +111,43 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
             onclick:inx.cmd(this.id(),"changeStatus",data.nextStatusID)
         });
         
-        // Строим меню из списка статусов
-        var menu = [];
-        for(var i=0;i<data.statuses.length;i++) {
-            menu.push({
-                text:data.statuses[i].text,
-                onclick:inx.cmd(this.id(),"changeStatus",data.statuses[i].id)
-            });
-        }
-        
         buttons.cmd("add",{
             type:"inx.button",
             icon:"gear",
             air:true,
-            menu:menu
+            onclick:[this.id(),"toggleMore"]
         });
         
+        this.more = this.form.cmd("add",{
+            type:this.type+".more",
+            region:"bottom",
+            data:data,
+            hidden:true,
+            listeners:{
+                changeStatus:[this.id(),"changeStatus"]
+            }
+        });
+        
+    },
+    
+    cmd_toggleMore:function() {
+        var side = inx(this.more);
+        side.cmd(side.info("visible") ? "hide" : "show");
     },
  
     cmd_handleSave:function(ret) {
         if(ret) {
-            this.fire("change");
             this.cmd("registerChanges");
         }
     },
     
     cmd_save:function() {
+    
+        var data = this.form.info("data");
+    
         this.call({
             cmd:"board:controller:task:saveTask",
-            data:this.form.info("data"),
+            data:data,
             taskID:this.taskID,
             status:this.status
         },[this.id(),"handleSave"]);
@@ -165,7 +161,8 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
             cmd:"board/controller/task/changeTaskStatus",
             taskID:this.taskID,
             status:status
-        },[this.id(),"handleSetStatus"]);        
+        },[this.id(),"handleSetStatus"]);
+                
     },
     
     cmd_handleSetStatus:function() {
