@@ -54,9 +54,12 @@ class forum_post extends reflex {
         return $this->topic();
     }
     
+    /**
+     * Дочерние элементы для каталога
+     **/
     public function reflex_children() {
         return array(
-            $this->attachments()->title("Вложения");
+            $this->attachments()->title("Вложения"),
 		);
     }
 
@@ -189,6 +192,11 @@ class forum_post extends reflex {
             foreach (self::normalizePostFiles($_FILES['file']) as $file) {
 
                 if (!$file['name']) {
+                    continue;
+                }
+                
+                if($file["error"]!=0) {
+                    mod::msg("Не удалось закачать файл. Код: ".$file["error"],1);
                     continue;
                 }
 
