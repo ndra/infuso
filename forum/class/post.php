@@ -152,11 +152,11 @@ class forum_post extends reflex {
      **/
     public function post_create($p = null) {
 
+        $topic = reflex::get("forum_topic", $p["topic"]);
+
         if (!user::active()->exists()) {
             throw new mod_userLevelException("Вы не авторизовались");
         }
-
-        $topic = reflex::get("forum_topic", $p["topic"]);
 
         if (!$topic->exists()) {
             throw new mod_userLevelException("Темы не существует");
@@ -166,14 +166,19 @@ class forum_post extends reflex {
             throw new mod_userLevelException("Тема закрыта для новых сообщений");
         }
 
-        $post = reflex::create("forum_post");
+        $form = form::byCode("forum_post_create_msnjn4jsbj");
+        if(!$form->validate($p)) {
+            throw new mod_userLevelException("Ошибка валидации формы");
+        }
 
-        $post->data("topic", $topic->id());
+        $post = reflex::create("forum_post",array(
+            "topic" => $topic->id(),
+            "title" =>  "Re: ".$topic->title(),
+            "message" => $p["message"],
+            "userID" => user::active()->id(),
+        ));
 
-        $post->data("title", "Re: " . $topic->title());
-
-        $post->data("message", $p["message"]);
-
+        // Добавляем файлы из вложений
         if(array_key_exists("file",$_FILES)) {
             foreach (self::normalizePostFiles($_FILES['file']) as $file) {
 
@@ -190,8 +195,6 @@ class forum_post extends reflex {
 
             }
         }
-
-        $post->data("userID", user::active()->id());
 
         $params = array (
             "message" => "Новое сообщение на форуме в теме: ".$post->topic()->title(),
@@ -219,6 +222,7 @@ class forum_post extends reflex {
             user_subscription::mailByKey("forum:group:".$group->id(), $params);
         }
 
+        // редиректим к сообщению
         header("Location: " . $post->url());
         die();
 

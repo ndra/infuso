@@ -10,7 +10,7 @@ $form->hidden()->name("topic")->value($topic->id());
 
 $form->template("files");
 
-$form->textarea("message","Сообщение");
+$form->textarea("message","Сообщение")->min(5);
 
 $form->submit("Отправить");
 

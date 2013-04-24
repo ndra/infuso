@@ -32,7 +32,7 @@ class mod_post {
 			        try {
 			        	$ret = call_user_func_array(array($obj,"post_".$method),array($p,$files));
 			        } catch(mod_userLevelException $ex) {
-			            mod::msg($ex->getMessage());
+			            mod::msg($ex->getMessage(),1);
 			        }
 			        mod_component::callDeferedFunctions();
 			        return $ret;
