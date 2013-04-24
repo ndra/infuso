@@ -146,14 +146,20 @@ class board_task extends reflex {
      **/
     public function percentCompleted() {
 
-        $a = $this->subtasks()->eq("status",array(2,3))->sum("timeScheduled");
-        $b = $this->subtasks()->eq("status",array(0,1,2,3))->sum("timeScheduled");
+        $a = $this->timeSpent();
+        $b = $this->timeScheduled();
 
         if(!$b) {
             return 0;
         }
 
-        return $a / $b * 100;
+        $ret = $a / $b * 100;
+        
+        if($ret > 100) {
+			$ret = 100;
+        }
+        
+        return $ret;
     }
 
 	public function stickerData($p=array()) {
