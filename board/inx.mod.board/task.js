@@ -88,7 +88,6 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
 
         this.form.cmd("add",{
             type:"inx.mod.board.task.subtasks",
-           // name:"subtasks",
             taskID:this.taskID
         });
         
@@ -107,7 +106,7 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
             icon:"save",
             text:"Сохранить",
             onclick:[this.id(),"save"]
-        }); 
+        });
         
         buttons.cmd("add",{
             type:"inx.panel",
@@ -159,11 +158,14 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
     },
     
     cmd_changeStatus:function(status) {
+    
+        this.cmd("save");
+    
         this.call({
             cmd:"board/controller/task/changeTaskStatus",
             taskID:this.taskID,
             status:status
-        },[this.id(),"handleSetStatus"])
+        },[this.id(),"handleSetStatus"]);        
     },
     
     cmd_handleSetStatus:function() {
