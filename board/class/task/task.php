@@ -107,9 +107,10 @@ class board_task extends reflex {
 
     /**
      * Возвращает время, потраченное на задачу
+     * Суммируются время, потраченное на задачу и на субзадачи
      **/
 	public function timeSpent() {
-        return $this->data("timeSpent");
+        return $this->data("timeSpent") + $this->subtasks()->sum("timeSpent");
     }
 
     /**
