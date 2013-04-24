@@ -12,9 +12,11 @@ class forum_editor_group extends reflex_editor {
      * @return array
      **/
      public function root() {
-           return array(
-               forum_group::root()->param("sort",true)->param("starred",true)->title("Группы")->param("tab","system"),
-           );
+		return array(
+			forum_group::root()
+				->param("sort",true)
+				->title("Группы"),
+		);
      }
         
     public function beforeEdit() {

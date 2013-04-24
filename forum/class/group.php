@@ -84,7 +84,7 @@ class forum_group extends reflex {
      * @return reflex_list
      **/
     public static function root() {
-        return self::all()->eq('parent', 0)->param("tab","system");
+        return self::all()->eq('parent', 0);
     }
 
 

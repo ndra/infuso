@@ -28,5 +28,17 @@ class forum_postAttachments extends reflex {
         return in_array($ext, $typeImg);
     }
     
+    public function post() {
+        return $this->pdata("postId");
+    }
+    
+    public function reflex_parent() {
+        return $this->post();
+    }
+    
+    public function reflex_storageSource() {
+        return $this->post();
+    }
+    
     
 } //END CLASS

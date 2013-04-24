@@ -44,7 +44,7 @@ class user_editor extends reflex_editor {
         $ret = array();
 
         if(user::active()->checkAccess("user:showInCatalogMenu")) {
-            $ret[] = user::all()->title("Пользователи")->param("starred",true)->param("tab","user");
+            $ret[] = user::all()->title("Пользователи")->param("tab","user");
         }
 
         return $ret;

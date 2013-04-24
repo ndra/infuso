@@ -382,8 +382,10 @@ class reflex extends mod_model {
         $id = reflex_mysql::escape($this->id());
         reflex_mysql::query("delete `$tableName` from `$prefixedTableName` as `$tableName` where `id`='$id'");
 
-        // Очищаем хранилище
-        $this->storage()->clear();
+        // Очищаем хранилище (Если не используется чужое хранилище)
+        if($this->storage()->reflex()==$this) {
+        	$this->storage()->clear();
+        }
         
 		$event = new mod_event("reflex_afterDelete",array(
 		    "item" => $this,

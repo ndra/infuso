@@ -58,8 +58,9 @@ class reflex_storage extends mod_controller {
 	}
 
 	public function exists() {
-	    if(!$this->reflex()->exists())
+	    if(!$this->reflex()->exists()) {
 			return false;
+		}
 	    return true;
 	}
 
