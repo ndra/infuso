@@ -18,6 +18,7 @@ public static function index() {
 private $img1 = "";
 private $img2 = "";
 private $href = "";
+private $popup = "";
 public function __construct($img1=null,$img2=null) { $this->img1 = $img1; $this->img2 = $img2; }
 public static function create($img1,$img2) { return new self($img1,$img2); }
 

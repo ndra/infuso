@@ -17,7 +17,7 @@ class ndra_content extends mod_controller {
 	public static function process($src) {
 
 		// Обрабатываем контент стандартным процессором
-		$src = reflex_content::defaultProcessor($src);
+		$src = mod::service("contentProcessor")->process($src);
 
 	    if(!self::$included)
 	    tmp::exec("ndra:content.common");
