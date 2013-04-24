@@ -42,7 +42,7 @@ class ndra_slideshow_test extends mod_controller {
 		//sleep(2); // Имитируем загрузку
 
 		$data = array();
-		for($i=0;$i<10;$i++) {
+		for($i=0;$i<1;$i++) {
 
 			$r = "?".rand();
 
@@ -55,10 +55,7 @@ class ndra_slideshow_test extends mod_controller {
 		        "big" => "http://farm2.staticflickr.com/1364/4595818049_8fca1479a2_o.jpg".$r,
 			);
 
-			$data[] = array(
-		        "small" => "http://farm4.staticflickr.com/3107/2321136879_60075fbc4e_q.jpg".$r,
-		        "big" => "http://farm4.staticflickr.com/3107/2321136879_4d564c150b_o.jpg".$r,
-			);
+			
 
 		}
 

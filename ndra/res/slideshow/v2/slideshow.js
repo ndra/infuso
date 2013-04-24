@@ -358,7 +358,7 @@ ndra.slideshow = new function() {
             eBigImageContainer.html("");
 
             if(data.html)
-				ndra.slideshow.setHtml(data.html);
+                ndra.slideshow.setHtml(data.html);
 
             $(this).appendTo(eBigImageContainer);
 
@@ -432,10 +432,10 @@ ndra.slideshow = new function() {
         if(!opened)
             return;
 
-		eContent.top.css("display",eContent.top.html().length ? "block" : "none");
-		eContent.bottom.css("display",eContent.bottom.html().length ? "block" : "none");
-		eContent.left.css("display",eContent.left.html().length ? "block" : "none");
-		eContent.right.css("display",eContent.right.html().length ? "block" : "none");
+        eContent.top.css("display",eContent.top.html().length ? "block" : "none");
+        eContent.bottom.css("display",eContent.bottom.html().length ? "block" : "none");
+        eContent.left.css("display",eContent.left.html().length ? "block" : "none");
+        eContent.right.css("display",eContent.right.html().length ? "block" : "none");
 
         // Определяем высоту занимаемой слайдером полоски
         
@@ -444,7 +444,7 @@ ndra.slideshow = new function() {
         var sliderHeight = sliderVisible ? (params.previewHeight + params.previewVSpacing*2) : 0;
         eRollerContainer.css({
             display: sliderVisible ? "block" : "none"
-		});
+        });
 
         // Ширина и высота "Окна"
         var windowWidth = eRuler.width();
@@ -453,32 +453,32 @@ ndra.slideshow = new function() {
         // Позиционируем загрузчик
         var photo = eBigImageContainer.children(":visible");
         if(photo.length) {
-			eLoader.css({
-	            left:photo.offset().left + photo.width() / 2 - eLoader.width() / 2 ,
-	            top:photo.offset().top + photo.height() / 2 - eLoader.height() / 2
-	        });
+            eLoader.css({
+                left:photo.offset().left + photo.width() / 2 - eLoader.width() / 2 ,
+                top:photo.offset().top + photo.height() / 2 - eLoader.height() / 2
+            });
         } else {
-			eLoader.css({
-	            left:(windowWidth - eLoader.width())/2,
-	            top:(windowHeight - eLoader.height())/2
-	        });
+            eLoader.css({
+                left:(windowWidth - eLoader.width())/2,
+                top:(windowHeight - eLoader.height())/2
+            });
         }
         
         // Максимальные размеры лайаута
-		var maxLayoutWidth = windowWidth - params.hSpacing * 2;
-		var maxLayoutHeight = windowHeight - params.vSpacing * 2;
-		
-		// Размеры боковых панелей
-		var leftWidth = eContent.left.html().length ? eContent.left.outerWidth() : 0;
-		var rightWidth = eContent.right.html().length ? eContent.right.outerWidth() : 0;
-		var topHeight = eContent.top.html().length ? eContent.top.outerHeight() : 0;
-		var bottomHeight = eContent.bottom.html().length ? eContent.bottom.outerHeight() : 0;
-		
+        var maxLayoutWidth = windowWidth - params.hSpacing * 2;
+        var maxLayoutHeight = windowHeight - params.vSpacing * 2;
+        
+        // Размеры боковых панелей
+        var leftWidth = eContent.left.html().length ? eContent.left.outerWidth() : 0;
+        var rightWidth = eContent.right.html().length ? eContent.right.outerWidth() : 0;
+        var topHeight = eContent.top.html().length ? eContent.top.outerHeight() : 0;
+        var bottomHeight = eContent.bottom.html().length ? eContent.bottom.outerHeight() : 0;
+        
         // Максимальные размеры фотографии
         var maxPhotoWidth = maxLayoutWidth;
-		maxPhotoWidth -= leftWidth + rightWidth;
+        maxPhotoWidth -= leftWidth + rightWidth;
         var maxPhotoHeight = maxLayoutHeight;
-		maxPhotoHeight -= topHeight + bottomHeight;
+        maxPhotoHeight -= topHeight + bottomHeight;
 
         // Максимальная высота большой фотографии
         var photoWidth = 0;
@@ -521,26 +521,26 @@ ndra.slideshow = new function() {
         
         eContent.left.css({
             height:layoutHeight - (eContent.left.outerHeight() - eContent.left.height())
-		})
-		
+        })
+        
         eBigImageContainer.css({
             left:leftWidth,
             top:topHeight
-		})
-		
+        })
+        
         eContent.right.css({
             height:layoutHeight - (eContent.right.outerHeight() - eContent.right.height())
-		})
-		
+        })
+        
         eContent.top.css({
             left:leftWidth,
             width:layoutWidth - (eContent.top.outerWidth() - eContent.top.width()) - leftWidth - rightWidth
-		})
-		
+        })
+        
         eContent.bottom.css({
-			right:rightWidth,
+            right:rightWidth,
             width:layoutWidth - (eContent.bottom.outerWidth() - eContent.bottom.width()) - leftWidth - rightWidth
-		})
+        })
 
         eRollerContainer.width(windowWidth);
         
@@ -548,26 +548,26 @@ ndra.slideshow = new function() {
         
         var photo = eBigImageContainer.children();
         var o = photo.offset();
-        if(o && ndra.slideshow.count()>2) {
+        if(o && ndra.slideshow.count()>=2) {
         
-	        ePrev.css({
-	            left:photo.offset().left,
-	            top:photo.offset().top + photo.outerHeight() / 2 - 50,
-	            display:"block"
-			});
+            ePrev.css({
+                left:photo.offset().left,
+                top:photo.offset().top + photo.outerHeight() / 2 - 50,
+                display:"block"
+            });
 
-	        eNext.css({
-	            left:photo.offset().left + photo.width() - 100,
-	            top:photo.offset().top + photo.outerHeight() / 2 - 50,
-	            display:"block"
-			});
-		
-		} else {
-		
-		    ePrev.css("display","none");
-		    eNext.css("display","none");
-		
-		}
+            eNext.css({
+                left:photo.offset().left + photo.width() - 100,
+                top:photo.offset().top + photo.outerHeight() / 2 - 50,
+                display:"block"
+            });
+        
+        } else {
+        
+            ePrev.css("display","none");
+            eNext.css("display","none");
+        
+        }
 
     }
 
