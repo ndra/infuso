@@ -15,7 +15,7 @@ class forum_post extends reflex {
     public static function indexTest() {
         return true;
     }
-
+    
     /**
      * Видимость класса для POST запросов
      *
@@ -43,6 +43,30 @@ class forum_post extends reflex {
      **/
     public static function get($id) {
         return reflex::get(get_class(),$id);
+    }
+
+    /**
+     * Вывод родительской группы
+     *
+     * @return reflex
+     **/
+    public function reflex_parent() {
+        return $this->topic();
+    }
+    
+    public function reflex_children() {
+        return array(
+            $this->attachments()->title("Вложения");
+		);
+    }
+
+    /**
+     * Настройка админки Название Группы влевом меню
+     *
+     * @return array
+     **/
+    public function reflex_rootGroup() {
+        return "Форум";
     }
 
     /**
@@ -99,24 +123,6 @@ class forum_post extends reflex {
      **/
     public function topic() {
         return $this->pdata("topic");
-    }
-
-    /**
-     * Вывод родительской группы
-     *
-     * @return reflex
-     **/
-    public function reflex_parent() {
-        return $this->topic();
-    }
-
-    /**
-     * Настройка админки Название Группы влевом меню
-     *
-     * @return array
-     **/
-    public function reflex_rootGroup() {
-        return "Форум";
     }
 
     /**
