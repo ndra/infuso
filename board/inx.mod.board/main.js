@@ -17,6 +17,14 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
         
         p.items = [this.tabs];
         
+        p.side = [{
+            type:"inx.iframe",
+            region:"right",
+            src:"/board_controller_informer",
+            width:300,
+            resizable:true
+        }];
+        
         this.base(p); 
         this.cmd("load");
         this.on("editProject",[this.id(),"editProject"]);
