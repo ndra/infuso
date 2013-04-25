@@ -47,7 +47,7 @@ class board_task extends reflex {
 	public function reflex_children() {
 	    return array(
 	        $this->getLogCustom()->title("Затраченное время"),
-            $this->subtasks()->title("Подзадачи")
+            $this->subtasks()->title("Подзадачи"),
 	    );
 	}
 

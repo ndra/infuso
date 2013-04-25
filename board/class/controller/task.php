@@ -106,6 +106,7 @@ class board_controller_task extends mod_controller {
             "projectID" => $task->data("projectID"),
             "nextStatusID" => $task->status()->next()->id(),
             "nextStatusText" => $task->status()->next()->action(),
+            "currentStatus" => $task->status()->id(),
             "statuses" => $statuses
         );
     }
@@ -188,19 +189,19 @@ class board_controller_task extends mod_controller {
             board_task_status::STATUS_CHECKOUT
         );
 
-        foreach($task->subtasks()->eq("status",$statusList) as $subtask) {
+        foreach($task->subtasks()->eq("status",$statusList)->asc("status")->asc("priority",true) as $subtask) {
 
             $text = $subtask->data("text");
 
             if($subtask->status()->id()==board_task_status::STATUS_IN_PROGRESS) {
-                $text.= " <nobr><img style='vertical-align:middle;' src='{$subtask->responsibleUser()->userpick()->preview()}' /> ";
+                $text.= " <nobr><img style='vertical-align:middle;' src='{$subtask->responsibleUser()->userpick()->preview(16,16)}' /> ";
                 $text.= "{$subtask->responsibleUser()->title()}</nobr>";
             }
 
             $ret[] = array(
                 "id" => $subtask->id(),
                 "text" => $subtask->data("priority").". ".$text,
-                "timeScheduled" => $subtask->data("timeScheduled"),
+                "timeScheduled" => $subtask->timeSpent()." / ".$subtask->data("timeScheduled"),
                 "completed" => $subtask->data("status") == 2,
             );
         }

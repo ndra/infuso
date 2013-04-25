@@ -5,7 +5,7 @@ inx.mod.board.reports.infograph = inx.panel.extend({
 
     constructor:function(p) {
         this.base(p); 
-        inx.hotkey("f5",this.id(),"handleF5");
+        inx.hotkey("f5",[this.id(),"handleF5"]);
         this.task("load");
     },
     

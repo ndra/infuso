@@ -12,8 +12,8 @@ class board_controller_project extends mod_controller {
     /**
      * Возвращает список проектов
      **/
-    public function post_listProjects() {
-
+    public function post_listProjects($p) {
+    
         // Параметры задачи
         if(!user::active()->checkAccess("board/viewProjectList")) {
             mod::msg(user::active()->errorText(),1);
@@ -48,6 +48,9 @@ class board_controller_project extends mod_controller {
         $ret = array();
 
         $projects = board_project::visible()->limit(0);
+        if($search = trim($p["search"])) {
+            $projects->like("title",$search);
+        }
 
         foreach($projects as $project) {
             $ret[] = array(

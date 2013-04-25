@@ -45,6 +45,8 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
             return;
         }
         
+        this.currentStatus = data.currentStatus;
+        
         this.items().cmd("destroy");
         
         this.form = inx({
@@ -155,12 +157,19 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
     
     cmd_changeStatus:function(status) {
     
+        var time = 0;
+    
+        if(this.currentStatus==1) {
+            var time = prompt("Сколько было потрачено времени?");
+        }
+    
         this.cmd("save");
     
         this.call({
             cmd:"board/controller/task/changeTaskStatus",
             taskID:this.taskID,
-            status:status
+            status:status,
+            time:time
         },[this.id(),"handleSetStatus"]);
                 
     },

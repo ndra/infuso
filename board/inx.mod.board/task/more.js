@@ -26,7 +26,8 @@ inx.mod.board.task.more = inx.panel.extend({
             label:"Планирую (ч.)"
         });
         this.cmd("add",{            
-            type:"inx.select",
+            type:"inx.combo",
+            width:150,
             value:data.projectID,
             name:"projectID",
             loader:{
