@@ -46,11 +46,11 @@ class mod_mailer extends mod_service {
 
     /**
      * Добавляет заголовок в письмо
-     **/
-    public function addHeader($header=null) {
-        $header = $this->param("headers");
-        $header[] = $header;
-        $this->param("header",$header);
+     */
+    public function addHeader($header) {
+        $headers = $this->param("headers");
+        $headers[] = $header;
+        $this->param("headers",$headers);
         return $this;
     }
     

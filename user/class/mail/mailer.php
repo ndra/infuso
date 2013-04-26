@@ -80,10 +80,10 @@ class user_mailer extends mod_component {
 
     /**
      * Добавляет заголовок в письмо
-     **/
-    public function addHeaders($headers=null) {
-        $header = $this->param("headers");
-        $headers[] = $headers;
+     */
+    public function addHeaders($header) {
+        $headers = $this->param("headers");
+        $headers[] = $header;
         $this->param("headers",$headers);
         return $this;
     }
