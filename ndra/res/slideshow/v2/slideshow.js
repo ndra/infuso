@@ -79,6 +79,7 @@ ndra.slideshow = new function() {
 
         $("body,html").addClass("dw92npeij81-body");
 
+        // Фиксированный див на весь экран
         eWindow = $("<div>").addClass("dw92npeij81").appendTo("body");
 
         eRuler = $("<div>").appendTo(eWindow);
@@ -210,11 +211,11 @@ ndra.slideshow = new function() {
         $("body,html").removeClass("dw92npeij81-body");
         opened = false;
     }
-    
+
     this.showSlider = function() {
         sliderVisible = true;
     }
-    
+
     this.hideSlider = function() {
         sliderVisible = false;
     }
@@ -247,7 +248,7 @@ ndra.slideshow = new function() {
             .mouseover(function(){ $(this).stop(true).animate({opacity:.5},300); })
             .mouseout(function(){ $(this).stop(true).animate({opacity:1},300); });
         }
-        
+
     }
 
     /**
@@ -345,7 +346,7 @@ ndra.slideshow = new function() {
             position:"absolute",
             display:"none"
         }).load(function() {
-        
+
             eLayout.show();
 
             var width = $(this).width();
@@ -438,7 +439,7 @@ ndra.slideshow = new function() {
         eContent.right.css("display",eContent.right.html().length ? "block" : "none");
 
         // Определяем высоту занимаемой слайдером полоски
-        
+
         // Слайдер виден если высота экрана > 600 есть более одной фотографии
         sliderVisible = $(window).height()>600 && ndra.slideshow.count() > 1;
         var sliderHeight = sliderVisible ? (params.previewHeight + params.previewVSpacing*2) : 0;
@@ -449,7 +450,7 @@ ndra.slideshow = new function() {
         // Ширина и высота "Окна"
         var windowWidth = eRuler.width();
         var windowHeight = $(window).height() - sliderHeight;
-        
+
         // Позиционируем загрузчик
         var photo = eBigImageContainer.children(":visible");
         if(photo.length) {
@@ -463,17 +464,17 @@ ndra.slideshow = new function() {
                 top:(windowHeight - eLoader.height())/2
             });
         }
-        
+
         // Максимальные размеры лайаута
         var maxLayoutWidth = windowWidth - params.hSpacing * 2;
         var maxLayoutHeight = windowHeight - params.vSpacing * 2;
-        
+
         // Размеры боковых панелей
         var leftWidth = eContent.left.html().length ? eContent.left.outerWidth() : 0;
         var rightWidth = eContent.right.html().length ? eContent.right.outerWidth() : 0;
         var topHeight = eContent.top.html().length ? eContent.top.outerHeight() : 0;
         var bottomHeight = eContent.bottom.html().length ? eContent.bottom.outerHeight() : 0;
-        
+
         // Максимальные размеры фотографии
         var maxPhotoWidth = maxLayoutWidth;
         maxPhotoWidth -= leftWidth + rightWidth;
@@ -483,13 +484,13 @@ ndra.slideshow = new function() {
         // Максимальная высота большой фотографии
         var photoWidth = 0;
         var photoHeight = 0;
-        
+
         // Определяем реальные размеры фотографии
         eBigImageContainer.children().each(function() {
 
             var k1 = maxPhotoWidth / maxPhotoHeight;
             var k2 = $(this).data("width") / $(this).data("height");
-            
+
             if(k1>k2) {
                 $(this).css({
                     width:"auto",
@@ -504,69 +505,72 @@ ndra.slideshow = new function() {
 
             photoWidth = Math.max(photoWidth,$(this).width());
             photoHeight = Math.max(photoHeight,$(this).height());
-            
+
         });
-        
+
         var layoutWidth = photoWidth + leftWidth + rightWidth;
         var layoutHeight = photoHeight + topHeight + bottomHeight;
-            
+
         eLayout.css({
             width:layoutWidth,
             height:layoutHeight,
             left:(windowWidth - layoutWidth)/2,
             top:(windowHeight - layoutHeight)/2,
         });
-        
+
         // Устанавливаем размеры боковых панелей и контейнера
-        
+
         eContent.left.css({
             height:layoutHeight - (eContent.left.outerHeight() - eContent.left.height())
         })
-        
+
         eBigImageContainer.css({
             left:leftWidth,
             top:topHeight
         })
-        
+
         eContent.right.css({
             height:layoutHeight - (eContent.right.outerHeight() - eContent.right.height())
         })
-        
+
         eContent.top.css({
             left:leftWidth,
             width:layoutWidth - (eContent.top.outerWidth() - eContent.top.width()) - leftWidth - rightWidth
         })
-        
+
         eContent.bottom.css({
             right:rightWidth,
             width:layoutWidth - (eContent.bottom.outerWidth() - eContent.bottom.width()) - leftWidth - rightWidth
         })
 
         eRollerContainer.width(windowWidth);
-        
+
         // Позиционируем стрелки
-        
+
         var photo = eBigImageContainer.children();
         var o = photo.offset();
         if(o && ndra.slideshow.count()>=2) {
-        
+
+            var pleft = photo.offset().left - eWindow.offset().left;
+            var ptop = photo.offset().top - eWindow.offset().top;
+
             ePrev.css({
-                left:photo.offset().left,
-                top:photo.offset().top + photo.outerHeight() / 2 - 50,
+                left:pleft,
+                top:ptop + photo.outerHeight() / 2 - 50,
                 display:"block"
             });
 
             eNext.css({
-                left:photo.offset().left + photo.width() - 100,
-                top:photo.offset().top + photo.outerHeight() / 2 - 50,
+                left:pleft + photo.width() - 100,
+                top:ptop + photo.outerHeight() / 2 - 50,
                 display:"block"
             });
-        
+
         } else {
-        
+
             ePrev.css("display","none");
             eNext.css("display","none");
-        
+
         }
 
     }
