@@ -331,12 +331,15 @@ inx.list = inx.panel.extend({
             return;
         }
     
-        if(!data.data)
+        if(!data.data) {
             data.data = inx.deepCopy(data);
+        }
+    
+        this.fire("load",data);
     
         this.cmd("setData",data.data);
         this.cmd("setCols",data.cols);
-        this.fire("load",data);
+        
     },
 
     /**
