@@ -130,6 +130,12 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
             }
         });
         
+        this.cmd("addSidePanel",{
+            type:this.type+".attachments",
+            taskID:this.taskID,
+            region:"bottom"
+        })
+        
     },
     
     cmd_toggleMore:function() {

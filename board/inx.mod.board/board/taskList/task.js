@@ -142,7 +142,7 @@ inx.mod.board.board.taskList.task = inx.box.extend({
             type:"inx.file",
             dropArea:this.el,
             loader:{
-                cmd:"board/controller/task/uploadFile",
+                cmd:"board/controller/attachment/uploadFile",
                 taskID:this.data.id
             },oncomplete:function() {
                 cmp.owner().cmd("load");

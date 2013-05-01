@@ -56,6 +56,9 @@ class board_init implements mod_handler {
        user_operation::create("board/viewAllTasks","Просмотр всех задач")
             ->appendTo("boardUser");
 
+       user_operation::create("board/listTaskAttachments","Получение списка вложений для задачи")
+            ->appendTo("board/editTask");
+
        user_operation::create("board/uploadFile","Закачивание файла в задачу")
             ->appendTo("board/editTask");
         
