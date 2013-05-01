@@ -31,24 +31,27 @@ inx.mod.board.board.taskList = inx.list.extend({
     },
     
     cmd_handleLoad:function(data) {
+    
         this.sortEnabled = data.sortable;
+        
+        if (data.showCreateButton) {
+                
+            data.data.unshift({
+                id:"drawback"
+            });
+            
+            data.data.unshift({
+                id:"new"     
+            });
+
+        }
+        
     },
     
     cmd_handleData:function(data,fullData) {
     
-        for(var i in data) {
-            if(data[i].id=="new") {
-                return;
-            }
-        }
-                
-        data.unshift({
-            id:"drawback"
-        });
-        
-        data.unshift({
-            id:"new"     
-        });
+
+
         
     },
     

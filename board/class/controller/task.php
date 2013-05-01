@@ -43,6 +43,8 @@ class board_controller_task extends mod_controller {
 
         $ret["pages"] = $tasks->pages();
         $ret["sortable"] = $status->sortable();
+        $ret["showCreateButton"] = $status->showCreateButton();
+
 
         return $ret;
     }

@@ -168,4 +168,14 @@ class board_task_status extends mod_controller {
         return $ret[$key];
     }
 
+    /**
+     * Нужно ли выводить иконку создания задачи в списке задач
+     **/
+    public function showCreateButton() {
+        if($this->id()==self::STATUS_NEW) {
+            return true;
+        }
+        return false;
+    }
+
 }
