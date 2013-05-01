@@ -17,6 +17,7 @@ inx.mod.board.board.taskList = inx.list.extend({
         }
         
         p.style.spacing = 10;
+        p.style.valign = "top";
         
         p.sortable = true;
         this.on("sortcomplete",[this.id(),"handleSortComplete"]);
@@ -25,7 +26,6 @@ inx.mod.board.board.taskList = inx.list.extend({
         this.base(p);
         
         this.on("itemclick",[this.id(),"handleItemClick"]);
-        this.on("data",[this.id(),"handleData"]);
         this.on("load",[this.id(),"handleLoad"])
         
     },
@@ -45,13 +45,6 @@ inx.mod.board.board.taskList = inx.list.extend({
             });
 
         }
-        
-    },
-    
-    cmd_handleData:function(data,fullData) {
-    
-
-
         
     },
     

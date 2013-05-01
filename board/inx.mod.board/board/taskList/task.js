@@ -120,8 +120,15 @@ inx.mod.board.board.taskList.task = inx.box.extend({
             // Подпись под листиком
             if(task.bottom) {
                 var bottom = $("<div>").html(task.bottom+"")
-                    .css({marginTop:4,opacity:.5,position:"relative"})
+                    .css({
+                        marginTop:4,
+                        opacity:.5,
+                        position:"relative",
+                        overflow:"hidden"
+                    })
                     .appendTo(taskContainer);
+                    
+                this.style("height",120);
             }
                 
             taskContainer.appendTo(this.el);
