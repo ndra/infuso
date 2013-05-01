@@ -104,6 +104,7 @@ class board_controller_task extends mod_controller {
             "text" => $task->data("text"),
             "timeScheduled" => $task->data("timeScheduled"),
             "projectID" => $task->data("projectID"),
+            "projectTitle" => $task->project()->title(),
             "nextStatusID" => $task->status()->next()->id(),
             "nextStatusText" => $task->status()->next()->action(),
             "currentStatus" => $task->status()->id(),

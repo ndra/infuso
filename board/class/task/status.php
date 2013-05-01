@@ -24,7 +24,6 @@ class board_task_status extends mod_controller {
     		"active" => true,
     		"stickerParams" => array(
     		    "sort" => true,
-    		    "showVoidProjects" => true,
     		    "showHang" => true,
     		),
     	),
@@ -59,7 +58,6 @@ class board_task_status extends mod_controller {
     		"active" => true,
     		"stickerParams" => array(
     		    "sort" => true,
-    		    "showVoidProjects" => true,
     		),
     	),
         self::STATUS_CANCELLED => array(

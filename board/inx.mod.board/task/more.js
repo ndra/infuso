@@ -29,6 +29,7 @@ inx.mod.board.task.more = inx.panel.extend({
             type:"inx.combo",
             width:150,
             value:data.projectID,
+            text:data.projectTitle,
             name:"projectID",
             loader:{
                 cmd:"board/controller/project/listProjectsSimple"
