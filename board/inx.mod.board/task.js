@@ -79,6 +79,9 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
 
         this.form.cmd("add",{
             type:"inx.mod.board.task.subtasks",
+            listeners:{
+                change:[this.id(),"registerChanges"]
+            },
             taskID:this.taskID
         });
         

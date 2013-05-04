@@ -24,7 +24,7 @@ inx.mod.board.task.subtasks = inx.list.extend({
             taskID:p.taskID,
             region:"bottom",
             listeners:{
-                subtaskAdded:[this.id(),"load"]
+                subtaskAdded:[this.id(),"handleChanges"]
             }
         }]
         
@@ -151,7 +151,7 @@ inx.mod.board.task.subtasks = inx.list.extend({
             taskID:taskID,
             status:2,
             time:h
-        },[this.id(),"load"])
+        },[this.id(),"handleChanges"])
         
     },
     
@@ -168,12 +168,12 @@ inx.mod.board.task.subtasks = inx.list.extend({
             cmd:"board/controller/task/changeTaskStatus",
             taskID:taskID,
             status:100
-        },[this.id(),"load"])
+        },[this.id(),"handleChanges"])
         
     },
     
     /**
-     * Удаление подзадачи. Открывает окно с подтверждением
+     * Посылает команду «Я буду делать задачу»
      **/
     cmd_doEpicSubtask:function(taskID) {
         
@@ -181,8 +181,13 @@ inx.mod.board.task.subtasks = inx.list.extend({
             cmd:"board/controller/task/changeTaskStatus",
             taskID:taskID,
             status:1
-        },[this.id(),"load"])
+        },[this.id(),"handleChanges"])
         
+    },
+    
+    cmd_handleChanges:function() {
+        this.fire("change");
+        this.cmd("load");
     },
     
     cmd_handleSortComplete:function() {

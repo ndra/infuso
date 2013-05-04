@@ -141,6 +141,10 @@ class board_task extends reflex {
 	    return round((util::now()->stamp() - $this->pdata("changed")->stamp())/60/60/24);
 	}
 
+    public function isEpic() {
+        return !$this->subtasks()->void();
+    }
+
     /**
      * Возвращает процент выполненния задачи
      **/
@@ -225,11 +229,7 @@ class board_task extends reflex {
 
 	    $ret["projectID"] = $this->project()->id();
 
-        // Сортируются ли задачи в этом статусе
-	    $ret["sort"] = $this->status()->stickerParam("sort");
-	    if($p["sort"]===false || $p["sort"]===0) {
-	        $ret["sort"] = false;
-        }
+        $ret["epic"] = $this->isEpic();
 
         // Наличие прикрепленных файлов
         if($this->storage()->files()->count()) {

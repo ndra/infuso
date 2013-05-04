@@ -5,7 +5,7 @@
 
 inx.css(".qm5btw9-task{font-size:11px;}");
 
-inx.css(".qm5btw9{overflow:hidden;position:relative;cursor:pointer;height:100%;border:1px solid #cccccc;box-shadow:0px 0px 5px rgba(0, 0, 0, 0.1);}");
+inx.css(".qm5btw9{overflow:hidden;position:relative;cursor:pointer;height:100%;background:white;border:1px solid #cccccc;box-shadow:0px 0px 5px rgba(0, 0, 0, 0.1);}");
 inx.css(".qm5btw9:hover{border:1px solid gray;}");
 inx.css(".qm5btw9-status{position:absolute;bottom:0;left:0;width:100%;background:rgba(0,0,0,.2);color:white;padding:2px 1px 1px 2px;fontWeight:bold}");
 
@@ -58,6 +58,35 @@ inx.mod.board.board.taskList.task = inx.box.extend({
                 }).mouseout(function() {
                     $(".qm5btw9-"+task.projectID).removeClass("qm5btw9-hover-group");
                 }); */
+                
+            if(task.epic) {
+                
+                $("<div>")
+                    .css({
+                        width:98,
+                        height:100,
+                        border:"1px solid rgba(0,0,0,.2)",
+                        background:"white",
+                        position:"absolute",
+                        left:6,
+                        top:6
+                    })
+                    .appendTo(taskContainer);
+                    
+                $("<div>")
+                    .css({
+                        width:98,
+                        height:100,
+                        border:"1px solid rgba(0,0,0,.2)",
+                        background:"white",
+                        position:"absolute",
+                        left:3,
+                        top:3
+                    })
+                    .appendTo(taskContainer);
+            
+            }    
+
         
             var e = $("<div>")
                 .addClass("qm5btw9")
