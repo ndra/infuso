@@ -37,7 +37,23 @@ class board_controller_task extends mod_controller {
         // Задачи по цветам
         $stickerParams = $status->stickerParams();
         $stickerParams["showProject"] = true;
+
+        $lastChange = null;
+
         foreach($tasks as $task) {
+
+            // Вывод дат
+            if($status->showDates()) {
+                $changeDate = $task->pdata("changed")->date()->txt();
+                if($lastChange != $changeDate) {
+                    $ret["data"][] = array(
+                        "text" => $changeDate,
+                        "dateMark" => $changeDate,
+                    );
+                    $lastChange = $changeDate;
+                }
+            }
+
             $ret["data"][] = $task->stickerData($stickerParams);
         }
 

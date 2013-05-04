@@ -178,4 +178,11 @@ class board_task_status extends mod_controller {
         return false;
     }
 
+    public function showDates() {
+        if(in_array($this->id(),array(self::STATUS_COMPLETED,self::STATUS_CANCELLED))) {
+            return true;
+        }
+        return false;
+    }
+
 }

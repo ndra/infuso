@@ -193,6 +193,7 @@ inx.box = inx.observable.extend({
                 case "autoWidth":
                 case "titleMargin":
                 case "valign":
+                case "break":
                     this.task("syncLayout");
                     break;                    
                     

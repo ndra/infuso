@@ -47,6 +47,15 @@ inx.mod.board.board.taskList.task = inx.box.extend({
                 .attr("title","Помеха")
                 .appendTo(this.el);
         
+        }
+        
+        // Отметка даты
+        else if (this.data.dateMark) {
+            $("<div class='qm5btw9-date-mark' >")
+                .appendTo(this.el)
+                .html(this.data.dateMark);
+            this.style("break",true).style("width","parent").style("height","content");
+                
         } else {
     
             // При наведении на задачу, подсвечиваем все задачи из того же проекта

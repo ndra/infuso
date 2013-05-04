@@ -66,9 +66,15 @@ inx.layout.column = {
         var clientWidth = this.info("clientWidth");
         this.items().each(function() {
         
+            if(this.style("break")) {
+                completeLine();
+            }
+        
             e = this.data("layoutContainer");
             
             if(this.info("visible")) {
+            
+                this.cmd("width",clientWidth);
             
                 var width = this.info("width");
                 
