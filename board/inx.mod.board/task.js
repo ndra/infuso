@@ -110,11 +110,13 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
             }
         });
         
-        buttons.cmd("add",{
-            type:"inx.button",
-            text:data.nextStatusText,
-            onclick:inx.cmd(this.id(),"changeStatus",data.nextStatusID)
-        });
+        if(data.nextStatusID) {
+            buttons.cmd("add",{
+                type:"inx.button",
+                text:data.nextStatusText,
+                onclick:inx.cmd(this.id(),"changeStatus",data.nextStatusID)
+            });
+        }
         
         buttons.cmd("add",{
             type:"inx.button",
