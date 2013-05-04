@@ -27,7 +27,9 @@ inx.mod.board.board.taskList = inx.list.extend({
         this.base(p);
         
         this.on("itemclick",[this.id(),"handleItemClick"]);
-        this.on("load",[this.id(),"handleLoad"])
+        this.on("load",[this.id(),"handleLoad"]);
+        
+        inx.hotkey("f5",[this.id(),"handleF5"]);
         
     },
     
@@ -47,6 +49,11 @@ inx.mod.board.board.taskList = inx.list.extend({
 
         }
         
+    },
+    
+    cmd_handleF5:function() {
+        this.cmd("load");
+        return false;
     },
     
     info_itemType:function() {
