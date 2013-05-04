@@ -427,8 +427,11 @@ inx.list = inx.panel.extend({
      * Передвигает выделение на одну строку вниз
      * mode пробрасывается в метод select
      **/    
-    cmd_selectUp:function(mode) {
-        var pos = this.info("position")-1;
+    cmd_selectUp:function(id) {
+    
+        var id = this.info("selection")[0];
+    
+        var pos = this.info("position",id)-1;
         this.cmd("setPosition",pos,mode);
     },
     
@@ -436,8 +439,11 @@ inx.list = inx.panel.extend({
      * Передвигает выделение на одну строку вниз
      * mode пробрасывается в метод select
      **/
-    cmd_selectDown:function(mode) {
-        var pos = this.info("position",true)+1;
+    cmd_selectDown:function(id) {
+    
+        var id = this.info("selection").slice(-1)[0];
+    
+        var pos = this.info("position",id)+1;
         this.cmd("setPosition",pos,mode);
     },
     
@@ -460,16 +466,13 @@ inx.list = inx.panel.extend({
      * Нумерация с нуля
      * Если аргумент == true, возвращает позицию последнего выделенного элемента
      **/
-    info_position:function(last) {
-        var ret = -1;
-        for(var i in this.data) {
-            if(this.private_selection[this.data[i].id]) {
-                ret = i*1;
-                if(!last)
-                    break;
+    info_position:function(id) {
+        for(var i=0;i<this.data.length;i++) {
+            if(this.data[i].id == id) {
+                return i*1;
             }
         }
-        return ret;
+        return -1;
     },
     
     /**
@@ -674,7 +677,7 @@ inx.list = inx.panel.extend({
      * Ставит выбранный элемент на требуемую позицию
      **/    
     cmd_moveItem:function(id,position) { 
-       
+           
         var item = this.info("item",id);
         if(!item) {
             return;
@@ -683,10 +686,15 @@ inx.list = inx.panel.extend({
         var xid = this.info("itemComponent",id).id();
         
         pos = this.info("position",id);
-        if(pos==position)
+        if(pos==position) {
             return;
+        }
+        
+        inx.arrayMove(this.private_items,pos,position);
+        inx.arrayMove(this.data,pos,position)
             
-        var newItems = [];
+        /*var newItems = [];
+        var newData = [];
         var set = false;
         var n = 0;
         
@@ -695,29 +703,30 @@ inx.list = inx.panel.extend({
         
             if(n==position) {
                 newItems.push(xid);
+                newData.push(this.data[pos]);
                 set = true;
                 n++;
             }
         
             if(this.private_items[i]!=xid) {
                 newItems.push(this.private_items[i]);
+                newData.push(this.data[i]);
                 n++;
             }
                 
         }
        
-        if(!set)
+        if(!set) {
             newItems.push(xid);
-            
+        }   
             
         this.private_items = newItems;
+        this.data = newData;
+        
+        inx.msg(newData.length) */
           
         this.task("updateItemsLayout");
 
-    },
-    
-    cmd_updateData:function() {
-        this.cmd("setData",this.private_newData);
     },
     
     cmd_deleteSelectedItem:function() {
