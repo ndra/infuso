@@ -52,6 +52,7 @@ inx.focusManager = new function() {
     
     this.handleMousedown = function(e) {
         inx.focusManager.lastEvent = e;
+        inx.focusManager.clickEnabled = true;
         var cmp = inx.cmp.fromElement(e.target);
         cmp.cmd("mousedown",e);
         inx.focusManager.focus(cmp.id());
@@ -63,6 +64,11 @@ inx.focusManager = new function() {
     }    
     
     this.handleClick = function(e) {
+    
+        if(!inx.focusManager.clickEnabled) {
+            return;
+        }
+    
         var cmp = inx.cmp.fromElement(e.target);
         //cmp.cmd("click",e);
         cmp.cmd("click",e);

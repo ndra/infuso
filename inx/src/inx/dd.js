@@ -126,18 +126,16 @@ inx.dd = {
         // Передаем управление обработчику событий мыши    
         inx.dd.handleMouseEvent(event);   
         return;     
+        
+        var element = params.element;
     
-        
-        
-            var element = params.element;
-        
-            // Если пользователь кликнул на скроллбар не начинаем перетаскивание,
-            // т.к. в этом случае нельзя отследить отпускание мышки                  
-            var o = $(params.element.target).css("overflow");
-            if(o=="auto" || o=="scroll") {
-                if(event.offsetX >= event.target.clientWidth) return false;
-                if(event.offsetY >= event.target.clientHeight) return false;  
-            }
+        // Если пользователь кликнул на скроллбар не начинаем перетаскивание,
+        // т.к. в этом случае нельзя отследить отпускание мышки                  
+        var o = $(params.element.target).css("overflow");
+        if(o=="auto" || o=="scroll") {
+            if(event.offsetX >= event.target.clientWidth) return false;
+            if(event.offsetY >= event.target.clientHeight) return false;  
+        }
         
          
     },
@@ -237,7 +235,10 @@ inx.dd = {
         if(params.phase==="start") {
             if(ret===false) {
                 inx.dd.current = {}
-            } else {    
+            } else {  
+            
+                // Если начали перетаскивание - запрещаем событие клик
+                inx.focusManager.clickEnabled = false;  
             
                 if(params.helper) {
                     inx.dd.showHelper();        

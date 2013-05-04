@@ -692,38 +692,7 @@ inx.list = inx.panel.extend({
         
         inx.arrayMove(this.private_items,pos,position);
         inx.arrayMove(this.data,pos,position)
-            
-        /*var newItems = [];
-        var newData = [];
-        var set = false;
-        var n = 0;
-        
-        
-        for(var i=0;i<this.private_items.length;i++) {
-        
-            if(n==position) {
-                newItems.push(xid);
-                newData.push(this.data[pos]);
-                set = true;
-                n++;
-            }
-        
-            if(this.private_items[i]!=xid) {
-                newItems.push(this.private_items[i]);
-                newData.push(this.data[i]);
-                n++;
-            }
-                
-        }
-       
-        if(!set) {
-            newItems.push(xid);
-        }   
-            
-        this.private_items = newItems;
-        this.data = newData;
-        
-        inx.msg(newData.length) */
+           
           
         this.task("updateItemsLayout");
 
