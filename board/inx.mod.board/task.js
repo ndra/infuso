@@ -127,7 +127,7 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
             type:this.type+".more",
             region:"bottom",
             data:data,
-            hidden:true,
+            hidden:!this.showMore,
             listeners:{
                 changeStatus:[this.id(),"changeStatus"]
             }
