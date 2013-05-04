@@ -281,6 +281,22 @@ inx.deepCopy = function(obj) {
 
 }
 
+inx.arrayMove = function (a, old_index, new_index) {
+    while (old_index < 0) {
+        old_index += a.length;
+    }
+    while (new_index < 0) {
+        new_index += a.length;
+    }
+    if (new_index >= a.length) {
+        var k = new_index - a.length;
+        while ((k--) + 1) {
+            a.push(undefined);
+        }
+    }
+    a.splice(new_index, 0, a.splice(old_index, 1)[0]);
+};
+
 inx.__nextId = 0;
 inx.id = function() {
     inx.__nextId++;
