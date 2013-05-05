@@ -1,4 +1,4 @@
-// @include inx.dialog,inx.form
+// @include inx.dialog,inx.form,inx.textarea
 
 inx.ns("inx.mod.board").task = inx.dialog.extend({
 
