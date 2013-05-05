@@ -2,6 +2,8 @@
 
 inx.css(".vbjm1zdmgr-button{cursor:pointer;white-space:nowrap;border:none;float:left;padding:3px 4px 3px 4px;height:16px;border-radius:5px;}");
 inx.css(".vbjm1zdmgr-button-hover{box-shadow:0 0 2px rgba(0,0,0,.4) inset;}");
+inx.css(".vbjm1zdmgr-button:hover{background:rgba(255,255,255,.4);}");
+
 
 
 inx.button = inx.box.extend({
