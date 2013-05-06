@@ -12,6 +12,13 @@ inx.mod.board.task.attachments = inx.list.extend({
     
         this.base(p);
         
+        this.on("itemdblclick",[this.id(),"handleDblClick"]);
+        
+    },
+    
+    cmd_handleDblClick:function(id) {
+        var url = this.info("item",id,"url");
+        window.open(url);
     }
      
 });

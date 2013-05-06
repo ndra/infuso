@@ -110,7 +110,7 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
             }
         });
         
-        if(data.nextStatusID) {
+        if(data.nextStatusID!==null) {
             buttons.cmd("add",{
                 type:"inx.button",
                 text:data.nextStatusText,

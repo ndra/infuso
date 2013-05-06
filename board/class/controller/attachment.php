@@ -29,6 +29,7 @@ class board_controller_attachment extends mod_controller {
         foreach($task->storage()->files() as $file) {
             $ret[] = array(
                 "text" => $file->name(),
+                "url" => $file->url(),
             );
         }
 
