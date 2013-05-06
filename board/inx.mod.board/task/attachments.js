@@ -11,6 +11,12 @@ inx.mod.board.task.attachments = inx.list.extend({
         }
         
         p.layout = "inx.layout.column";
+        
+        if(!p.style) {
+            p.style = {};
+        }
+        
+        p.style.maxHeight = 200;
     
         this.base(p);
         
@@ -26,11 +32,19 @@ inx.mod.board.task.attachments = inx.list.extend({
     
     renderer:function(e,data) {
     
-        var container = $("<div>").css({
+        var preview = $("<div>").css({
             width:100,
             height:100,
             background:"url("+data.preview+") center center no-repeat"
         }).appendTo(e);
+        
+        var text = $("<div>").css({
+            textAlign:"center",
+            "text-overflow":"ellipsis",
+            overflow:"hidden",
+            fontSize:11,
+            width:100
+        }).html(data.name+"").appendTo(e);
     
     },
     

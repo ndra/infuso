@@ -30,6 +30,7 @@ class board_controller_attachment extends mod_controller {
             $ret[] = array(
                 "text" => $file->name(),
                 "preview" => $file->preview(100,100),
+                "name" => $file->name(),
                 "url" => $file->url(),
             );
         }
