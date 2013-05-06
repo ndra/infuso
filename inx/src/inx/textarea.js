@@ -10,14 +10,19 @@ inx.textarea = inx.textfield.extend({
     
     constructor:function(p) {
     
+        if(!p.style) {
+            p.style = {};
+        }
+    
         if(!p.value)
             p.value = "";
             
-        if(!p.width)
+        if(!p.style.width && !p.width)
             p.width = "parent";            
            
-        if(!p.height)
-            p.height = 50;
+        if(!p.style.height && !p.height) {
+            p.style.height = 50;
+        }
         
         if(!p.labelAlign)
             p.labelAlign = "top";

@@ -427,7 +427,7 @@ inx.list = inx.panel.extend({
      * Передвигает выделение на одну строку вниз
      * mode пробрасывается в метод select
      **/    
-    cmd_selectUp:function(id) {
+    cmd_selectUp:function(pos,mode) {
     
         var id = this.info("selection")[0];
     
@@ -439,7 +439,7 @@ inx.list = inx.panel.extend({
      * Передвигает выделение на одну строку вниз
      * mode пробрасывается в метод select
      **/
-    cmd_selectDown:function(id) {
+    cmd_selectDown:function(pos,mode) {
     
         var id = this.info("selection").slice(-1)[0];
     
@@ -632,8 +632,8 @@ inx.list = inx.panel.extend({
             case 13:
                 var sel = this.info("selection")[0];
                 if(sel!==undefined) {
-                    //this.cmd("handleItemclick",sel,e);
-                    //this.cmd("handleItemDblclick",sel,e);
+                    this.cmd("handleItemclick",sel,e);
+                    this.cmd("handleItemDblclick",sel,e);
                 }
                 return false;
             case 65:
