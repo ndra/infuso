@@ -1,5 +1,8 @@
 <?
 
+/**
+ * Модель домена модуля reflex
+ **/
 class reflex_domain extends reflex{
 
 	private static $active = null;
