@@ -4,9 +4,13 @@ inx.hotkey = {}
 
 inx.hotkey = function(key,handler) {
 
-    handler.push({
-        visibleOnly:true
-    });
+    if(handler instanceof Array) {
+    
+        handler.push({
+            visibleOnly:true
+        });
+    
+    }
 
     inx.service("key").on(key,handler);
 }

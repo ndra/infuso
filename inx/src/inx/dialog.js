@@ -37,10 +37,14 @@ inx.dialog = inx.panel.extend({
     },
     
     cmd_destroy:function() {
+    
+        inx.dialog.manager.unregister(this);
+    
         this.base();
         $(this.mate).remove();
         $(this.private_wnd).remove();
         inx(this.titleBar).cmd("destroy");
+        
         inx.fire("autofocus");
     },
     
@@ -85,6 +89,9 @@ inx.dialog = inx.panel.extend({
             this.cmd("startPositionWatch");
             
         this.private_wnd.css({opacity:0}).animate({opacity:1});
+        
+        inx.dialog.manager.register(this);
+        
     },
     
     cmd_hide:function() {
@@ -177,14 +184,13 @@ inx.dialog = inx.panel.extend({
         this.base();
     },
     
-    cmd_keydown:function(e) {
-        if(e.keyCode==27) {
-            if(this.autoDestroy)
-                this.task("destroy");
-            if(this.autoHide)
-                this.task("hide");
-        }
-        this.base(e);
+    cmd_handleDlgManagerEsc:function() {
+    
+        if(this.autoDestroy || this.destroyOnEscape)
+            this.task("destroy");
+        if(this.autoHide)
+            this.task("hide");
+    
     },
     
     // Обработчик перетаскивания
