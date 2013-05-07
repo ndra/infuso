@@ -9,3 +9,9 @@ inx::add(array(
     "value" => "Привет"
 ));
 
+inx::add(array(
+	"type" => "inx.textfield",
+    "height" => 100,
+    "value" => "Привет"
+));
+

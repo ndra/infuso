@@ -1,5 +1,5 @@
 inx.css(
-    ".dfehopg6{box-shadow:0 5px 10px rgba(0,0,0,.1) inset ;line-height:20px;height:20px;padding:0px;margin:0px;width:100%;border:none;background:none;outline:none;}"
+    ".dfehopg6{box-shadow:0 5px 10px rgba(0,0,0,.1) inset ;padding:0px;margin:0px;width:100%;border:none;background:none;outline:none;}"
 );
 
 inx.textfield = inx.box.extend({
@@ -238,12 +238,22 @@ inx.textfield = inx.box.extend({
     
         this.base();
         
+        // Выравниваем кнопки справа
         if(this.buttons) {
             for(var i in this.buttons) {
                 this.buttons[i].data("el").css({
                     left:this.info("width")-23*(i+1)
                 });
             }
+        }
+        
+        var h = this.info("innerHeight");
+        
+        if(this.input) {
+            this.input.css({
+                height:h,
+                fontSize:h-8
+            });
         }
         
     },
