@@ -249,7 +249,7 @@ inx.textfield = inx.box.extend({
         
         var h = this.info("innerHeight");
         
-        if(this.input) {
+        if(this.input && this.input.get(0).nodeName=="INPUT") {
             this.input.css({
                 height:h,
                 fontSize:h-8
