@@ -80,7 +80,7 @@ class reflex_route_item extends reflex {
 	}
 
 	/**
-	 * Проверяет, может ои роут построить урл для данного экшна
+	 * Проверяет, может ли роут построить урл для данного экшна
 	 * Для этого нужно:
 	 * - Чтобы класс и экшн совпадал
 	 * - Чтобы совпадал набор параметров
@@ -90,11 +90,17 @@ class reflex_route_item extends reflex {
 
 	    list($class,$action) = explode("/",$this->data("controller"));
 
-	    if($class!=$controller->className())
-	        return;
+        // Первым делом сравниваем класс и метод
 
-	    if($action!=$controller->action())
+	    if($class!=$controller->className()) {
 	        return;
+        }
+
+	    if($action!=$controller->action()) {
+	        return;
+        }
+
+        // Проверяем, чтобы были одинаковые наборы параметров
 
 	    $params1 = array_keys($this->regex());
 	    $params2 = array_keys($controller->params());
@@ -104,13 +110,17 @@ class reflex_route_item extends reflex {
 	        return false;
 
 	    $regex = $this->regex();
-	    foreach($controller->params() as $key=>$val)
-	        if(!preg_match($regex[$key],$val))
+	    foreach($controller->params() as $key=>$val) {
+	        if(!preg_match($regex[$key],$val)) {
 	            return false;
+            }
+        }
 
 	    $ret = $this->data("url");
-	        foreach($controller->params() as $key=>$val)
-	            $ret = preg_replace("/\<$key\:.*?\>/s",$val,$ret);
+        foreach($controller->params() as $key=>$val) {
+            $ret = preg_replace("/\<$key\:.*?\>/s",$val,$ret);
+        }
+
 	    return $ret;
 	}
 

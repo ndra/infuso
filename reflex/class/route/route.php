@@ -32,6 +32,7 @@ class reflex_route extends mod_route implements mod_handler{
 	 **/
 	public function forward($url) {
 
+        // Пытаемся найти роут прямым запросом в базу
 	    $route = self::routesForActiveDomain()->eq("url",$url->path())->one();
 	    if($route->exists()) {
 	        $params = $url->query();
@@ -94,14 +95,17 @@ class reflex_route extends mod_route implements mod_handler{
 		// Это сработет для статических url, без параметров
 		$seek = $controller->hash();
 	    $route = self::routesForActiveDomain()->eq("seek",$seek)->one();
-	    if($route->exists())
-	        if($url=$route->testController($controller))
+	    if($route->exists()) {
+	        if($url=$route->testController($controller)) {
 	            return $url;
+             }
+        }
 
 		// Если быстрый способ не сработал, перебираем все роуты и ищем подходящий
 	    foreach(self::allRoutes() as $route) {
-	        if($url = $route->testController($controller))
+	        if($url = $route->testController($controller)) {
 	            return $url;
+            }
 	    }
 	}
 
