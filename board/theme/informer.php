@@ -3,6 +3,8 @@
 tmp::header();
 tmp::reset();
 
+tmp::exec("my-graph");
+
 <div style='padding:10px;' >
 
     <h2 style='margin-bottom:10px;' >Я делаю:</h2>
