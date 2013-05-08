@@ -22,6 +22,13 @@ inx.iframe = inx.panel.extend({
             });  
     },
     
+    /**
+     * Перезагружает фрейм
+     **/
+    cmd_refresh:function() {
+        this.iframe.get(0).contentWindow.location.reload();
+    },
+    
     cmd_syncLayout:function() {
     
         this.base();
