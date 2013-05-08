@@ -1,7 +1,7 @@
 // @link_with_parent
  
 inx.css(
-    ".inx-box{background:white;font-family:Arial, Helvetica, sans-serif;font-size:12px;position:relative;overflow:hidden;color:black;cursor:default;}"
+    ".inx-box{background:white;font-family:Arial, Helvetica, sans-serif;font-size:12px;position:relative;overflow:hidden;color:black;cursor:default;white-space:normal;}"
 );
 
 inx.box = inx.observable.extend({
