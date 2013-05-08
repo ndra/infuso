@@ -18,9 +18,8 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
         p.items = [this.tabs];
         
         p.side = [{
-            type:"inx.iframe",
+            type:"inx.mod.board.main.informer",
             region:"right",
-            src:"/board_controller_informer",
             width:300,
             resizable:true
         }];
@@ -32,7 +31,7 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
         
         this.on("updateTaskList",function() {
             this.tabs.axis("selected").cmd("load");
-        })
+        });
         
     },
     
