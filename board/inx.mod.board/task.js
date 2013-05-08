@@ -14,11 +14,12 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
             padding:5
         }
         
+        p.destroyOnEscape = true;
+        
         this.base(p);
 
         this.cmd("requestData");
-            
-        inx.hotkey("esc",[this.id(),"destroy"]);        
+                 
         this.on("submit",[this.id(),"save"]); 
            
         // При закрытии диалога, если были какие-нибудь изменения,
@@ -166,12 +167,25 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
         },[this.id(),"handleSave"]);
     },
     
+    cmd_handleTimeInput:function() {
+        this.cmd("save");
+        this.cmd("handleSetStatus");
+    },
+    
     cmd_changeStatus:function(status) {
     
         var time = 0;
     
         if(this.currentStatus==1) {
-            var time = prompt("Сколько было потрачено времени?");
+            inx({
+                type:"inx.mod.board.task.timeInput",
+                taskID:this.taskID,
+                taskStatus:status,
+                listeners:{
+                    save:[this.id(),"handleTimeInput"]
+                }
+            }).cmd("render");
+            return;
         }
     
         this.cmd("save");

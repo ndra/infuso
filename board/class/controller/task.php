@@ -280,6 +280,32 @@ class board_controller_task extends mod_controller {
         return true;
     }
 
+    public function post_getTaskTime($p) {
+
+        $task = board_task::get($p["taskID"]);
+
+        // Параметры задачи
+        if(!user::active()->checkAccess("board/getTaskTime",array(
+            "task" => $task
+        ))) {
+            mod::msg(user::active()->errorText(),1);
+            return;
+        }
+
+        $date = $task->pdata("changed");
+        $d = util::now()->stamp() - $date->stamp();
+
+        $hours = floor($d/60/60);
+        $minutes = ceil($d/60)%60;
+
+        return array(
+            "hours" => $hours,
+            "minutes" => $minutes,
+        );
+
+
+    }
+
     /**
      * Сохраняет сортировку набора задач
      **/

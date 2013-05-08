@@ -35,6 +35,9 @@ class board_init implements mod_handler {
         user_operation::create("board/getTaskParams","Получение полей задачи")
             ->appendTo("board/editTask");
 
+        user_operation::create("board/getTaskTime","Получение времени, потраченного на задачу")
+            ->appendTo("board/editTask");
+
         user_operation::create("board/getEpicSubtasks","Получение списка подзадач эпика")
             ->appendTo("board/editTask");
 

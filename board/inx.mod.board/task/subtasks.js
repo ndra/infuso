@@ -140,18 +140,14 @@ inx.mod.board.task.subtasks = inx.list.extend({
      **/
     cmd_completeEpicSubtask:function(taskID) {
     
-        var h = window.prompt("Сколько было потрачено времени?");
-    
-        if(h===null) {
-            return;
-        }
-        
-        this.call({
-            cmd:"board/controller/task/changeTaskStatus",
+        inx({
+            type:"inx.mod.board.task.timeInput",
             taskID:taskID,
-            status:2,
-            time:h
-        },[this.id(),"handleChanges"])
+            taskStatus:2,
+            listeners:{
+                save:[this.id(),"handleChanges"]
+            }
+        }).cmd("render");
         
     },
     
