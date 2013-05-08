@@ -19,7 +19,9 @@ inx.button = inx.box.extend({
             width:"content"
         }
 
-        p.height = "22";
+        if(!p.height && !p.style.height) {
+            p.height = "22";
+        }
 
         this.base(p);
 
@@ -72,6 +74,15 @@ inx.button = inx.box.extend({
     cmd_setText:function(text) {
         this.text = text;
         this.task("updateHTML");
+    },
+    
+    cmd_syncLayout:function() {
+        var h = this.info("height");
+        this.private_input.css({
+            height:h-6,
+            fontSize:h-10
+        });
+        this.cmd("resizeToContents");
     },
 
     cmd_private_handleMouseover:function() { this.air && this.cmd("showFrame"); },

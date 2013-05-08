@@ -10,3 +10,9 @@ inx::add(array(
     "text" => "air button",
     "air" => true,
 ));
+
+inx::add(array(
+    "type" => "inx.button",
+    "text" => "big button",
+    "height" => 50,
+));
