@@ -150,8 +150,10 @@ class board_controller_task extends mod_controller {
             $task->data($key,$val);
         }
 
-        $task->logCustom("Изменение данных");
-        mod::msg("Задача сохранена");
+        if ($task->fields()->changed()->count() > 0) {
+            $task->logCustom("Изменение данных");
+            mod::msg("Задача сохранена");
+        }
 
         return true;
     }
