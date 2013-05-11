@@ -82,19 +82,24 @@ inx.combo = inx.textfield.extend({
 
     cmd_handleLoad:function() {
     
-        if(this.info("value")==0) {
-            this.list().cmd("select",[]);
-        } else {
+        if(this.info("textValue")!="") {
     
             var sel = this.list().info("selection")[0];
+            
             if(!sel) {
-                this.list().cmd("setPosition",0);
+                this.task("selectFirst");
             }
+        
         }
+
         
         if(inx.focusManager.cmp().id()!=this.id()) {
             this.task("updateCalculatedValue");
         }
+    },
+    
+    cmd_selectFirst:function() {
+        this.list().cmd("setPosition",0);    
     },
     
     cmd_handleBlur:function() {

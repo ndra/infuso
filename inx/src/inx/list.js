@@ -340,6 +340,8 @@ inx.list = inx.panel.extend({
         this.cmd("setData",data.data);
         this.cmd("setCols",data.cols);
         
+        this.fire("afterload",data);
+        
     },
 
     /**
@@ -451,9 +453,10 @@ inx.list = inx.panel.extend({
      * Выделяет элемент по порядковому номеру
      **/
     cmd_setPosition:function(pos,mode) {
+    
         if(pos<0)
             pos=0;
-            
+                       
         var item = this.data[pos];
         
         if(!item)
