@@ -25,10 +25,18 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
         // При закрытии диалога, если были какие-нибудь изменения,
         // обновляем списко задач
         this.on("destroy",function() {
+            this.getMainComponent();
             if(this.taskChanged) {
-                this.fire("change");
+                var main = this.getMainComponent();
+                main.cmd("handleBoardChanged");
             }
         });
+        
+        this.extend({
+            getMainComponent:function() {
+                return inx(this).axis("parents").eq("type","inx.mod.board.main");
+            }
+        })
         
     },
     
@@ -136,11 +144,14 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
             }
         });
         
-        this.cmd("addSidePanel",{
-            type:this.type+".attachments",
-            taskID:this.taskID,
-            region:"bottom"
-        })
+        if(!inx(this).axis("side").eq("name","attachments").exists()) {
+            this.cmd("addSidePanel",{
+                type:this.type+".attachments",
+                name:"attachments",
+                taskID:this.taskID,
+                region:"bottom"
+            })
+        }
         
     },
     

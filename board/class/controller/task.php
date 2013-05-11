@@ -203,14 +203,9 @@ class board_controller_task extends mod_controller {
 
         $ret = array();
 
-        $statusList = array(
-            board_task_status::STATUS_NEW,
-            board_task_status::STATUS_IN_PROGRESS,
-            board_task_status::STATUS_COMPLETED,
-            board_task_status::STATUS_CHECKOUT
-        );
-
-        foreach($task->subtasks()->eq("status",$statusList)->asc("status")->asc("priority",true) as $subtask) {
+        $tasks = $task->subtasks()->orderByExpr("`status` != 1")->asc("priority",true);
+        $tasks->eq("status",array(board_task_status::STATUS_NEW,board_task_status::STATUS_IN_PROGRESS))->orr()->gt("changed",util::now()->shift(-60));
+        foreach($tasks as $subtask) {
 
             $text = $subtask->data("text");
 
@@ -221,9 +216,9 @@ class board_controller_task extends mod_controller {
 
             $ret[] = array(
                 "id" => $subtask->id(),
-                "text" => $subtask->data("priority").". ".$text,
-                "timeScheduled" => $subtask->timeSpent()." / ".$subtask->data("timeScheduled"),
-                "completed" => $subtask->data("status") == 2,
+                "text" => $text,
+                "timeScheduled" => round($subtask->timeSpent(),1)." / ".round($subtask->data("timeScheduled"),1),
+                "completed" => $subtask->data("status") == 2 || $subtask->data("status") == board_task_status::STATUS_CANCELLED,
             );
         }
         return $ret;

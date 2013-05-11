@@ -28,6 +28,7 @@ inx.mod.board.board.taskList = inx.list.extend({
         
         this.on("itemclick",[this.id(),"handleItemClick"]);
         this.on("load",[this.id(),"handleLoad"]);
+        this.on("boardChanged",[this.id(),"load"]);
         
         inx.hotkey("f5",[this.id(),"handleF5"]);
         
@@ -90,7 +91,9 @@ inx.mod.board.board.taskList = inx.list.extend({
             taskID:taskID,
             showMore: options.showMore,
             clipTo:clip
-        }).on("change",[this.id(),"load"]);
+        }).on("change",function(){
+            this.bubble("boardChanged");
+        }).setOwner(this);
         
         task.cmd("render");
     },

@@ -48,6 +48,20 @@ inx.box = inx.observable.extend({
                 
     },
     
+    /**
+     * Возвращает ось родителей компонента
+     **/
+    axis_parents:function() {
+    
+        var ret = [];
+        var cmp = inx(this);
+        while(cmp.exists()) {
+            ret.push(cmp.id());
+            cmp = cmp.owner();
+        }
+    
+    },
+        
     cmd_mousewheel:function(deltha,e) {
         this.owner().cmd("mousewheel",deltha,e)
     },

@@ -17,22 +17,25 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
         
         p.items = [this.tabs];
         
-        p.side = [{
+        this.informer = inx({
             type:"inx.mod.board.main.informer",
             region:"right",
             width:300,
             resizable:true
-        }];
+        });
+        
+        p.side = [this.informer];
         
         this.base(p); 
         this.cmd("load");
         this.on("editProject",[this.id(),"editProject"]);
         inx.direct.bind(this,"handleDirect");
         
-        this.on("updateTaskList",function() {
-            this.tabs.axis("selected").cmd("load");
-        });
-        
+    },
+    
+    cmd_handleBoardChanged:function() {
+        this.informer.cmd("refresh");
+        this.tabs.axis("selected").cmd("load");
     },
     
     cmd_handleDirect:function(taskID) {
@@ -48,7 +51,7 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
             projectID:p.projectID,
             status:p.status,
             listeners:{change:[this.tabs.axis("selected"),"load"]}
-        }).cmd("render");
+        }).cmd("render").setOwner(this);
     }, 
    
     cmd_load:function() {

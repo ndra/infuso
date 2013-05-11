@@ -166,6 +166,9 @@ class board_task extends reflex {
         return $ret;
     }
 
+    /**
+     * Возвращает данные для стикера
+     **/
 	public function stickerData($p=array()) {
 
 	    $ret = array();
@@ -201,7 +204,7 @@ class board_task extends reflex {
 
 	    // Статусная часть стикера
 	    $ret["info"] = "";
-	    $ret["info"].= $this->timeSpent()."/".$this->timeScheduled()."ч. ";
+	    $ret["info"].= round($this->timeSpent(),1)."/".round($this->timeScheduled(),1)."ч. ";
 
 	    // Цвет стикера
 	    $ret["color"] = $this->data("color");
