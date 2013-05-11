@@ -59,6 +59,7 @@ inx.box = inx.observable.extend({
             ret.push(cmp.id());
             cmp = cmp.owner();
         }
+        return ret;
     
     },
         
