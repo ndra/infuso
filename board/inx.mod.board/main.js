@@ -36,6 +36,10 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
         
     },
     
+    cmd_refreshTaskList:function() {
+        this.tabs.axis("selected").cmd("load");
+    },
+    
     cmd_handleBoardChanged:function() {
         this.informer.cmd("refresh");
         this.tabs.axis("selected").cmd("load");

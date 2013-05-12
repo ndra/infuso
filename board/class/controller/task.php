@@ -25,7 +25,10 @@ class board_controller_task extends mod_controller {
 		// Учитываем поиск
         if($search = trim($p["search"])) {
             $tasks->joinByField("projectID");
-            $tasks->like("text",$search)->orr()->like("board_project.title",$search);
+            $tasks->like("text",$search)
+                ->orr()->like("board_project.title",$search)
+                ->orr()->like("text",util::str($search)->switchLayout())
+                ->orr()->like("board_project.title",util::str($search)->switchLayout());
         }
         
         if(!$status->showEpicSubtasks()) {

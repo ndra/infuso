@@ -69,6 +69,25 @@ class util_str_ru extends mod_behaviour {
         $s = $s->stemString($this);
         return new self($s);
     }
+
+    public function switchLayout() {
+
+        $str_search = array(
+            "й","ц","у","к","е","н","г","ш","щ","з","х","ъ",
+            "ф","ы","в","а","п","р","о","л","д","ж","э",
+            "я","ч","с","м","и","т","ь","б","ю"
+        );
+        $str_replace = array(
+            "q","w","e","r","t","y","u","i","o","p","[","]",
+            "a","s","d","f","g","h","j","k","l",";","'",
+            "z","x","c","v","b","n","m",",","."
+        );
+
+        $ret = strtr((string)$this->component(),array_combine($str_search,$str_replace));
+        $ret = strtr((string)$this->component(),array_combine($str_replace,$str_search));
+        return $ret;
+
+    }
     
 
 }

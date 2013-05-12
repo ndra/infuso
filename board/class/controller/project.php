@@ -49,7 +49,8 @@ class board_controller_project extends mod_controller {
 
         $projects = board_project::visible()->limit(0);
         if($search = trim($p["search"])) {
-            $projects->like("title",$search);
+            $projects->like("title",$search)
+                ->orr()->like("title",util::str($search)->switchLayout());
         }
 
         foreach($projects as $project) {

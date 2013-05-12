@@ -65,7 +65,7 @@ inx.mod.board.main.headComponent = inx.panel.extend({
     },
     
     cmd_fireLoadEvent:function(id) {
-        this.getMainComponent().cmd("handleBoardChanged");
+        this.getMainComponent().cmd("refreshTaskList");
     },
     
     cmd_handleTaskLoad:function(data) {
