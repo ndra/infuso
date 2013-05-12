@@ -5,8 +5,16 @@
         <td>
         
             $userpick = $user->userpick()->preview(100,100);
-            <img src='{$userpick}' />
-            <div>{$user->title()}</div>
+            
+            <a href='{$url}' >
+                <img src='{$userpick}' />
+            </a>
+            
+            $url = mod::action("board_controller_report","worker",array(
+                "id" => $user->id(),
+            ));
+            <div><a href='{$url}' >{$user->title()}</a></div>
+            tmp::exec("snippet");
         
         </td>
         <td>

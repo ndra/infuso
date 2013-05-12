@@ -8,6 +8,13 @@ inx.mod.board.main.headComponent = inx.panel.extend({
             padding:4,
             background:"#ededed"
         }
+        
+        this.extend({
+            getMainComponent:function() {
+                return inx(this).axis("parents").eq("type","inx.mod.board.main");
+            }
+        })
+        
         this.base(p);
     },
     
@@ -58,7 +65,7 @@ inx.mod.board.main.headComponent = inx.panel.extend({
     },
     
     cmd_fireLoadEvent:function(id) {
-        this.bubble("updateTaskList",id);
+        this.getMainComponent().cmd("handleBoardChanged");
     },
     
     cmd_handleTaskLoad:function(data) {
