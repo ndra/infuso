@@ -60,10 +60,23 @@ class tmp_helper extends tmp_widget {
         if(func_num_args()==2) {
 
             // Аргумент $val - число, приписываем к нему стандартные единицы измерения
-            if(is_integer($val)) {
+            if(is_numeric($val)) {
 
                 $units = array(
+                    "width" => "px",
+                    "height" => "px",
                     "margin-left" => "px",
+                    "margin-right" => "px",
+                    "margin-top" => "px",
+                    "margin-bottom" => "px",
+                    "left" => "px",
+                    "right" => "px",
+                    "top" => "px",
+                    "bottom" => "px",
+                    "padding-left" => "px",
+                    "padding-right" => "px",
+                    "padding-top" => "px",
+                    "padding-bottom" => "px",
                 );
 
                 $val = $val.$units[$key];
