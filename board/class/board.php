@@ -23,7 +23,7 @@ class board extends mod_controller {
         inx::add(array(
             "type" => "inx.mod.board.task",
             "showMore" => true,
-            "taskID" => 1699,
+            "taskID" => 1552,
         ));
         tmp::footer();
         

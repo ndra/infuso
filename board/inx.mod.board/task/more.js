@@ -4,12 +4,12 @@ inx.mod.board.task.more = inx.panel.extend({
 
     constructor:function(p) {
         
-        p.layout = "inx.layout.form";      
+        p.layout = "inx.layout.column";      
         p.style = {
             background:"#ededed",
+            valign:"top",
             border:0,
             spacing:10,
-            padding:20
         }  
         p.labelWidth = 100;
         
@@ -20,7 +20,29 @@ inx.mod.board.task.more = inx.panel.extend({
     
     cmd_createForm:function(data) {
     
-        this.cmd("add",{
+        var column1 = this.cmd("add",{
+            type:"inx.form",
+            labelWidth:100,
+            style:{
+                padding:0,
+                background:"none",
+                border:0
+            },
+            width:235
+        });
+        
+        var column2 = this.cmd("add",{
+            type:"inx.form",
+            labelWidth:100,
+            style:{
+                padding:0,
+                background:"none",
+                border:0
+            },
+            width:235
+        });
+    
+        column1.cmd("add",{
             type:"inx.textfield",
             name:"timeScheduled",
             value:data.timeScheduled,
@@ -28,9 +50,9 @@ inx.mod.board.task.more = inx.panel.extend({
             label:"Планирую (ч.)"
         });
         
-       this.cmd("add",{            
+       column1.cmd("add",{            
             type:"inx.combo",
-            width:150,
+            width:"parent",
             value:data.projectID,
             text:data.projectTitle,
             name:"projectID",
@@ -39,10 +61,6 @@ inx.mod.board.task.more = inx.panel.extend({
             },
             label:"Проект"
         });
-        
-        /*this.cmd("add",{
-            type:this.info("type")+".project"
-        }) */
         
         // Строим меню из списка статусов
         var menu = [];
@@ -53,12 +71,19 @@ inx.mod.board.task.more = inx.panel.extend({
             });
         }
         
-        this.cmd("add",{
+        column1.cmd("add",{
             type:"inx.button",
             air:true,
             text:"Изменить статус",
             icon:"trigger",
             menu:menu
+        });
+        
+        column2.cmd("add",{
+            label:"Цвет",
+            value:data.color,
+            name:"color",
+            type:this.info("type")+".color"
         });
         
     },

@@ -115,8 +115,9 @@ inx.dialog = inx.panel.extend({
     },
     
     cmd_startPositionWatch:function() {
-        if(!this.private_iid)
+        if(!this.private_iid) {
             this.private_iid = setInterval(inx.cmd(this,"updatePosition"),100);
+        }
         this.task("updatePosition");
     },
     
