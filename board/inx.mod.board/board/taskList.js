@@ -32,6 +32,13 @@ inx.mod.board.board.taskList = inx.list.extend({
         
         inx.hotkey("f5",[this.id(),"handleF5"]);
         
+        this.extend({
+            getMainComponent:function() {
+                return inx(this).axis("parents").eq("type","inx.mod.board.main");
+            }
+        })
+        
+        
     },
     
     cmd_handleLoad:function(data) {
@@ -61,7 +68,14 @@ inx.mod.board.board.taskList = inx.list.extend({
         return "inx.mod.board.board.taskList.task";
     },
     
-    cmd_handleItemClick:function(id) {
+    cmd_handleItemClick:function(id,event) {
+    
+        if(event.ctrlKey) {
+            var projectID = this.info("item",id,"projectID");
+            this.getMainComponent().cmd("highlightProject",projectID);
+            return;
+        }
+    
         this.cmd("editTask",id);
     },
     

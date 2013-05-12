@@ -27,6 +27,9 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
         p.side = [this.informer];
         
         this.base(p); 
+        
+        this.styleTag = [];
+        
         this.cmd("load");
         this.on("editProject",[this.id(),"editProject"]);
         inx.direct.bind(this,"handleDirect");
@@ -101,6 +104,16 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
             listeners:{change:[this.id(),"updateProjects"]}
         }).cmd("render");
         return false;
+    },
+    
+    cmd_highlightProject:function(projectID) {
+        var style = ".qm5btw9-"+projectID+" {background:blue!important;color:white;}";
+        if(this.styleTag[projectID]) {
+            this.styleTag[projectID].remove();
+            delete this.styleTag[projectID];
+        } else {
+            this.styleTag[projectID] = $("<style>").html(style).appendTo("head");
+        }
     }
          
 });

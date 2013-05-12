@@ -18,7 +18,16 @@ class board extends mod_controller {
     }
 
     public function index_test() {
-        echo board_task::get(1514)->subtasks()->count();
+        
+        tmp::header();
+        inx::add(array(
+            "type" => "inx.mod.board.task",
+            "showMore" => true,
+            "taskID" => 1699,
+        ));
+        tmp::footer();
+        
+        
     }
 
 }

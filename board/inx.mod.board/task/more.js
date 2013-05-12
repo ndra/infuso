@@ -8,6 +8,7 @@ inx.mod.board.task.more = inx.panel.extend({
         p.style = {
             background:"#ededed",
             border:0,
+            spacing:10,
             padding:20
         }  
         p.labelWidth = 100;
@@ -18,6 +19,7 @@ inx.mod.board.task.more = inx.panel.extend({
     },
     
     cmd_createForm:function(data) {
+    
         this.cmd("add",{
             type:"inx.textfield",
             name:"timeScheduled",
@@ -25,7 +27,8 @@ inx.mod.board.task.more = inx.panel.extend({
             width:30,            
             label:"Планирую (ч.)"
         });
-        this.cmd("add",{            
+        
+       this.cmd("add",{            
             type:"inx.combo",
             width:150,
             value:data.projectID,
@@ -36,6 +39,10 @@ inx.mod.board.task.more = inx.panel.extend({
             },
             label:"Проект"
         });
+        
+        /*this.cmd("add",{
+            type:this.info("type")+".project"
+        }) */
         
         // Строим меню из списка статусов
         var menu = [];
