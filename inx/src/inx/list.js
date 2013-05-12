@@ -1,9 +1,7 @@
 // @include inx.panel
 
 inx.css(
-    ".inx-list-item{vertical-align:top;overflow:hidden;padding:4px 10px 4px 10px;cursor:pointer;}",
-    ".inx-list-item-selected{background:#eaeaea;}",
-    ".inx-focused .inx-list-item-selected{background:#d9e8fb}"
+    ".inx-list-item{vertical-align:top;overflow:hidden;padding:4px 10px 4px 10px;cursor:pointer;}"
 );
 
 inx.list = inx.panel.extend({
@@ -393,10 +391,13 @@ inx.list = inx.panel.extend({
     cmd_updateSelection:function() {
         var list = this;
         this.items().each(function() {
-            if(list.private_selection[this.data("itemID")])
+            if(list.private_selection[this.data("itemID")]) {
                 this.style("background","#d9e8fb")
-            else
-                this.style("background","none")
+                this.cmd("select");
+            } else {
+                this.style("background","none");
+                this.cmd("unselect");
+            }
         });
 
     },
