@@ -36,8 +36,9 @@ class seo_domain extends reflex {
 	}
 
 	public function primaryEngine() {
-	    foreach($this->engines() as $engine)
+	    foreach($this->engines() as $engine) {
 	        return $engine;
+        }
 	}
 
 	public function queriesInTop() {

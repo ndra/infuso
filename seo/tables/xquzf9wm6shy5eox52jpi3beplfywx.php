@@ -1,6 +1,5 @@
 <? return array (
   'name' => 'seo_domain',
-  'parent' => '',
   'fields' => 
   array (
     0 => 
@@ -32,6 +31,13 @@
       'label' => 'Поисковые системы',
       'param' => 'seo_query_engine',
       'help' => '',
+      'group' => '',
+      'default' => '',
+      'indexEnabled' => 0,
+      'class' => 'seo_query_engine',
+      'foreignKey' => '',
+      'collection' => '',
+      'titleMethod' => '',
     ),
     3 => 
     array (
@@ -72,6 +78,17 @@
       'label' => 'Искать бэклинки',
       'param' => '',
       'help' => '',
+    ),
+  ),
+  'indexes' => 
+  array (
+  ),
+  'fieldGroups' => 
+  array (
+    0 => 
+    array (
+      'name' => NULL,
+      'title' => NULL,
     ),
   ),
 ); ?>

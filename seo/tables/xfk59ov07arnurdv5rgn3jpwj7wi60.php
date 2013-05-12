@@ -1,6 +1,5 @@
 <? return array (
   'name' => 'seo_query_position',
-  'parent' => '',
   'fields' => 
   array (
     0 => 
@@ -25,6 +24,9 @@
       'class' => 'seo_query_engine',
       'collection' => '',
       'titleMethod' => '',
+      'group' => '',
+      'indexEnabled' => 0,
+      'foreignKey' => '',
     ),
     2 => 
     array (
@@ -38,6 +40,9 @@
       'class' => 'seo_query',
       'collection' => '',
       'titleMethod' => '',
+      'group' => '',
+      'indexEnabled' => 0,
+      'foreignKey' => '',
     ),
     3 => 
     array (
@@ -68,6 +73,17 @@
       'label' => 'Дата',
       'default' => '',
       'help' => '',
+    ),
+  ),
+  'indexes' => 
+  array (
+  ),
+  'fieldGroups' => 
+  array (
+    0 => 
+    array (
+      'name' => NULL,
+      'title' => NULL,
     ),
   ),
 ); ?>

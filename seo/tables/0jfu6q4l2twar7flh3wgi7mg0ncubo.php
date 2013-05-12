@@ -1,6 +1,5 @@
 <? return array (
   'name' => 'seo_page_link',
-  'parent' => '',
   'fields' => 
   array (
     0 => 
@@ -25,6 +24,9 @@
       'class' => 'seo_link_page',
       'collection' => '',
       'titleMethod' => '',
+      'group' => '',
+      'indexEnabled' => 0,
+      'foreignKey' => '',
     ),
     2 => 
     array (
@@ -65,6 +67,17 @@
       'label' => 'Домен донора',
       'default' => '',
       'help' => '',
+    ),
+  ),
+  'indexes' => 
+  array (
+  ),
+  'fieldGroups' => 
+  array (
+    0 => 
+    array (
+      'name' => NULL,
+      'title' => NULL,
     ),
   ),
 ); ?>

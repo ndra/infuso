@@ -1,6 +1,5 @@
 <? return array (
   'name' => 'seo_query',
-  'parent' => '',
   'fields' => 
   array (
     0 => 
@@ -25,6 +24,9 @@
       'class' => 'seo_domain',
       'collection' => '',
       'titleMethod' => '',
+      'group' => '',
+      'indexEnabled' => 0,
+      'foreignKey' => '',
     ),
     2 => 
     array (
@@ -55,6 +57,17 @@
       'label' => 'Приоритет',
       'default' => '',
       'help' => '',
+    ),
+  ),
+  'indexes' => 
+  array (
+  ),
+  'fieldGroups' => 
+  array (
+    0 => 
+    array (
+      'name' => NULL,
+      'title' => NULL,
     ),
   ),
 ); ?>
