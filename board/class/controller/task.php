@@ -127,7 +127,9 @@ class board_controller_task extends mod_controller {
             "nextStatusID" => $task->status()->next()->id(),
             "nextStatusText" => $task->status()->next()->action(),
             "currentStatus" => $task->status()->id(),
-            "statuses" => $statuses
+            "statuses" => $statuses,
+            "deadline" => $task->data("deadline"),
+            "deadlineDate" => $task->data("deadlineDate"),
         );
     }
 
@@ -137,7 +139,7 @@ class board_controller_task extends mod_controller {
     public static function post_saveTask($p) {
 
         $task = board_task::get($p["taskID"]);
-        $data = util::a($p["data"])->filter("text","timeScheduled","projectID","color")->asArray();
+        $data = util::a($p["data"])->filter("text","timeScheduled","projectID","color","deadline","deadlineDate")->asArray();
 
         // Параметры задачи
         if(!user::active()->checkAccess("board/updateTaskParams",array(

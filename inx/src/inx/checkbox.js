@@ -52,8 +52,11 @@ inx.checkbox = inx.box.extend({
     },
     
     info_value:function() {
-        if(this.input) return this.input.prop("checked") ? 1 : 0;
-        else return this.value ? 1 : 0        
+        if(this.input) {
+            return this.input.prop("checked") ? 1 : 0;
+        } else {
+            return this.value ? 1 : 0        
+        }
     },
     
     cmd_setValue:function(val) {

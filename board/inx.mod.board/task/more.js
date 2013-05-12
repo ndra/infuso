@@ -20,6 +20,14 @@ inx.mod.board.task.more = inx.panel.extend({
     
     cmd_createForm:function(data) {
     
+        this.cmd("add",{
+            height:20,
+            style:{
+                background:"none",
+                border:0
+            }
+        })
+    
         var column1 = this.cmd("add",{
             type:"inx.form",
             labelWidth:100,
@@ -82,8 +90,14 @@ inx.mod.board.task.more = inx.panel.extend({
         column2.cmd("add",{
             label:"Цвет",
             value:data.color,
+            labelAlign:"left",
             name:"color",
             type:this.info("type")+".color"
+        });
+        
+        column2.cmd("add",{
+            data:data,
+            type:this.info("type")+".deadline"
         });
         
     },

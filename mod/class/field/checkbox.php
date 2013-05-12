@@ -30,7 +30,7 @@ class mod_field_checkbox extends mod_field {
 	public function filterType() { return "checkbox"; }
 
 	public function prepareValue($val) {
-		return $val ? 1 : 0;
+		return $val*1 ? 1 : 0;
 	}
 
 }
