@@ -16,6 +16,8 @@ class board_controller_report extends mod_controller {
             "task" => $task
         ))) {
             mod::msg(user::active()->errorText(),1);
+            tmp::header();
+            tmp::footer();
             return;
         }
     

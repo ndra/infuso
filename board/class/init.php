@@ -64,6 +64,11 @@ class board_init implements mod_handler {
 
        user_operation::create("board/uploadFile","Закачивание файла в задачу")
             ->appendTo("board/editTask");
+
+       // Отчеты
+
+       user_operation::create("board/showUserReport","Просмотр отчета по пользователям")
+            ->appendTo("boardUser");
         
     }
 
