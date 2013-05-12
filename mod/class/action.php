@@ -253,6 +253,10 @@ class mod_action extends mod_component {
 
     }
 
+    public function __toString() {
+        return $this->url();
+    }
+
     /**
      * Возвращает url экшна
      * результат не кэшируется
