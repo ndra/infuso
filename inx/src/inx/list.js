@@ -313,16 +313,24 @@ inx.list = inx.panel.extend({
     
     // Выполняет загрузку
     cmd_private_load:function() {
-        if(!this.loader)
-            {inx.msg("error: loader in not defined",1); return;}
-        var ret = this.fire("beforeload",this.loader);
-        if(ret===false)
+    
+        if(!this.loader) {
+            inx.msg("error: loader in not defined",1);
             return;
+        }
+        
+        // Клонируем loader чтобы изменения в нем не сохранились при следующей загрузке
+        var loader = inx.deepCopy(this.loader);
+        
+        var ret = this.fire("beforeload",loader);
+        if(ret===false) {
+            return;
+        }
         
         // Уничтожаем предыдущий вызов
         inx(this.privateLoadCommand).cmd("destroy");
         // Делаем новый вызов
-        this.privateLoadCommand = this.call(this.loader,[this.id(),"handleLoadNative"] );
+        this.privateLoadCommand = this.call(loader,[this.id(),"handleLoadNative"] );
     },
     
     cmd_handleLoadNative:function(data) {   

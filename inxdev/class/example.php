@@ -52,7 +52,7 @@ class inxdev_example extends mod_controller {
 			}
 		
 		    $ret[] = array(
-		        "id" => $k,
+		        "id" => $i,
 				data => array (
 			        "text" => $text,
 			        "icon" => rand()%2 ? "star" : "",

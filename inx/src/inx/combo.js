@@ -13,7 +13,8 @@ inx.combo = inx.textfield.extend({
         
         this.base(p);
         
-        this.on("textChange","handleChangesNative");
+        this.searchMode = false;
+        
         this.on("blur","handleBlur");
         
         var cmp = this;
@@ -76,30 +77,29 @@ inx.combo = inx.textfield.extend({
     },
 
     cmd_beforeLoadNative:function(loader) {
-        loader.search = this.info("textValue");
+    
+        if(this.searchMode) {
+            loader.search = this.info("textValue");
+        }
+        
         this.fire("beforeload",loader);
     },
 
     cmd_handleLoad:function() {
     
-        if(this.info("textValue")!="") {
-    
-            var sel = this.list().info("selection")[0];
-            
-            if(!sel) {
-                this.task("selectFirst");
-            }
+        this.task("selectFirst",10);
         
-        }
-
-        
-        if(inx.focusManager.cmp().id()!=this.id()) {
+        if(inx.focusManager.cmp().id()!=this.id() && this.info("textValue")=="") {
             this.task("updateCalculatedValue");
         }
+        
     },
     
     cmd_selectFirst:function() {
-        this.list().cmd("setPosition",0);    
+        var sel = this.list().info("selection")[0];
+        if(!sel) {
+            this.list().cmd("setPosition",0);    
+        }
     },
     
     cmd_handleBlur:function() {
@@ -120,25 +120,35 @@ inx.combo = inx.textfield.extend({
         this.task("focus");
     },
     
+    /**
+     * Возвращает текстовое значение, соотвесствующее текущему значению поля
+     **/
     info_calculatedTextValue:function() {
+    
+        // Для нулевых значений текстовое представленние - всегда пустая строка 
+        if(!this.private_value) {
+            return "";
+        }
     
         if(!this.private_calculatedValue) {
         
             var item = this.list().info("item",this.private_value);
             if(item) {
                 this.private_calculatedValue = item.data.text;
-                            
             }
         
         }
+        
         return this.private_calculatedValue;
     },
     
+    /**
+     * Обновляет текстовое значение комбобокса в соотвествии с реальным значением
+     **/
     cmd_updateCalculatedValue:function() {
         var txt = this.info("calculatedTextValue");
-        if(txt) {
-            this.cmd("setTextValue",txt);
-        }
+        this.lastSearch = txt;
+        this.cmd("setTextValue",txt);
     },
 
     cmd_setValue:function(val) {    
@@ -157,16 +167,6 @@ inx.combo = inx.textfield.extend({
     info_value:function() {
         return this.private_value;
     },
-    
-    cmd_handleChangesNative:function() {
-    
-        this.cmd("expand");
-        this.list().task("load");
-        
-        if(this.info("textValue")=="") {
-            this.private_value = false;
-        }
-    },
 
     cmd_handleSmoothBlur:function() {
         this.cmd("collapse");
@@ -176,9 +176,17 @@ inx.combo = inx.textfield.extend({
      * Раскрывает список
      **/
     cmd_expand:function() {
+    
+        if(this.expanded==true) {
+            return;
+        }
+    
         this.cmd("createList");
         this.private_popup.cmd("show");
         this.expanded = true;
+        
+        this.list().task("load");
+
     },
     
     /**
@@ -187,6 +195,13 @@ inx.combo = inx.textfield.extend({
     cmd_collapse:function() {
         inx(this.private_popup).cmd("hide");
         this.expanded = false;
+        this.searchMode = false;
+    
+        if(this.info("textValue")=="") {
+            this.cmd("setValue",0);
+        }
+
+        this.cmd("updateCalculatedValue");
     },
 
     /**
@@ -195,15 +210,27 @@ inx.combo = inx.textfield.extend({
     info_expanded:function() {
         return this.expanded;
     },
+    
+    cmd_handleInput:function() {
+    
+        var lastSearch = this.info("textValue");
+        if(lastSearch!==this.lastSearch) {
+            this.task("expand");
+            this.list().task("load");
+            this.searchMode = true;
+            this.lastSearch = lastSearch;
+        }
+    },
 
     cmd_keydown:function(e) {
-    
-       switch(e.which) {
+   
+        switch(e.which) {
        
             // Enter
             case 13:
                 if(this.info("expanded")) {
-                    this.cmd("setValue",this.list().info("selection")[0]);
+                    var sel = this.list().info("selection")[0];
+                    this.cmd("setValue",sel);
                     this.cmd("collapse");
                 } else {
                     this.base(e);
@@ -223,8 +250,16 @@ inx.combo = inx.textfield.extend({
                 this.list().cmd("selectDown");
                 e.preventDefault();
                 return false;
+                
+            case 27:
+                this.cmd("collapse");
+                break;
             
             default:
+                    
+                // Активируем режим поиска
+                //this.searchMode = true;
+                this.task("handleInput");
                 return this.base(e);
                 break;
         }
