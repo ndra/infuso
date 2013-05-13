@@ -1,0 +1,13 @@
+.fi91bj9l9l {
+
+    width:800px;
+    border-bottom: 1px solid #ededed;
+    height:32px;
+    position:relative;
+    
+    .strip {
+        background: rgba(0,0,0,.5);
+        background-image: repeating-linear-gradient(-45deg, transparent, transparent 3px, rgba(255,255,255,.5) 3px, rgba(255,255,255,.5) 6px);
+    }
+    
+}
