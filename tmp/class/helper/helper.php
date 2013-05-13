@@ -127,6 +127,7 @@ class tmp_helper extends tmp_widget {
         $classes = array_unique($classes);
         $classes = implode(" ",$classes);
         $this->attr("class",$classes);
+        return $this;
     }
 
     public function name() {
