@@ -237,9 +237,9 @@ class tmp_conveyor extends mod_component {
         $head = "";
 
         // Одиночные css
-        foreach($singleCss as $item) {
-            $head.= "<link rel='stylesheet' type='text/css' href='$item' />\n";
-        }
+        //foreach($singleCss as $item) {
+        //    $head.= "<link rel='stylesheet' type='text/css' href='$item' />\n";
+        //}
 
         // Упакованные css
         $packCss = tmp_render::packIncludes($packCss,"css");
@@ -248,9 +248,9 @@ class tmp_conveyor extends mod_component {
         }
 
         // Одиночные js
-        foreach($singleJs as $item) {
-            $head.= "<script type='text/javascript' src='$item'></script>\n";
-        }
+        //foreach($singleJs as $item) {
+        //    $head.= "<script type='text/javascript' src='$item'></script>\n";
+        //}
 
         // Упакованные js
         $packJs = tmp_render::packIncludes($packJs,"js");

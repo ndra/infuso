@@ -53,9 +53,14 @@ class tmp implements mod_handler {
     /**
      * Уничтожает текущую область видимости, применяя ее свойства к предыдущей
      **/
+    public function mergeConveyorDown() {
+        $conveyor = self::popConveyor();
+        self::conveyor()->mergeWith($conveyor);
+        return $conveyor;
+    }
+
     public function popConveyor() {
         $conveyor = array_pop(self::$conveyor);
-        self::conveyor()->mergeWith($conveyor);
         return $conveyor;
     }
 

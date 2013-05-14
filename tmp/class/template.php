@@ -139,7 +139,7 @@ class tmp_template extends tmp_generic {
                 ob_start();
                 $this->aexec($p);
                 $cached = ob_get_flush();
-                $conveyor = tmp::popConveyor();
+                $conveyor = tmp::mergeConveyorDown();
 
                 if(!$conveyor->preventCaching()) {
                     mod_cache::set($hash,$cached);
