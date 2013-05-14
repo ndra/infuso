@@ -3,12 +3,16 @@
 /**
  * Класс гугл перевода
  **/
-class google_translate extends reflex {
+class google_translate extends mod_service {
+
+    public function defaultService() {
+        return "translate";
+    }
 
     /**
      * Возвращает перевод текста
      **/
-    public static function translate($original,$source,$target) {
+    public function translate($original,$source,$target) {
 
         $original = trim($original);
 
@@ -62,7 +66,7 @@ class google_translate extends reflex {
     /**
      * Выполняет запрос к translate api
      **/
-    public static function request($str,$source,$target) {
+    private static function request($str,$source,$target) {
 
         // Не делаем запрос, если длина переводимого слова один символ
         if(strlen($str)==1) {
