@@ -78,21 +78,19 @@ class google_translate extends reflex {
 
         $url = "https://www.googleapis.com/language/translate/v2?".http_build_query($params);
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-        $tr = curl_exec($ch);
+        $file = file::http($url);
+        $tr = $file->data();
 
         if(!$tr) {
-            throw new Exception("Google Translate request error: ".curl_error($ch));
+            throw new Exception("Google Translate request error: ".$file->errorText());
         }
 
         $tr = json_decode($tr,1);
 
         // Если при переводе возникла ошибка - выкидываем экзепшн
         if($tr["error"]) {
-            throw new Exception("Google translate error: ".$tr["error"]["errors"][0]["message"]);
+            $error = $tr["error"]["errors"][0];
+            throw new Exception("Google translate error: {$error[message]} ({$error[reason]})");
         }
 
         return $tr["data"]["translations"][0]["translatedText"];
