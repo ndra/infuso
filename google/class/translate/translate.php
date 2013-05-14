@@ -14,6 +14,10 @@ class google_translate extends mod_service {
      **/
     public function translate($original,$source,$target) {
 
+        if($this->param("bypass")) {
+            return $original;
+        }
+
         $original = trim($original);
 
         // Не переводим пустые строки
