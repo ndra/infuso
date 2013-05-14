@@ -5,6 +5,15 @@
  **/
 class mod_file_http extends mod_file {
 
+    private $lastCurl = null;
+
+    public function initialParams() {
+
+        return array(
+            "curlOptions" => array(),
+        );
+    }
+
     public function __construct($path) {
         $this->path = $path;
     }
@@ -101,9 +110,14 @@ class mod_file_http extends mod_file {
 
         $ch = curl_init($this->path());
 
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+
+        foreach($this->param("curlOptions") as $key => $val) {
+            curl_setopt($ch, constant($key),$val);
+        }
+
+        $this->lastCurl = $ch;
 
         return $ch;
     }
@@ -146,6 +160,14 @@ class mod_file_http extends mod_file {
         $connectable = curl_exec($ch);
         curl_close($ch);
         return $connectable;
+    }
+
+    public function info() {
+        return curl_getInfo($this->lastCurl);
+    }
+
+    public function errorText() {
+        return curl_error($this->lastCurl);
     }
 
 }
