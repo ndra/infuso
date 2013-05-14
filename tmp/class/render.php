@@ -6,6 +6,7 @@
 class tmp_render {
 
 	private static $less;
+	private static $renderID = null;
 	
 	private static function lesscssInstance() {
 		if(!self::$less)
@@ -13,8 +14,6 @@ class tmp_render {
 		return self::$less;
 	}
 	
-	private static $renderID = null;
-
 	/**
 	 * Очищает кэш рендера скриптов и стилей
 	 **/
@@ -44,15 +43,21 @@ class tmp_render {
 		return mod::conf("tmp:lesscss");
 	}
 	
+    /**
+     * Упаковывает массив css или js файлов в один, сохраняет на диск
+     * и возвращает имя сгенерированного файла
+     **/
 	public static function packIncludes($items,$ext) {
 
-	    if(is_scalar($items))
+	    if(is_scalar($items)) {
 			return $items;
+        }
 
 	    $hash = md5(self::renderID()." - ".serialize($items));
 	    $file = file::get("/tmp/render/$hash.$ext");
 
 	    if(mod::conf("tmp:always-render") || !$file->exists()) {
+
 	        $code = "";
 	        foreach($items as $item) {
 	            if($str = trim(file::get($item)->data())) {
