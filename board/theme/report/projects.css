@@ -1,0 +1,11 @@
+.x8367pvuga0 {
+    
+    td {
+        padding:4px 10px;
+    }
+    
+    tr:nth-child(2n) td {
+        background:#ededed;
+    }
+
+}
