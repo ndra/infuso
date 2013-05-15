@@ -9,11 +9,14 @@
 class tmp_block {
 
 	private $name = null;
+
+	private static $buffer = array();
+	
+	private $templates = array();
+
 	public function __construct($name) {
 		$this->name = $name;
 	}
-
-	private static $buffer = array();
 
 	/**
 	 * Возвращает блок по его имени.
@@ -23,8 +26,6 @@ class tmp_block {
 		    self::$buffer[$name] = new self($name);
 		return self::$buffer[$name];
 	}
-
-	private $templates = array();
 
 	/**
 	 * Добавляет в данный блок шаблон, виджет или любой другой объект класса,
