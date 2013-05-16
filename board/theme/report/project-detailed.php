@@ -1,29 +1,29 @@
 <? 
 
 tmp::header();
+tmp::reset();
 
 $tasks = $project->tasks()
     ->desc("changed")
     ->gt("changed",util::now()->shiftDay(-30))
-    ->limit(0);
-
-<table class='uot58zssqv' >
-    foreach($tasks as $task) {        
+    ->eq("epicParentTask",0);
+    
+<div style='padding:20px;' >
+    <table>
         <tr>
             <td>
-                echo $task->text();
+                tmp::exec("tasks",array(
+                    "tasks" => $tasks,
+                ));
             </td>
-            <td>
-                echo $task->timeScheduled();
-            </td>            
-            <td>
-                echo $task->timeSpent();
+            <td style='padding-left:20px;' >
+                tmp::exec("contributors",array(
+                    "tasks" => $tasks,
+                    "project" => $project,
+                ));
             </td>
-            <td>
-                echo $task->data("epicParentTask");
-            </td>
-        </tr>
-    }
-</table>
+        <tr>        
+    </table>
+</div>
 
 tmp::footer();

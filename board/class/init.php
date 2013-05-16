@@ -2,13 +2,6 @@
 
 class board_init implements mod_handler {
 
-	public function on_mo_cron() {
-	    reflex_task::add(array(
-	        "class" => "board_task",
-	        "method" => "reindex",
-		));
-	}
-
     public function on_mod_init() {
         
         // Создаем роль
