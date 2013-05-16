@@ -30,16 +30,23 @@ $items = board_task_log::all()
                 ->neq("status",board_task_status::STATUS_DRAFT)
                 ->sum("timeScheduled");
                 
-            $completed = board_task::all()
+            $completedTasks = board_task::all()
                 ->eq("projectID",$row["projectID"])
                 ->gt("changed",util::now()->shiftDay(-30))
-                ->eq("status",array(board_task_status::STATUS_COMPLETED,board_task_status::STATUS_CHECKOUT))
-                ->sum("timeScheduled");
+                ->eq("status",array(board_task_status::STATUS_COMPLETED,board_task_status::STATUS_CHECKOUT));
+                
+            $completed = $completedTasks->sum("timeScheduled");
+            $number = $completedTasks->count();
         
             <tr>        
                 $project = board_project::get($row["projectID"]);            
                 <td>
-                    echo $project->title();
+                    $url = mod::action("board_controller_report","projectDetailed",array(
+                        "project" => $project->id()
+                    ));
+                    <a href='{$url}' >
+                        echo $project->title();
+                    </a>
                 </td>
                 <td>
                     echo round($row["spent"],2);
@@ -48,8 +55,13 @@ $items = board_task_log::all()
                 <td>
                     echo $scheduled;
                 </td>
+                
                 <td>
                     echo $completed;
+                </td>                
+
+                <td>
+                    echo $number;
                 </td>
                 
             </tr>

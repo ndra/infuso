@@ -187,7 +187,7 @@
       'default' => '',
       'indexEnabled' => 1,
       'help' => '',
-      'class' => '',
+      'class' => 'board_task',
       'foreignKey' => '',
       'collection' => '',
       'titleMethod' => '',

@@ -89,6 +89,20 @@ class board_task extends reflex {
         
 	}
 
+	/**
+	 * Временный метод для исправления структуры
+	 **/
+	public function reindex() {
+        // Если это подзадача, ставим проект как у эпика
+        if($this->data("epicParentTask")) {
+            $this->data("projectID",$this->pdata("epicParentTask")->data("projectID"));
+        }
+	}
+
+	/**
+	 * Возвращает время, потраченное на задачу
+	 * Оно складывается из времени, потраченного на саму задачу и времени на подзадачи
+	 **/
 	public function updateTimeSpent() {
 	    $this->data("timeSpent",$this->getLogCustom()->sum("timeSpent"));
 	}

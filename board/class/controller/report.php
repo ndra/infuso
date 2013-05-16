@@ -46,12 +46,8 @@ class board_controller_report extends mod_controller {
     
     public function index_projects() {
     
-        $user = user::get($p["id"]);
-
         // Параметры задачи
-        if(!user::active()->checkAccess("board/showProjectsReport",array(
-            "task" => $task
-        ))) {
+        if(!user::active()->checkAccess("board/showProjectsReport")) {
             mod::msg(user::active()->errorText(),1);
             tmp::header();
             tmp::footer();
@@ -60,6 +56,24 @@ class board_controller_report extends mod_controller {
 
         tmp::exec("/board/report/projects");
     
+    }
+    
+    public function index_projectDetailed($p) {
+
+        $project = board_project::get($p["project"]);
+
+        // Параметры задачи
+        if(!user::active()->checkAccess("board/showProjectsReport")) {
+            mod::msg(user::active()->errorText(),1);
+            tmp::header();
+            tmp::footer();
+            return;
+        }
+
+        tmp::exec("/board/report/project-detailed", array(
+            "project" => $project,
+		));
+
     }
 
 }
