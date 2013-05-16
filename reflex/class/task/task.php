@@ -49,8 +49,6 @@ class reflex_task extends reflex implements mod_handler {
      **/
     public static function add($params) {
 
-
-
         if(is_array($params)) {
             $params = util::a($params)->filter("class","query","method","priority","params")->asArray();
 
@@ -66,11 +64,17 @@ class reflex_task extends reflex implements mod_handler {
                 "params" => $args[3] ? $args[3] : array(),
             );
         }
+        
+        if(!$params["class"]) {
+            throw new Exception("Параметр <b>class</b> не указан");
+        }
+        
+        if(!$params["method"]) {
+            throw new Exception("Параметр <b>method</b> не указан");
+        }
 
         $params["completed"] = 0;
         $params["params"] = serialize($params["params"]);
-
-
 
         $item = self::all()
             ->eq($params)
