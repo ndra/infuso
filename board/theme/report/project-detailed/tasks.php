@@ -3,7 +3,10 @@
 <table class='uot58zssqv' style='width:800px;' >
     foreach($tasks->limit(0) as $task) {        
         <tr>
-            <td class='text' >
+        
+            $userpick = $task->responsibleUser()->userpick()->preview(16,16)->crop();
+        
+            <td class='text' style='background: url({$userpick}) 5px 5px no-repeat;padding-left:25px;' >
                 echo util::str($task->text())->ellipsis(100);
             </td>
             <td>
@@ -16,9 +19,12 @@
         
         foreach($task->subtasks()->limit(0) as $subtask) {        
             <tr>
-                <td style='padding-left:50px;' class='text' >
+                
+                $userpick = $subtask->responsibleUser()->userpick()->preview(16,16)->crop();            
+                <td style='background: url({$userpick}) 55px 5px no-repeat;padding-left:75px;' class='text' >                    
                     echo util::str($subtask->text())->ellipsis(100);
                 </td>
+                
                 <td>
                     echo $subtask->timeScheduled();
                 </td>            
