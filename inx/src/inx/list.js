@@ -512,15 +512,21 @@ inx.list = inx.panel.extend({
      * Обновляет данные элемента
      **/
     cmd_set:function(id,set) {
-        for(var i=0;i<this.data.length;i++)
+    
+        for(var i=0;i<this.data.length;i++) {
             if(this.data[i].id==id) {
-                for(var key in set)
-                    this.data[i][key] = set[key];
+            
+                for(var key in set) {
+                    this.data[i]["data"][key] = set[key];
+                }
                 /**
                  this.private_updateItem(id);
-                 Сделать
+                 Сделать без долгого setData
                  **/
             }    
+        }
+        
+        this.cmd("setData",this.data);
     },
     
     /**
