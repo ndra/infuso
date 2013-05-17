@@ -38,6 +38,11 @@ inx.mod.board.board.taskList = inx.list.extend({
             }
         })
         
+        var cmp = this;
+        inx.on("board/taskChanged",function(params) {            
+            cmp.cmd("set",params.taskID,params.sticker);
+        });
+        
         
     },
     

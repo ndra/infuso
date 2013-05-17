@@ -14,13 +14,12 @@ inx.css(".qm5btw9-drawback{width:100px;height:100px;cursor:pointer;background:ur
 inx.css(".qm5btw9-drawback:hover{opacity:1;}");
 inx.css(".qm5btw9-date-mark{color:gray;font-size:18px;font-style:italic;}");
 
-inx.mod.board.board.taskList.task = inx.box.extend({
+inx.mod.board.board.taskList.task = inx.panel.extend({
 
     constructor:function(p) {    
         p.style = {
             border:0,
-            width:100,
-            height:100
+            width:100
         }
         this.base(p);
     },
@@ -59,11 +58,6 @@ inx.mod.board.board.taskList.task = inx.box.extend({
             var taskContainer = $("<div>")
                 .addClass("qm5btw9-task")
                 .data("taskID",task.id);
-                /*.mouseover(function() {
-                    $(".qm5btw9-"+task.projectID).addClass("qm5btw9-hover-group");
-                }).mouseout(function() {
-                    $(".qm5btw9-"+task.projectID).removeClass("qm5btw9-hover-group");
-                }); */
                 
             if(task.epic) {
                 
@@ -90,7 +84,6 @@ inx.mod.board.board.taskList.task = inx.box.extend({
                         top:3
                     })
                     .appendTo(taskContainer);
-            
             }    
 
         
@@ -99,8 +92,9 @@ inx.mod.board.board.taskList.task = inx.box.extend({
                 .appendTo(taskContainer)
                 .addClass("qm5btw9-"+task.projectID);
                 
-            if(task.my)
+            if(task.my) {
                 e.addClass("qm5btw9-my");
+            }    
             
             // Цвет листика
             if(task.color)
@@ -163,10 +157,25 @@ inx.mod.board.board.taskList.task = inx.box.extend({
                     })
                     .appendTo(taskContainer);
                     
-                this.style("height",120);
+                //this.style("height",120);
             }
+            
+            var cmp = this;
+            var controls = $("<div>")
+                .addClass("controls")
+                .css({
+                    height:24
+                })                
+                .appendTo(taskContainer);
                 
-            taskContainer.appendTo(this.el);
+            taskContainer.mouseenter(function() {
+                cmp.cmd("showControls");
+            });
+             taskContainer.mouseleave(function() {
+                cmp.cmd("hideControls");
+            });
+                
+            this.cmd("html",taskContainer)
         
         }
         
@@ -178,13 +187,41 @@ inx.mod.board.board.taskList.task = inx.box.extend({
             dropArea:this.el,
             loader:{
                 cmd:"board/controller/attachment/uploadFile",
-                taskID:this.data.id
+                taskID:this.data.id,
             },oncomplete:function() {
                 cmp.owner().cmd("load");
             }
         }).cmd("render");
             
+    },
+    
+    cmd_showControls:function() {
+        
+        if(!this.controls) {
+    
+        var controls = this.el.find(".controls");
+            var cmp = inx({
+                width:this.info("width"),
+                tools:["pause"],
+                type:this.info("type")+".controls",
+                taskID:this.taskID
+            });
+            
+            cmp.cmd("render").cmd("appendTo",controls);
+            this.controls = cmp;
+        }
+        
+        this.controls.cmd("show");
+        
+    },
+    
+    cmd_hideControls:function() {
+        if(!this.controls) {
+            return;
+        }
+        this.controls.cmd("hide");
     }
+    
 
          
 });

@@ -87,6 +87,12 @@ class board_task extends reflex {
             $this->data("projectID",$this->pdata("epicParentTask")->data("projectID"));
         }
         
+        mod::fire("board/taskChanged",array(
+            "deliverToClient" => true,
+            "taskID" => $this->id(),
+            "sticker" => $this->stickerData(),
+		));
+        
 	}
 
 	/**
@@ -178,6 +184,20 @@ class board_task extends reflex {
         }
         
         return $ret;
+    }
+    
+    /**
+     * Ставит задачу на паузу
+     **/
+    public function pauseTask() {
+		$this->data("paused",true);
+    }
+    
+    /**
+     * Возвращает заадчу к выполнению
+     **/
+    public function resumeTask() {
+        $this->data("paused",false);
     }
 
     /**
