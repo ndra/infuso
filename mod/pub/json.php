@@ -38,25 +38,27 @@ try {
 
 // Ñîáèğàåì ìàññèâ ñîîáùåíèé
 $messages = array();
-foreach(mod_log::messages() as $msg)
+foreach(mod_log::messages() as $msg) {
 	$messages[] = array(
 		"text" => $msg->text(),
 		"error" => $msg->error(),
 	);
+}
 
 // Ñîáèğàåì ìàññèâ ñîáûòèé
 $events = array();
-foreach(mod_event::all() as $event)
+foreach(mod_event::all() as $event) {
 	$events[] = array(
 		"name" => $event->name(),
 		"params" => $event->params()
 	);
+}
 	
 $ret = array(
 	"messages" => $messages,
 	"events" => $events,
 	"data" => $jret,
-	"completed" => !!$status
+	"completed" => !!$status,
 );
 
 
