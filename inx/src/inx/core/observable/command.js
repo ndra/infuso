@@ -2,21 +2,24 @@
 inx.command = inx.observable.extend({
 
     constructor:function(p) {
-        if(!p.data)
+        if(!p.data) {
             p.data = {};
+        }
         this.base(p);
     },
     
     cmd_logThis:function(param) {
     
         // Добавляем объект с заданным id в лог
-        if(!inx.ajaxLog)
+        if(!inx.ajaxLog) {
             inx.ajaxLog = [];
+        }
             
         var item;    
         for(var i=inx.ajaxLog.length-1;i>=0;i--) {
-            if(inx.ajaxLog[i].id==this.id())
+            if(inx.ajaxLog[i].id==this.id()) {
                 item = inx.ajaxLog[i];
+            }
         }
         
         if(!item) {
@@ -27,8 +30,9 @@ inx.command = inx.observable.extend({
         }
         
         // Записываем в объект переданные параметры
-        for(var i in param)
+        for(var i in param) {
             item[i] = param[i];
+        }
             
     },
     
@@ -91,12 +95,27 @@ inx.command = inx.observable.extend({
         // Пробуем разобрать ответ от сервера
         var ret = inx.command.parse(response);
         
+        // Показываем сообщения
+        if(ret.messages) {
+            for(var i=0;i<ret.messages.length;i++) {
+                var msg = ret.messages[i];
+                inx.msg(msg.text,msg.error);
+            }
+        }
+        
         // При ошибке разбора показываем уведомление
         if(!ret.success) {
-            if(ret.text)inx.msg(ret.text,1);
+            if(ret.text) inx.msg(ret.text,1);
             this.fire("error");
             this.cmd("logThis",{statusText:"Parse JSON error"});
             return;
+        }
+        
+        if(ret.events) {
+            for(var i=0;i<ret.events.length;i++) {
+                var event = ret.events[i];
+                inx.fire(event.name,event.params)
+            }
         }
         
         // Если мы дошли до этого места, значит запрос успешен
@@ -104,8 +123,9 @@ inx.command = inx.observable.extend({
         if(this.meta) {
             if(!ret.meta)
                 ret.meta = {};
-            for(var i in this.meta)
+            for(var i in this.meta) {
                 ret.meta[i] = this.meta[i];
+            }
         }
 
         this.fire("success",ret.data,ret.meta);
@@ -133,8 +153,7 @@ inx.command = inx.observable.extend({
         try {
             this.cmd("count",-1);
             this.request.abort();
-        }
-        catch(ex){}
+        } catch(ex) { }
         this.base();
     }
 
@@ -153,13 +172,11 @@ inx.command.parse = function(str) {
         return {success:false,text:str};
     } 
     
-    for(var i=0;i<data.messages.length;i++) {
-        var msg = data.messages[i];
-        inx.msg(msg.text,msg.error);
-    }
     return {
         success:data.completed,
+        messages:data.messages,
         data:data.data,
-        meta:data.meta
+        meta:data.meta,
+        events:data.events
     }
 }
