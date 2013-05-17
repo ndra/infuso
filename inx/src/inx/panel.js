@@ -529,8 +529,9 @@ inx.panel = inx.box.extend({
         }
 
         // При добалении несуществующего компонента, пропускаем его
-        if(!cmp.exists())
+        if(!cmp.exists()) {
             return inx(0);
+        }
             
         cmp.owner().cmd("remove",cmp);
 
@@ -538,9 +539,9 @@ inx.panel = inx.box.extend({
         cmp.setOwner(this.id());
         
         // Вставляем дочерний элемент на нужное место
-        if(position===undefined)
+        if(position===undefined) {
             this.private_items.push(cmp.id());
-        else {
+        } else {
             this.private_items.splice(position,0,cmp.id());
         }
 
@@ -558,12 +559,14 @@ inx.panel = inx.box.extend({
     cmd_destroy:function() {
         this.base();
         // Разрушаем все боковые панели. Все
-        for(var i in this.private_side)
+        for(var i in this.private_side) {
             inx(this.private_side[i]).cmd("destroy");
-
+        }
     },
 
-    // Параметр функции - id компонента или сам компонент
+    /**
+     * Параметр функции - id компонента или сам компонент
+     **/
     cmd_remove:function(cmp) {
     
         if(!this.private_items)
@@ -571,23 +574,47 @@ inx.panel = inx.box.extend({
     
         id = inx(cmp).id();
 
-        for(var i=0;i<this.private_items.length;i++)
+        for(var i=0;i<this.private_items.length;i++) {
             if(this.private_items[i]==id) {
-                
-                //if(this.__layoutManager)
                 this.private_layoutManager().remove.apply(this,[inx(id)]);
-                
                 this.private_items.splice(i,1);
                 this.task("syncLayout");
                 break;
             }
+        }
             
         // Пытаемся удалить панель из списка боковых панелей
         this.cmd("removeSidePanel",id);
-        
+    },
+    
+
+    /**
+     * Параметр функции - id компонента или сам компонент
+     **/
+    cmd_replace:function(cmp,replacer) {
+    
+        if(!this.private_items) {
+            return;
+        }
+    
+        var replacer = inx(replacer);
+    
+        id = inx(cmp).id();
+
+        for(var i=0;i<this.private_items.length;i++) {
+            if(this.private_items[i]==id) {
+                this.private_items[i] = replacer.id();
+                replacer.setOwner(this);
+                this.task("syncLayout");
+                break;
+            }
+        }
+            
     },
 
-    // Удалить всех потомков
+    /**
+     * Удалить всех потомков
+     **/
     cmd_destroyChildren:function() {
         this.items().cmd("destroy");
     }, 

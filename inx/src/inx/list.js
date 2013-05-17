@@ -73,87 +73,101 @@ inx.list = inx.panel.extend({
      * Перерисовывает список
      **/
     cmd_updateAll:function() {
-    
-        var that = this;
-        
+   
+       var that = this;
+   
         // Убираем старые элементы
         this.items().each(function() {
             that.cmd("remove",this.id());
         })
-
-        var listID = this.id();        
-        var colHash = inx(this).axis("head").info("hash");
         
         for(var i in this.data) {
         
             // Присваеваем элементу id, если он не был присвоен
-            if(this.data[i].id === undefined)
+            if(this.data[i].id === undefined) {
                 this.data[i].id = inx.id();
-                
-            var itemID = this.data[i].id;
+            }
             
-            // Сюда будут складываться элементы
-            if(!this.bufferz)
-                this.bufferz = {};
+            if(!this.data[i].data) {
+                this.data[i].data = this.data[i];
+            }
                 
-            // Хэщ элемента
-            // Система попытается взять элемент из буфера по хэшу.
-            // Если не получится - создаст новый
-            var itemHash = this.data[i].id +":"+ inx.crc32(this.data[i]) + ":" + colHash;
-                
-            if(!this.bufferz[itemHash]) {
+            var cmp = this.privateGetItemComponent(this.data[i]);
             
-                if(!this.data[i].data)
-                    this.data[i].data = this.data[i];
-            
-                // Создаем элемент
-                var item = this.info("itemConstructor",this.data[i]);
-                item.data = this.data[i];
-                item.head = this.head;
-                item.list = this;                
-                
-                // Для элемента можно передать ширину
-                if(this.data[i].width)
-                    item.width = this.data[i].width;
-                    
-                if(this.sortable) {
-                    if(!item.listeners)
-                        item.listeners = {};
-                    item.listeners.render = function() {
-                        inx.dd.enable(this.el,that,"handleDragItem",{
-                            itemID:this.id(),
-                            helper:true
-                        });
-                    }
-                }
-                
-                item = inx(item);
-                
-                item.on("mousedown",function(e) {
-                    inx(listID).cmd("handleItemMousedown",inx(this).data("itemID"),e);
-                })
-                
-                item.on("click",function(e) {
-                    inx(listID).cmd("handleItemClick",inx(this).data("itemID"),e);
-                })
-                
-                item.on("dblclick",function(e) {
-                    inx(listID).cmd("handleItemDblclick",inx(this).data("itemID"),e);
-                })
-                
-                item.data("itemID",itemID);                
-                
-                this.bufferz[itemHash] = item;
-
-            }            
-            
-            this.cmd("add",this.bufferz[itemHash]);
+            this.cmd("add",cmp);
             
         }
         
         this.cmd("removeOldSelection");
         this.task("updateSelection")
         this.task("updateHeadVisibility");
+    
+    },
+    
+    privateGetItemComponent:function(data) {
+    
+        var that = this;
+    
+        var colHash = inx(this).axis("head").info("hash");
+        var listID = this.id();
+        var itemID = data.id;
+    
+        // Сюда будут складываться элементы
+        if(!this.bufferz) {
+            this.bufferz = {};
+        }
+            
+        // Хэщ элемента
+        // Система попытается взять элемент из буфера по хэшу.
+        // Если не получится - создаст новый
+        var itemHash = inx.crc32(data) + ":" + colHash;
+            
+        if(!this.bufferz[itemHash]) {
+        
+            // Создаем элемент
+            var item = this.info("itemConstructor",data);
+            item.data = data;
+            item.head = this.head;
+            item.list = this;                
+            
+            // Для элемента можно передать ширину
+            if(data.width) {
+                item.width = data.width;
+            }
+                
+            if(this.sortable) {
+                if(!item.listeners) {
+                    item.listeners = {};
+                }
+                item.listeners.render = function() {
+                    inx.dd.enable(this.el,that,"handleDragItem",{
+                        itemID:this.id(),
+                        helper:true
+                    });
+                }
+            }
+            
+            item = inx(item);
+            
+            item.on("mousedown",function(e) {
+                inx(listID).cmd("handleItemMousedown",inx(this).data("itemID"),e);
+            })
+            
+            item.on("click",function(e) {
+                inx(listID).cmd("handleItemClick",inx(this).data("itemID"),e);
+            })
+            
+            item.on("dblclick",function(e) {
+                inx(listID).cmd("handleItemDblclick",inx(this).data("itemID"),e);
+            })
+            
+            item.data("itemID",itemID);                
+            
+            this.bufferz[itemHash] = item;
+
+        }       
+        
+        return this.bufferz[itemHash];
     
     },
     
@@ -519,6 +533,10 @@ inx.list = inx.panel.extend({
                 for(var key in set) {
                     this.data[i]["data"][key] = set[key];
                 }
+                
+                var cmp = this.privateGetItemComponent(this.data[i]);
+                this.cmd("replace",this.info("itemComponent",id),cmp);
+                
                 /**
                  this.private_updateItem(id);
                  Сделать без долгого setData
@@ -526,7 +544,9 @@ inx.list = inx.panel.extend({
             }    
         }
         
-        this.cmd("setData",this.data);
+        
+        
+        //this.cmd("setData",this.data);
     },
     
     /**
@@ -709,8 +729,7 @@ inx.list = inx.panel.extend({
         }
         
         inx.arrayMove(this.private_items,pos,position);
-        inx.arrayMove(this.data,pos,position)
-           
+        inx.arrayMove(this.data,pos,position);
           
         this.task("updateItemsLayout");
 
