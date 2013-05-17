@@ -63,24 +63,27 @@ class reflex_editor_behaviourDefault extends mod_behaviour {
     }
 
     public function titleField() {
+        // перебираем поля до первого поля с именем title
         foreach($this->item()->fields() as $field) {
             if($field->name()=="title") {
                 return $field->name();
             }
         }
-        return false;
+        // перебираем поля до первого поля сторокогвого типа и возвращаем его имя
+        foreach($this->item()->fields() as $field){
+            if($field->typeID() == "v324-89xr-24nk-0z30-r243"){
+                return $field->name();    
+            }
+        }
+		
+		return false;
     }
 
     /**
      * @return Функция возвращает имя поля, которое будет использоваться для быстрого поиска в каталоге
      **/
     public function quickSearch() {
-        foreach($this->item()->fields() as $field) {
-            if($field->name()=="title") {
-                return $field->name();
-			}
-		}
-        return false;
+        return $this->component()->titleField();
     }
 
     /**
