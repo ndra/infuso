@@ -360,7 +360,16 @@ class file_preview extends mod_component {
         }
         return $rgbArray;
     }
-
+	
+	public function valign($valign) {
+        $available = array("top","middle","bottom");
+        if(!in_array($valign,$available)){
+            throw new Exception("Undefined vertical-align type");   
+        }
+        $this->setResizeParam("valign", $valign);
+        return $this;
+    }
+	
     private function setResizeParam($key,$val) {
         $this->addOperation(array(
             "name" => "resize",
@@ -519,8 +528,22 @@ class file_preview extends mod_component {
         imagefill($destImg,0,0,$color);
 
         $y = ($previewHeight-$dh)/2;
-        if($p["mode"]=="crop")
-            $y = 0;
+        if($p["mode"]=="crop"){
+            switch($p["valign"]) {
+                default:
+                    $y = 0;
+                    break;
+                case "top":
+                    $y = 0;
+                    break;
+                case "middle":
+                    $y = ($previewHeight-$dh)/2;
+                    break;
+                case "bottom":
+                    $y = $previewHeight-$dh;
+                    break;                  
+            }
+        }    
 
         @imagecopyresampled($destImg,$this->img(),($previewWidth-$dw)/2,$y,0,0,$dw,$dh,$srcWidth,$srcHeight);
         $this->img = $destImg;
