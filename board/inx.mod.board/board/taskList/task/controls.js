@@ -6,7 +6,8 @@ inx.mod.board.board.taskList.task.controls = inx.panel.extend({
     
         p.style = {
             spacing:4,
-            border:0
+            border:0,
+            background:"none"
         }
     
         p.layout = "inx.layout.column";
@@ -33,6 +34,16 @@ inx.mod.board.board.taskList.task.controls = inx.panel.extend({
                 onclick:[this.id(),"completeTask"]
             });
         }
+        
+        // Буду делать
+        if(p.tools.indexOf("take")!=-1) {
+            p.items.push({
+                type:"inx.button",
+                air:true,
+                icon:"/board/res/img/icons16/runner.png",
+                onclick:[this.id(),"takeTask"]
+            });
+        }
             
         this.base(p);
     },
@@ -44,11 +55,19 @@ inx.mod.board.board.taskList.task.controls = inx.panel.extend({
         });
     },
     
+    cmd_takeTask:function() {
+        this.call({
+            cmd:"board/controller/task/changeTaskStatus",
+            taskID:this.taskID,
+            status:1
+        });
+    },
+    
     cmd_completeTask:function() {
         inx({
             type:"inx.mod.board.timeInput",
             taskID:this.taskID,
-            taskStatus:2,
+            status:2,
             listeners:{
                 save:[this.id(),"handleTimeInput"]
             }

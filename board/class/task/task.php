@@ -331,6 +331,10 @@ class board_task extends reflex {
             $ret["tools"][] = "done";
         }
 
+        if($this->status()->id()==board_task_status::STATUS_NEW) {
+            $ret["tools"][] = "take";
+        }
+
 	    return $ret;
 	}
 	

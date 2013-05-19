@@ -16,8 +16,13 @@ inx.mod.board.board.taskList = inx.list.extend({
             p.style = {};
         }
         
-        p.style.spacing = 15;
-        p.style.padding = 15;
+        if(p.style.spacing===undefined) {
+            p.style.spacing = 15;
+        }
+        
+        if(p.style.padding===undefined) {
+            p.style.padding = 15;
+        }
         p.style.valign = "top";
         
         p.sortable = true;
