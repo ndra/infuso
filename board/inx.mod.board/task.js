@@ -21,17 +21,7 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
         this.cmd("requestData");
                  
         this.on("submit",[this.id(),"save"]); 
-           
-        // При закрытии диалога, если были какие-нибудь изменения,
-        // обновляем списко задач
-        this.on("destroy",function() {
-            this.getMainComponent();
-            if(this.taskChanged) {
-                var main = this.getMainComponent();
-                main.cmd("handleBoardChanged");
-            }
-        });
-        
+      
         this.extend({
             getMainComponent:function() {
                 return inx(this).axis("parents").eq("type","inx.mod.board.main");
@@ -88,9 +78,6 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
 
         this.form.cmd("add",{
             type:"inx.mod.board.task.subtasks",
-            listeners:{
-                change:[this.id(),"registerChanges"]
-            },
             taskID:this.taskID
         });
         
@@ -159,12 +146,6 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
         var side = inx(this.more);
         side.cmd(side.info("visible") ? "hide" : "show");
     },
- 
-    cmd_handleSave:function(ret) {
-        if(ret) {
-            this.cmd("registerChanges");
-        }
-    },
     
     cmd_save:function() {
     
@@ -175,7 +156,7 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
             data:data,
             taskID:this.taskID,
             status:this.status
-        },[this.id(),"handleSave"]);
+        });
     },
     
     cmd_handleTimeInput:function() {
@@ -189,7 +170,7 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
     
         if(this.currentStatus==1) {
             inx({
-                type:"inx.mod.board.task.timeInput",
+                type:"inx.mod.board.timeInput",
                 taskID:this.taskID,
                 taskStatus:status,
                 listeners:{
@@ -212,11 +193,6 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
     
     cmd_handleSetStatus:function() {
         this.cmd("requestData");
-        this.cmd("registerChanges");
-    },
-    
-    cmd_registerChanges:function() {
-        this.taskChanged = true;
     }
          
 });

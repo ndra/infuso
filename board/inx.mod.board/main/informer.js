@@ -1,19 +1,26 @@
 // @link_with_parent
-// @include inx.iframe
+// @include inx.mod.board.board
 
-inx.mod.board.main.informer = inx.iframe.extend({
+inx.mod.board.main.informer = inx.panel.extend({
 
     constructor:function(p) {
-
-        p.src = "/board_controller_informer";
-        inx.hotkey("f5",[this.id(),"handleF5"]);
-
-        this.base(p);
-    },
+   
+        p.items = [{
+            html:"<div style='padding:15px 15px 0 15px;' ><b>Я делаю</b>",
+            style:{
+                border:0
+            }
+        },{
+            type:"inx.mod.board.board.taskList",
+            status:1,
+            style:{
+                border:0
+            }
+        },{
+            type:"inx.mod.board.main.informer.log",
+        }];
     
-    cmd_handleF5:function() {
-        this.cmd("refresh");
-        return false;
+        this.base(p);
     }
          
 });

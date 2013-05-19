@@ -84,8 +84,7 @@ inx.mod.board.board.taskList.task = inx.panel.extend({
                         top:3
                     })
                     .appendTo(taskContainer);
-            }    
-
+            }   
         
             var e = $("<div>")
                 .addClass("qm5btw9")
@@ -97,18 +96,18 @@ inx.mod.board.board.taskList.task = inx.panel.extend({
             }    
             
             // Цвет листика
-            if(task.color)
+            if(task.color) {
                 e.css({background:task.color});
-            
-            // Задачи с дэдлайном    
-            if(task.deadline) {
-                e.css({"background-image":"url(/board/res/task-time.png)"});
-            }            
-            
-            // Задачи с просранным дэдлайном   
-            if(task.fuckup) {
-                e.css({"background-image":"url(/board/res/task-time-fuckup.png)"});
             }
+            
+            // Фоновое изображение 
+            if(task.backgroundImage) {
+                e.css({
+                    "background-image":"url("+task.backgroundImage+")",
+                    backgroundRepeat:"no-repeat",
+                    backgroundPosition:"center center"
+                });
+            }            
             
             // Помехи
             if(task.hindrance) {
@@ -202,9 +201,9 @@ inx.mod.board.board.taskList.task = inx.panel.extend({
         var controls = this.el.find(".controls");
             var cmp = inx({
                 width:this.info("width"),
-                tools:["pause"],
+                tools:this.data.data.tools,
                 type:this.info("type")+".controls",
-                taskID:this.taskID
+                taskID:this.data.id
             });
             
             cmp.cmd("render").cmd("appendTo",controls);

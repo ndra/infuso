@@ -56,6 +56,7 @@ class board_controller_attachment extends mod_controller {
 
         $file = $_FILES["file"];
         $task->storage()->addUploaded($file["tmp_name"],$file["name"]);
+        $task->uploadFilesCount();
 
     }
 

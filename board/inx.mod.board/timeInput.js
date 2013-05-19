@@ -1,7 +1,6 @@
-// @link_with_parent
 // @include inx.dialog
 
-inx.mod.board.task.timeInput = inx.dialog.extend({
+inx.ns("inx.mod.board").timeInput = inx.dialog.extend({
 
     constructor:function(p) {
     

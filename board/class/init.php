@@ -65,6 +65,11 @@ class board_init implements mod_handler {
        user_operation::create("board/uploadFile","Закачивание файла в задачу")
             ->appendTo("board/editTask");
 
+       user_operation::create("board/pauseTask","Приостановка задачи")
+            ->addBusinessRule('if($task->data("status") != board_task_status::STATUS_IN_PROGRESS) $this->error("Нельзя поставить задачу на паузу в статусе {$task->status()->title()}");')
+            ->addBusinessRule("return true;")
+            ->appendTo("board/editTask");
+
        // Отчеты
 
        user_operation::create("board/showUserReport","Просмотр отчета по пользователям")

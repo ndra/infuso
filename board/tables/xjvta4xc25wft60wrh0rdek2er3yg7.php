@@ -204,6 +204,42 @@
       'indexEnabled' => 1,
       'help' => '',
     ),
+    17 => 
+    array (
+      'editable' => 1,
+      'id' => 'tyazqyah7cu07c1ijy5z7casjm9ijc',
+      'name' => 'paused',
+      'type' => 'x8g2-xkgh-jc52-tpe2-jcgb',
+      'label' => 'Пауза',
+      'group' => '',
+      'default' => '',
+      'indexEnabled' => 0,
+      'help' => '',
+    ),
+    18 => 
+    array (
+      'editable' => 2,
+      'id' => 'idwu0o8103y10okght4urnclhomg0q',
+      'name' => 'pauseTime',
+      'type' => 'yvbj-cgin-m90o-cez7-mv2j',
+      'label' => 'Суммарное время паузы',
+      'group' => '',
+      'default' => '',
+      'indexEnabled' => 0,
+      'help' => '',
+    ),
+    19 => 
+    array (
+      'editable' => 2,
+      'id' => 'keh7y527m9zq8ab38vho8vzn4azxcl',
+      'name' => 'files',
+      'type' => 'gklv-0ijh-uh7g-7fhu-4jtg',
+      'label' => 'Количество файлов',
+      'group' => '',
+      'default' => '',
+      'indexEnabled' => 0,
+      'help' => '',
+    ),
   ),
   'indexes' => 
   array (

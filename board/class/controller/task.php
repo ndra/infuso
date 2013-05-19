@@ -46,6 +46,20 @@ class board_controller_task extends mod_controller {
 
         $lastChange = null;
 
+        $idList = array();
+        foreach($p["idList"] as $item) {
+            if(is_numeric($item)) {
+                $idList[] = $item;
+            }
+        }
+
+        $idList = implode(":",$idList);
+        $idList2 = implode(":",$tasks->idList());
+
+        if($idList == $idList2) {
+            return false;
+        }
+
         foreach($tasks as $task) {
 
             // Вывод дат
@@ -286,6 +300,9 @@ class board_controller_task extends mod_controller {
         return true;
     }
 
+    /**
+     * Контроллер получения времени, потраченного на задачу
+     **/
     public function post_getTaskTime($p) {
 
         $task = board_task::get($p["taskID"]);
@@ -300,6 +317,7 @@ class board_controller_task extends mod_controller {
 
         $date = $task->pdata("changed");
         $d = util::now()->stamp() - $date->stamp();
+        $d -= $task->data("pauseTime");
 
         $hours = floor($d/60/60);
         $minutes = ceil($d/60)%60;
@@ -308,7 +326,6 @@ class board_controller_task extends mod_controller {
             "hours" => $hours,
             "minutes" => $minutes,
         );
-
 
     }
 
@@ -329,6 +346,22 @@ class board_controller_task extends mod_controller {
         }
 
         mod::msg("Сортировка сохранена");
+
+    }
+
+    public function post_pauseTask($p) {
+
+        $task = board_task::get($p["taskID"]);
+
+        // Параметры задачи
+        if(!user::active()->checkAccess("board/pauseTask",array(
+            "task" => $task,
+        ))) {
+            mod::msg(user::active()->errorText(),1);
+            return;
+        }
+
+        $task->pauseToggle();
 
     }
 

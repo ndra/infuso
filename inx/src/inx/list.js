@@ -355,7 +355,9 @@ inx.list = inx.panel.extend({
             data.data = inx.deepCopy(data);
         }
     
-        this.fire("load",data);
+        if(this.fire("load",data)===false) {
+            return;
+        }
     
         this.cmd("setData",data.data);
         this.cmd("setCols",data.cols);

@@ -28,6 +28,7 @@ inx.mod.board.board.taskList = inx.list.extend({
         
         this.on("itemclick",[this.id(),"handleItemClick"]);
         this.on("load",[this.id(),"handleLoad"]);
+        this.on("beforeload",[this.id(),"beforeLoad"]);
         this.on("boardChanged",[this.id(),"load"]);
         
         inx.hotkey("f5",[this.id(),"handleF5"]);
@@ -38,11 +39,28 @@ inx.mod.board.board.taskList = inx.list.extend({
             }
         })
         
-        var cmp = this;
-        inx.on("board/taskChanged",function(params) {            
-            cmp.cmd("set",params.taskID,params.sticker);
-        });
+        inx.on("board/taskChanged",[this.id(),"handleTaskChanged"]);
         
+        
+    },
+    
+    cmd_handleTaskChanged:function(params) {         
+        this.cmd("set",params.taskID,params.sticker);
+        
+        if(params.changed.indexOf("status") != -1) {
+            this.cmd("load");
+        }
+        
+    },
+    
+    cmd_beforeLoad:function(loader) {
+    
+        var idList = [];
+        for(var i in this.data) {
+            idList.push(this.data[i].id);
+        }
+        
+        loader.idList = idList;
         
     },
     

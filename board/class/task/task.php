@@ -80,17 +80,28 @@ class board_task extends reflex {
 	        if($this->status()->active()) {
 	            $this->data("changed",util::now());
             }
+            $this->data("paused",false);
+            $this->data("pauseTime",0);
         }
         
         // Если это подзадача, ставим проект как у эпика
         if($this->data("epicParentTask")) {
             $this->data("projectID",$this->pdata("epicParentTask")->data("projectID"));
         }
+
+        // Собираем список измененных полей
+        $changed = array();
+        foreach($this->fields() as $field) {
+            if($field->changed()) {
+                $changed[] = $field->name();
+            }
+        }
         
         mod::fire("board/taskChanged",array(
             "deliverToClient" => true,
             "taskID" => $this->id(),
             "sticker" => $this->stickerData(),
+            "changed" => $changed,
 		));
         
 	}
@@ -189,23 +200,55 @@ class board_task extends reflex {
     /**
      * Ставит задачу на паузу
      **/
-    public function pauseTask() {
-		$this->data("paused",true);
+    public function pause() {
+
+        if($this->data("paused")) {
+            return;
+        }
+
+        $this->data("paused",util::now());
+
     }
-    
+
     /**
-     * Возвращает заадчу к выполнению
+     * снимает задачу с паузы
      **/
-    public function resumeTask() {
-        $this->data("paused",false);
+    public function resume() {
+
+        if(!$this->data("paused")) {
+            return;
+        }
+
+        $time = util::now()->stamp() - $this->pdata("paused")->stamp();
+        $time+= $this->data("pauseTime");
+        $this->data("pauseTime",$time);
+        $this->data("paused",null);
+    }
+
+    /**
+     * Ставит задачу на паузу / снимает с паузы
+     **/
+    public function pauseToggle() {
+        if($this->data("paused")) {
+            $this->resume();
+        } else {
+            $this->pause();
+        }
+    }
+
+    public function uploadFilesCount() {
+        $n = $this->storage()->files()->count();
+        $this->data("files",$n);
     }
 
     /**
      * Возвращает данные для стикера
      **/
-	public function stickerData($p=array()) {
+	public function stickerData() {
 
-	    $ret = array();
+	    $ret = array(
+            "backgroundImage" => null,
+        );
 
 	    // Текст стикера
 	    $ret["text"] = "<b>{$this->id()}.</b> ";
@@ -225,15 +268,12 @@ class board_task extends reflex {
         }
 
 	    // Просрочка
-	    if($p["showHang"]) {
-	        $h = $this->hangDays();
-	        if($h>3) {
-	            $ret["text"].= "<span style='color:white;background:red;padding:0px 4px;'>$h</span> ";
-            }
-	    }
+        $h = $this->hangDays();
+        if($h>3) {
+            $ret["text"].= "<span style='color:white;background:red;padding:0px 4px;'>$h</span> ";
+        }
 
-	    if($p["showProject"])
-	        $ret["text"].= "<b>".$this->project()->title().".</b> ";
+	    $ret["text"].= "<b>".$this->project()->title().".</b> ";
 	    $ret["text"].= util::str($this->data("text"))->ellipsis(200)->secure()."";
 
 	    // Статусная часть стикера
@@ -254,11 +294,17 @@ class board_task extends reflex {
 
 	    $ret["id"] = $this->id();
 
-	    $ret["deadline"] = !!$this->data("deadline");
+        // Установленный дэдлайн
+	    if($this->data("deadline")) {
+            $ret["backgroundImage"] = "/board/res/task-time.png";
+        }
 	    $ret["deadlineDate"] = $this->data("deadlineDate");
 
+        // Пропущенный дэдлайн
 	    $d = util::now()->stamp() - $this->pdata("deadlineDate")->stamp();
-	    $ret["fuckup"] = $ret["deadline"] && $d>0;
+	    if($this->data("deadline") && $d>0) {
+            $ret["backgroundImage"] = "/board/res/task-time-fuckup.png";
+        }
 	    
 	    if($this->data("hindrance")) {
 			$ret["hindrance"] = true;
@@ -269,11 +315,21 @@ class board_task extends reflex {
         $ret["epic"] = $this->isEpic();
 
         // Наличие прикрепленных файлов
-        if($this->storage()->files()->count()) {
+        if($this->data("files")) {
             $ret["attachment"] = true;
         }
 
         $ret["percentCompleted"] = $this->percentCompleted();
+
+        if($this->data("paused")) {
+            $ret["backgroundImage"] = "/board/res/img/icons64/pause.png";
+        }
+
+        $ret["tools"] = array();
+        if($this->status()->id()==board_task_status::STATUS_IN_PROGRESS) {
+            $ret["tools"][] = "pause";
+            $ret["tools"][] = "done";
+        }
 
 	    return $ret;
 	}

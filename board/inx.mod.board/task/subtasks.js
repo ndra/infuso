@@ -141,7 +141,7 @@ inx.mod.board.task.subtasks = inx.list.extend({
     cmd_completeEpicSubtask:function(taskID) {
     
         inx({
-            type:"inx.mod.board.task.timeInput",
+            type:"inx.mod.board.timeInput",
             taskID:taskID,
             taskStatus:2,
             listeners:{
