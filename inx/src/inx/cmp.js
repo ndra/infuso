@@ -86,7 +86,9 @@ inx.cmp.prototype.setOwner = function(id) {
 }
 
 // Возвращает родительский объект
-inx.cmp.prototype.owner = function() { return inx(this.data("owner")); }
+inx.cmp.prototype.owner = function() {
+    return inx(this.data("owner"));
+}
 
 // Возвращает цепочку родительских объектов
 inx.cmp.prototype.owners = function() {

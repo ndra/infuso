@@ -578,6 +578,7 @@ inx.panel = inx.box.extend({
             if(this.private_items[i]==id) {
                 this.private_layoutManager().remove.apply(this,[inx(id)]);
                 this.private_items.splice(i,1);
+                inx(id).setOwner(0);
                 this.task("syncLayout");
                 break;
             }
@@ -598,13 +599,18 @@ inx.panel = inx.box.extend({
         }
     
         var replacer = inx(replacer);
+        replacer.cmd("render");
     
         id = inx(cmp).id();
 
         for(var i=0;i<this.private_items.length;i++) {
             if(this.private_items[i]==id) {
+            
+                this.private_layoutManager().remove.apply(this,[inx(this.private_items[i])]);
+                inx(this.private_items[i]).setOwner(0);
                 this.private_items[i] = replacer.id();
                 replacer.setOwner(this);
+                this.private_layoutManager().add.apply(this,[replacer]);                
                 this.task("syncLayout");
                 break;
             }
