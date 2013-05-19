@@ -83,7 +83,7 @@ class board_task extends reflex {
             $this->data("paused",false);
             $this->data("pauseTime",0);
         }
-        
+
         // Если это подзадача, ставим проект как у эпика
         if($this->data("epicParentTask")) {
             $this->data("projectID",$this->pdata("epicParentTask")->data("projectID"));
@@ -96,13 +96,25 @@ class board_task extends reflex {
                 $changed[] = $field->name();
             }
         }
-        
+
         mod::fire("board/taskChanged",array(
             "deliverToClient" => true,
             "taskID" => $this->id(),
             "sticker" => $this->stickerData(),
             "changed" => $changed,
 		));
+
+        if($this->data("epicParentTask")) {
+
+            $task = $this->pdata("epicParentTask");
+            mod::fire("board/taskChanged",array(
+                "deliverToClient" => true,
+                "taskID" => $task->id(),
+                "sticker" => $task->stickerData(),
+                "changed" => array(),
+        	));
+
+        }
         
 	}
 

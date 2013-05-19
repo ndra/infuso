@@ -295,6 +295,16 @@ class board_controller_task extends mod_controller {
         // Текст про изменение статуса
         $statusText = $task->status()->action();
 
+        // Ставим выполняющиеся задачи на паузу
+        if($p["status"]==board_task_status::STATUS_IN_PROGRESS) {
+            $xtasks = board_task::all()
+                ->eq("responsibleUser",user::active()->id())
+                ->eq("status",board_task_status::STATUS_IN_PROGRESS);
+            foreach($xtasks as $xtask) {
+                $xtask->pause();
+            }
+        }
+
         $task->logCustom($statusText,$time);
 
         return true;

@@ -67,7 +67,7 @@ inx.mod.board.board.taskList.task.controls = inx.panel.extend({
         inx({
             type:"inx.mod.board.timeInput",
             taskID:this.taskID,
-            status:2,
+            taskStatus:2,
             listeners:{
                 save:[this.id(),"handleTimeInput"]
             }
