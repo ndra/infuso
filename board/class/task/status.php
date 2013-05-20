@@ -110,9 +110,19 @@ class board_task_status extends mod_controller {
      * Возвращает сортировку задач в этом статусе
      **/
     public function order() {
+
+        switch($this->id()) {
+
+            case self::STATUS_IN_PROGRESS:
+                $currentUserID = user::active()->id();
+                return "`board_task`.`responsibleUser` <> $currentUserID, `board_task`.`responsibleUser`";
+
+        }
+
     	$ret = self::$all[$this->status]["order"];
-    	if(!$ret)
+    	if(!$ret) {
     	    $ret = "board_task.priority asc";
+        }
     	return $ret;
     }
 

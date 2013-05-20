@@ -8,8 +8,13 @@ inx.css(".qm5btw9{overflow:hidden;position:relative;cursor:pointer;height:100%;b
 inx.css(".qm5btw9:hover{border:1px solid gray;}");
 inx.css(".qm5btw9-status{position:absolute;bottom:0;left:0;width:100%;background:rgba(0,0,0,.2);color:white;padding:2px 1px 1px 2px;fontWeight:bold}");
 inx.css(".qm5btw9-hover-group .qm5btw9-background{background:rgba(255,255,0,.2);}");
+inx.css(".qm5btw9-my {border:1px solid blue;}")
+
+// Новая задача
 inx.css(".qm5btw9-new{width:100px;height:100px;cursor:pointer;background:url(/board/res/img/icons64/plus.png) center center no-repeat;opacity:.7;}");
 inx.css(".qm5btw9-new:hover{opacity:1;}");
+
+// Помеха
 inx.css(".qm5btw9-drawback{width:100px;height:100px;cursor:pointer;background:url(/board/res/img/icons64/drawback.png) center center no-repeat;opacity:.7;}");
 inx.css(".qm5btw9-drawback:hover{opacity:1;}");
 inx.css(".qm5btw9-date-mark{color:gray;font-size:18px;font-style:italic;}");
