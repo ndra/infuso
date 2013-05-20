@@ -5,7 +5,7 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
     constructor:function(p) {
     
         p.title = "Редактирование задачи";
-        p.width = 500;   
+        p.width = 800;   
         p.modal = true;
         
         p.style = {
@@ -137,6 +137,16 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
                 name:"attachments",
                 taskID:this.taskID,
                 region:"bottom"
+            })
+        }
+        
+        if(!inx(this).axis("side").eq("name","comments").exists()) {
+            this.cmd("addSidePanel",{
+                type:"inx.mod.board.comments",
+                name:"comments",
+                taskID:this.taskID,
+                region:"right",
+                width:300
             })
         }
         
