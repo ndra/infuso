@@ -833,9 +833,10 @@ class reflex_collection extends mod_component implements Iterator {
         }
     }
 
-    private function resetSort() {
+    public function resetSort() {
         $this->sort = array();
         $this->param("*priority",false);
+        return $this;
     }
 
 	/**
