@@ -112,7 +112,7 @@ class board_task_status extends mod_controller {
     public function order() {
     	$ret = self::$all[$this->status]["order"];
     	if(!$ret)
-    	    $ret = "priority asc";
+    	    $ret = "board_task.priority asc";
     	return $ret;
     }
 
