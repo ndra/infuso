@@ -103,7 +103,10 @@ class board_task extends reflex {
             "sticker" => $this->stickerData(),
             "changed" => $changed,
 		));
+        
+	}
 
+    public function reflex_afterStore() {
         if($this->data("epicParentTask")) {
 
             $task = $this->pdata("epicParentTask");
@@ -115,8 +118,7 @@ class board_task extends reflex {
         	));
 
         }
-        
-	}
+    }
 
 	/**
 	 * Временный метод для исправления структуры
