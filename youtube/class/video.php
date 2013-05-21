@@ -10,10 +10,18 @@ class youtube_video {
 
         if(preg_match("/http\:\/\//",$id)) {
             $url = mod_url::get($id);
-            $id = $url->query("v");
+            $videoID = $url->query("v");
         }
-
-        $this->id = $id;
+        
+        if(preg_match("/http\:\/\/youtu\.be/",$id)){
+            $videoID = str_replace("http://youtu.be/","",$id);
+        }
+        
+        if(!$videoID){
+            $videoID = $id;    
+        }
+        
+        $this->id = $videoID;
     }
 
     public function id() {
