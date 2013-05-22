@@ -24,7 +24,15 @@ class forum_post extends reflex {
     public function postTest() {
         return true;
     }
-
+    
+    
+    public function index_edit($p){
+        $post = self::get($p["id"]);
+        tmp::exec("/forum/topic/editPost",array(
+            "post" => $post,
+        ));    
+    }
+    
     /**
      * Возвращает текущею коллекцию
      *
@@ -32,7 +40,7 @@ class forum_post extends reflex {
      **/
     public static function all() {
         return reflex::get(get_class())
-            ->asc("date")
+            ->asc("editDate")
             ->limit(0);
     }
 
@@ -60,7 +68,7 @@ class forum_post extends reflex {
     public function reflex_children() {
         return array(
             $this->attachments()->title("Вложения"),
-		);
+        );
     }
 
     /**
@@ -242,6 +250,91 @@ class forum_post extends reflex {
 
     }
 
+     /**
+     * Редактирует имещиесе сообщение
+     *
+     * @return array
+     **/
+    public function post_edit($p = null) {
+        $user = user::active();
+        $post =  self::get($p["post"]);
+        
+        if (!$user->exists()) {
+            throw new mod_userLevelException("Вы не авторизовались");
+        }
+        
+        if ($user->id() != $post->data("userID")) {
+            throw new mod_userLevelException("Вы не можете редактировать это сообщение");
+        }
+
+        if (!$post->exists()) {
+            throw new mod_userLevelException("Такого поста не существует");
+        }
+        
+        $form = form::byCode("forum_post_edit_sjxnr6l0j0");
+        if(!$form->validate($p)) {
+            throw new mod_userLevelException("Ошибка валидации формы");
+        }
+        
+        $date = util::now();
+        
+        $post->data("message", $p["message"]);
+        $post->data("editDate",$date);
+        $post->data("edited", 1);
+        
+        // Добавляем файлы из вложений
+        if(array_key_exists("file",$_FILES)) {
+            foreach (self::normalizePostFiles($_FILES['file']) as $file) {
+
+                if (!$file['name']) {
+                    continue;
+                }
+                
+                if($file["error"]!=0) {
+                    mod::msg("Не удалось закачать файл. Код: ".$file["error"],1);
+                    continue;
+                }
+
+                $filePath = $post->storage()->addUploaded($file['tmp_name'], $file['name']);
+                reflex::create("forum_postAttachments", array(
+                    "postId" => $post->id(),
+                    "title" => $file['name'],
+                    "file" => $filePath,
+                ));
+
+            }
+        }
+        
+        //удаляем файлы которые были выбраны для удаления
+        $attachIds = explode(" ", $p["deletedattachments"]);
+        
+        if(count($attachIds)>0){
+            foreach($attachIds as $attachId){
+                if($attachId == ""){
+                    continue;
+                }
+                $atach = forum_postAttachments::get($attachId);
+                if($atach->exists() && ($atach->data("postId") == $post->id())){
+                    $atach->delete();    
+                }else{
+                    throw new mod_userLevelException("Вы не можете удалить это вложение");    
+                }    
+            }
+        }
+        
+        header("Location: " . $post->url()); 
+        die();
+            
+    }
+    
+    public function actualDate() {
+        if($this->data("edited")){
+            return $this->pdata("editDate");
+        }
+        
+        return $this->pdata("date"); 
+    }
+    
     public function author() {
         return $this->pdata("userID");
     }

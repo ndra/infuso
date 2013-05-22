@@ -22,7 +22,7 @@ class forum_editor_post extends reflex_editor {
         $user = $this->item()->user();
         $html.= "<a href='{$user->url()}' target='_blank'>{$user->title()}</a>";
         $html.= "<a href='{$user->editor()->url()}'><img src='/forum/res/img/user_edit.png' width='16' height='16' title='Редактировать автора сообщения' style='margin-left:6px; vertical-align:bottom;' /></a>";
-        $html.= " <i>".$this->item()->pdata("date")->num()."</i>";
+        $html.= " <i>".$this->item()->actualDate()->num()."</i>";
         
         $html.= "<div>";
         $html.= util::str($this->item()->message())->ellipsis(500);

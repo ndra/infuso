@@ -46,6 +46,30 @@
     ),
     4 => 
     array (
+      'editable' => 2,
+      'id' => 'yc7nn0jedatkdr7b9vqn9ynalmjxk4',
+      'name' => 'editDate',
+      'type' => 'x8g2-xkgh-jc52-tpe2-jcgb',
+      'label' => 'Дата и  время последнего редактирования',
+      'group' => '',
+      'default' => 'now()',
+      'indexEnabled' => 0,
+      'help' => '',
+    ),
+    5 => 
+    array (
+      'editable' => 2,
+      'id' => 'zcproc5ss29sra33x7rbg2jaansqti',
+      'name' => 'edited',
+      'type' => 'fsxp-lhdw-ghof-1rnk-5bqp',
+      'label' => 'Редактировался',
+      'group' => '',
+      'default' => '',
+      'indexEnabled' => 0,
+      'help' => '',
+    ),
+    6 => 
+    array (
       'name' => 'message',
       'type' => 'kbd4-xo34-tnb3-4nxl-cmhu',
       'editable' => '1',
@@ -53,7 +77,7 @@
       'label' => 'Сообщение',
       'indexEnabled' => '0',
     ),
-    5 => 
+    7 => 
     array (
       'name' => 'userID',
       'type' => 'pg03-cv07-y16t-kli7-fe6x',

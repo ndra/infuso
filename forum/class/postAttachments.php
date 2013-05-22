@@ -17,6 +17,16 @@ class forum_postAttachments extends reflex {
             ->limit(0);
     }
     
+    
+    /**
+     * Возвращает атач по id
+     *
+     * @return forum_postAttachments
+     **/
+    public static function get($id) {
+        return reflex::get(get_class(),$id);
+    }
+    
     /**
      * Возвращает true если файл являеться фотографией
      *

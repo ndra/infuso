@@ -1,0 +1,24 @@
+.b-remainFiles-c34dv9u4ud {
+    padding-top:20px;
+    
+    td {
+        vertical-align: middle;
+    }
+    
+    .img,
+    .file {
+        padding-bottom:10px;
+    }
+    
+    .img {
+        img {
+            display:block;
+            margin-right:20px;
+        }
+    }
+    
+    .file {
+    
+    }
+    
+}
