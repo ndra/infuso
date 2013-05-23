@@ -19,10 +19,16 @@ class form_kcaptcha extends mod_controller{
         return true;
     }
     
-	public function index($p){
+    public function index($p){
        
         $alphabet = "0123456789abcdefghijklmnopqrstuvwxyz"; 
         $allowed_symbols = "23456789abcdegikpqsvxyz";
+        if (mod::conf("form:allowed_symbols") != "") {
+            $allowed_symbols = mod::conf("form:allowed_symbols"); }
+        else {
+            $allowed_symbols = "23456789abcdegikpqsvxyz"; }
+        
+        
         $length = mt_rand(5,7);
         
         if (mod::conf("form:white_noise_density") != "") {
@@ -46,8 +52,19 @@ class form_kcaptcha extends mod_controller{
         $no_spaces = true;
         $show_credits = false;
         $credits = '';
-        $foreground_color = array(mt_rand(0,80), mt_rand(0,80), mt_rand(0,80));
-        $background_color = array(mt_rand(220,255), mt_rand(220,255), mt_rand(220,255));
+        
+        
+        if (mod::conf("form:foreground_color") != "") {
+            $foreground_color = explode(",", mod::conf("form:foreground_color"), 3); }
+        else {
+            $foreground_color = array(mt_rand(0,80), mt_rand(0,80), mt_rand(0,80)); }
+        
+        
+        if (mod::conf("form:background_color") != "") {
+            $background_color = explode(",", mod::conf("form:background_color"), 3); }
+        else {
+            $background_color = array(mt_rand(220,255), mt_rand(220,255), mt_rand(220,255)); }
+        
         $fonts=array();
         $fontsdir_absolute=file::get("/form/fonts/")->native();
         if ($handle = opendir($fontsdir_absolute)) {
@@ -70,12 +87,12 @@ class form_kcaptcha extends mod_controller{
                 }
                 if(!preg_match('/cp|cb|ck|c6|c9|rn|rm|mm|co|do|cl|db|qp|qb|dp|ww/', $this->keystring)) break;
             }
-        	
-			//Если включен режим отладки, отображать всегда 1
+            
+            //Если включен режим отладки, отображать всегда 1
             if(mod::debug()) {
                 $this->keystring = "1";
             }
-			
+            
             $font_file=$fonts[mt_rand(0, count($fonts)-1)];
             $font=imagecreatefrompng($font_file);
             imagealphablending($font, true);
