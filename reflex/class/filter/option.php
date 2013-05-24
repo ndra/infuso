@@ -22,8 +22,9 @@ class reflex_filter_option extends mod_component {
 	 **/ 
 	public function val() {
 	    $val = $this->param("val");
-	    if(!$val)
+	    if(!$val) {
 	        $val = $this->param("value");
+        }
 	    return $val;
 	}
 	
@@ -53,8 +54,13 @@ class reflex_filter_option extends mod_component {
 	
 	/**
 	 * @return true если в прошлый раз этот режим был активным (берет из куков)
-	 **/ 
+	 **/
 	public function wasActive() {
+
+        if(!$this->items()->filterRemember()) {
+            return false;
+        }
+
 	    $key = crc32($this->items()->itemClass().":".$this->key());
 	    return mod::cookie($key)==$this->val();
 	}

@@ -53,6 +53,10 @@ class reflex_filter extends mod_behaviour {
         );
     }
 
+    public function filterRemember() {
+        return true;
+    }
+
     /**
      * Я хочу использовать одни и те же методы как для управления поведением,
      * так и для выдачи пользователю информации
