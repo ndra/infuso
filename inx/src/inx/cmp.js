@@ -285,6 +285,25 @@ inx.cmp.prototype.items = function() {
     return inx(items);
 }
 
+/**
+ * Возвращает коллекцю потомков любого уровня для компонента
+ **/
+inx.cmp.prototype.allItems = function() {
+
+    if(this.id()==0) {
+        return inx(0);
+    }
+
+    var ret = [];
+    this.items().each(function() {
+        ret.push(this.id());        
+        this.allItems().each(function(){
+            ret.push(this.id());
+        })        
+    })
+    return inx(ret);
+}
+
 inx.cmp.prototype.side = function() {
     var items = this.info("param","side");
     return inx(items);
@@ -299,6 +318,10 @@ inx.cmp.prototype.each = function(fn) {
     for(var i=0;i<ids.length;i++) {
         fn.apply(inx(ids[i]),[i]);
     }
+}
+
+inx.cmp.prototype.count = function() {
+    return this.ids.length;
 }
 
 inx.cmp.prototype.eq = function(key,val) {

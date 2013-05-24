@@ -272,7 +272,8 @@ class mod extends mod_controller {
 	 * Подключает библиотеку core.js
 	 **/
 	public static function coreJS() {
-		tmp::js("/mod/res/core.js",-900);
+        tmp::jq();
+		tmp::singlejs("/mod/res/core.js",-900);
 	}
 
 	/**
