@@ -54,17 +54,19 @@ class tmp_conveyor extends mod_component {
         if(!$delayedFunctionParams["key"]) {
             $delayedFunctionParams["key"] = util::id();
         }
+
         $this->delayed[] = $delayedFunctionParams;
+
         return $delayedFunctionParams["key"];
     }
 
-    private static function sortDelayedFunctions($a,$b) {
-        return $a["priority"] - $b["priority"];
-    }
+    public function getDelayedFunction() {
 
-    public function getSortedDelayedFunctions() {
-        usort($this->delayed,array("self","sortDelayedFunctions"));
-        return $this->delayed;
+        usort($this->delayed,function($a,$b) {
+            return $a["priority"] - $b["priority"];
+        });
+
+        return array_shift($this->delayed);
     }
     
     /**
@@ -90,44 +92,35 @@ class tmp_conveyor extends mod_component {
     public function processDelayed($str) {
     
         mod_profiler::beginOperation("tmp","processDelayed","");
-        
         mod_profiler::setVariable("contentSize",mb_strlen($str,"utf-8"));
-    
-        for($i=0;$i<20;$i++) {
 
-            $delayed = $this->getSortedDelayedFunctions();
-            $this->delayed = array();
-            
-            foreach($delayed as $item) {
+        while($delayed = $this->getDelayedFunction()) {
 
-                $arguments = $item["arguments"];
-                if(!$arguments) {
-                    $arguments = array();
-                }
-
-                ob_start();
-
-                mod_profiler::beginOperation("tmp","execDelayed",$item["class"]."::".$item["method"]."()");
-                call_user_func_array(array(
-                    $item["class"],
-                    $item["method"]
-                ),$arguments);
-                mod_profiler::endOperation();
-
-                self::$delayedFunctionResult["/".$item["key"]."/"] = ob_get_clean();
-
+            $arguments = $delayed["arguments"];
+            if(!$arguments) {
+                $arguments = array();
             }
-            
-            $str = preg_replace_callback(array_keys(self::$delayedFunctionResult), array(self, "replaceDelayedFn"), $str, -1, $count);
 
-            if ($count==0) {
-                mod_profiler::endOperation();                
-                return $str;
-            }
-        
+            // Выполняем отложенную функцию и записываем результат
+
+            ob_start();
+
+            mod_profiler::beginOperation("tmp","execDelayed",$delayed["class"]."::".$delayed["method"]."()");
+
+            call_user_func_array(array(
+                $delayed["class"],
+                $delayed["method"]
+            ),$arguments);
+            mod_profiler::endOperation();
+
+            self::$delayedFunctionResult["/".$delayed["key"]."/"] = ob_get_clean();
+
         }
         
-        throw new Exception("Too much loops when replacing delayed functions");
+        $str = preg_replace_callback(array_keys(self::$delayedFunctionResult), array(self, "replaceDelayedFn"), $str, -1, $count);
+
+        mod_profiler::endOperation();
+        return $str;
         
     }
 

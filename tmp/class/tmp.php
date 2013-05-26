@@ -203,16 +203,15 @@ class tmp implements mod_handler {
         }
         echo $p1["html"];
 
-        if(mod::conf("admin:showMenu"))
+        if(mod::conf("admin:showMenu")) {
             admin::menu();
+        }
 
         mod_profiler::addMilestone("tmp::header()");
 
     }
 
     public static function footer() {
-
-        mod_profiler::addMilestone("tmp::footer() begin");
 
         echo "</body></html>";
 

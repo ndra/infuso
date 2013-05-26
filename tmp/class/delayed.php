@@ -5,7 +5,7 @@
  **/
 class tmp_delayed implements mod_handler {
 
-	public static $size = 0;
+	//public static $size = 0;
 
 	public function add($params) {
 	    return tmp::conveyor()->addDelayedFunction($params);
