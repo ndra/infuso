@@ -60,7 +60,7 @@ class board_controller_report extends mod_controller {
     
     public function index_projectDetailed($p) {
 
-        $project = board_project::get($p["project"]);
+        $project = board_project::get($p["projectID"]);
 
         // Параметры задачи
         if(!user::active()->checkAccess("board/showProjectsReport")) {

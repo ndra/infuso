@@ -22,9 +22,24 @@ inx.direct = {
      * Метод, реагирующий на изменения
      **/
     handleChange:function(h) {
-        var a = h.split("/");
+        var segments = h.split("/");
+        
+        var params = {};
+        var action = segments[0];
+        for(var i=1;i<segments.length;i++) {
+            if(i%2==0) {
+                params[key] = segments[i];
+            } else {
+                key = segments[i];
+            }
+        }
+        
         if(inx.direct.id) {
-            inx(inx.direct.id).cmd(inx.direct.fn,a[0],a[1],a[2],a[3],a[4],a[5],a[6],a[7],a[8],a[9],a[10]);
+            inx(inx.direct.id).cmd(inx.direct.fn,{
+                action:action,
+                params:params,
+                segments:segments
+            });
         }
     },
     

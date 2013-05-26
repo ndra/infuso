@@ -15,6 +15,20 @@ inx.ns("inx.mod.board").board = inx.panel.extend({
             }
         });
         
+        p.tbar = [{
+            type:"inx.textfield",
+            name:"search",
+            onchange:[this.id(),"load"],
+            style:{
+                width:100
+            }
+        },{
+            type:"inx.pager",
+            name:"pager",
+            onchange:[this.id(),"load"],
+            hidden:true
+        }]
+        
         p.items = [this.taskList];
         
         this.taskList.on("beforeload",[this.id(),"handleBeforeLoad"]);
@@ -25,11 +39,15 @@ inx.ns("inx.mod.board").board = inx.panel.extend({
     },
     
     cmd_handleBeforeLoad:function(data) {
-        this.fire("beforeload",data);
+        var tbar = inx(this).axis("tbar").info("data");
+        data.search = tbar.search;
+        data.page = tbar.pager;
     },
     
     cmd_handleLoad:function(data) {
-        this.fire("load",data);
+        var pager = inx(this).axis("tbar").items().eq("name","pager");
+        pager.cmd("setTotal",data.pages);
+        pager.cmd(data.pages > 1 ? "show" : "hide");
     },
     
     cmd_load:function() {

@@ -41,10 +41,8 @@ $items = board_task_log::all()
             <tr>        
                 $project = board_project::get($row["projectID"]);            
                 <td>
-                    $url = mod::action("board_controller_report","projectDetailed",array(
-                        "project" => $project->id()
-                    ));
-                    <a href='{$url}' >
+                    $url = "/board/#report-project/id/{$project->id()}";
+                    <a href='{$url}' target='_parent' >
                         echo $project->title();
                     </a>
                 </td>

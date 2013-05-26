@@ -1,6 +1,6 @@
-// @include inx.list
+// @include inx.iframe
 
-inx.mod.board.reports.project = inx.iframe.extend({
+inx.ns("inx.mod.board.report").projects = inx.iframe.extend({
 
     constructor:function(p) {       
         p.src = "/board_controller_report/projects";

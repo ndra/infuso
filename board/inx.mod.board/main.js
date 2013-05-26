@@ -4,12 +4,15 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
 
     constructor:function(p) {
     
+        p.style = {
+            border:0
+        }
+    
         layout = "inx.layout.fit";
     
         this.tabs = inx({
             type:"inx.tabs",
-            headComponent:"inx.mod.board.main.headComponent",
-            selectNew:false,
+            showHead:false,
             style:{
                 height:"parent"
             }
@@ -45,10 +48,44 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
         this.tabs.axis("selected").cmd("load");
     },
     
-    cmd_handleDirect:function(taskID) {
-        if(!taskID)
-            return;
-        this.cmd("editTask",{taskID:taskID});
+    cmd_handleDirect:function(params) {
+    
+        switch(params.action) {
+            
+            case "task-list":
+                this.tabs.cmd("add",{
+                    type:"inx.mod.board.board",
+                    status:params.params.status,
+                    title:"task-list"+params.params.status,
+                    name:"task-list"+params.params.status
+                });
+                break;
+                
+
+            case "report-workers":
+                this.tabs.cmd("add",{
+                    type:"inx.mod.board.report.workers",
+                    name:"report-workers"
+                });
+                break;
+                
+            case "report-projects":
+                this.tabs.cmd("add",{
+                    type:"inx.mod.board.report.projects",
+                    name:"report-projects"
+                });
+                break;
+                
+            case "report-project":
+                this.tabs.cmd("add",{
+                    type:"inx.mod.board.report.project",
+                    projectID:params.params.id,
+                    name:"report-project/"+params.params.id
+                });
+                break;
+                
+        }
+
     },
     
     cmd_editTask:function(p) {
@@ -60,54 +97,9 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
             listeners:{change:[this.tabs.axis("selected"),"load"]}
         }).cmd("render").setOwner(this);
     }, 
-   
-    cmd_load:function() {
-        this.call({
-            cmd:"board:controller:task:taskStatusList"
-        },[this.id(),"handleStatuses"]);
-        return false;
-    },
-            
-    cmd_handleStatuses:function(data) {
-       
-        for(var i in data) {
-            this.tabs.cmd("add",{
-                type:"inx.mod.board.board",
-                title:data[i].title,
-                lazy:true,
-                status:data[i].id,
-                listeners:{
-                    beforeload:[this.tabs.axis("head").id(),"extendLoader"],
-                    load:[this.tabs.axis("head").id(),"handleTaskLoad"],
-                }
-            });
-        }
-            
-        this.tabs.cmd("add",{
-            type:"inx.mod.board.reports",
-            title:"Отчеты",
-            lazy:true
-        });
-        
-        this.tabs.cmd("add",{
-            type:"inx.mod.board.projects",
-            title:"Проекты",
-            lazy:true
-        });
-        
-    },
     
     cmd_updateProjects:function() {
         this.tabs.axis("selected").cmd("load");
-    },
-    
-    cmd_editProject:function(projectID) {
-        inx({
-            type:"inx.mod.board.main.editProject",
-            projectID:projectID,
-            listeners:{change:[this.id(),"updateProjects"]}
-        }).cmd("render");
-        return false;
     },
     
     cmd_highlightProject:function(projectID) {

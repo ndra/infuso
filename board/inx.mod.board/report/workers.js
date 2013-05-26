@@ -1,7 +1,6 @@
 // @include inx.iframe
-// @link_with_parent
 
-inx.mod.board.reports.infograph = inx.iframe.extend({
+inx.ns("inx.mod.board.report").workers = inx.iframe.extend({
 
     constructor:function(p) {
         p.src = "/board_controller_report/workers";
