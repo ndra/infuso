@@ -23,7 +23,11 @@ inx.mod.board.main.informer = inx.panel.extend({
                 padding:0
             }
         },{
-            type:"inx.mod.board.main.informer.log",
+            type:"inx.mod.board.comments",
+            style:{
+                padding:1,
+                border:0
+            }
         }];
     
         this.base(p);

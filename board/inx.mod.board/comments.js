@@ -18,17 +18,30 @@ inx.ns("inx.mod.board").comments = inx.list.extend({
     renderer:function(e,data) {
     
         // Пользователь
-        var user = $("<div>").appendTo(e);
+        var user = $("<div>").appendTo(e).css({
+            position:"relative"
+        });
+        
         $("<img>").attr("src",data.userpick)
             .attr("align","absmiddle")
             .css({
                 marginRight:3
             })
             .appendTo(user);
+            
         $("<span>").html(data.user)
             .css({
                 fontSize:11
             }).appendTo(user);
+            
+        $("<div>").html(data.time)
+            .css({
+                position:"absolute",
+                right:0,
+                top:0,
+                fontSize:11
+            })
+            .appendTo(user);
         
         // Текст
         var textContainer = $("<div>").appendTo(e);
