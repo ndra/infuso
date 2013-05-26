@@ -49,7 +49,12 @@ inx.mod.board.board.taskList = inx.list.extend({
         
     },
     
-    cmd_handleTaskChanged:function(params) {         
+    cmd_handleTaskChanged:function(params) {        
+    
+        if(!this.info("visibleRecursive")) {
+            return;
+        }
+     
         this.cmd("set",params.taskID,params.sticker);
         
         if(params.changed.indexOf("status") != -1) {

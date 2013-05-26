@@ -31,7 +31,7 @@ inx.mod.board.board.taskList.task.controls = inx.panel.extend({
                 type:"inx.button",
                 air:true,
                 icon:"ok",
-                onclick:[this.id(),"completeTask"]
+                onclick:[this.id(),"doneTask"]
             });
         }
         
@@ -42,6 +42,27 @@ inx.mod.board.board.taskList.task.controls = inx.panel.extend({
                 air:true,
                 icon:"/board/res/img/icons16/runner.png",
                 onclick:[this.id(),"takeTask"]
+            });
+        }
+        
+        // Проверено
+        if(p.tools.indexOf("complete")!=-1) {
+            p.items.push({
+                type:"inx.button",
+                air:true,
+                icon:"ok",
+                onclick:[this.id(),"completeTask"]
+            });
+        }
+        
+        
+        // На ревизию
+        if(p.tools.indexOf("revision")!=-1) {
+            p.items.push({
+                type:"inx.button",
+                air:true,
+                icon:"delete",
+                onclick:[this.id(),"revisionTask"]
             });
         }
             
@@ -63,7 +84,7 @@ inx.mod.board.board.taskList.task.controls = inx.panel.extend({
         });
     },
     
-    cmd_completeTask:function() {
+    cmd_doneTask:function() {
         inx({
             type:"inx.mod.board.timeInput",
             taskID:this.taskID,
@@ -72,6 +93,32 @@ inx.mod.board.board.taskList.task.controls = inx.panel.extend({
                 save:[this.id(),"handleTimeInput"]
             }
         }).cmd("render");
+    },
+    
+    /**
+     * Переводит задачу в статус выполнено
+     **/
+    cmd_completeTask:function() {
+        this.call({
+            cmd:"board/controller/task/changeTaskStatus",
+            taskID:this.taskID,
+            status:3
+        },[this.id(),"handleSave"])
+    },
+    
+    cmd_revisionTask:function() {
+    
+        var comment = window.prompt("Причина возврата задачи");
+        if(comment===false) {
+            return;
+        }
+    
+        this.call({
+            cmd:"board/controller/task/changeTaskStatus",
+            taskID:this.taskID,
+            status:0,
+            comment:comment
+        },[this.id(),"handleSave"])
     }
          
 });

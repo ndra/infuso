@@ -81,7 +81,6 @@ class board_controller_task extends mod_controller {
         $ret["sortable"] = $status->sortable();
         $ret["showCreateButton"] = $status->showCreateButton();
 
-
         return $ret;
     }
 
@@ -303,6 +302,10 @@ class board_controller_task extends mod_controller {
             foreach($xtasks as $xtask) {
                 $xtask->pause();
             }
+        }
+
+        if($p["comment"]) {
+            $statusText = $p["comment"]." ".$statusText;
         }
 
         $task->logCustom($statusText,$time);

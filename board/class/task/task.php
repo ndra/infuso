@@ -302,11 +302,13 @@ class board_task extends reflex {
 	    $ret["color"] = $this->data("color");
 
 	    // Нижня подпись
-	    if($this->responsibleUser()->exists())
+	    if($this->responsibleUser()->exists()) {
 	        $ret["bottom"] = "<nobr>".$this->responsibleUser()->title()."</nobr> ";
+        }
 
-	    if($this->data("deadline"))
+	    if($this->data("deadline")) {
 	        $ret["bottom"].= $this->pdata("deadlineDate")->left();
+        }
 
 	    $ret["my"] = $this->responsibleUser()->id() == user::active()->id();
 
@@ -344,13 +346,23 @@ class board_task extends reflex {
         }
 
         $ret["tools"] = array();
-        if($this->status()->id()==board_task_status::STATUS_IN_PROGRESS) {
-            $ret["tools"][] = "pause";
-            $ret["tools"][] = "done";
-        }
 
-        if($this->status()->id()==board_task_status::STATUS_NEW) {
-            $ret["tools"][] = "take";
+        switch($this->status()->id()) {
+
+            case board_task_status::STATUS_IN_PROGRESS:
+                $ret["tools"][] = "pause";
+                $ret["tools"][] = "done";
+                break;
+
+            case board_task_status::STATUS_NEW:
+                $ret["tools"][] = "take";
+                break;
+
+            case board_task_status::STATUS_CHECKOUT:
+                $ret["tools"][] = "complete";
+                $ret["tools"][] = "revision";
+                break;
+
         }
 
 	    return $ret;
