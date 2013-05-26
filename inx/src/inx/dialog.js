@@ -108,10 +108,17 @@ inx.dialog = inx.panel.extend({
         this.cmd("startPositionWatch");
     },
     
-    cmd_setPosition:function(x,y,keep) {
+    /**
+     * Устанавливает координаты окна
+     **/
+    cmd_setPosition:function(x,y) {
         this.x = x;
         this.y = y;
-        this.private_wnd.css("left",x).css("top",y);
+        this.task("appyPosition");
+    },
+    
+    cmd_appyPosition:function() {
+        this.private_wnd.css("left",this.x).css("top",this.y);
     },
     
     cmd_startPositionWatch:function() {
@@ -137,8 +144,9 @@ inx.dialog = inx.panel.extend({
         if(this.clipTo) {
             this.cmd("updateClip");
         } else {
-            if(this.centred)
+            if(this.centred) {
                 this.cmd("center");
+            }
         }
 
         // Не даем окну выходить за пределы экрана

@@ -94,7 +94,7 @@ inx.button = inx.box.extend({
 
         if(this.el.data("__extended")) return;
         this.el.data("__extended",true);
-        this.el.click(inx.cmd(this,"private_handleClick"));
+        //this.el.click(inx.cmd(this,"private_handleClick"));
         this.el.mouseout(inx.cmd(this,"private_handleMouseout"))
     },
 

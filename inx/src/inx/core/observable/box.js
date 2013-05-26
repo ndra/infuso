@@ -125,11 +125,13 @@ inx.box = inx.observable.extend({
         this.el = $("<div class='inx-box' >");
         this.el.data("id",this.id());
 
-        if(this.id()==inx.focusManager.cmp().id())
+        if(this.id()==inx.focusManager.cmp().id()) {
             this.cmd("handleFocusChange",true);
+        }
         
-        if(this.private_hidden)
+        if(this.private_hidden) {
             this.cmd("hide");
+        }
             
         inx.box.manager.watch(this.id());
         this.task("completeRender");
@@ -260,8 +262,9 @@ inx.box = inx.observable.extend({
      **/
     info_width:function() {
     
-        if(this.private_hidden)
+        if(this.private_hidden) {
             return 0;
+        }
             
         var width = this.style("width");
         
@@ -341,8 +344,9 @@ inx.box = inx.observable.extend({
      **/
     info_height:function() {
     
-        if(this.private_hidden)
+        if(this.private_hidden) {
             return 0;
+        }
             
         var height = this.style("height");
         
@@ -438,11 +442,15 @@ inx.box = inx.observable.extend({
         this.fire("keydown",e);
         return true;
     },
-    
+
+    /**
+     * Показывает компонент
+     **/    
     cmd_show:function() {
 
-        if(this.el)
+        if(this.el) {
             this.el.css("display","block");
+        }
             
         this.fire("show");
 

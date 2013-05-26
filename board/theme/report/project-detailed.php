@@ -3,9 +3,17 @@
 tmp::header();
 tmp::reset();
 
+$from = util::date($_GET["from"]);
+$to = util::date($_GET["to"]);
+
+<div>
+    echo "Отчет по проектам {$from->text()} &mdash; {$to->text()}";
+</div>
+
 $tasks = $project->tasks()
     ->desc("changed")
-    ->gt("changed",util::now()->shiftDay(-30))
+    ->geq("date(changed)",$from)
+    ->leq("date(changed)",$to)
     ->eq("epicParentTask",0);
     
 <div style='padding:20px;' >

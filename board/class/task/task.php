@@ -32,6 +32,10 @@ class board_task extends reflex {
         return reflex::get(get_class(),$id);
     }
 
+    public function reflex_url() {
+        return "#".$this->id();
+    }
+
 	public function project() {
         return $this->pdata("projectID");
     }

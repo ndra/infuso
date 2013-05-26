@@ -9,6 +9,23 @@
     .text {
         font-family:Georgia;
         font-size:12px;
+        
+        a {
+            color:inherit;
+            text-decoration:inherit;
+        }
+    }
+    
+    .status {
+        white-space:nowrap;
+        color:gray;
+        font-size:12px;
+    }
+    
+    .id {
+        white-space:nowrap;
+        color:gray;
+        font-size:12px;
     }
 
 }
