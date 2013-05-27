@@ -49,10 +49,13 @@ inx.ns("inx.mod.reflex").editor = inx.viewport.extend({
         inx.direct.set(name);
     },
     
-    cmd_onDirect:function(index) {
+    cmd_onDirect:function(p) {
     
-        if(!index)
+        index = p.segments[0];
+    
+        if(!index) {
             return;
+        }
         
         var tab = this.tabs.cmd("add",{
             type:"inx.mod.reflex.editor.item",
