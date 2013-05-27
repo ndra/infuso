@@ -6,6 +6,13 @@
         vertical-align:middle;
     }
     
+    thead td {
+        font-style:italic;
+        border:none;
+        opacity:.5;
+        font-size:11px;
+    }
+    
     .text {
         font-family:Georgia;
         font-size:12px;
@@ -26,6 +33,10 @@
         white-space:nowrap;
         color:gray;
         font-size:12px;
+    }
+    
+    .subtask {
+        display:none;
     }
 
 }

@@ -1,7 +1,6 @@
 <? 
 
 tmp::header();
-
 tmp::reset();
 
 $items = board_task_log::all()

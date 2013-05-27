@@ -1,0 +1,19 @@
+.r8pze9enrq {
+
+    min-width:100px;
+    font-size:11px;
+    
+    .notice {
+        margin-right:6px;
+    }
+    
+    .edit {
+        cursor:pointer;
+        opacity:.1;
+    }
+
+    &:hover .edit {
+        opacity:1;
+    }    
+    
+}

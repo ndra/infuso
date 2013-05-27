@@ -70,6 +70,9 @@ class board_init implements mod_handler {
             ->addBusinessRule("return true;")
             ->appendTo("board/editTask");
 
+       user_operation::create("board/updateTaskNotice","Изменение заметки")
+            ->appendTo("board/editTask");
+
        // Отчеты
 
        user_operation::create("board/showUserReport","Просмотр отчета по пользователям")

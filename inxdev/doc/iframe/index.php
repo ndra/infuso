@@ -4,23 +4,28 @@ $p = array (
 	"type" => "inx.iframe",
 	tbar => array(
 	    array(
-	        "text" => 1234,
+	        "text" => "a",
+	        "onclick" => "this.owner().owner().cmd('setURL','/')",
+		),
+		array(
+	        "text" => "b",
+	        "onclick" => "this.owner().owner().cmd('setURL','/inxdev')",
 		),
 	),
     "width" => 800,
     "height" => 800,
-    style=>array(
+    style => array(
         padding => 2,
         spacing => 30,
         hscroll => true,
         vscroll => true,
-	),side=>array (
+	),side => array (
 
 	    array (
-	        region=>right,
+	        region => right,
 	        width => 50,
 	        resizable => true,
-		),array(
+		), array(
 	        region=>bottom,
 	        height => "content",
 	        "html" => util_delirium::generate(200),

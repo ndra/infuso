@@ -39,7 +39,8 @@ inx.direct = {
             inx(inx.direct.id).cmd(inx.direct.fn,{
                 action:action,
                 params:params,
-                segments:segments
+                segments:segments,
+                hash:h
             });
         }
     },

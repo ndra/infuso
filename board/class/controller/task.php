@@ -377,6 +377,22 @@ class board_controller_task extends mod_controller {
         $task->pauseToggle();
 
     }
+    
+    public function post_updateNotice($p) {
+
+        $task = board_task::get($p["taskID"]);
+
+        // Параметры задачи
+        if(!user::active()->checkAccess("board/updateTaskNotice",array(
+            "task" => $task,
+        ))) {
+            mod::msg(user::active()->errorText(),1);
+            return;
+        }
+
+        $task->data("notice",$p["notice"]);
+
+    }
 
 
 /*

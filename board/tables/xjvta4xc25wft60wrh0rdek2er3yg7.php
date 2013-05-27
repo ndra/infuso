@@ -240,6 +240,19 @@
       'indexEnabled' => 0,
       'help' => '',
     ),
+    20 => 
+    array (
+      'editable' => 1,
+      'id' => 'o8vhqmazoce2dpvinf92n89zokg6oc',
+      'name' => 'notice',
+      'type' => 'v324-89xr-24nk-0z30-r243',
+      'label' => 'Заметка',
+      'group' => '',
+      'default' => '',
+      'indexEnabled' => 0,
+      'help' => '',
+      'length' => '',
+    ),
   ),
   'indexes' => 
   array (

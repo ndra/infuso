@@ -109,7 +109,7 @@ inx.mod.board.board.taskList.task.controls = inx.panel.extend({
     cmd_revisionTask:function() {
     
         var comment = window.prompt("Причина возврата задачи");
-        if(comment===false) {
+        if(comment===null) {
             return;
         }
     

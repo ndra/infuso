@@ -2,23 +2,28 @@
 
 tmp::header();
 tmp::reset();
-
-var_export(mod_url::current()."");
+mod::coreJS();
 
 $from = util::date($params["from"]);
 $to = util::date($params["to"]);
 
-<div>
-    echo "Отчет по проектам {$from->text()} &mdash; {$to->text()}";
-</div>
-
-$tasks = $project->tasks()
-    ->desc("changed")
-    ->geq("date(changed)",$from)
-    ->leq("date(changed)",$to)
-    ->eq("epicParentTask",0);
-    
 <div style='padding:20px;' >
+
+    <div style='position:absolute;right:20px;' >
+        <input type='checkbox' id='display-subtasks' >
+        <label for='display-subtasks' >Показать подзадачи</label>
+    </div>
+    
+    <div style='margin-bottom:20px;' >
+        echo "Отчет по проектам {$from->text()} &mdash; {$to->text()}";
+    </div>
+
+    $tasks = $project->tasks()
+        ->desc("changed")
+        ->geq("date(changed)",$from)
+        ->leq("date(changed)",$to)
+        ->eq("epicParentTask",0);
+        
     <table>
         <tr>
             <td>

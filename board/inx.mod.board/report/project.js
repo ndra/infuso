@@ -1,4 +1,4 @@
-// @include inx.iframe
+// @include inx.iframe,inx.date
 
 inx.ns("inx.mod.board.report").project = inx.iframe.extend({
 
@@ -16,8 +16,6 @@ inx.ns("inx.mod.board.report").project = inx.iframe.extend({
             onclick:[this.id(),"search"]
         }]
     
-        //p.src = "/board_controller_report/projectDetailed/projectID/"+p.projectID;
-        this.on("show","refresh");
         this.base(p);        
     },
     
@@ -25,15 +23,22 @@ inx.ns("inx.mod.board.report").project = inx.iframe.extend({
     
         var src = {};
     
-        if(params.from) {
-            inx(this).axis("tbar").items().eq("name","from").cmd("setValue",params.from);
-            src.from = params.from;
-        }
+        // От
+        if(!params.from) {
+            params.from = new Date();
+            params.from.setSeconds(new Date().getSeconds() - 3600 * 24 * 30 );
+        }        
+        var field = inx(this).axis("tbar").items().eq("name","from");
+        field.cmd("setValue",params.from);
+        src.from = field.info("value");
         
-        if(params.to) {
-            inx(this).axis("tbar").items().eq("name","to").cmd("setValue",params.to);
-            src.to = params.to;
-        }
+        // До
+        if(!params.to) {
+            params.to = new Date();
+        }        
+        var field = inx(this).axis("tbar").items().eq("name","to");
+        field.cmd("setValue",params.to);
+        src.to = field.info("value");
         
         src.projectID = this.projectID;
         

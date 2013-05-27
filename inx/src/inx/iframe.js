@@ -10,29 +10,37 @@ inx.iframe = inx.panel.extend({
     },
     
     cmd_render:function() {
+    
         this.base();
-        this.cmd("setURL",this.url);
+        
+        this.iframe = $("<iframe>")
+            .css({
+                position:"absolute",
+                margin:0, 
+                left:0,
+                top:0
+            });
+            
+        this.cmd("html",this.iframe);
+        this.cmd("setURL",this.src);
+
     },
     
     cmd_setURL:function(src) {
-        
-        if(this.iframe) {
-            this.iframe.remove();
+    
+        if(!src) {
+            return;
         }
         
-        this.iframe = $("<iframe>")
-            .attr("src",src)
-            .appendTo(this.__body)
-            .css({
-                position:"absolute",
-                margin:0,
-                left:0,
-                top:0
-            });  
-            
-        inx.msg(this.iframe.attr("src"),1);
-            
-       // this.task("syncLayout");
+        this.src = src;
+           
+        if(!this.iframe) {
+            return;
+        }
+        
+        this.iframe.get(0).src = src;
+                    
+        this.task("syncLayout");
         
     },
     
@@ -46,6 +54,7 @@ inx.iframe = inx.panel.extend({
     cmd_syncLayout:function() {
     
         this.base();
+        
         this.iframe.css({
             width:this.info("bodyWidth"),
             height:this.info("bodyHeight"),
