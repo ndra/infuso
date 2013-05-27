@@ -3,8 +3,10 @@
 tmp::header();
 tmp::reset();
 
-$from = util::date($_GET["from"]);
-$to = util::date($_GET["to"]);
+var_export(mod_url::current()."");
+
+$from = util::date($params["from"]);
+$to = util::date($params["to"]);
 
 <div>
     echo "Отчет по проектам {$from->text()} &mdash; {$to->text()}";

@@ -11,8 +11,17 @@ inx.iframe = inx.panel.extend({
     
     cmd_render:function() {
         this.base();
+        this.cmd("setURL",this.url);
+    },
+    
+    cmd_setURL:function(src) {
+        
+        if(this.iframe) {
+            this.iframe.remove();
+        }
+        
         this.iframe = $("<iframe>")
-            .attr("src",this.src)
+            .attr("src",src)
             .appendTo(this.__body)
             .css({
                 position:"absolute",
@@ -20,6 +29,11 @@ inx.iframe = inx.panel.extend({
                 left:0,
                 top:0
             });  
+            
+        inx.msg(this.iframe.attr("src"),1);
+            
+       // this.task("syncLayout");
+        
     },
     
     /**

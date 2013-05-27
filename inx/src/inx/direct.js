@@ -22,6 +22,7 @@ inx.direct = {
      * Метод, реагирующий на изменения
      **/
     handleChange:function(h) {
+    
         var segments = h.split("/");
         
         var params = {};
@@ -48,8 +49,25 @@ inx.direct = {
      **/
     get:function(n) {
         var h = (window.location.hash+"").substr(1);
-        var a = h.split("/");
-        return a[n];
+        var segments = h.split("/");
+        
+        var params = {};
+        var action = segments[0];
+        for(var i=1;i<segments.length;i++) {
+            if(i%2==0) {
+                params[key] = segments[i];
+            } else {
+                key = segments[i];
+            }
+        }
+        
+        if(inx.direct.id) {
+            return {
+                action:action,
+                params:params,
+                segments:segments
+            };
+        }
     },
    
     /**
@@ -63,6 +81,16 @@ inx.direct = {
         a = a.join("/");
         window.location.hash = a;
         this.check();
+    },
+    
+    setAction:function(action,params) {
+    
+        var h = action;
+        for(var i in params) {
+            h += "/"+i+"/"+params[i]
+        }
+        window.location.hash = h;
+    
     },
     
     /**

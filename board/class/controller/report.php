@@ -72,6 +72,7 @@ class board_controller_report extends mod_controller {
 
         tmp::exec("/board/report/project-detailed", array(
             "project" => $project,
+            "params" => $p,
 		));
 
     }
