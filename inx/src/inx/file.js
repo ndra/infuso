@@ -5,8 +5,10 @@ inx.css(".p9hjmvijmg-area{background:green;opacity:.5;position:absolute;}");
 inx.file = inx.button.extend({
 
     constructor:function(p) {
-        if(p.icon===undefined)
+    
+        if(p.icon===undefined) {
             p.icon="upload";
+        }
         p.air = true;
         this.base(p);
         this.__defaultIcon = p.icon;
@@ -24,10 +26,13 @@ inx.file = inx.button.extend({
         
     },
     
-    // Создает форму для закачки файла
-    // Ифрейм в который будет закачан файл находится внутри этой формы
-    // После закачки форма уничтожается
+    /**
+     * Создает форму для закачки файла
+     * Ифрейм в который будет закачан файл находится внутри этой формы
+     * После закачки форма уничтожается
+     **/
     createForm:function() {
+    
         var id = inx.id();
         this.form = $("<form enctype='multipart/form-data' method='post' style='padding:0px;margin:0px;' />")            
             .attr("action",inx.conf.cmdUrl)
@@ -42,14 +47,20 @@ inx.file = inx.button.extend({
     },
 
     cmd_render:function(c) {
-        this.base(c);   
-        this.createForm();
+        this.base(c);
         this.el.mousemove(inx.cmd(this,"handleMousemove"));
     },
     
-    // При движении мышки надо объектом
-    // Перемещает невидимый ифрейм
+    /**
+     * При движении мышки надо объектом
+     * Перемещает невидимый ифрейм
+     **/
     cmd_handleMousemove:function(e) {
+    
+        if(!this.form) {
+            this.createForm();
+        }
+    
         var x = e.pageX-this.el.offset().left;
         var y = e.pageY-this.el.offset().top;
         this.inputFile.css({
@@ -115,8 +126,9 @@ inx.file = inx.button.extend({
             this.dropZone.bind("drop",inx.cmd(this,"dropFile"));
         }
         var area = this.info("dropArea");
-        if(!area)
+        if(!area) {
             return;
+        }
         
         var z = 0;
         area.parents().andSelf().each(function(){
@@ -138,25 +150,22 @@ inx.file = inx.button.extend({
             display:"block",
             zIndex:z
         });
-        clearInterval(this.rjf90op10d4v0tm5rxy5);        
+            
     },
     
     cmd_hideArea:function() {
-        clearInterval(this.rjf90op10d4v0tm5rxy5);
-        this.rjf90op10d4v0tm5rxy5 = setInterval(inx.cmd(this,"realHideDropZone"),100);
-    },
-    
-    cmd_realHideDropZone:function() {
         $(this.dropZone).css({display:"none"});
     },
     
     info_dropArea:function() {
         var e = $(this.private_area);
-        if(e.prop("nodeName"))
+        if(e.prop("nodeName")) {
             return e;        
+        }
         e = inx(this.private_area).info("param","el");
-        if(e)
+        if(e) {
             return e;
+        }
     },
     
     cmd_setArea:function(area) {
@@ -169,65 +178,63 @@ inx.file = inx.button.extend({
         this.base();
     }
 
-})
+});
 
-inx.file.showArea = function(e) {
-
-    e.preventDefault();    
-
-    if(inx.file.o)  {
-        return;
-    }
-    inx.file.o = true;
-    inx.file.updateAreaVisibility();
+inx.file.handleDragOver = function(e) {
+    inx.file.taskUpdateStatus(true);
+    e.preventDefault();   
 }
 
-inx.file.hideArea = function(e) {
-
+inx.file.handleDragLeave = function(e) {
+    inx.file.taskUpdateStatus(false);
     e.preventDefault();    
-
-    if(!inx.file.o)  {
-        return;
-    }
-    inx.file.o = false;
-    inx.file.updateAreaVisibility();
 }
 
-/**
- * Обновляет видимость дроп-арии
- **/
-inx.file.updateAreaVisibility = function() {
+inx.file.taskUpdateStatus = function(status,now) {
 
-    var d = (new Date()).getTime() - (inx.file.areaLast || 0) 
-    
-    var delay = 150;
+    if(status && inx.file.statusTimer) {
+        clearTimeout(inx.file.statusTimer);
+        inx.file.statusTimer = null;
+    }
 
-    if(d > delay) {
+    if(status == inx.file.lastDDStatus) {
+        return;
+    }
     
-        if(inx.file.areaLastVisibility == inx.file.o) {
-            return;
-        }
+    if(status || now) {
     
-        for(var i in inx.file.dd) {
-            inx(i).cmd(inx.file.o ? "showArea" : "hideArea");
-        }
-        
-        inx.file.areaTimer = false;
-        inx.file.areaLast = (new Date()).getTime();
-        inx.file.areaLastVisibility = inx.file.o;
-        
-    } else if (!inx.file.areaTimer) {
+        inx.file.lastDDStatus = status;
+        status ? inx.file.showArea() : inx.file.hideArea();
     
-        inx.file.areaTimer = setTimeout(inx.file.updateAreaVisibility,delay+1);
-        
     } else {
-        return;
+    
+        if(!inx.file.statusTimer) {
+            inx.file.statusTimer = setTimeout(function() {
+                inx.file.taskUpdateStatus(false,true);
+                inx.file.statusTimer = false;
+            },200)
+        }
+    
     }
     
+    inx.file.ddStatus = status;
+
+}
+
+inx.file.showArea = function() {
+    for(var i in inx.file.dd) {
+        inx(i).cmd("showArea");
+    }
+}
+
+inx.file.hideArea = function() {
+    for(var i in inx.file.dd) {
+        inx(i).cmd("hideArea");
+    }
 }
 
 inx.file.dd = [];
 
-$(document).on("dragover",inx.file.showArea);        
-$(document).on("dragleave",inx.file.hideArea);
+$(document).on("dragover",inx.file.handleDragOver);        
+$(document).on("dragleave",inx.file.handleDragLeave);
 $(document).on("drop",inx.file.hideArea);
