@@ -103,6 +103,9 @@ inx.combo = inx.textfield.extend({
     },
     
     cmd_handleBlur:function() {
+        if(this.info("textValue")=="") {
+            this.cmd("setValue",0);
+        }
         this.cmd("updateCalculatedValue");
     },
 
@@ -212,7 +215,6 @@ inx.combo = inx.textfield.extend({
     },
     
     cmd_handleInput:function() {
-    
         var lastSearch = this.info("textValue");
         if(lastSearch!==this.lastSearch) {
             this.task("expand");
@@ -256,9 +258,7 @@ inx.combo = inx.textfield.extend({
                 break;
             
             default:
-                    
                 // Активируем режим поиска
-                //this.searchMode = true;
                 this.task("handleInput");
                 return this.base(e);
                 break;
