@@ -318,6 +318,12 @@ class reflex_editor_controller extends mod_controller {
             $item->data($key,$val);
         }
 
+        if($item->testForParentsRecursion()) {
+            $item->revert();
+            mod::msg("Обнаружена рекурсия, объект не сохранен",1);
+            return;
+        }
+
         // Список измененных полей в текстовом формате
         $dirty = array();
         foreach($item->fields()->changed() as $field)
