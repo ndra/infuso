@@ -26,7 +26,7 @@ class mod_url {
         $query = "(?:\?(?P<query>[{$urlSymbols}]+))?";
         $hash = "(?:#(?P<hash>.+))?";
         
-        $r = "!($scheme$login$host)?$port$path$query$hash!";
+        $r = "!($scheme$login$host)?$port$path$query$hash$!u";
 
         preg_match ( $r, $url, $matches);
 
