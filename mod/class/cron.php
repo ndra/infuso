@@ -39,7 +39,7 @@ class mod_cron extends mod_controller {
 
         $left = $time->stamp() + $delay - util::now()->stamp();
 
-		// Рарзрешаем обработчикам крона запуститься только если устек кулдаун или мы в режиме суперадмина
+        // Рарзрешаем обработчикам крона запуститься только если устек кулдаун или мы в режиме суперадмина
         if($left<0 || mod_superadmin::check()) {
             $file->put("processing");
             $t1 = util::now()->stamp();
@@ -50,9 +50,13 @@ class mod_cron extends mod_controller {
         }
 
         // Выводим инфу
-        if(mod_superadmin::check()) {
-            echo "Time to next launch ".$left;
+        if(mod_superadmin::check()) {            
             tmp::header();
+            
+            echo "<div style='padding:100px;' >";
+            echo "Time to next launch ".$left." sec.";
+            echo "</div>";
+            
             tmp::reset();
             util::profiler();
             tmp::footer();
