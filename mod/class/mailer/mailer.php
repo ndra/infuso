@@ -1,14 +1,23 @@
 <?php
-
 /**
- * Отправка письма
- **/
+ * Сервис для отправка письма через стандартный sendmail
+ */
 class mod_mailer extends mod_service {
-    
+
+    /**
+     * Этот класс используеться по-умолчанию для сервиса "mailer"
+     *
+     * @return string
+     */
     public function defaultService() {
         return "mailer";
     }
-    
+
+    /**
+     * Параметры при инициализации сервиса
+     *
+     * @return array
+     */
     public function initialParams() {
         return array(
             "subject" => "",
@@ -23,7 +32,9 @@ class mod_mailer extends mod_service {
        
     /**
      * Задает тип письма как html
-     **/
+     *
+     * @return $this
+     */
     public function html() {
         $this->type("text/html");
         return $this;
@@ -31,7 +42,9 @@ class mod_mailer extends mod_service {
 
     /**
      * Возвращает список датаврапперов для сайта
-     **/   
+     *
+     * @return array
+     */
     public function dataWrappers() {
         return array(
             "subject" => "mixed",
@@ -46,6 +59,10 @@ class mod_mailer extends mod_service {
 
     /**
      * Добавляет заголовок в письмо
+     *
+     * @author Petr.Grishin
+     * @param string $header Строка являющаяся заголовком для письма которое добавляеться в конец блока headers письма
+     * @return $this
      */
     public function addHeader($header) {
         $headers = $this->param("headers");
@@ -53,29 +70,39 @@ class mod_mailer extends mod_service {
         $this->param("headers",$headers);
         return $this;
     }
-    
+
     /**
-     * Прикрепляет файл к письму
-     * @var $file string Файл для прикрепления от корня веб проекта
+     * Прикрепляет файл к письму от корня веб проекта
+     *
+     * @param string $file Файл для прикрепления от корня веб проекта
+     * @param $name Имя файла
+     * @param $cid Уникальный код, для использования в теле письма
+     * @return $this
      * @author Petr.Grishin
-     **/
-    public function attach($file = null, $name = null, $cid = null) {
-        
+     */
+    public function attach($file, $name = null, $cid = null) {
+
+        //Замалчивание ошибок
         if ($file === null || $file == "") {
             return $this;
         }
         
         return $this->attachNative(mod_file::get($file)->native(), $name, $cid);
     }
-    
-    
+
+
     /**
-     * Прикрепляет файл к письму
-     * @var $file string Файл для прикрепления Нативный
+     * Прикрепляет файл к письму с абсолютным путем к файлу
+     *
+     * @param string $file Файл для прикрепления
+     * @param $name Имя файла
+     * @param $cid Уникальный код, для использования в теле письма
+     * @return $this
      * @author Petr.Grishin
-     **/
-    public function attachNative($file = null, $name = null, $cid = null) {
-        
+     */
+    public function attachNative($file, $name = null, $cid = null) {
+
+        //Замалчивание ошибок
         if ($file === null || $file == "")
             return $this;
         
@@ -87,7 +114,7 @@ class mod_mailer extends mod_service {
         $attachments[] = array(
             "name" => $name,
             "file" => $file,
-            "cid" => $cid,
+            "cid"  => $cid,
         );
         $this->param("attachments",$attachments);
         
@@ -96,8 +123,10 @@ class mod_mailer extends mod_service {
 
     /**
      * Непосредственно отправляет сообщение
+     *
+     * @return boolean
      * @author Petr.Grishin
-     **/
+     */
     public function send() {
              
         $message = $this->message();
@@ -148,21 +177,21 @@ class mod_mailer extends mod_service {
 
         $subject = '=?UTF-8?B?' . base64_encode($this->subject()) . '?=';
             
-        return mail(
+        return mail (
             $this->to(),
             $subject,
             implode("\n", $multipart),
             implode("\n", $headers)
         );
-        
     }
 
     /**
      * Правильное форматирование utf-8 email адресов
      *
-     * @return string Utf8 email
+     * @param string $email Строка c эмейлом для форматирования в вид <имя> е-майл
+     * @return string
      * @author Petr.Grishin
-     **/
+     */
     private function utf8email($email) {
         if (preg_match("/.*? <.*?>/ui", $email)) {
             $name = preg_replace("/(.*?) (<.*?>)/ui", "\$1", $email);
@@ -174,4 +203,4 @@ class mod_mailer extends mod_service {
         }
     }
 
-} // END class
+}
