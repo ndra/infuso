@@ -73,7 +73,17 @@ class mod_cron extends mod_controller {
      * Выполняет задачу без дополнительных проверок
      **/
     private function process() {
+    
+        $begin = util::now()->stamp();
         mod::fire("mod_cron");
+        $time = util::now()->stamp() - $begin;
+        
+        mod::service("log")->log(array(
+            "type" => "cron",
+            "text" => "completed: {$time} s.",
+            "p1" => $time,
+		));
+        
     }
 
 }

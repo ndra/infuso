@@ -34,7 +34,12 @@ public function exec() {
 	
 	if(mod_superadmin::check()) {
 		$url = mod_action::get("mod_cache")->url();
-		echo "<a href='{$url}' >Кэш</a>";
+		echo "<a href='{$url}' >Кэш</a> ";
+	}
+	
+	if(mod_superadmin::check()) {
+		$url = mod_action::get("mod_cron_log")->url();
+		echo "<a href='{$url}' >Крон</a>";
 	}
 
 }

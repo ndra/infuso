@@ -1,5 +1,8 @@
 <?
 
+/**
+ * Редактор лога
+ **/
 class reflex_log_editor extends reflex_editor {
 
     public function root() {
