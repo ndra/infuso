@@ -2,6 +2,109 @@
 
 class board_task extends reflex {
 
+    public function reflex_table() {
+
+        return array(
+            'name' => 'board_task',
+            'fields' => array (
+                array (
+                    'name' => 'id',
+                    'type' => 'jft7-kef8-ccd6-kg85-iueh',
+                ),array (
+                    'name' => 'text',
+                    'type' => 'kbd4-xo34-tnb3-4nxl-cmhu',
+                    'editable' => '1',
+                ),array (
+                    'name' => 'color',
+                    'type' => 'v324-89xr-24nk-0z30-r243',
+                    'editable' => '1',
+                    'label' => 'Цвет',
+                ),array (
+                    'name' => 'status',
+                    'type' => 'gklv-0ijh-uh7g-7fhu-4jtg',
+                    'editable' => '1',
+                ),array (
+                    'name' => 'priority',
+                    'type' => 'gklv-0ijh-uh7g-7fhu-4jtg',
+                    'label' => 'Приоритет',
+                ),array (
+                    'name' => 'created',
+                    'type' => 'x8g2-xkgh-jc52-tpe2-jcgb',
+                ),array (
+                    'name' => 'changed',
+                    'type' => 'x8g2-xkgh-jc52-tpe2-jcgb',
+                ),array (
+                    'name' => 'projectID',
+                    'type' => 'pg03-cv07-y16t-kli7-fe6x',
+                    'class' => 'board_project',
+                ),array (
+                    'name' => 'bonus',
+                    'type' => 'fsxp-lhdw-ghof-1rnk-5bqp',
+                    'label' => 'Бонус',
+                ),array (
+                    'name' => 'timeScheduled',
+                    'type' => 'yvbj-cgin-m90o-cez7-mv2j',
+                    'label' => 'Планируемое время',
+                ),array (
+                    'name' => 'timeSpent',
+                    'type' => 'yvbj-cgin-m90o-cez7-mv2j',
+                    'label' => 'Потрачено времени',
+                ),array (
+                    'name' => 'responsibleUser',
+                    'type' => 'pg03-cv07-y16t-kli7-fe6x',
+                    'label' => 'Ответственный пользователь',
+                ),array (
+                    'name' => 'deadline',
+                    'type' => 'fsxp-lhdw-ghof-1rnk-5bqp',
+                ),array (
+                    'name' => 'deadlineDate',
+                    'type' => 'ler9-032r-c4t8-9739-e203',
+                ),array (
+                    'name' => 'epic',
+                    'type' => 'fsxp-lhdw-ghof-1rnk-5bqp',
+                    'label' => 'Эпик',
+                ),array (
+                    'name' => 'epicParentTask',
+                    'type' => 'pg03-cv07-y16t-kli7-fe6x',
+                    'label' => 'reflex_task',
+                    'class' => 'board_task',
+                ),array (
+                    'name' => 'hindrance',
+                    'type' => 'fsxp-lhdw-ghof-1rnk-5bqp',
+                    'label' => 'Помеха',
+                ),array (
+                    'name' => 'paused',
+                    'type' => 'x8g2-xkgh-jc52-tpe2-jcgb',
+                    'label' => 'Пауза',
+                ),array (
+                    'name' => 'pauseTime',
+                    'type' => 'yvbj-cgin-m90o-cez7-mv2j',
+                    'label' => 'Суммарное время паузы',
+                ),array (
+                    'name' => 'files',
+                    'type' => 'gklv-0ijh-uh7g-7fhu-4jtg',
+                    'label' => 'Количество файлов',
+                ),array (
+                    'name' => 'notice',
+                    'type' => 'v324-89xr-24nk-0z30-r243',
+                    'label' => 'Заметка',
+                ), array(
+                    "name" => "type",
+                    "type" => "select",
+                    "options" => self::enumTypes(),
+                )
+            ),
+        );
+    }
+
+    public function enumTypes() {
+        return array(
+            0 => "Задача",
+            1 => "Группа",
+            2 => "Todo"
+        );
+    }
+
     /**
      * Возвращает список всех задач
      **/
@@ -237,6 +340,15 @@ class board_task extends reflex {
             return;
         }
 
+        // Ставим остальные задачи на паузу
+        $xtasks = board_task::all()
+            ->eq("responsibleUser",user::active()->id())
+            ->eq("status",board_task_status::STATUS_IN_PROGRESS)
+            ->neq("id",$this->id());
+        foreach($xtasks as $xtask) {
+            $xtask->pause();
+        }
+
         $time = util::now()->stamp() - $this->pdata("paused")->stamp();
         $time+= $this->data("pauseTime");
         $this->data("pauseTime",$time);
@@ -260,9 +372,22 @@ class board_task extends reflex {
     }
 
     /**
+     * Фозвращает флаг того что задача стоит на паузе
+     **/
+    public function paused() {
+        return (bool)$this->data("paused");
+    }
+
+    /**
      * Возвращает данные для стикера
      **/
 	public function stickerData() {
+
+        if($this->data("type")==1) {
+            return array(
+                "folder" => true,
+            );
+        }
 
 	    $ret = array(
             "backgroundImage" => null,
@@ -350,7 +475,11 @@ class board_task extends reflex {
         switch($this->status()->id()) {
 
             case board_task_status::STATUS_IN_PROGRESS:
-                $ret["tools"][] = "pause";
+                if(!$this->paused()) {
+                    $ret["tools"][] = "pause";
+                } else {
+                    $ret["tools"][] = "resume";
+                }
                 $ret["tools"][] = "done";
                 break;
 

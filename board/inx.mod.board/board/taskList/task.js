@@ -19,6 +19,9 @@ inx.css(".qm5btw9-drawback{width:100px;height:100px;cursor:pointer;background:ur
 inx.css(".qm5btw9-drawback:hover{opacity:1;}");
 inx.css(".qm5btw9-date-mark{color:gray;font-size:18px;font-style:italic;}");
 
+// Папка
+inx.css(".qm5btw9-folder{width:100px;height:100px;cursor:pointer;background:url(/board/res/img/icons64/folder.png) center center no-repeat;}");
+
 inx.mod.board.board.taskList.task = inx.panel.extend({
 
     constructor:function(p) {    
@@ -36,7 +39,12 @@ inx.mod.board.board.taskList.task = inx.panel.extend({
 
         var task = this.data.data;
         
-        if (this.data.id=="new") {
+        if (this.data.folder) {
+        
+            $("<div class='qm5btw9-folder' >")
+                .appendTo(this.el);
+            
+        } else if (this.data.id=="new") {
         
             $("<div class='qm5btw9-new' >")
                 .attr("title","Новая задача")
