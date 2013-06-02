@@ -209,7 +209,7 @@ class reflex_route_item extends reflex {
 	    $dupes = self::all()->eq("url",$this->data("url"))->eq("domain",$this->data("domain"))->neq("id",$this->id());
 	    if($dupes->count()) {
 	        $this->data("url",$this->data("url")."-".util::id(7));
-	        mod::msg("Найден элемент с таким же URL. URL данного элемента будет изменен.");
+	        //mod::msg("Найден элемент с таким же URL. URL данного элемента будет изменен.");
 	    }
 	}
 

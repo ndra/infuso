@@ -25,6 +25,15 @@ inx.mod.board.board.taskList.task.controls = inx.panel.extend({
             });
         }
         
+        if(p.tools.indexOf("resume")!=-1) {
+            p.items.push({
+                type:"inx.button",
+                air:true,
+                icon:"/board/res/img/icons16/resume.png",
+                onclick:[this.id(),"pauseTask"]
+            });
+        }
+        
         // Я все сделал
         if(p.tools.indexOf("done")!=-1) {
             p.items.push({
