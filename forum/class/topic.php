@@ -303,13 +303,14 @@ class forum_topic extends reflex {
             throw new Exception("Не найден указанный раздел");
         }
         
-        //Текущий пользователь
+        // Текущий пользователь
         $user = user::active();
         
-        $topic = reflex::create(get_class());
-        $topic->data("title", $p["title"]);
-        $topic->data("group", $group->id());
-        $topic->data("userID", $user->id());
+        $topic = reflex::create(get_class(), array (
+            "title" => $p["title"],
+            "group" => $group->id(),
+            "userID" => $user->id(),
+        ));
         
         header("Location: " . $topic->url());    
     }
