@@ -90,6 +90,8 @@ inx.mod.board.board.taskList = inx.list.extend({
 
         }
         
+        this.task("load",1000*60*2)
+        
     },
     
     cmd_handleF5:function() {

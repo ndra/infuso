@@ -32,7 +32,12 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
             region:"bottom"
         });
         
-        p.side = [this.informer,this.dayActivity];
+        this.messages = inx({
+            type:"inx.mod.board.main.messages",
+            region:"top"
+        });
+        
+        p.side = [this.informer,this.dayActivity,this.messages];
         
         this.base(p); 
         
@@ -87,6 +92,11 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
                     projectID:params.params.id,
                     name:"report-project/"+params.params.id
                 }).cmd("setParams",params.params);
+                break;
+                
+            case "task":
+                this.cmd("editTask",{taskID:params.params.id});
+                history.back();
                 break;
                 
         }
