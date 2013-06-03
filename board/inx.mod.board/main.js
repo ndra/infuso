@@ -27,7 +27,12 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
             resizable:true
         });
         
-        p.side = [this.informer];
+        this.dayActivity = inx({
+            type:"inx.mod.board.main.dayActivity",
+            region:"bottom"
+        });
+        
+        p.side = [this.informer,this.dayActivity];
         
         this.base(p); 
         

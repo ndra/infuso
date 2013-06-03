@@ -14,7 +14,7 @@ inx.mod.board.task.subtasks.add.dlg = inx.dialog.extend({
         p.destroyOnEscape = true;
         
         p.style = {
-            width:380,
+            width:390,
             border:0,
             background:"none"
         }
@@ -30,6 +30,11 @@ inx.mod.board.task.subtasks.add.dlg = inx.dialog.extend({
         },{
             type:"inx.button",
             air:true,
+            icon:"/board/res/img/icons16/resume.png",
+            onclick:[this.id(),"doSubtask"]
+        },{
+            type:"inx.button",
+            air:true,
             icon:"plus",
             onclick:[this.id(),"addSubtask"]
         },{
@@ -40,7 +45,7 @@ inx.mod.board.task.subtasks.add.dlg = inx.dialog.extend({
         }];
         
         this.base(p);
-        this.on("submit",[this.id(),"addSubtask"]);
+        this.on("submit",[this.id(),"doSubtask"]);
         this.on("render",function() {
             inx(this).items().eq("name","text").task("focus");
         });
@@ -50,6 +55,15 @@ inx.mod.board.task.subtasks.add.dlg = inx.dialog.extend({
         this.call({
             cmd:"board/controller/task/addEpicSubtask",
             taskID:this.taskID,
+            data:this.info("data")
+        },[this.id(),"handleAddSubtask"])
+    },
+    
+    cmd_doSubtask:function() {
+        this.call({
+            cmd:"board/controller/task/addEpicSubtask",
+            taskID:this.taskID,
+            take:true,
             data:this.info("data")
         },[this.id(),"handleAddSubtask"])
     },

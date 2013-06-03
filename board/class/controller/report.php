@@ -6,6 +6,10 @@ class board_controller_report extends mod_controller {
         return user::active()->exists();
     }
 
+    public function postTest() {
+        return user::active()->exists();
+    }
+
     /**
      * Экшн получения списка задач
      **/             
@@ -75,6 +79,29 @@ class board_controller_report extends mod_controller {
             "params" => $p,
 		));
 
+    }
+
+    /**
+     * Контроллер для ленты с моей активностью за день
+     **/
+    public function post_getMyDayActivity() {
+
+        $user = user::active();
+        $ret = array(
+            "tasks" => array(),
+        );
+        foreach(board_task_log::all()->eq("userID",$user->id())->gt("timeSpent",0)->desc("created")->limit(0)->eq("date(created)",util::now()->date()) as $log) {
+            $time = $log->pdata("created");
+            $duration = $log->data("timeSpent") * 3600;
+            $start = $time->stamp() - $duration;
+            $ret["tasks"][] = array(
+                "start" => $start - util::now()->date()->stamp(),
+                "duration" => $duration,
+                "title" => $log->task()->title(),
+                "taskID" => $log->task()->id(),
+            );
+        }
+        return $ret;
     }
 
 }

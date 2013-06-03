@@ -265,6 +265,10 @@ class board_controller_task extends mod_controller {
             "epicParentTask" => $task->id(),
         ));
 
+        if($p["take"]) {
+            $task->data("status",board_task_status::STATUS_IN_PROGRESS);
+        }
+
     }
 
     /**
@@ -284,25 +288,10 @@ class board_controller_task extends mod_controller {
 
         $task->data("status",$p["status"]);
 
-        // Если статус задачи "к исполнению", ответственным лицом становится текущий пользователь.
-        if($task->status()->id()==1) {
-            $task->data("responsibleUser",user::active()->id());
-        }
-
         $time = $p["time"];
 
         // Текст про изменение статуса
         $statusText = $task->status()->action();
-
-        // Ставим выполняющиеся задачи на паузу
-        if($p["status"]==board_task_status::STATUS_IN_PROGRESS) {
-            $xtasks = board_task::all()
-                ->eq("responsibleUser",user::active()->id())
-                ->eq("status",board_task_status::STATUS_IN_PROGRESS);
-            foreach($xtasks as $xtask) {
-                $xtask->pause();
-            }
-        }
 
         if($p["comment"]) {
             $statusText = $p["comment"]." ".$statusText;
@@ -328,9 +317,7 @@ class board_controller_task extends mod_controller {
             return;
         }
 
-        $date = $task->pdata("changed");
-        $d = util::now()->stamp() - $date->stamp();
-        $d -= $task->data("pauseTime");
+        $d = $task->timeSpentProgress();
 
         $hours = floor($d/60/60);
         $minutes = ceil($d/60)%60;

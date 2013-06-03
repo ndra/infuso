@@ -53,6 +53,7 @@ class board_task extends reflex {
                     'name' => 'responsibleUser',
                     'type' => 'pg03-cv07-y16t-kli7-fe6x',
                     'label' => 'Ответственный пользователь',
+                    "class" => "user",
                 ),array (
                     'name' => 'deadline',
                     'type' => 'fsxp-lhdw-ghof-1rnk-5bqp',
@@ -204,6 +205,20 @@ class board_task extends reflex {
             }
         }
 
+        // Если статус задачи "к исполнению", ответственным лицом становится текущий пользователь.
+        if($this->field("status")->changed() && $this->status()->id()==1) {
+            $this->data("responsibleUser",user::active()->id());
+
+            $xtasks = board_task::all()
+                ->eq("responsibleUser",user::active()->id())
+                ->eq("status",board_task_status::STATUS_IN_PROGRESS)
+                ->neq("id",$this->id());
+            foreach($xtasks as $xtask) {
+                $xtask->pause();
+            }
+
+        }
+
         mod::fire("board/taskChanged",array(
             "deliverToClient" => true,
             "taskID" => $this->id(),
@@ -237,13 +252,28 @@ class board_task extends reflex {
         }
 	}
 
-	/**
-	 * Возвращает время, потраченное на задачу
-	 * Оно складывается из времени, потраченного на саму задачу и времени на подзадачи
-	 **/
 	public function updateTimeSpent() {
 	    $this->data("timeSpent",$this->getLogCustom()->sum("timeSpent"));
 	}
+
+    /**
+     * Возвращает потраченное но еще неучтенное времия
+     * Если вы делавете задачу два часа, но еще не сделалт, timeSpent() вернет 0
+     *
+     **/
+    public function timeSpentProgress() {
+
+        $date = $this->pdata("changed");
+        $d = util::now()->stamp() - $date->stamp();
+        $d -= $this->data("pauseTime");
+
+        if($this->data("paused")) {
+            $d-= util::now()->stamp() - $this->pdata("paused")->stamp();
+        }
+
+        return $d;
+
+    }
 
 	public function getLogCustom() {
         return board_task_log::all()->eq("taskID",$this->id());
@@ -421,7 +451,11 @@ class board_task extends reflex {
 
 	    // Статусная часть стикера
 	    $ret["info"] = "";
-	    $ret["info"].= round($this->timeSpent(),1)."/".round($this->timeScheduled(),1)."ч. ";
+	    $ret["info"].= round($this->timeSpent(),1);
+        if($this->data("status")==board_task_status::STATUS_IN_PROGRESS) {
+            $ret["info"].= "+".round($this->timeSpentProgress()/3600,1);
+        }
+        $ret["info"].= "/".round($this->timeScheduled(),1)."ч. ";
 
 	    // Цвет стикера
 	    $ret["color"] = $this->data("color");
