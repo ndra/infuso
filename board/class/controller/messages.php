@@ -19,7 +19,7 @@ class board_controller_messages extends mod_controller {
 
         foreach($tasks as $task) {
 
-            $d = $task->timeSpent() + $task->timeSpentProgress() - $task->timeScheduled();
+            $d = $task->timeSpent() + $task->timeSpentProgress() - $task->timeScheduled()*3600;
             $d = round($d/3600,1);
 
             if($d>0) {
