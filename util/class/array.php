@@ -192,4 +192,11 @@ class util_array extends mod_component implements iterator {
 
     }
 
+    public function valueExists($val) {
+        if(!is_array($this->data)) {
+            return false;
+        }
+        return in_array($val,$this->data);
+    }
+
 }

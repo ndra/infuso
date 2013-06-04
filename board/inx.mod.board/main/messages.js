@@ -1,7 +1,8 @@
 // @link_with_parent
 
-inx.css(".vb3yl6x {background:red;color:white;padding:4px;}");
+inx.css(".vb3yl6x {position:relative; background:red linear-gradient(#ff4444,red);color:white;padding:4px;}");
 inx.css(".vb3yl6x a {color:white;}");
+inx.css(".vb3yl6x .delete {cursor:pointer;}");
 
 inx.mod.board.main.messages = inx.panel.extend({
 
@@ -27,21 +28,53 @@ inx.mod.board.main.messages = inx.panel.extend({
         },[this.id(),"handleData"]);
         
         // Обновляем раз в пять минут
-        this.task("getDayActivity",1000 * 60*5);
+        this.task("getMessages",1000 * 60*5);
     },
     
     cmd_handleData:function(data) {
-        var e = $("<div>");
+        var container = $("<div>");
+        
+        var cmp = this;
         
         for(var i in data) {
             var message = data[i];   
-            $("<div>")
+            var e = $("<div>")
                 .html(message.text)
                 .addClass("vb3yl6x")
-                .appendTo(e);
+                .appendTo(container)
+                .data("message-hash",message.hash);
+                
+            $("<img>").attr("src",inx.img("delete"))
+                .appendTo(e)
+                .addClass("delete")
+                .css({
+                    position:"absolute",
+                    right:3,
+                    top:3
+                }).click(function() {
+                    var hash = $(this).parent().data("message-hash");
+                    cmp.cmd("hideMessage",hash);
+                    cmp.call({
+                        cmd:"board/controller/messages/hideMessage",
+                        hash:hash
+                    })
+                });
         }
         
-        this.cmd("html",e);
+        this.cmd("html",container);
+    },
+    
+    cmd_hideMessage:function(hash) {
+            
+        var cmp = this;
+        var e = this.__body.children().children().children();
+        e.each(function() {
+            if($(this).data("message-hash") == hash) {
+                $(this).fadeOut("fast",function() {
+                    cmp.cmd("syncLayout");
+                });
+            }
+        })
     }
          
 });
