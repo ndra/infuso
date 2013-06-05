@@ -933,6 +933,16 @@ class reflex_collection extends mod_component implements Iterator {
     }
 
     /**
+     * Возвразает среднее значение по колонке
+     **/
+    public function avg($key) {
+        $this->callBeforeQuery();
+        $key = $this->normalizeColName($key);
+        reflex_mysql::query("select avg($key) from {$this->from()} where {$this->whereQuery()} ");
+        return reflex_mysql::get_scalar();
+    }
+
+    /**
      * Возвразает массив уникальных значений по колонке
      **/
     public function distinct($key,$fn=null) {
