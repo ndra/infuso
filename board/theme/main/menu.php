@@ -17,6 +17,7 @@
     <div class='submenu' menu:id='reports' >
         <a class='item' href='#report-projects' >Проекты</a>
         <a class='item' href='#report-workers' >Пользователи</a>
+        <a class='item' href='#report-vote' >Голоса</a>
     </div>
 </div>
 

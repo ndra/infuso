@@ -2,6 +2,9 @@
 
 class board_task_vote_criteria extends reflex {
 
+    const SUBJECT_CREATOR = 1;
+    const SUBJECT_EXECUTOR = 2;
+
     public function reflex_table() {
 
         return array(
@@ -21,8 +24,8 @@ class board_task_vote_criteria extends reflex {
                     'name' => 'subject',
                     'type' => 'select',
                     'list' => array(
-                        1 => "Создатель",
-                        2 => "Исполнитель",
+                        self::SUBJECT_CREATOR => "Создатель",
+                        self::SUBJECT_EXECUTOR => "Исполнитель",
                     ), "editable" => 1,
                 ),
             ),

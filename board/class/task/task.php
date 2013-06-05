@@ -31,6 +31,10 @@ class board_task extends reflex {
                     'name' => 'created',
                     'type' => 'x8g2-xkgh-jc52-tpe2-jcgb',
                 ),array (
+                    'name' => 'creator',
+                    'type' => 'link',
+                    'class' => "user",
+                ),array (
                     'name' => 'changed',
                     'type' => 'x8g2-xkgh-jc52-tpe2-jcgb',
                 ),array (
@@ -174,6 +178,7 @@ class board_task extends reflex {
 	public function reflex_beforeCreate() {
 	    $this->data("changed",util::now());
 	    $this->data("created",util::now());
+        $this->data("creator",user::active()->id());
 	}
 
 	public function reflex_afterCreate() {
@@ -525,8 +530,9 @@ class board_task extends reflex {
                 $ret["tools"][] = "complete";
                 $ret["tools"][] = "revision";
                 break;
-
         }
+
+        $ret["tools"][] = "vote";
 
 	    return $ret;
 	}

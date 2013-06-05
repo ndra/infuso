@@ -104,4 +104,13 @@ class board_controller_report extends mod_controller {
         return $ret;
     }
 
+    /**
+     * Контроллер для ленты с моей активностью за день
+     **/
+    public function index_vote() {
+
+        tmp::exec("/board/report/vote");
+
+    }
+
 }

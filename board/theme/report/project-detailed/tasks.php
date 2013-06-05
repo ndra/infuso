@@ -35,6 +35,11 @@
                     "task" => $task,
                 ));
             </td>
+            <td>
+                tmp::exec("vote",array(
+                    "task" => $task,
+                ));
+            </td>
         </tr>
         
         foreach($task->subtasks()->limit(0) as $subtask) {        

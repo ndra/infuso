@@ -94,8 +94,20 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
                 }).cmd("setParams",params.params);
                 break;
                 
+            case "report-vote":
+                this.tabs.cmd("add",{
+                    type:"inx.mod.board.report.vote",
+                    name:"report-vote"
+                }).cmd("setParams",params.params);
+                break;
+                
             case "task":
                 this.cmd("editTask",{taskID:params.params.id});
+                history.back();
+                break;
+                
+            case "vote":
+                this.cmd("voteTask",{taskID:params.params.id});
                 history.back();
                 break;
                 
@@ -108,8 +120,14 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
             type:"inx.mod.board.task",
             taskID:p.taskID,
             projectID:p.projectID,
-            status:p.status,
-            listeners:{change:[this.tabs.axis("selected"),"load"]}
+            status:p.status
+        }).cmd("render").setOwner(this);
+    }, 
+    
+    cmd_voteTask:function(p) {
+        inx({
+            type:"inx.mod.board.vote",
+            taskID:p.taskID
         }).cmd("render").setOwner(this);
     }, 
     

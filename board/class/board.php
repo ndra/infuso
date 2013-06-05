@@ -18,7 +18,7 @@ class board extends mod_controller {
         
         tmp::header();
         inx::add(array(
-            "type" => "inx.mod.board.task",
+            "type" => "inx.mod.board.vote",
             "showMore" => true,
             "taskID" => 1552,
         ));

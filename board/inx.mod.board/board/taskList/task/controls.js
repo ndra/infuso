@@ -74,7 +74,18 @@ inx.mod.board.board.taskList.task.controls = inx.panel.extend({
                 onclick:[this.id(),"revisionTask"]
             });
         }
-            
+        
+        // Голосовать
+        if(p.tools.indexOf("vote")!=-1) {
+            p.items.push({
+                type:"inx.button",
+                air:true,
+                icon:"hand",
+                help:"Голосовать",
+                onclick:[this.id(),"voteTask"]
+            });
+        }
+                    
         this.base(p);
     },
     
@@ -128,6 +139,10 @@ inx.mod.board.board.taskList.task.controls = inx.panel.extend({
             status:0,
             comment:comment
         },[this.id(),"handleSave"])
+    },
+    
+    cmd_voteTask:function() {
+        window.location.href = "#vote/id/"+this.taskID;
     }
          
 });
