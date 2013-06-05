@@ -58,7 +58,7 @@ inx.dialog = inx.panel.extend({
         }
         
         this.private_wnd = $("<div>").addClass("inx-shadowframe").css({
-            background:this.background || "#ededed",
+            background:this.style("background") || "#ededed",
             position:"absolute",
             zIndex:inx.conf.z_index_dialog
         }).appendTo("body");
