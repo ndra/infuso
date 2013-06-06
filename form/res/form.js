@@ -5,6 +5,13 @@ var form = function(selector,hash) {
         var form = $(this);
         e.preventDefault();
         var data = $(this).serializeArray();
+        //собираем с полей типа файла данные
+        $(selector).find("[type='file']").each(function(){
+            var obj = {};
+            obj.name = $(this).attr("name");
+            obj.value = $(this).val();
+            data.push(obj);
+        });
         var ret = {};
         for(var i in data) {
             ret[data[i].name] = data[i].value;

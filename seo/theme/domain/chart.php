@@ -1,11 +1,32 @@
 <?
-ini_set('memory_limit', '256M');
+
 $domain = $p1;
 if(!$day = $p2) $day = util::now()->notime()."";
 
+$current = mod_action::current();
+$params = $current->params();
+$from = $params["from_date"];
+$to = $params["to_date"];
+
+
+
+if(!$from){    
+    $from = util::date($day)->shift(-60*60*24*100);  
+}
+
+if(!$to) {
+    $to = util::date($day)->shift(60*60*24*2); 
+}
+
+
+
+$range = (util::date($to)->notime()->stamp() - util::date($from)->notime()->stamp())/24/60/60;
+
+
+
 $items = seo_query_position::all()
-    ->gt("date",util::date($day)->shift(-60*60*24*100))
-    ->lt("date",util::date($day)->shift(60*60*24*2))
+    ->gt("date",$from)
+    ->lt("date",$to)
     ->eq("queryID",$domain->queries()->distinct("id"))
     ->limit(0);
 
@@ -24,8 +45,8 @@ foreach($domain->engines() as $engine) {
     foreach($domain->queries() as $query)
         $chart->col($query->title());
     
-    for($i=100;$i>=0;$i--) {
-        $time = util::date($day)->shift(-60*60*24*$i)->notime();
+    for($i=$range;$i>=0;$i--) {
+        $time = util::date($to)->shift(-60*60*24*$i)->notime();
         $row = array($time->notime()->txt());
         $prow = array($time->notime()->txt());
         $complete = 0;
