@@ -13,8 +13,9 @@
 </div>
 
 // Субменю
-<div class='sr3yrzht3j-submenu'  style='position:absolute;z-index:100' >  
+<div class='sr3yrzht3j-submenu' style='position:absolute;z-index:100' >  
     <div class='submenu' menu:id='reports' >
+        <a class='item' href='#report-done' >Сделано сегодня</a>
         <a class='item' href='#report-projects' >Проекты</a>
         <a class='item' href='#report-workers' >Пользователи</a>
         <a class='item' href='#report-vote' >Голоса</a>

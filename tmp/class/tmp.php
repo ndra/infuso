@@ -404,4 +404,8 @@ class tmp implements mod_handler {
         return tmp_helper::fromHTML($html);
     }
 
+    public static function widget($name) {
+        return tmp_widget::get($name);
+    }
+
 }

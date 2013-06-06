@@ -81,6 +81,22 @@ class board_controller_report extends mod_controller {
 
     }
 
+    public function index_done($p) {
+
+        // Параметры задачи
+        if(!user::active()->checkAccess("board/showReportDone")) {
+            mod::msg(user::active()->errorText(),1);
+            tmp::header();
+            tmp::footer();
+            return;
+        }
+
+        tmp::exec("/board/report/done", array(
+            "params" => $p,
+		));
+
+    }
+
     /**
      * Контроллер для ленты с моей активностью за день
      **/

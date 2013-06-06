@@ -447,10 +447,6 @@ inx.box = inx.observable.extend({
      * Показывает компонент
      **/    
     cmd_show:function() {
-    
-        if(this.private_hidden == false) {
-            return;
-        }
 
         if(this.el) {
             this.el.css("display","block");

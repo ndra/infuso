@@ -82,6 +82,9 @@ class board_init implements mod_handler {
             
        user_operation::create("board/showProjectsReport","Просмотр отчета по пользователям")
             ->appendTo("boardUser");
+
+       user_operation::create("board/showReportDone","Просмотр отчета по сделанному")
+            ->appendTo("boardUser");
         
     }
 

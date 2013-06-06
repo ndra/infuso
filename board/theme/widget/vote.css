@@ -1,0 +1,12 @@
+.qmky1dx6t {
+    
+    .edit {
+        cursor:pointer;
+        opacity:.5;
+    }
+
+    &:hover .edit {
+        opacity:1;
+    }    
+    
+}

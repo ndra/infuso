@@ -101,6 +101,13 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
                 }).cmd("setParams",params.params);
                 break;
                 
+            case "report-done":
+                this.tabs.cmd("add",{
+                    type:"inx.mod.board.report.done",
+                    name:"report-done"
+                }).cmd("setParams",params.params);
+                break;
+                
             case "task":
                 this.cmd("editTask",{taskID:params.params.id});
                 history.back();
@@ -109,8 +116,7 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
             case "vote":
                 this.cmd("voteTask",{taskID:params.params.id});
                 history.back();
-                break;
-                
+                break;                
         }
 
     },

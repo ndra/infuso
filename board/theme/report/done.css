@@ -1,0 +1,43 @@
+.tl7dg1n4f2 { 
+
+    td {
+        border:1px solid #ededed;
+        padding:4px 10px;
+        vertical-align:middle;
+    }
+    
+    thead td {
+        font-style:italic;
+        border:none;
+        opacity:.5;
+        font-size:11px;
+    }
+    
+    .text {
+        
+        background-position: 5px 5px;
+        background-repeat: no-repeat;
+        padding-left:25px;
+    
+        font-family:Georgia;
+        font-size:12px;
+        
+        a {
+            color:inherit;
+            text-decoration:inherit;
+        }
+    }
+   
+    .status {
+        white-space:nowrap;
+        color:gray;
+        font-size:12px;
+    }
+    
+    .id {
+        white-space:nowrap;
+        color:gray;
+        font-size:12px;
+    }
+
+}
