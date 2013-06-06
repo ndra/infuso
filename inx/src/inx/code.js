@@ -45,11 +45,11 @@ inx.code = inx.panel.extend({
         inx.storage.onready(this.id(),"none");      
         
         this.on("scroll","handleScroll");
+        this.on("dblclick","handleDblClick");
           
     },
     
-    /*cmd_handleDblclick:function() {
-        inx.msg("up")
+    cmd_handleDblClick:function() {
         this.task("selectWord");
     },
     
@@ -61,8 +61,9 @@ inx.code = inx.panel.extend({
                 start:{line:sel1.line,symbol:sel1.symbol},
                 end:{line:sel1.line,symbol:sel1.symbol+1}
             });
-            if(!x.match(/[a-z]/i))
+            if(!x.match(/[0-9a-z\_\$]/i)) {
                 break;
+            }
             sel1.symbol--;                
         }        
         sel1.symbol++;       
@@ -73,14 +74,14 @@ inx.code = inx.panel.extend({
                 start:{line:sel2.line,symbol:sel2.symbol},
                 end:{line:sel2.line,symbol:sel2.symbol+1}
             });
-            if(!x.match(/[a-z\_\$]/i))
+            if(!x.match(/[0-9a-z\_\$]/i))
                 break;
             sel2.symbol++;                
-        }        
+        }       
         sel2.symbol;            
          
-        this.cmd("select",sel1,sel2) 
-    },*/
+        this.cmd("select",sel1,sel2)
+    },
     
     info_contentHeight:function() {
         return this.private_lineHeight * this.lines.length;
