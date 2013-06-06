@@ -76,8 +76,9 @@ inx.tabs = inx.panel.extend({
         
         for(var i=0;i<this.private_items.length;i++) {
             var cmp = inx(this.private_items[i]);
-            if(cmp.id()==this.private_selected)
+            if(cmp.id()==this.private_selected) {
                 cmp.cmd("show");
+            }
             else cmp.cmd("hide");
         }
         
@@ -120,8 +121,9 @@ inx.tabs = inx.panel.extend({
         if(this.selectNew) {
             this.cmd("select",cmp.id());
         } else {
-            if(this.private_items[0]==cmp.id())
+            if(this.private_items[0]==cmp.id()) {
                 this.cmd("select",cmp.id());
+            }
         }
         
         this.task("updateSelection");
