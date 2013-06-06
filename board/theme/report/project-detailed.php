@@ -4,8 +4,8 @@ tmp::header();
 tmp::reset();
 mod::coreJS();
 
-$from = util::date($params["from"]);
-$to = util::date($params["to"]);
+$from = util::date($params["from"])->date();
+$to = util::date($params["to"])->date();
 
 <div style='padding:20px;' >
 
@@ -15,7 +15,10 @@ $to = util::date($params["to"]);
     </div>
     
     <div style='margin-bottom:20px;' >
-        echo "Отчет по проектам {$from->text()} &mdash; {$to->text()}";
+        echo "Отчет по проекту «{$project->title()}» {$from->text()} &mdash; {$to->text()}";
+        <div style='opacity:.5;font-style:italic;font-size:.8em;' >
+            echo "Показаны задачи, изменившие статус в указанный интервал. Подзадачи выводятся без ограничения по дате.";
+        </div>
     </div>
 
     $tasks = $project->tasks()
