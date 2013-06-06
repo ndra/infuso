@@ -280,7 +280,8 @@ class board_controller_task extends mod_controller {
 
         // Параметры задачи
         if(!user::active()->checkAccess("board/changeTaskStatus",array(
-            "task" => $task
+            "task" => $task,
+            "status" => $p["status"],
         ))) {
             mod::msg(user::active()->errorText(),1);
             return;

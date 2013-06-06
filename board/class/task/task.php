@@ -244,6 +244,8 @@ class board_task extends reflex {
                 "changed" => array(),
         	));
 
+            $task->data("responsibleUser",0);
+
         }
     }
 

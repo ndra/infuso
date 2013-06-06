@@ -45,6 +45,8 @@ class board_init implements mod_handler {
             ->appendTo("board/editTask");
 
         user_operation::create("board/changeTaskStatus","Изменение статуса задачи")
+            ->addBusinessRule("if(\$status == board_task_status::STATUS_IN_PROGRESS && !\$task->subtasks()->void()) \$this->error('Нельзя взять эпик. Возьмите подзадачу.'); ")
+            ->addBusinessRule("return true;")
             ->appendTo("board/editTask");
 
         user_operation::create("board/newTask","Создание задачи")
