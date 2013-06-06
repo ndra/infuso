@@ -77,6 +77,10 @@ class board_task_vote extends reflex {
         }
     }
 
+    public function reflex_afterStore() {
+        $this->task()->fireChangedEvent();
+    }
+
     public function owner() {
         return $this->pdata("ownerID");
     }

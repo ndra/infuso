@@ -233,17 +233,20 @@ class board_task extends reflex {
         
 	}
 
+    public function fireChangedEvent() {
+        mod::fire("board/taskChanged",array(
+            "deliverToClient" => true,
+            "taskID" => $this->id(),
+            "sticker" => $this->stickerData(),
+            "changed" => array(),
+    	));
+    }
+
     public function reflex_afterStore() {
         if($this->data("epicParentTask")) {
 
             $task = $this->pdata("epicParentTask");
-            mod::fire("board/taskChanged",array(
-                "deliverToClient" => true,
-                "taskID" => $task->id(),
-                "sticker" => $task->stickerData(),
-                "changed" => array(),
-        	));
-
+            $task->fireChangedEvent();
             $task->data("responsibleUser",0);
 
         }
@@ -415,6 +418,10 @@ class board_task extends reflex {
         return (bool)$this->data("paused");
     }
 
+    public function votes() {
+        return board_task_vote::all()->eq("taskID",$this->id());
+    }
+
     /**
      * Возвращает данные для стикера
      **/
@@ -451,6 +458,20 @@ class board_task extends reflex {
         $h = $this->hangDays();
         if($h>3) {
             $ret["text"].= "<span style='color:white;background:red;padding:0px 4px;'>$h</span> ";
+        }
+
+        $score = $this->votes()->avg("score");
+        if($score) {
+
+            $smiles = array(":(:(",":(",":|",":)",":):)");
+            $html = $smiles[round($score)-1]." ";
+
+            if(!$this->votes()->eq("ownerID",user::active()->id())->void()) {
+               $html = "<span style='background:rgba(255,255,0,.5);padding:2px;' >{$html}</span>";
+            }
+
+            $ret["text"].= $html;
+
         }
 
 	    $ret["text"].= "<b>".$this->project()->title().".</b> ";
@@ -511,8 +532,8 @@ class board_task extends reflex {
             $ret["backgroundImage"] = "/board/res/img/icons64/pause.png";
         }
 
+        // Кнопки задачи
         $ret["tools"] = array();
-
         switch($this->status()->id()) {
 
             case board_task_status::STATUS_IN_PROGRESS:
@@ -533,7 +554,6 @@ class board_task extends reflex {
                 $ret["tools"][] = "revision";
                 break;
         }
-
         $ret["tools"][] = "vote";
 
 	    return $ret;
