@@ -9,8 +9,8 @@ inx.ns("inx.mod.board").timeInput = inx.dialog.extend({
         p.style = {
             width:320,
             height:100,
-            background:"none",
             padding:20,
+            background:"white",
             border:0
         };
 

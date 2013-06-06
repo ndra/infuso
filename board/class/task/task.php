@@ -141,7 +141,7 @@ class board_task extends reflex {
     }
 
     public function reflex_url() {
-        return "#task/id/".$this->id();
+        return "/board/#task/id/".$this->id();
     }
 
 	public function project() {

@@ -16,7 +16,7 @@ inx.mod.board.task.subtasks.add.dlg = inx.dialog.extend({
         p.style = {
             width:390,
             border:0,
-            background:"none"
+            background:"#ededed"
         }
         
         p.items = [{
