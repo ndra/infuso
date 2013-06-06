@@ -59,7 +59,7 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
         });
         this.cmd("add",this.form);
     
-        this.cmd("setTitle",data.title);
+        this.cmd("setTitle",data.title+" <a href='#vote/id/"+this.taskID+"' >Оценить</a>");
     
         this.data = data;
     
