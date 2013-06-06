@@ -116,7 +116,15 @@ inx.panel = inx.box.extend({
 
     },
 
-    cmd_html:function(html) {
+    cmd_html:function(html,params) {
+    
+        if(!params) {
+            params = {};
+        }
+        
+        if(params.syncLayout===undefined) {
+            params.syncLayout = true;
+        }
 
         if(!html && html!==0 && html!=="0")
             html = "";
@@ -140,7 +148,10 @@ inx.panel = inx.box.extend({
                 inx(cmpid).task("syncLayout",500);
             }
             this.__body.find("img").load(f);
-            this.task("syncLayout");
+            
+            if(params.syncLayout) {
+                this.task("syncLayout");
+            }
             
         }
         

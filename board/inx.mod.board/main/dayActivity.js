@@ -7,72 +7,66 @@ inx.mod.board.main.dayActivity = inx.panel.extend({
         p.style = {
             background:"#ededed"
         }
-        p.height = 20;        
-        this.on("render","getDayActivity");
+        
         this.base(p);
+        this.on("click","toggle");
         
-        this.extend({
-            getMainComponent:function() {
-                return inx(this).axis("parents").eq("type","inx.mod.board.main");
+        this.cmd("add",{
+            type:this.info("type")+"."+"user",
+            name:"me",
+            showHours:true,
+            style:{
+                border:0
             }
-        })
+        });
         
     },
     
-    cmd_getDayActivity:function() {
+    cmd_toggle:function() {
+        if (this.expanded) {
+            this.cmd("collapse");
+        } else {
+            this.cmd("expand");
+        }
+    },
+    
+    /**
+     * Разворачивает панель
+     **/
+    cmd_expand:function() {
+        this.expanded = true;
+        this.cmd("loadUsers");
+        this.items().neq("name","me").cmd("show");
+    },
+    
+    /**
+     * Сворачивает панель
+     **/
+    cmd_collapse:function() {
+        this.expanded = false;
+        this.items().neq("name","me").cmd("hide");
+    },
+    
+    cmd_loadUsers:function() {
+        if(this.usersLoaded) {
+            return;
+        }
+        this.usersLoaded = true;
         this.call({
-            cmd:"board/controller/report/getMyDayActivity"
-        },[this.id(),"handleData"]);
-        
-        // Обновляем раз в пять минут
-        this.task("getDayActivity",1000 * 60*5);
+            cmd:"board/controller/report/getUsers"
+        },[this.id(),"handleUsers"]);
     },
     
-    cmd_handleData:function(data) {
-        var e = $("<div>");
-        
-        var k = this.info("bodyWidth") / 3600 / 24;
-        
-        for(var i=0;i<24;i++) {
-            $("<div>").css({
-                position:"absolute",
-                left:3600 * i * k,
-                top:4,
-                opacity:.5
-            }).html(i).appendTo(e);
+    cmd_handleUsers:function(data) {
+        for(var i in data) {
+            this.cmd("add",{
+                type:this.info("type")+"."+"user",
+                userID:data[i].userID,
+                style:{
+                    border:0
+                }
+            });
         }
-    
-        var time = new Date().getSeconds() + (new Date).getMinutes()*60 + (new Date).getHours()*3600;
-        $("<div>").css({
-            position:"absolute",
-            left:time * k,
-            top:0,
-            width:1,
-            height:20,
-            background:"black"
-        }).appendTo(e);
-        
-        var cmp = this;
-        
-        for(var i in data.tasks) {
-            var task = data.tasks[i];
-            
-            $("<div>").css({
-                position:"absolute",
-                height:20,
-                background:"rgba(0,0,0,.5)",
-                width:task.duration * k,
-                left:task.start * k
-            }).attr("title",task.title)
-                .data("taskID",task.taskID)
-                .click(function() {
-                    var taskID = $(this).data("taskID");
-                    cmp.getMainComponent().cmd("editTask",{taskID:taskID});
-                })
-                .appendTo(e);
-        }
-        
-        this.cmd("html",e);
     }
          
 });
