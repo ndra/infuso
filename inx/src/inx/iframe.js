@@ -28,6 +28,11 @@ inx.iframe = inx.panel.extend({
     
     cmd_setURL:function(src) {
     
+        if(this.private_lastURL == src) {
+            return;
+        }
+        this.private_lastURL = src;
+    
         if(!src) {
             return;
         }
