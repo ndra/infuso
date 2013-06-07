@@ -13,29 +13,43 @@
     array (
       'name' => 'userID',
       'type' => 'pg03-cv07-y16t-kli7-fe6x',
-      'editable' => 2,
+      'editable' => 1,
       'id' => 'uixp5bqfu6qylst8g23m1b7casd49b',
       'label' => 'Пользователь',
-      'indexEnabled' => 0,
+      'indexEnabled' => 1,
       'class' => 'user',
+      'group' => '',
+      'default' => '',
+      'help' => '',
+      'foreignKey' => '',
+      'collection' => '',
+      'titleMethod' => '',
     ),
     2 => 
     array (
       'name' => 'key',
       'type' => 'v324-89xr-24nk-0z30-r243',
-      'editable' => 2,
+      'editable' => 1,
       'id' => 'vhnyl63y5r3c5htp9ztkg03wvh7pvi',
       'label' => 'Ключ',
-      'indexEnabled' => 0,
+      'indexEnabled' => 1,
+      'group' => '',
+      'default' => '',
+      'help' => '',
+      'length' => '',
     ),
     3 => 
     array (
       'name' => 'title',
       'type' => 'v324-89xr-24nk-0z30-r243',
-      'editable' => 2,
+      'editable' => 1,
       'id' => 'oyaix4uztwgsqylb7yginy523y12xw',
       'label' => 'Название подписки',
-      'indexEnabled' => 0,
+      'indexEnabled' => 1,
+      'group' => '',
+      'default' => '',
+      'help' => '',
+      'length' => '',
     ),
     4 => 
     array (
@@ -48,5 +62,13 @@
   ),
   'indexes' => 
   array (
+  ),
+  'fieldGroups' => 
+  array (
+    0 => 
+    array (
+      'name' => NULL,
+      'title' => NULL,
+    ),
   ),
 ); ?>

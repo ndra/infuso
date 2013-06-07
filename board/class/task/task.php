@@ -195,6 +195,9 @@ class board_task extends reflex {
             }
             $this->data("paused",false);
             $this->data("pauseTime",0);
+
+            $this->defer("handleStatusChanged");
+
         }
 
         // Если это подзадача, ставим проект как у эпика
@@ -232,6 +235,24 @@ class board_task extends reflex {
 		));
         
 	}
+
+    /**
+     * Делает рассылку на почту при изменении статуса
+     **/
+    public function handleStatusChanged() {
+
+        $taskText = util::str($this->data("text"))->ellipsis(300);
+        $params = array(
+            "subject" => "Статус задачи {$this->id()} изменился на {$this->status()->title()}",
+            "message" => "Статус задачи {$this->id()}.{$taskText} в проекте «{$this->project()->title()}» изменился на {$this->status()->title()}",
+        );
+
+        // Рассылка по всем
+        user_subscription::mailByKey("board/statusChange",$params);
+        // Рассылка подписанным на конкретный проект
+        user_subscription::mailByKey("board/project-{$this->project()->id()}/statusChange",$params);
+
+    }
 
     public function fireChangedEvent() {
         mod::fire("board/taskChanged",array(
@@ -418,6 +439,9 @@ class board_task extends reflex {
         return (bool)$this->data("paused");
     }
 
+    /**
+     * Возвращает голоса за задачу
+     **/
     public function votes() {
         return board_task_vote::all()->eq("taskID",$this->id());
     }
