@@ -146,6 +146,9 @@ class reflex extends mod_model {
             $route = reflex::create("reflex_route_item",array("hash"=>$hash));
         }
         $route->data("url",$url);
+
+        // Сохраняем мету. Это вызовет исправление url (русский в транслит, проблемы в тире и т.п.)
+        $route->store();
     }
 
     public final function reflex_updateSearch() {
