@@ -32,11 +32,6 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
             region:"bottom"
         });
         
-        this.messages = inx({
-            type:"inx.mod.board.main.messages",
-            region:"top"
-        });
-        
         p.side = [this.informer,this.dayActivity,this.messages];
         
         this.base(p); 
