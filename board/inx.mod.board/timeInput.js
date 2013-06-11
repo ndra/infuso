@@ -7,8 +7,7 @@ inx.ns("inx.mod.board").timeInput = inx.dialog.extend({
         p.layout = "inx.layout.absolute";
     
         p.style = {
-            width:320,
-            height:100,
+            width:500,
             padding:20,
             background:"white",
             border:0
@@ -70,6 +69,12 @@ inx.ns("inx.mod.board").timeInput = inx.dialog.extend({
         
         this.on("submit",[this.id(),"save"]);
         
+        this.cmd("add",{
+            type:"inx.mod.board.vote",
+            taskID:this.taskID,
+            y:50
+        })
+        
     },
     
     cmd_save:function() {
@@ -82,7 +87,8 @@ inx.ns("inx.mod.board").timeInput = inx.dialog.extend({
             taskID:this.taskID,
             status:this.taskStatus,
             time:h
-        },[this.id(),"handleSave"])
+        },[this.id(),"handleSave"]);
+        
     },
     
     cmd_handleSave:function(ret) {

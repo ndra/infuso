@@ -5,6 +5,9 @@ class board_task_vote_criteria extends reflex {
     const SUBJECT_CREATOR = 1;
     const SUBJECT_EXECUTOR = 2;
 
+    const TYPE_SCORE = 1;
+    const TYPE_CHECKBOX = 2;
+
     public function reflex_table() {
 
         return array(
@@ -26,6 +29,13 @@ class board_task_vote_criteria extends reflex {
                     'list' => array(
                         self::SUBJECT_CREATOR => "Создатель",
                         self::SUBJECT_EXECUTOR => "Исполнитель",
+                    ), "editable" => 1,
+                ), array (
+                    'name' => 'type',
+                    'type' => 'select',
+                    'list' => array(
+                        self::TYPE_SCORE => "Рейтинг 1-5",
+                        self::TYPE_CHECKBOX => "Чекбокс",
                     ), "editable" => 1,
                 ),
             ),

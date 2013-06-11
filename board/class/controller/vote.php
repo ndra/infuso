@@ -27,6 +27,7 @@ class board_controller_vote extends mod_controller {
 
             $ret[] = array(
                 "id" => $criteria->id(),
+                "type" => (int)$criteria->data("type"),
                 "title" => $criteria->title(),
                 "score" => $score,
             );
@@ -35,18 +36,26 @@ class board_controller_vote extends mod_controller {
         return $ret;
     }
 
+    /**
+     * Изменяет значение голосования по определенному критерию
+     **/
     public static function post_vote($p) {
+
         $votes = board_task_vote::all()
             ->eq("ownerID",user::active()->id())
             ->eq("taskID",$p["taskID"])
             ->eq("criteriaID",$p["criteriaID"]);
 
         $vote = $votes->one();
-        if(!$vote->exists()) {
-            $vote = $votes->create();
-        }
 
-        $vote->data("score",$p["score"]);
+        if($p["score"]) {
+            if(!$vote->exists()) {
+                $vote = $votes->create();
+            }
+            $vote->data("score",$p["score"]);
+        } else {
+            $vote->delete();
+        }
 
     }
 

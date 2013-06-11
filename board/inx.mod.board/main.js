@@ -132,8 +132,16 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
     
     cmd_voteTask:function(p) {
         inx({
-            type:"inx.mod.board.vote",
-            taskID:p.taskID
+            type:"inx.dialog",
+            width:500,
+            title:"Оцените задачу",
+            style:{
+                border:0,
+                background:"white",
+            },items:[{
+                type:"inx.mod.board.vote",
+                taskID:p.taskID
+            }]
         }).cmd("render").setOwner(this);
     }, 
     
