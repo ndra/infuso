@@ -17,6 +17,19 @@ inx.mod.board.task.attachments = inx.list.extend({
         }
         
         p.style.maxHeight = 200;
+        
+        p.side = [{
+            type:"inx.file",
+            hidden:true,
+            region:"top",
+            dropArea:p.dropArea,
+            loader:{
+                cmd:"board/controller/attachment/uploadFile",
+                taskID:p.taskID,
+            }, oncomplete:function() {
+                this.owner().cmd("load");
+            }
+        }]
     
         this.base(p);
         
