@@ -31,13 +31,17 @@ inx.layout.absolute = {
         var y = 0;
         this.items().each(function() {
             var e = this.data("layoutContainer");
-            var top = this.info("param","y");
+            var top = this.info("param","y") || 0;
             y = Math.max(y,top+this.info("height"));
+            
             e.css({
                 left:this.info("param","x"),
                 top:top
             });
-        })
+        });
+        
+        
+        
         this.cmd("setContentHeight",y);
     }
 }
