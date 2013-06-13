@@ -1,5 +1,5 @@
 // @link_with_parent
-// @inclide inx.textarea
+// @include inx.textarea
 
 inx.mod.board.comments.send = inx.textarea.extend({
 
