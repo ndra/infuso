@@ -28,8 +28,11 @@ inx.layout.absolute = {
     
     sync:function() {    
     
+        var width = this.info("clientWidth");
+    
         var y = 0;
         this.items().each(function() {
+        
             var e = this.data("layoutContainer");
             var top = this.info("param","y") || 0;
             y = Math.max(y,top+this.info("height"));
@@ -38,6 +41,9 @@ inx.layout.absolute = {
                 left:this.info("param","x"),
                 top:top
             });
+            
+            this.cmd("width",width);
+            
         });
         
         

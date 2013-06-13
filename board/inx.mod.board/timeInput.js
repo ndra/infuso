@@ -67,12 +67,19 @@ inx.ns("inx.mod.board").timeInput = inx.dialog.extend({
             onclick:[this.id(),"save"]
         });
         
+        this.cmd("add",{
+            type:"inx.textarea",
+            name:"comment",
+            y:40,
+        });
+        
         this.on("submit",[this.id(),"save"]);
         
         this.cmd("add",{
             type:"inx.mod.board.vote",
             taskID:this.taskID,
-            y:50
+            width:"parent",
+            y:130
         })
         
     },
@@ -86,6 +93,7 @@ inx.ns("inx.mod.board").timeInput = inx.dialog.extend({
             cmd:"board/controller/task/changeTaskStatus",
             taskID:this.taskID,
             status:this.taskStatus,
+            comment:data.comment,
             time:h
         },[this.id(),"handleSave"]);
         
