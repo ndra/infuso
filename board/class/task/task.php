@@ -243,7 +243,8 @@ class board_task extends reflex {
 
         $taskText = util::str($this->data("text"))->ellipsis(300);
         $params = array(
-            "subject" => "Статус задачи {$this->id()} изменился на {$this->status()->title()}",
+            "from" => "<{$this->user()->title()}> {$user->data(email)}",
+            "subject" => "{$this->project()->title()} / {$this->status()->title()}",
             "message" => "Статус задачи {$this->id()}.{$taskText} в проекте «{$this->project()->title()}» изменился на {$this->status()->title()}",
         );
 
