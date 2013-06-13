@@ -51,15 +51,31 @@ class board_task_log extends reflex {
                   'type' => 'fsxp-lhdw-ghof-1rnk-5bqp',
                   'editable' => '1',
                   'label' => 'Треп',
+                ), array (
+                    'name' => 'type',
+                    'type' => 'select',
+                    'editable' => '1',
+                    'label' => 'Тип',
+                    'list' => array(
+                        self::TYPE_COMMENT => "Комментарий",
+                        self::TYPE_TASK_MODIFIED => "Задача изменена",
+                        self::TYPE_TASK_STATUS_CHANGED => "Статус задачи изменен",
+                    ),
                 ),
             ),
         );
     }
 
+    /**
+     * Возвращает коллекцию всех записей в логе
+     **/
     public static function all() {
         return reflex::get(get_class())->desc("created");
     }
 
+    /**
+     * Возвращает запись в логе по id
+     **/
     public static function get($id) {
         return reflex::get(get_class(),$id);
     }
@@ -88,22 +104,37 @@ class board_task_log extends reflex {
         $this->task()->updateTimeSpent();
     }
 
+    /**
+     * Возвращает пользователя от которого сделана запись
+     **/
     public function user() {
         return $this->pdata("userID");
     }
 
+    /**
+     * Возвращает текст записи
+     **/
     public function message() {
         return $this->data("text");
     }
 
+    /**
+     * Возвращает текст записи
+     **/
     public function msg() {
         return $this->message();
     }
 
+    /**
+     * Возвращает текст записи
+     **/
     public function text() {
         return $this->message();
     }
 
+    /**
+     * Возвращает потраченное время
+     **/
     public function timeSpent() {
         return $this->data("timeSpent");
     }

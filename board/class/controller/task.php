@@ -173,7 +173,7 @@ class board_controller_task extends mod_controller {
         }
 
         if ($task->fields()->changed()->count() > 0) {
-            $task->logCustom("Изменение данных");
+            $task->logCustom("Изменение данных",0,board_task_log::TYPE_TASK_MODIFIED);
             mod::msg("Задача сохранена");
         }
 
@@ -298,7 +298,7 @@ class board_controller_task extends mod_controller {
             $statusText = $p["comment"]." ".$statusText;
         }
 
-        $task->logCustom($statusText,$time);
+        $task->logCustom($statusText,$time,board_task_log::TYPE_TASK_STATUS_CHANGED);
 
         return true;
     }

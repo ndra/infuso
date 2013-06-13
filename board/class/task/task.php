@@ -243,7 +243,7 @@ class board_task extends reflex {
 
         $taskText = util::str($this->data("text"))->ellipsis(300);
         $params = array(
-            "from" => "<{$this->user()->title()}> {$user->data(email)}",
+            "from" => "<{$this->responsibleUser()->title()}> {$this->responsibleUser()->data(email)}",
             "subject" => "{$this->project()->title()} / {$this->status()->title()}",
             "message" => "Статус задачи {$this->id()}.{$taskText} в проекте «{$this->project()->title()}» изменился на {$this->status()->title()}",
         );
@@ -311,9 +311,10 @@ class board_task extends reflex {
         return board_task_log::all()->eq("taskID",$this->id());
     }
 
-	public function logCustom($text,$time=0) {
+	public function logCustom($text,$time=0,$type) {
 	    $this->getLogCustom()->create(array(
 	        "taskID" => $this->id(),
+            "type" => $type,
 	        "text" => $text,
 	        "timeSpent" => $time,
 	    ));

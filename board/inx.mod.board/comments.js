@@ -9,10 +9,24 @@ inx.ns("inx.mod.board").comments = inx.list.extend({
             taskID:p.taskID
         }
         
+        p.side = [{
+            type:p.type+".controls",
+            name:"controls",
+            region:"top",
+            listeners:{
+                change:[this.id(),"load"]
+            }
+        }];
+        
         this.base(p);
         setInterval(inx.cmd(this.id(),"load"),1000*60);
         
-        this.on("itemclick",[this.id(),"handleItemClick"])
+        this.on("itemclick",[this.id(),"handleItemClick"]);
+        this.on("beforeload",[this.id(),"handleBeforeLoad"]);
+    },
+    
+    cmd_handleBeforeLoad:function(loader) {
+        loader.mode = inx(this).axis("side").eq("name","controls").info("value");
     },
     
     renderer:function(e,data) {
@@ -69,6 +83,7 @@ inx.ns("inx.mod.board").comments = inx.list.extend({
             type:"inx.mod.board.task",
             taskID:taskID
         }).cmd("render");
+        
     }
          
 });
