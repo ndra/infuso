@@ -382,28 +382,4 @@ class board_controller_task extends mod_controller {
 
     }
 
-
-/*
-
-
-
-    public static function post_taskSendMessage($p) {
-
-        if(!$text = trim($p["text"])) {
-            mod::msg("Вы ничего не написали");
-            return;
-        }
-
-        $task = board_task::get($p["taskID"]);
-        if(!board_security::test("board:sendMessage",array("task"=>$task))) {
-            mod::msg("Вы можете оставлять сообщения",1);
-            return;
-        }
-        $task->getLogCustom()->create(array(
-            "text" => $p["text"],
-            "blah" => true,
-        ));
-    }  */
-
-
 }

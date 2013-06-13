@@ -16,6 +16,13 @@ inx.ns("inx.mod.board").comments = inx.list.extend({
             listeners:{
                 change:[this.id(),"load"]
             }
+        },{
+            type:p.type+".send",
+            region:"bottom",
+            taskID:p.taskID,
+            listeners:{
+                send:[this.id(),"load"]
+            }
         }];
         
         this.base(p);

@@ -45,4 +45,24 @@ class board_controller_log extends mod_controller {
         return $ret;
     }
 
+    /**
+     * Добавляет комментарий в задачу
+     **/
+    public static function post_sendMessage($p) {
+
+        if(!$text = trim($p["text"])) {
+            mod::msg("Вы ничего не написали");
+            return;
+        }
+
+        $task = board_task::get($p["taskID"]);
+
+        $task->getLogCustom()->create(array(
+            "text" => $p["text"],
+            "type" => board_task_log::TYPE_COMMENT,
+        ));
+
+        mod::msg("Сообщение отправлено");
+    }
+
 }
