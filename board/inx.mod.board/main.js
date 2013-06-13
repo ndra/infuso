@@ -78,7 +78,7 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
                 this.tabs.cmd("add",{
                     type:"inx.mod.board.report.projects",
                     name:"report-projects"
-                });
+                }).cmd("setParams",params.params);
                 break;
                 
             case "report-project":

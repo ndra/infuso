@@ -48,7 +48,7 @@ class board_controller_report extends mod_controller {
         ));
     }
     
-    public function index_projects() {
+    public function index_projects($p) {
     
         // Параметры задачи
         if(!user::active()->checkAccess("board/showProjectsReport")) {
@@ -58,7 +58,9 @@ class board_controller_report extends mod_controller {
             return;
         }
 
-        tmp::exec("/board/report/projects");
+        tmp::exec("/board/report/projects", array(
+            "params" => $p,
+        ));
     
     }
     
