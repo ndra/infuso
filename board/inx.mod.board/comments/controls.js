@@ -3,6 +3,10 @@
 inx.mod.board.comments.controls = inx.panel.extend({
 
     constructor:function(p) {
+        if(!p.style) {
+            p.style = {};
+        }
+        p.style.padding = 5;
         this.base(p);
     },
     

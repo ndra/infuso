@@ -4,14 +4,18 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
 
     constructor:function(p) {
     
+        p.clipTo = false;
+        p.clipToOwner = false;
+    
         p.title = "Редактирование задачи";
-        p.width = 800;   
         p.modal = true;
         
         p.style = {
             border:0,
             background:"#ededed",
-            padding:5
+            padding:5,
+            width: $(window).width() - 50,
+            height: $(window).height() - 70
         }
         
         p.destroyOnEscape = true;
@@ -145,6 +149,7 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
             this.cmd("addSidePanel",{
                 type:"inx.mod.board.comments",
                 name:"comments",
+                resizable:true,
                 taskID:this.taskID,
                 region:"right",
                 width:300

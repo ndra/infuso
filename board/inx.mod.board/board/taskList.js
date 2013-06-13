@@ -132,19 +132,8 @@ inx.mod.board.board.taskList = inx.list.extend({
             this.cmd("newDrawback");
             return;
         }
-    
-        var clip = this.info("itemComponent",taskID).info("param","el");
-    
-        var task = inx({
-            type:"inx.mod.board.task",
-            taskID:taskID,
-            showMore: options.showMore,
-            clipTo:clip
-        }).on("change",function(){
-            this.bubble("boardChanged");
-        }).setOwner(this);
         
-        task.cmd("render");
+        window.location.hash = "task/id/"+taskID;
     },
     
     cmd_newTask:function() {
