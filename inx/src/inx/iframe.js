@@ -26,6 +26,9 @@ inx.iframe = inx.panel.extend({
 
     },
     
+    /**
+     * Изменяет адрес iframe на данный
+     **/
     cmd_setURL:function(src) {
     
         if(this.private_lastURL == src) {
@@ -43,7 +46,9 @@ inx.iframe = inx.panel.extend({
             return;
         }
         
-        this.iframe.get(0).src = src;
+        if(this.iframe.get(0).contentWindow) {
+            this.iframe.get(0).contentWindow.location.href = src;
+        }
                     
         this.task("syncLayout");
         
@@ -53,7 +58,8 @@ inx.iframe = inx.panel.extend({
      * Перезагружает фрейм
      **/
     cmd_refresh:function() {
-        this.iframe.get(0).contentWindow.location.reload();
+        var wnd = this.iframe.get(0).contentWindow;
+        wnd.location.href = this.src;
     },
     
     cmd_syncLayout:function() {
