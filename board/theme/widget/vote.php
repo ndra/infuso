@@ -9,7 +9,14 @@
     foreach($task->votes()->distinct("ownerID") as $ownerID) {
         $user = user::get($ownerID);
         $userpick = user::get($ownerID)->userpick()->preview(16,16);
-        <img src='{$userpick}' />
+        
+        $title = array();
+        foreach($task->votes()->eq("ownerID",$ownerID) as $vote) {
+            $title[] = $vote->criteria()->title().": ".$vote->data("score");
+        }
+        $title = implode(", ",$title);
+        
+        <img src='{$userpick}' title='{$title}' />
     }
 
 </div>
