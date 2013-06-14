@@ -30,9 +30,9 @@ $h->begin();
         ));
     </td>
     <td>
-        tmp::exec("../vote",array(
+        tmp::widget("board_widget_vote",array(
             "task" => $task,
-        ));
+        ))->exec();
     </td>
 </tr>
 
