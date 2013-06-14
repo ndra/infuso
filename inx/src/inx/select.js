@@ -4,13 +4,16 @@ inx.select = inx.box.extend({
 
     constructor:function(p) {
     
-        if(!p.labelAlign)
+        if(!p.labelAlign) {
             p.labelAlign = "left";
+        }    
+            
         p.height = 22;
         p.autoHeight = false;
         
-        if(!p.width)
+        if(!p.width) {
             p.width = 300;
+        }
             
         p.style = {
             border:0,
@@ -22,12 +25,14 @@ inx.select = inx.box.extend({
             this.on("change",p.onchange);
     },
     
-    cmd_render:function(c) {        
+    cmd_render:function(c) {
+    
         this.base(c);        
         this.cmd("createList");
         this.suspendEvents();
-        if(this.value!==undefined)
+        if(this.value!==undefined) {
             this.cmd("setValue",this.value);
+        }
         this.unsuspendEvents();
         this.el.css({cursor:"pointer",overflow:"hidden"});
         this.content = $("<div>").css({position:"absolute",height:16,padding:"3px 4px",overfloe:"hidden"}).appendTo(this.el);
