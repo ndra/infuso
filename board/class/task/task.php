@@ -113,30 +113,30 @@ class board_task extends reflex {
     /**
      * Возвращает список всех задач
      **/
-	public static function all() {
-	    return reflex::get(get_class())
-	        ->asc("priority");
-	}
+    public static function all() {
+        return reflex::get(get_class())
+            ->asc("priority");
+    }
 
     /**
      * Возвращает список видимых задач для активного пользователя
      **/
-	public static function visible() {
-	    $list = self::all();
+    public static function visible() {
+        $list = self::all();
 
         if(user::active()->checkAccess("board/viewAllTasks")) {
             return $list;
         }
 
-	    $projects = board_project::visible()->limit(0)->idList();
-	    $list->eq("projectID",$projects);
-	    return $list;
-	}
+        $projects = board_project::visible()->limit(0)->idList();
+        $list->eq("projectID",$projects);
+        return $list;
+    }
 
     /**
      * Возвращает задлачу по id
      **/
-	public static function get($id) {
+    public static function get($id) {
         return reflex::get(get_class(),$id);
     }
 
@@ -144,54 +144,54 @@ class board_task extends reflex {
         return "/board/#task/id/".$this->id();
     }
 
-	public function project() {
+    public function project() {
         return $this->pdata("projectID");
     }
 
-	public function reflex_parent() {
+    public function reflex_parent() {
         return $this->project();
     }
 
-	public static function reflex_root() {
-	    return self::all()->title("Все задачи")->param("tab","system");
-	}
+    public static function reflex_root() {
+        return self::all()->title("Все задачи")->param("tab","system");
+    }
 
-	public function reflex_children() {
-	    return array(
-	        $this->getLogCustom()->title("Затраченное время"),
+    public function reflex_children() {
+        return array(
+            $this->getLogCustom()->title("Затраченное время"),
             $this->subtasks()->title("Подзадачи"),
-	    );
-	}
+        );
+    }
 
-	public function reflex_title() {
-	    return util::str($this->data("text"))->ellipsis(50)."";
-	}
+    public function reflex_title() {
+        return util::str($this->data("text"))->ellipsis(50)."";
+    }
 
-	public function text() {
+    public function text() {
         return $this->data("text");
     }
 
-	public function responsibleUser() {
+    public function responsibleUser() {
         return $this->pdata("responsibleUser");
     }
 
-	public function reflex_beforeCreate() {
-	    $this->data("changed",util::now());
-	    $this->data("created",util::now());
+    public function reflex_beforeCreate() {
+        $this->data("changed",util::now());
+        $this->data("created",util::now());
         $this->data("creator",user::active()->id());
-	}
+    }
 
-	public function reflex_afterCreate() {
-	    $this->log("Создано");
-	}
+    public function reflex_afterCreate() {
+        $this->log("Создано");
+    }
 
-	public function reflex_beforeStore() {
+    public function reflex_beforeStore() {
 
-	    // Устанавливаем новую дату изменения только если задача активна
-	    // Иначе мы можем влезть в статистику по прошлому периоду
-	    if($this->field("status")->changed()) {
-	        if($this->status()->active()) {
-	            $this->data("changed",util::now());
+        // Устанавливаем новую дату изменения только если задача активна
+        // Иначе мы можем влезть в статистику по прошлому периоду
+        if($this->field("status")->changed()) {
+            if($this->status()->active()) {
+                $this->data("changed",util::now());
             }
             $this->data("paused",false);
             $this->data("pauseTime",0);
@@ -232,21 +232,39 @@ class board_task extends reflex {
             "taskID" => $this->id(),
             "sticker" => $this->stickerData(),
             "changed" => $changed,
-		));
-        
-	}
+        ));
+
+    }
 
     /**
      * Делает рассылку на почту при изменении статуса
      **/
     public function handleStatusChanged() {
 
-        $taskText = util::str($this->data("text"))->ellipsis(300);
+        $taskTextShort = util::str($this->data("text"))->ellipsis(100);
+        $taskTextLong = util::str($this->data("text"))->ellipsis(1000);
         $params = array(
-            "from" => "<{$this->responsibleUser()->title()}> {$this->responsibleUser()->data(email)}",
-            "subject" => "{$this->project()->title()} / {$this->status()->title()}",
-            "message" => "Статус задачи {$this->id()}.{$taskText} в проекте «{$this->project()->title()}» изменился на {$this->status()->title()}",
+            "subject" => "{$this->responsibleUser()->title()} / {$this->project()->title()} / {$this->status()->title()} / $taskTextShort",
+            "type" => "text/html",
         );
+
+        $message = "";
+
+        $userpick = mod_url::current()->scheme()."://".mod_url::current()->domain().$this->responsibleUser()->userpick()->preview(50,50)->crop();
+        $message.= "<table><tr>";
+        $message.= "<td><img src='{$userpick}' ></td>";
+        $message.= "<td>";
+        $message.= "Проект: <b>".$this->project()->title()."</b><br/>";
+        $message.= $this->status()->title()."<br/>";
+        $logItem = $this->getLogCustom()->geq("created",util::now()->shift(-3))->one();
+        $message.= $logItem->data("text");
+        $message.= "</td>";
+        $message.= "</tr></table>";
+
+        $message.= "<div style='padding:10px;border:1px solid #ccc;background:#ededed;margin-top:10px;' >";
+        $message.= $taskTextLong;
+        $message.= "</div>";
+        $params["message"] = $message;
 
         // Рассылка по всем
         user_subscription::mailByKey("board/statusChange",$params);
@@ -261,7 +279,7 @@ class board_task extends reflex {
             "taskID" => $this->id(),
             "sticker" => $this->stickerData(),
             "changed" => array(),
-    	));
+        ));
     }
 
     public function reflex_afterStore() {
@@ -274,19 +292,19 @@ class board_task extends reflex {
         }
     }
 
-	/**
-	 * Временный метод для исправления структуры
-	 **/
-	public function reindex() {
+    /**
+     * Временный метод для исправления структуры
+     **/
+    public function reindex() {
         // Если это подзадача, ставим проект как у эпика
         if($this->data("epicParentTask")) {
             $this->data("projectID",$this->pdata("epicParentTask")->data("projectID"));
         }
-	}
+    }
 
-	public function updateTimeSpent() {
-	    $this->data("timeSpent",$this->getLogCustom()->sum("timeSpent"));
-	}
+    public function updateTimeSpent() {
+        $this->data("timeSpent",$this->getLogCustom()->sum("timeSpent"));
+    }
 
     /**
      * Возвращает потраченное но еще неучтенное времия
@@ -307,40 +325,40 @@ class board_task extends reflex {
 
     }
 
-	public function getLogCustom() {
+    public function getLogCustom() {
         return board_task_log::all()->eq("taskID",$this->id());
     }
 
-	public function logCustom($text,$time=0,$type) {
-	    $this->getLogCustom()->create(array(
-	        "taskID" => $this->id(),
+    public function logCustom($text,$time=0,$type) {
+        $this->getLogCustom()->create(array(
+            "taskID" => $this->id(),
             "type" => $type,
-	        "text" => $text,
-	        "timeSpent" => $time,
-	    ));
-	}
+            "text" => $text,
+            "timeSpent" => $time,
+        ));
+    }
 
     /**
      * Возвращает время, потраченное на задачу
      * Суммируются время, потраченное на задачу и на субзадачи
      **/
-	public function timeSpent() {
+    public function timeSpent() {
         return $this->data("timeSpent") + $this->subtasks()->sum("timeSpent");
     }
 
     /**
      * Возвращает планируемое время
      **/
-	public function timeScheduled() {
+    public function timeScheduled() {
         return $this->data("timeScheduled");
     }
 
     /**
      * Возвращает статус задача (объект)
      **/
-	public function status() {
-	    return board_task_status::get($this->data("status"));
-	}
+    public function status() {
+        return board_task_status::get($this->data("status"));
+    }
 
     /**
      * Возвращает коллекцию подзадач
@@ -352,9 +370,9 @@ class board_task extends reflex {
     /**
      * Возвращает число, показывающее сколько дней задача не меняла статус
      **/
-	public function hangDays() {
-	    return round((util::now()->stamp() - $this->pdata("changed")->stamp())/60/60/24);
-	}
+    public function hangDays() {
+        return round((util::now()->stamp() - $this->pdata("changed")->stamp())/60/60/24);
+    }
 
     public function isEpic() {
         return !$this->subtasks()->void();
@@ -373,14 +391,14 @@ class board_task extends reflex {
         }
 
         $ret = $a / $b * 100;
-        
+
         if($ret > 100) {
-			$ret = 100;
+            $ret = 100;
         }
-        
+
         return $ret;
     }
-    
+
     /**
      * Ставит задачу на паузу
      **/
@@ -451,7 +469,7 @@ class board_task extends reflex {
     /**
      * Возвращает данные для стикера
      **/
-	public function stickerData() {
+    public function stickerData() {
 
         if($this->data("type")==1) {
             return array(
@@ -459,28 +477,28 @@ class board_task extends reflex {
             );
         }
 
-	    $ret = array(
+        $ret = array(
             "backgroundImage" => null,
         );
 
-	    // Текст стикера
-	    $ret["text"] = "<b>{$this->id()}.</b> ";
+        // Текст стикера
+        $ret["text"] = "<b>{$this->id()}.</b> ";
 
-	    // Сколько задача висит в этом статусе
-	    if($this->status()->active()) {
-	        $d = (util::now()->stamp() - $this->pdata("changed")->stamp())/60/60/24;
-	        $d = round($d);
-	        if($d>=3) {
-	            $data["text"].= "<span style='background:red;color:white;display:inline-block;padding:0px 4px;' >$d</span> ";
+        // Сколько задача висит в этом статусе
+        if($this->status()->active()) {
+            $d = (util::now()->stamp() - $this->pdata("changed")->stamp())/60/60/24;
+            $d = round($d);
+            if($d>=3) {
+                $data["text"].= "<span style='background:red;color:white;display:inline-block;padding:0px 4px;' >$d</span> ";
             }
-	    }
-
-	    // Бонусные задачи
-	    if($this->data("bonus")) {
-	        $ret["text"].= "<span style='color:white;background:green;font-style:italic;padding:0px 4px;'>б</span> ";
         }
 
-	    // Просрочка
+        // Бонусные задачи
+        if($this->data("bonus")) {
+            $ret["text"].= "<span style='color:white;background:green;font-style:italic;padding:0px 4px;'>б</span> ";
+        }
+
+        // Просрочка
         $h = $this->hangDays();
         if($h>3) {
             $ret["text"].= "<span style='color:white;background:red;padding:0px 4px;'>$h</span> ";
@@ -500,50 +518,50 @@ class board_task extends reflex {
 
         }
 
-	    $ret["text"].= "<b>".$this->project()->title().".</b> ";
-	    $ret["text"].= util::str($this->data("text"))->ellipsis(200)->secure()."";
+        $ret["text"].= "<b>".$this->project()->title().".</b> ";
+        $ret["text"].= util::str($this->data("text"))->ellipsis(200)->secure()."";
 
-	    // Статусная часть стикера
-	    $ret["info"] = "";
-	    $ret["info"].= round($this->timeSpent(),1);
+        // Статусная часть стикера
+        $ret["info"] = "";
+        $ret["info"].= round($this->timeSpent(),1);
         if($this->data("status")==board_task_status::STATUS_IN_PROGRESS) {
             $ret["info"].= "+".round($this->timeSpentProgress()/3600,1);
         }
         $ret["info"].= "/".round($this->timeScheduled(),1)."ч. ";
 
-	    // Цвет стикера
-	    $ret["color"] = $this->data("color");
+        // Цвет стикера
+        $ret["color"] = $this->data("color");
 
-	    // Нижня подпись
-	    if($this->responsibleUser()->exists()) {
-	        $ret["bottom"] = "<nobr>".$this->responsibleUser()->title()."</nobr> ";
+        // Нижня подпись
+        if($this->responsibleUser()->exists()) {
+            $ret["bottom"] = "<nobr>".$this->responsibleUser()->title()."</nobr> ";
         }
 
-	    if($this->data("deadline")) {
-	        $ret["bottom"].= $this->pdata("deadlineDate")->left();
+        if($this->data("deadline")) {
+            $ret["bottom"].= $this->pdata("deadlineDate")->left();
         }
 
-	    $ret["my"] = $this->responsibleUser()->id() == user::active()->id();
+        $ret["my"] = $this->responsibleUser()->id() == user::active()->id();
 
-	    $ret["id"] = $this->id();
+        $ret["id"] = $this->id();
 
         // Установленный дэдлайн
-	    if($this->data("deadline")) {
+        if($this->data("deadline")) {
             $ret["backgroundImage"] = "/board/res/task-time.png";
         }
-	    $ret["deadlineDate"] = $this->data("deadlineDate");
+        $ret["deadlineDate"] = $this->data("deadlineDate");
 
         // Пропущенный дэдлайн
-	    $d = util::now()->stamp() - $this->pdata("deadlineDate")->stamp();
-	    if($this->data("deadline") && $d>0) {
+        $d = util::now()->stamp() - $this->pdata("deadlineDate")->stamp();
+        if($this->data("deadline") && $d>0) {
             $ret["backgroundImage"] = "/board/res/task-time-fuckup.png";
         }
-	    
-	    if($this->data("hindrance")) {
-			$ret["hindrance"] = true;
-	    }
 
-	    $ret["projectID"] = $this->project()->id();
+        if($this->data("hindrance")) {
+            $ret["hindrance"] = true;
+        }
+
+        $ret["projectID"] = $this->project()->id();
 
         $ret["epic"] = $this->isEpic();
 
@@ -582,7 +600,7 @@ class board_task extends reflex {
         }
         $ret["tools"][] = "vote";
 
-	    return $ret;
-	}
-	
+        return $ret;
+    }
+
 }
