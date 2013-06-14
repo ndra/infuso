@@ -9,15 +9,6 @@ class form extends tmp_helper {
 	private $fields = array();
 	public static $widgetStack = array();
     
-    private $htmlOptions = array();
-    
-    /**
-    * Конструктор
-    **/   
-    public function __construct($p = null) {
-        $this->htmlOptions = $p["htmlOptions"];
-    }
-
 	public function addGeneric($generic) {
 		$this->blocks[] = $generic;
 		return $generic;
