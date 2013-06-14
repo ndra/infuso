@@ -74,17 +74,25 @@ class board_init implements mod_handler {
 
        user_operation::create("board/updateTaskNotice","Изменение заметки")
             ->appendTo("board/editTask");
-
-       // Отчеты
-
-       user_operation::create("board/showUserReport","Просмотр отчета по пользователям")
-            ->appendTo("boardUser");
             
-       user_operation::create("board/showProjectsReport","Просмотр отчета по пользователям")
+		// Голосование
+		
+       user_operation::create("board/vote","Голосовать за задачу")
+			->addBusinessRule('if($user->id()==$task->responsibleUser()->id() && $criteria->data("voter-self")) return true;')
+			->addBusinessRule('if($user->id()!=$task->responsibleUser()->id() && $criteria->data("voter-other")) return true;')
+			->addBusinessRule('return false;')
             ->appendTo("boardUser");
 
-       user_operation::create("board/showReportDone","Просмотр отчета по сделанному")
-            ->appendTo("boardUser");
+		// Отчеты
+
+		user_operation::create("board/showUserReport","Просмотр отчета по пользователям")
+			->appendTo("boardUser");
+
+		user_operation::create("board/showProjectsReport","Просмотр отчета по пользователям")
+		    ->appendTo("boardUser");
+
+		user_operation::create("board/showReportDone","Просмотр отчета по сделанному")
+		    ->appendTo("boardUser");
         
     }
 

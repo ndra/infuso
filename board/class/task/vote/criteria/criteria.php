@@ -37,6 +37,21 @@ class board_task_vote_criteria extends reflex {
                         self::TYPE_SCORE => "Рейтинг 1-5",
                         self::TYPE_CHECKBOX => "Чекбокс",
                     ), "editable" => 1,
+                ), array (
+                    'name' => 'voter-self',
+                    'type' => 'checkbox',
+                    'label' => "Может голосовать сам",
+                    "editable" => true,
+                ), array (
+                    'name' => 'voter-other',
+                    'type' => 'checkbox',
+                    'label' => "Могут голосвать остальные",
+                    "editable" => true,
+                ), array (
+                    'name' => 'voter-customer',
+                    'type' => 'checkbox',
+                    'label' => "Может голосовать заказчик",
+                    "editable" => true,
                 ),
             ),
         );

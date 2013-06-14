@@ -128,6 +128,7 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
     cmd_voteTask:function(p) {
         inx({
             type:"inx.dialog",
+            destroyOnEscape:true,
             width:500,
             title:"Оцените задачу",
             style:{

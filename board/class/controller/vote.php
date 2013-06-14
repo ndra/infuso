@@ -14,23 +14,31 @@ class board_controller_vote extends mod_controller {
         $ret = array();
 
         $criterias = board_task_vote_criteria::all();
+        $task = board_task::get($p["taskID"]);
 
         foreach($criterias as $criteria) {
+        
+			if(user::active()->checkAccess("board/vote",array(
+			    "criteria" => $criteria,
+			    "task" => $task,
+			))) {
 
-            $vote = board_task_vote::all()
-                ->eq("ownerID",user::active()->id())
-                ->eq("taskID",$p["taskID"])
-                ->eq("criteriaID",$criteria->id())
-                ->one();
+             $vote = board_task_vote::all()
+	                ->eq("ownerID",user::active()->id())
+	                ->eq("taskID",$task->id())
+	                ->eq("criteriaID",$criteria->id())
+	                ->one();
 
-            $score = $vote->exists() ? $vote->data("score") : null;
+	            $score = $vote->exists() ? $vote->data("score") : null;
 
-            $ret[] = array(
-                "id" => $criteria->id(),
-                "type" => (int)$criteria->data("type"),
-                "title" => $criteria->title(),
-                "score" => $score,
-            );
+	            $ret[] = array(
+	                "id" => $criteria->id(),
+	                "type" => (int)$criteria->data("type"),
+	                "title" => $criteria->title(),
+	                "score" => $score,
+	            );
+            
+            }
         }
 
         return $ret;
