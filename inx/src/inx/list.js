@@ -601,7 +601,7 @@ inx.list = inx.panel.extend({
         }    
             
         return {
-            type: this.info("itemType")
+            type: this.info("itemType",data)
         };       
     },
     

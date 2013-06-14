@@ -85,7 +85,8 @@ inx.mod.board.board.taskList = inx.list.extend({
             });
             
             data.data.unshift({
-                id:"new"     
+                id:"new",
+                recentProjects:data.recentProjects
             });
 
         }
@@ -99,7 +100,10 @@ inx.mod.board.board.taskList = inx.list.extend({
         return false;
     },
     
-    info_itemType:function() {
+    info_itemType:function(data) {
+        if(data.id=="new") {
+            return "inx.mod.board.board.taskList.new";
+        }
         return "inx.mod.board.board.taskList.task";
     },
     
@@ -124,7 +128,6 @@ inx.mod.board.board.taskList = inx.list.extend({
         }
     
         if(taskID=="new") {
-            this.cmd("newTask");
             return;
         }
         
@@ -134,12 +137,6 @@ inx.mod.board.board.taskList = inx.list.extend({
         }
         
         window.location.hash = "task/id/"+taskID;
-    },
-    
-    cmd_newTask:function() {
-        this.call({
-            cmd:"board/controller/task/newTask"
-        },[this.id(),"handleCreateNewTask"]);
     },
     
     cmd_handleCreateNewTask:function(id) {

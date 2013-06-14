@@ -10,10 +10,6 @@ inx.css(".qm5btw9-status{position:absolute;bottom:0;left:0;width:100%;background
 inx.css(".qm5btw9-hover-group .qm5btw9-background{background:rgba(255,255,0,.2);}");
 inx.css(".qm5btw9-my {border:1px solid blue;}")
 
-// Новая задача
-inx.css(".qm5btw9-new{width:100px;height:100px;cursor:pointer;background:url(/board/res/img/icons64/plus.png) center center no-repeat;opacity:.7;}");
-inx.css(".qm5btw9-new:hover{opacity:1;}");
-
 // Помеха
 inx.css(".qm5btw9-drawback{width:100px;height:100px;cursor:pointer;background:url(/board/res/img/icons64/drawback.png) center center no-repeat;opacity:.7;}");
 inx.css(".qm5btw9-drawback:hover{opacity:1;}");
@@ -42,12 +38,6 @@ inx.mod.board.board.taskList.task = inx.panel.extend({
         if (this.data.folder) {
         
             $("<div class='qm5btw9-folder' >")
-                .appendTo(this.el);
-            
-        } else if (this.data.id=="new") {
-        
-            $("<div class='qm5btw9-new' >")
-                .attr("title","Новая задача")
                 .appendTo(this.el);
             
         } else if (this.data.id=="drawback") {

@@ -60,6 +60,7 @@ class board_controller_task extends mod_controller {
             return false;
         }
 
+		
         foreach($tasks as $task) {
 
             // Вывод дат
@@ -75,11 +76,34 @@ class board_controller_task extends mod_controller {
             }
 
             $ret["data"][] = $task->stickerData($stickerParams);
+
         }
 
         $ret["pages"] = $tasks->pages();
         $ret["sortable"] = $status->sortable();
         $ret["showCreateButton"] = $status->showCreateButton();
+        
+        // Список проектов для быстрого добавления
+        $ret["recentProjects"] = array();
+        $n = 0;
+        $projects = board_task::all()
+			->eq("creator",user::active()->id())
+			->groupBy("projectID")
+			->orderByExpr("max(created) desc");
+        foreach($projects as $project) {
+        	$ret["recentProjects"][] = array(
+        	    "id" => $project->project()->id(),
+        	    "title" => $project->project()->title(),
+			);
+            $n++;
+            if($n>5) {
+                break;
+            }
+        }
+        $ret["recentProjects"][] = array(
+    	    "id" => 0,
+    	    "title" => "<b>Другой</b>",
+		);
 
         return $ret;
     }
@@ -180,7 +204,7 @@ class board_controller_task extends mod_controller {
         return true;
     }
 
-    public function post_newTask() {
+    public function post_newTask($p) {
 
         if(!user::active()->checkAccess("board/newTask")) {
             mod::msg(user::active()->errorText(),1);
@@ -189,6 +213,7 @@ class board_controller_task extends mod_controller {
 
         $task = reflex::create("board_task",array(
             "status" => board_task_status::STATUS_DRAFT,
+            "projectID" => $p["projectID"],
 		));
         return $task->id();
     }
