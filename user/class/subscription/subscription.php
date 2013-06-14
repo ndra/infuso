@@ -83,8 +83,9 @@ class user_subscription extends reflex {
      **/
     public static function reflex_root() {
         $ret = array();
-        if(mod_superadmin::check() && mod::debug())
+        if(mod_superadmin::check() && mod::debug()) {
             $ret[] = self::all()->param("tab","user")->title("Все подписки");
+		}
         return $ret;
     }
 
