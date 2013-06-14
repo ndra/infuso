@@ -23,7 +23,7 @@ class mod_url {
         
         $port = "(?::(?P<port>\d+))?";
         $path = "(?P<path>[{$urlSymbols}]*)?";
-        $query = "(?:\?(?P<query>[{$urlSymbols}]+))?";
+        $query = "(?:\?(?P<query>[{$urlSymbols}]*))?";
         $hash = "(?:#(?P<hash>.+))?";
         
         $r = "!($scheme$login$host)?$port$path$query$hash$!u";
