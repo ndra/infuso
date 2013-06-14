@@ -8,7 +8,7 @@ inx.menu = inx.dialog.extend({
         p.style = {
             padding:4,
             border:0,
-            background:"none",
+            background:"white",
             height:"content"
         }
 
