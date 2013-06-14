@@ -42,15 +42,9 @@ inx.iframe = inx.panel.extend({
         
         this.src = src;
            
-        if(!this.iframe) {
-            return;
+        if(this.iframe) {
+            this.iframe.attr("src",src);
         }
-        
-        if(this.iframe.get(0).contentWindow) {
-            this.iframe.get(0).contentWindow.location.href = src;
-        }
-                    
-        this.task("syncLayout");
         
     },
     
