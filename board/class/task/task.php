@@ -250,7 +250,8 @@ class board_task extends reflex {
 
         $message = "";
 
-        $userpick = mod_url::current()->scheme()."://".mod_url::current()->domain().$this->responsibleUser()->userpick()->preview(50,50)->crop();
+		$user = user::active();
+        $userpick = mod_url::current()->scheme()."://".mod_url::current()->domain().$user->userpick()->preview(50,50)->crop();
         $message.= "<table><tr>";
         $message.= "<td><img src='{$userpick}' ></td>";
         $message.= "<td>";
