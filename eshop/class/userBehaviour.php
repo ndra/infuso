@@ -6,6 +6,9 @@ class eshop_userBehaviour extends mod_behaviour {
 		return "user";
 	}
 
+    /**
+	 * Добавляем пользователю метод, возвращающий заказы
+	 **/
 	public function eshopOrders() {
 		$uid = $this->id();
 		if(!$uid)
@@ -20,9 +23,6 @@ class eshop_userBehaviour extends mod_behaviour {
 		return array(
 		    $this->eshopOrders()->title("Заказы"),
 		);
-	}
-
-	public function city() {
 	}
 	
 }

@@ -20,7 +20,7 @@ class pay_behaviour_user extends mod_behaviour {
             mod::field("cost")
                 ->name("userCash")
                 ->group("Личные данные")
-                ->label("Сумма на внутреннем счете.")
+                ->label("Сумма на внутреннем счете")
                 ->disable(),
         );
     }

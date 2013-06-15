@@ -35,10 +35,11 @@ class pay_operationLog extends reflex {
      **/
     public function comment($comment = null) {
         if ($comment == null) {
-            return $this->data("comment"); }
-        else {
+            return $this->data("comment");
+        } else {
             $this->data("comment", $comment);
-            return $this; }
+            return $this;
+        }
     }
     
     /**
@@ -49,9 +50,10 @@ class pay_operationLog extends reflex {
         $ret = $type." ".$this->amount()." ".$this->currency()." от ".$this->date()." ".$this->comment();
         
         if ($this->amount() >= 0) {
-            $ret = "<span style='color:green;'>$ret</span>"; }
-        else {
-            $ret = "<span style='color:red;'>$ret</span>"; }
+            $ret = "<span style='color:green;'>$ret</span>";
+        } else {
+            $ret = "<span style='color:red;'>$ret</span>";
+        }
         
         return $ret;
         

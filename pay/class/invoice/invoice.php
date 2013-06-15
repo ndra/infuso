@@ -168,22 +168,25 @@ class pay_invoice extends reflex implements mod_handler {
      **/
     public function driver($driver = NULL)
     {
-        if ($this->paid() == true)
+        if ($this->paid() == true) {
             throw new Exception("Невозможно создать драйвер для уже оплаченого счета");
+        }
         
-        if ($driver === NULL)
+        if ($driver === NULL) {
             throw new Exception("Не задан Драйвер платежной системы");
+        }
         
         $class = 'pay_vendors_' . $driver;
         
-        //Проверка на существование драйвера
-        if(!mod::testClass($class))
+        //Проверка на существование класса драйвера
+        if(!mod::testClass($class)) {
             throw new Exception("Несуществующий драйвер: " . $class);
-        
+        }
+
         $driverUseonly = $this->data("driverUseonly");
-        
-        if ($driverUseonly && $driverUseonly != $driver)
+        if ($driverUseonly && $driverUseonly != $driver) {
             throw new Exception("Текущий счет можно оплатить только драйвером: " . $driverUseonly);
+        }
         
         $obj = new $class($this);
         
@@ -196,6 +199,7 @@ class pay_invoice extends reflex implements mod_handler {
      * @return array
      **/
      public function driverAll() {
+
          $_drivers = array();
          foreach (mod::classes("pay_vendors") as $class) {
             $_drivers[] = substr($class, 12);
@@ -225,8 +229,9 @@ class pay_invoice extends reflex implements mod_handler {
      **/
     public static function create($sum = 0, $currency = 643) {
     
-        if ($currency <= 0 || !is_int($currency))
+        if ($currency <= 0 || !is_int($currency)) {
             throw new Exception("Задан невалидный тип валюты: " . gettype($currency));
+        }
         
         $invoice = reflex::create(get_class(), array(
             "sum" => $sum,
@@ -302,8 +307,7 @@ class pay_invoice extends reflex implements mod_handler {
             return $this;
         }
     }    
-    
-    
+
     /**
      * Возвращает номер счета (равный $this->id())
      *
@@ -395,7 +399,7 @@ class pay_invoice extends reflex implements mod_handler {
             
         } else {
         
-            $this->log("Входящая сумма {$sum} не равна сумме счета " . $this->data("sum"));
+            $this->log("Входящая сумма {$sum} меньше суммы счета " . $this->data("sum"));
             return false;
 			
         }
@@ -419,17 +423,17 @@ class pay_invoice extends reflex implements mod_handler {
     }
     
     /**
-     * Через какое время проверять статус заказа
+     * Через какое время проверять статус заказа кроном
      * Например "15 minute", "1 hourly",  "1 day" или "1 week" и т.п.
      **/
-    public function getCheckRefreshTime() {
+    public static function getCheckRefreshTime() {
         return strtotime("-15 minute");
     }
     
     /**
-     * Сколько счетов одновременно проверять статус
+     * Сколько счетов одновременно проверять статус кроном
      **/
-    public function getCheckRefreshLimit() {
+    public static function getCheckRefreshLimit() {
         return 5;
     }
     
@@ -437,6 +441,7 @@ class pay_invoice extends reflex implements mod_handler {
      * Устанавливаем или получаем статус счета
      **/
     public function status($status = NULL) {
+
         //Получаем статус
         if(func_num_args() == 0) {
             return $this->data("status");
