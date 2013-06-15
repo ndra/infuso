@@ -69,7 +69,10 @@ class mod_field_select extends mod_field {
 			    return call_user_func(array($this->reflexItem(),$fn));
 			}
 			
-			$options = $this->conf("list");
+            $options = $this->conf("values");
+            if(!$options) {
+                $options = $this->conf("list");
+            }
 			
 			// Разбор значений из строки
 			if(!is_array($options)) {
@@ -84,7 +87,7 @@ class mod_field_select extends mod_field {
 		}
 		
 	    if(func_num_args()==1) {
-			$this->conf("list",$options);
+			$this->conf("values",$options);
 			return $this;
 		}
 
