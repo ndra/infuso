@@ -26,11 +26,20 @@ class board_controller_log extends mod_controller {
 
         foreach($log as $item) {
 
+            $files = array();
+            foreach($item->files() as $file) {
+                $files[] = array(
+                    "preview" => (string)$file->preview(32,32)->crop(),
+                    "path" => (string)$file,
+                );
+            }
+
             $row = array(
                 "userpick" => $item->user()->userpick()->preview(16,16),
                 "user" => $item->user()->title(),
                 "text" => $item->data("text"),
                 "time" => $item->pdata("created")->left(),
+                "files" => $files,
             );
 
             if(!$taskID) {

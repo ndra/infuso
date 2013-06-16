@@ -137,7 +137,7 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
         
         if(!inx(this).axis("side").eq("name","attachments").exists()) {
             this.cmd("addSidePanel",{
-                type:this.type+".attachments",
+                type:"inx.mod.board.attachments",
                 dropArea:this,
                 name:"attachments",
                 taskID:this.taskID,

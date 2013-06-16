@@ -75,6 +75,20 @@ inx.ns("inx.mod.board").comments = inx.list.extend({
                     fontStyle:"italic"
                 }).appendTo(textContainer);
         }
+        
+        for(var i in data.files) {
+        
+            $("<img>")
+                .attr("src",data["files"][i].preview)
+                .data("path",data["files"][i].path)
+                .css({
+                    cursor:"pointer",
+                    margin:"0px 5px 5px 0"
+                }).click(function(e) {
+                    window.open($(this).data("path"));
+                    e.stopPropagation();
+                }).appendTo(e);
+        }
     
     },
     

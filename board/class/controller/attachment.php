@@ -26,7 +26,8 @@ class board_controller_attachment extends mod_controller {
 
         $ret = array();
 
-        foreach($task->storage()->files() as $file) {
+        $path = $p["sessionHash"] ? "/log/".$p["sessionHash"] : "/";
+        foreach($task->storage()->setPath($path)->files() as $file) {
             $ret[] = array(
                 "text" => $file->name(),
                 "preview" => $file->preview(100,100),
@@ -55,7 +56,8 @@ class board_controller_attachment extends mod_controller {
         }
 
         $file = $_FILES["file"];
-        $task->storage()->addUploaded($file["tmp_name"],$file["name"]);
+        $path = $p["sessionHash"] ? "/log/".$p["sessionHash"] : "/";
+        $task->storage()->setPath($path)->addUploaded($file["tmp_name"],$file["name"]);
         $task->uploadFilesCount();
 
     }

@@ -1,12 +1,12 @@
-// @link_with_parent
 // @include inx.list
 
-inx.mod.board.task.attachments = inx.list.extend({
+inx.ns("inx.mod.board").attachments = inx.list.extend({
 
     constructor:function(p) {
     
         p.loader = {
             cmd:"board/controller/attachment/listFiles",
+            sessionHash:p.sessionHash || null,
             taskID:p.taskID
         }
         
@@ -25,6 +25,7 @@ inx.mod.board.task.attachments = inx.list.extend({
             dropArea:p.dropArea,
             loader:{
                 cmd:"board/controller/attachment/uploadFile",
+                sessionHash:p.sessionHash || null,
                 taskID:p.taskID,
             }, oncomplete:function() {
                 this.owner().cmd("load");

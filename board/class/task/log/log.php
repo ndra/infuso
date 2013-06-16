@@ -61,6 +61,11 @@ class board_task_log extends reflex {
                         self::TYPE_TASK_MODIFIED => "Задача изменена",
                         self::TYPE_TASK_STATUS_CHANGED => "Статус задачи изменен",
                     ),
+                ), array (
+                    'name' => 'files',
+                    'type' => 'string',
+                    'editable' => '2',
+                    'label' => 'Папка с файлами',
                 ),
             ),
         );
@@ -137,6 +142,13 @@ class board_task_log extends reflex {
      **/
     public function timeSpent() {
         return $this->data("timeSpent");
+    }
+
+    /**
+     * Возвращает список файлов, прикрепелнных к логу
+     **/
+    public function files() {
+        return $this->task()->storage()->setPath("/log/".$this->data("files"))->files();
     }
 
 }

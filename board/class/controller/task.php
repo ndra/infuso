@@ -323,7 +323,10 @@ class board_controller_task extends mod_controller {
             $statusText = $p["comment"]." ".$statusText;
         }
 
-        $task->logCustom($statusText,$time,board_task_log::TYPE_TASK_STATUS_CHANGED);
+        $n = $task->storage()->setPath("/log/".$p["sessionHash"])->files()->count();
+        $files = $n ? $p["sessionHash"] : "";
+
+        $task->logCustom($statusText,$time,board_task_log::TYPE_TASK_STATUS_CHANGED,$files);
 
         return true;
     }

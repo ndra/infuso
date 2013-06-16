@@ -15,8 +15,11 @@ inx.ns("inx.mod.board").timeInput = inx.dialog.extend({
 
         p.destroyOnEscape = true;
 
-        p.title = "Сколько времени потрачено?";        
+        p.title = "Сколько времени потрачено?";
+               
         this.base(p);
+        
+        this.sessionHash = (new Date()).getTime();
         
         inx.hotkey("esc",[this.id(),"handleEsc"]);
         this.cmd("requestData");
@@ -80,7 +83,15 @@ inx.ns("inx.mod.board").timeInput = inx.dialog.extend({
             taskID:this.taskID,
             width:"parent",
             y:130
-        })
+        });
+        
+        this.cmd("addSidePanel",{
+            type:"inx.mod.board.attachments",
+            region:"bottom",
+            dropArea:this.el,
+            sessionHash:this.sessionHash,
+            taskID:this.taskID
+        });
         
     },
     
@@ -93,6 +104,7 @@ inx.ns("inx.mod.board").timeInput = inx.dialog.extend({
             cmd:"board/controller/task/changeTaskStatus",
             taskID:this.taskID,
             status:this.taskStatus,
+            sessionHash:this.sessionHash,
             comment:data.comment,
             time:h
         },[this.id(),"handleSave"]);

@@ -262,6 +262,12 @@ class board_task extends reflex {
         $message.= "</td>";
         $message.= "</tr></table>";
 
+        foreach($logItem->files() as $file) {
+            $message.= "<a href='{$file}' style='margin:0 10px 10px 0;' >";
+            $message.= "<img src='{$file->preview(128,128)->crop()}' />";
+            $message.= "</a>";
+        }
+
         $message.= "<div style='padding:10px;border:1px solid #ccc;background:#ededed;margin-top:10px;' >";
         $message.= $taskTextLong;
         $message.= "</div>";
@@ -330,12 +336,13 @@ class board_task extends reflex {
         return board_task_log::all()->eq("taskID",$this->id());
     }
 
-    public function logCustom($text,$time=0,$type) {
+    public function logCustom($text,$time=0,$type,$files) {
         $this->getLogCustom()->create(array(
             "taskID" => $this->id(),
             "type" => $type,
             "text" => $text,
             "timeSpent" => $time,
+            "files" => $files,
         ));
     }
 
