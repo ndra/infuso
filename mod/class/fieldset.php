@@ -7,9 +7,19 @@ class mod_fieldset implements Iterator{
 
     // Итераторская шняга
     protected $fields = array();
-    
+
+    private $behaviours = array();
+
     public function rewind() { reset($this->fields); }
-    public function current() { return current($this->fields); }
+    public function current() {
+        $item = current($this->fields);
+        if(is_object($item)) {
+            foreach($this->behaviours as $b) {
+                $item->addBehaviour($b);
+            }
+        }
+        return $item;
+    }
     public function key() { return key($this->fields); }
     public function next() { return next($this->fields); }
     public function valid() { return $this->current() !== false; }
@@ -30,13 +40,13 @@ class mod_fieldset implements Iterator{
      * Возвращает поле по имени
      **/
     public function name($name) {
-    
+
         foreach($this->fields as $field) {
             if($field->name()==$name) {
                 return $field;
             }
 		}
-		
+
         return self::zero();
     }
 
@@ -134,6 +144,14 @@ class mod_fieldset implements Iterator{
                 $field->value($p[$field->name()]);
             }
         }
+    }
+
+    /**
+     * Добпавляет поведение ко все полям в сете
+     * Поведение добавится все полям, даже тем, которые будет добавлены в сет после поведения
+     **/
+    public function addBehaviour($class) {
+        $this->behaviours[] = $class;
     }
 
 }
