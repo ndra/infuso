@@ -13,6 +13,7 @@ class reflex_storage extends mod_controller {
 	}
 	public function setPath($path) {
 	    $this->path = $path;
+        return $this;
 	}
 
 	public function get($class,$id,$path="/") {
@@ -146,6 +147,7 @@ class reflex_storage extends mod_controller {
 	    $this->prepareFolder();
 	    $path = $this->path()."";
 	    $dest = $path.$name;
+        file::mkdir($path);
 	    file::moveUploaded($src,$dest);
 	    $this->reflex()->reflex_afterStorage();
 	    return file::get($dest)->path();
