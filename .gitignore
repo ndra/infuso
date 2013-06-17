@@ -4,6 +4,9 @@
 /favicon.ico
 /inx/build_id.txt
 
+#PhpStorm project files
+/.idea/*
+
 # Папки
 /PHPExcel
 /eshop/files
