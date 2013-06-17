@@ -18,6 +18,10 @@ class reflex_task_editor extends reflex_editor {
 		
         return array();
     }
+    
+    public function disable() {
+        return "list";
+    }
 
     public function filters() {
         return array(

@@ -15,13 +15,8 @@ class reflex_task extends reflex implements mod_handler {
 					'type' => 'id',
 				), array (
 					'name' => 'class',
-					'type' => 'v324-89xr-24nk-0z30-r243',
+					'type' => 'textfield',
 					'editable' => '1',
-				), array (
-					'name' => 'query',
-					'type' => 'v324-89xr-24nk-0z30-r243',
-					'editable' => '1',
-					'indexEnabled' => '1',
 				), array (
 					'name' => 'method',
 					'type' => 'textfield',
@@ -32,12 +27,16 @@ class reflex_task extends reflex implements mod_handler {
 					'editable' => '1',
 					'label' => 'Доп. параметры',
 				), array (
-					'name' => 'fromID',
+					'name' => 'iterator',
 					'type' => 'bigint',
 					'editable' => '2',
-					'label' => 'ID от',
+					'label' => 'Итератор',
 				), array (
-					'name' => 'time',
+					'name' => 'created',
+					'type' => 'datetime',
+					'editable' => '2',
+				), array (
+					'name' => 'executed',
 					'type' => 'datetime',
 					'editable' => '2',
 				), array (
@@ -46,17 +45,24 @@ class reflex_task extends reflex implements mod_handler {
 					'editable' => '2',
 					'label' => 'Выполнено',
 				), array (
-					'name' => 'priority',
-					'type' => 'string',
+					'name' => 'counter',
+					'type' => 'bigint',
 					'editable' => '1',
-					'label' => 'Приоритет',
+					'label' => 'Выполнено раз',
+				), array (
+					'name' => 'pattern',
+					'type' => 'textfield',
+					'editable' => '1',
+					'label' => 'Шаблон (в формате crontab)',
+					'help' => "Минуты, часы, день месяца, месяц, день недели",
 				),
 			),
 		);
 	}
-
-    public function on_mod_cron() {
-        self::execOne();
+	
+    public function reflex_beforeCreate() {
+        //$time = round(util::now()->stamp()/60)*60;
+        $this->data("created",util::now($time));
     }
 
     /**
@@ -71,6 +77,29 @@ class reflex_task extends reflex implements mod_handler {
      **/
     public static function get($id) {
         return reflex::get(get_class(),$id);
+    }
+    
+    /**
+     * Возвращает последнее разрешенное время выполнения
+     * К примеру, если pattern = "0 10 * * *" - выполнять в 10-00 каждый день
+     * и сейчас 11-55, то метод вернет объект даты, соответствующий сегодня 10-00
+     **/
+    public function lastAvailableExecutionTime() {
+    
+        $pettern = array("*","*","*/7","*/3","*/5");
+        $pettern = array("*","*","*","*","*");
+        
+        $now = util::now();
+        $ret = array();
+    
+		$secPattern = $pattern[0];
+		switch($secPattern) {
+		    case "*";
+		    $ret["sec"] = $now->seconds();
+		}
+		
+		var_export($ret);
+    
     }
 
     /**
@@ -89,7 +118,7 @@ class reflex_task extends reflex implements mod_handler {
     public static function add($params) {
 
         if(is_array($params)) {
-            $params = util::a($params)->filter("class","query","method","priority","params")->asArray();
+            $params = util::a($params)->filter("class","query","method","params")->asArray();
 
         } else {
 
@@ -97,9 +126,7 @@ class reflex_task extends reflex implements mod_handler {
 
             $params = array(
                 "class" => $args[0],
-                "query" => $args[1],
                 "method" => $args[2],
-                "priority" => $args[3],
                 "params" => $args[3] ? $args[3] : array(),
             );
         }
@@ -113,7 +140,7 @@ class reflex_task extends reflex implements mod_handler {
         }
 
         $params["completed"] = 0;
-        $params["params"] = serialize($params["params"]);
+        $params["params"] = mod::field("array")->value($params["params"])->value();
 
         $item = self::all()
             ->eq($params)
@@ -125,100 +152,51 @@ class reflex_task extends reflex implements mod_handler {
 
     }
 
-    public function reflex_beforeCreate() {
-        $time = round(util::now()->stamp()/60)*60;
-        $this->data("time",util::date($time));
-    }
-
-    public function where() {
-
-        $q = trim($this->data("query"));
-
-        if(!$q)
-            return 1;
-
-        if(($q*1).""==$q."")
-            return " `id`='$q' ";
-
-        return $q;
-    }
-
-    public function items() {
-        $items = reflex::get($this->data("class"));
-        $items->where($this->where());
-        $items->geq("id",$this->data("fromID"));
-        $items->asc("id");
-        return $items;
-    }
-
     public function method() {
         return $this->data("method");
+    }
+    
+    public function className() {
+        return $this->data("class");
     }
 
     public function methodParams(){
         return unserialize($this->data("params"));
     }
 
-    /**
-     * Выполняет первое по приоритету задание в очереди
-     **/
-    public static function execOne() {
-
-        $tasks = self::all()->eq("completed",0);
-        $total = $tasks->count();
-
-        if($total==0) {
-            return;
-        }
-
-        // $n - хранится в сессии и увеличивается на 1 с каждым запуском крона
-        $n = mod::session("01h1b4yw6kbz2l9y6orj");
-        if(!$n) {
-            $n = 0;
-        }
-
-        // Выбираем задачу в зависимости от $n
-        // Т.о. каждый на запуск крона задачи будут поочередно вызываны
-        $task = $tasks->limit(1)->page($n%$total+1)->one();
-
-        mod::session("01h1b4yw6kbz2l9y6orj",$n+1);
-
-        $task->exec();
-    }
-
 	/**
 	 * Выполняет данную задачу
 	 **/
     public function exec() {
+    
+        try {
 
-        $method = $this->method();
-        $params = $this->methodParams();
-        if(!$params) {
-            $params = array();
-        }
+	        $method = $this->method();
+	        $class = $this->className();
+	        $params = $this->methodParams();
+	        if(!$params) {
+	            $params = array();
+	        }
+	        
+	        $callback = array($class, $method);
 
-        $fromID = -1;
-        foreach($this->items()->limit(10) as $item) {
+	        if(!is_callable($callback)) {
+	            throw new Exception("{$callback[0]}::{$callback[1]} is not a callback");
+	            return;
+	        }
+	        
+	        call_user_func_array($callback, $params);
 
-            $callback = array($item, $method);
-
-            if(!is_callable($callback)) {
-                $this->data("completed",true);
-                $this->log("Невозможно выполнить, отменяем");
-                return;
-            }
-
-            call_user_func_array($callback, $params);
-            $fromID = $item->id();
-        }
-
-        if($fromID==-1) {
-            $this->data("completed",true);
-        } else {
-            $this->data("fromID",$fromID+1);
-        }
-
-        $this->log("Выполняем");
+			$this->data("executed",util::now());
+			$this->data("counter",$this->data("counter")+1);
+	        $this->log("Выполняем");
+	        
+		} catch (Exception $ex) {
+		
+			$this->log("Exception: ".$ex->getMessage());
+		    
+		}
+	        
     }
 
 }

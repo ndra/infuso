@@ -1,4 +1,6 @@
-<? class mod_field_array extends mod_field {
+<?
+
+class mod_field_array extends mod_field {
 
 	public function typeID() {
 		return "puhj-w9sn-c10t-85bt-8e67";
@@ -25,14 +27,16 @@
 
 	public function pvalue() {
 		$ret = json_decode($this->value(),1);
-		if(!is_array($ret))
+		if(!is_array($ret)) {
 			$ret = array();
+		}
 		return $ret;
 	}
 
 	public function prepareValue($val) {
-		if(is_array($val))
+		if(is_array($val)) {
 			$val = json_encode($val);
+		}
 		return $val;
 	}
 
