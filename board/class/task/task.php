@@ -249,9 +249,11 @@ class board_task extends reflex {
         );
 
         $message = "";
+        
+        $host = mod_url::current()->scheme()."://".mod_url::current()->domain();
 
 		$user = user::active();
-        $userpick = mod_url::current()->scheme()."://".mod_url::current()->domain().$user->userpick()->preview(50,50)->crop();
+        $userpick = $host.$user->userpick()->preview(50,50)->crop();
         $message.= "<table><tr>";
         $message.= "<td><img src='{$userpick}' ></td>";
         $message.= "<td>";
@@ -263,8 +265,8 @@ class board_task extends reflex {
         $message.= "</tr></table>";
 
         foreach($logItem->files() as $file) {
-            $message.= "<a href='{$file}' style='margin:0 10px 10px 0;' >";
-            $message.= "<img src='{$file->preview(128,128)->crop()}' />";
+            $message.= "<a href='{$host}{$file}' style='margin:0 10px 10px 0;' >";
+            $message.= "<img src='{$host}{$file->preview(128,128)->crop()}' />";
             $message.= "</a>";
         }
 

@@ -1,6 +1,23 @@
 <?
 
+/**
+ * редактор задачи
+ **/
 class reflex_task_editor extends reflex_editor {
+
+    /**
+     * Коллекция для каталога
+     **/
+    public function root() {
+    
+        if(mod_superadmin::check()) {
+            return array(
+                reflex_task::all()->title("Задачи")->param("tab","system"),
+            );
+		}
+		
+        return array();
+    }
 
     public function filters() {
         return array(
@@ -11,7 +28,10 @@ class reflex_task_editor extends reflex_editor {
 
     public function actions() {
         return array(
-            array("text" => "Выполнить" ,"action" => "exec" ),
+            array(
+				"text" => "Выполнить",
+				"action" => "exec",
+			),
         );
     }
 

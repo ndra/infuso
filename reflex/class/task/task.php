@@ -1,9 +1,59 @@
 <?
 
 /**
- * Класс для навешивания задач объектам reflex
+ * Реализация очереди задач в reflex
  **/
 class reflex_task extends reflex implements mod_handler {
+
+	public static function reflex_table() {
+	
+		return array (
+			'name' => 'reflex_task',
+			'fields' => array (
+				array (
+					'name' => 'id',
+					'type' => 'id',
+				), array (
+					'name' => 'class',
+					'type' => 'v324-89xr-24nk-0z30-r243',
+					'editable' => '1',
+				), array (
+					'name' => 'query',
+					'type' => 'v324-89xr-24nk-0z30-r243',
+					'editable' => '1',
+					'indexEnabled' => '1',
+				), array (
+					'name' => 'method',
+					'type' => 'textfield',
+					'editable' => '1',
+				), array (
+					'name' => 'params',
+					'type' => 'array',
+					'editable' => '1',
+					'label' => 'Доп. параметры',
+				), array (
+					'name' => 'fromID',
+					'type' => 'bigint',
+					'editable' => '2',
+					'label' => 'ID от',
+				), array (
+					'name' => 'time',
+					'type' => 'datetime',
+					'editable' => '2',
+				), array (
+					'name' => 'completed',
+					'type' => 'checkbox',
+					'editable' => '2',
+					'label' => 'Выполнено',
+				), array (
+					'name' => 'priority',
+					'type' => 'string',
+					'editable' => '1',
+					'label' => 'Приоритет',
+				),
+			),
+		);
+	}
 
     public function on_mod_cron() {
         self::execOne();
@@ -21,17 +71,6 @@ class reflex_task extends reflex implements mod_handler {
      **/
     public static function get($id) {
         return reflex::get(get_class(),$id);
-    }
-
-    /**
-     * Коллекция для каталога
-     **/
-    public function reflex_root() {
-        if(mod_superadmin::check())
-            return array(
-                self::all()->title("Задачи")->param("tab","system"),
-            );
-        return array();
     }
 
     /**
@@ -147,6 +186,9 @@ class reflex_task extends reflex implements mod_handler {
         $task->exec();
     }
 
+	/**
+	 * Выполняет данную задачу
+	 **/
     public function exec() {
 
         $method = $this->method();
