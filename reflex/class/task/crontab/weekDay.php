@@ -3,7 +3,7 @@
 /**
  * Класс для дня месяца кронтаба
  **/
-class reflex_task_crontab_monthDay extends reflex_task_crontab_field {
+class reflex_task_crontab_weekDay extends reflex_task_crontab_field {
 
     /**
      * Уменьшает дату на одну минуту
@@ -13,11 +13,11 @@ class reflex_task_crontab_monthDay extends reflex_task_crontab_field {
     }
 
     protected function unitsInTimestamp($timestamp) {
-        return floor($timestamp / 3600);
+        return floor($timestamp / 3600 / 24);
     }
 
     protected function unitsInRank($timestamp) {
-        return date("j",$timestamp);
+        return date("N",$timestamp);
     }
 
 }

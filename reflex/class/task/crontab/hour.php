@@ -1,15 +1,15 @@
 <?
 
 /**
- * Класс для дня месяца кронтаба
+ * Класс для часа кронтаба
  **/
-class reflex_task_crontab_monthDay extends reflex_task_crontab_field {
+class reflex_task_crontab_hour extends reflex_task_crontab_field {
 
     /**
      * Уменьшает дату на одну минуту
      **/
     public function decrementDate(&$timestamp) {
-        $timestamp = $timestamp - 3600 * 24;
+        $timestamp = $timestamp - 3600;
     }
 
     protected function unitsInTimestamp($timestamp) {
@@ -17,7 +17,7 @@ class reflex_task_crontab_monthDay extends reflex_task_crontab_field {
     }
 
     protected function unitsInRank($timestamp) {
-        return date("j",$timestamp);
+        return date("G",$timestamp);
     }
 
 }
