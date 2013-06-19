@@ -8,16 +8,16 @@ class reflex_task_crontab_hour extends reflex_task_crontab_field {
     /**
      * Уменьшает дату на одну минуту
      **/
-    public function incrementDate(&$timestamp) {
-        $timestamp = $timestamp + 3600;
+    public function incrementDate($date) {
+        $date->shift(3600);
     }
 
-    protected function unitsInTimestamp($timestamp) {
-        return floor($timestamp / 3600);
+    protected function unitsInTimestamp($date) {
+        return floor($date->stamp() / 3600);
     }
 
-    protected function unitsInRank($timestamp) {
-        return date("G",$timestamp);
+    protected function unitsInRank($date) {
+        return $date->hours();
     }
 
 }

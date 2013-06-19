@@ -14,7 +14,7 @@ abstract class reflex_task_crontab_field extends mod_component {
     /**
      * Проверяет, подходит ли дата к шаблону
      **/
-    public function match($timestamp) {
+    public function match($date) {
 
         // Если в шаблоне звездочка, проверку пройдет любая дата
         if($this->pattern=="*") {
@@ -24,9 +24,9 @@ abstract class reflex_task_crontab_field extends mod_component {
         $class = get_class($this);
 
         // Сколько единиц всего
-        $timestampUnits = $class::unitsInTimestamp($timestamp);
+        $timestampUnits = $class::unitsInTimestamp($date);
         // Сколько единиц в разряде
-        $rankUnits = $class::unitsInRank($timestamp);
+        $rankUnits = $class::unitsInRank($date);
 
         // Если в шаблоне число, сравниваем его со значением
         if(preg_match("/^\d+$/",$this->pattern)) {
@@ -48,13 +48,13 @@ abstract class reflex_task_crontab_field extends mod_component {
      * Определяется в классе-реализации поля
      * Например, для месяцев методж вернет сколько месяцев прошло с timestamp=0
      **/
-    abstract protected function unitsInTimestamp($timestamp);
+    abstract protected function unitsInTimestamp($date);
 
-    abstract protected function unitsInRank($timestamp);
+    abstract protected function unitsInRank($date);
 
     /**
      * Увеличивает дату на единицу (минута, час, день или месяц)
      **/
-    abstract public function incrementDate(&$timestamp);
+    abstract public function incrementDate($date);
 
 }

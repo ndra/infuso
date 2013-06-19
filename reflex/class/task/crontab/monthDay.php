@@ -8,16 +8,16 @@ class reflex_task_crontab_monthDay extends reflex_task_crontab_field {
     /**
      * Уменьшает дату на одну минуту
      **/
-    public function incrementDate(&$timestamp) {
-        $timestamp = $timestamp + 3600 * 24;
+    public function incrementDate($date) {
+        $date->shiftDay(1)->hours(0)->minutes(0);
     }
 
-    protected function unitsInTimestamp($timestamp) {
-        return floor($timestamp / 3600);
+    protected function unitsInTimestamp($date) {
+        return floor($date->stamp() / 3600 / 24);
     }
 
-    protected function unitsInRank($timestamp) {
-        return date("j",$timestamp);
+    protected function unitsInRank($date) {
+        return $date->day();
     }
 
 }

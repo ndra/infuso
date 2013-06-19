@@ -378,9 +378,11 @@ class mod extends mod_controller {
 	
 	public static function splitAndTrim($str,$separator) {
         $ret = array();
-        foreach(explode($separator,$str) as $part)
-            if(trim($part))
+        foreach(explode($separator,$str) as $part) {
+            if(trim($part)!=="") {
                 $ret[] = $part;
+            }
+        }
         return $ret;
     } 	
 

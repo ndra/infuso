@@ -8,12 +8,14 @@ class reflex_task_crontab {
     public function nextDate($pattern) {
 
         $pattern = util::splitAndTrim($pattern," ");
-        $date = util::now()->seconds(0)->stamp();
+        $date = util::now()->seconds(0);
 
         for($j=0;$j<1000;$j++) {
 
             for($i=0;$i<5;$i++) {
+
                 $field = self::fieldFactory($i,$pattern[$i]);
+
                 if(!$field->match($date)) {
                     $field->incrementDate($date);
                     break;

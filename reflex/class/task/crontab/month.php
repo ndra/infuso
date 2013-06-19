@@ -8,16 +8,19 @@ class reflex_task_crontab_month extends reflex_task_crontab_field {
     /**
      * Уменьшает дату на одну минуту
      **/
-    public function incrementDate(&$timestamp) {
-        $timestamp = strtotime("+1 month",$timestamp);
+    public function incrementDate($date) {
+        $date->shiftMonth(1);
+        $date->day(1);
+        $date->hours(0);
+        $date->minutes(0);
     }
 
-    protected function unitsInTimestamp($timestamp) {
-        return (int)date("Y",$timestamp)*12 + (int)date("n",$timestamp);
+    protected function unitsInTimestamp($date) {
+        return (int)date("Y",$date->stamp()*12 + (int)date("n",$date->stamp()));
     }
 
-    protected function unitsInRank($timestamp) {
-        return (int)date("n",$timestamp);
+    protected function unitsInRank($date) {
+        return $date->month();
     }
 
 }
