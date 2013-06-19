@@ -8,7 +8,7 @@ class reflex_task_crontab {
     public function nextDate($pattern) {
 
         $pattern = util::splitAndTrim($pattern," ");
-        $date = util::now()->seconds(0);
+        $date = util::now()->seconds(0)->shift(60);
 
         for($j=0;$j<1000;$j++) {
 
@@ -25,9 +25,7 @@ class reflex_task_crontab {
                     return $date;
                 }
             }
-
         }
-
     }
 
     private static function fieldFactory($n,$pattern) {

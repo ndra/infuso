@@ -41,6 +41,11 @@ class reflex_task extends reflex implements mod_handler {
 					'label' => 'Вызвано',
 					'editable' => '2',
 				), array (
+					'name' => 'nextLaunch',
+					'type' => 'datetime',
+					'label' => 'Следующий запуск',
+					'editable' => '2',
+				), array (
 					'name' => 'completed',
 					'type' => 'checkbox',
 					'editable' => '2',
@@ -48,7 +53,7 @@ class reflex_task extends reflex implements mod_handler {
 				), array (
 					'name' => 'counter',
 					'type' => 'bigint',
-					'editable' => '1',
+					'editable' => '2',
 					'label' => 'Выполнено раз',
 				), array (
 					'name' => 'crontab',
@@ -63,6 +68,13 @@ class reflex_task extends reflex implements mod_handler {
 	
     public function reflex_beforeCreate() {
         $this->data("created",util::now());
+        $this->updateNextLaunchTime();
+    }
+
+    public function reflex_beforeStore() {
+        if($this->field("crontab")->changed()) {
+            $this->updateNextLaunchTime();
+        }
     }
 
     /**
@@ -79,28 +91,6 @@ class reflex_task extends reflex implements mod_handler {
         return reflex::get(get_class(),$id);
     }
     
-    /**
-     * Возвращает последнее разрешенное время выполнения
-     * К примеру, если pattern = "0 10 * * *" - выполнять в 10-00 каждый день
-     * и сейчас 11-55, то метод вернет объект даты, соответствующий сегодня 10-00
-     **/
-    public function lastAvailableExecutionTime() {
-    
-        $pettern = array("*","*","*/7","*/3","*/5");
-        $pettern = array("*","*","*","*","*");
-        
-        $now = util::now();
-        $ret = array();
-    
-		$secPattern = $pattern[0];
-		switch($secPattern) {
-		    case "*";
-		    $ret["sec"] = $now->seconds();
-		}
-		
-		var_export($ret);
-    
-    }
 
     /**
      * Добавляет новое задание очередь. Задание - это выполнение заданного метода заданной модели по крону.
@@ -152,6 +142,39 @@ class reflex_task extends reflex implements mod_handler {
 
     }
 
+    public static function addReflex($p) {
+        self::add(array(
+            "class" => get_class(),
+            "method" => "execReflex",
+            "params" => array(
+                "class" => $p["class"],
+                "method" => $p["method"],
+                "params" => $p["params"],
+            ),
+        ));
+    }
+
+    public static function execReflex($p,$task) {
+        $item = reflex::get($p["class"])
+            ->asc("id")
+            ->gt("id",$task->data("iterator"))
+            ->one();
+
+        if(!$item->exists()) {
+            $task->data("completed",true);
+            $task->store();
+            return;
+        }
+
+        $task->data("iterator",$item->id());
+        $task->store();
+
+        $method = $p["method"];
+        $params = $p["params"];
+        $item->$method($params);
+
+    }
+
     public function method() {
         return $this->data("method");
     }
@@ -164,14 +187,30 @@ class reflex_task extends reflex implements mod_handler {
         return unserialize($this->data("params"));
     }
 
+    /**
+     * Обновляет время следующего запуска
+     **/
+    public function updateNextLaunchTime() {
+
+        if(trim($this->data("crontab"))=="") {
+            $this->data("nextLaunch",util::now());
+        } else {
+            $time = reflex_task_crontab::nextDate($this->data("crontab"));
+            $this->data("nextLaunch",$time);
+        }
+    }
+
 	/**
 	 * Выполняет данную задачу
 	 **/
     public function exec() {
+
+        $this->updateNextLaunchTime();
     
         try {
         
-			$this->data("called",util::now())->store();
+			$this->data("called",util::now());
+            $this->store();
 
 	        $method = $this->method();
 	        $class = $this->className();
@@ -187,7 +226,7 @@ class reflex_task extends reflex implements mod_handler {
 	            return;
 	        }
 	        
-	        call_user_func_array($callback, $params, $this);
+	        call_user_func($callback, $params, $this);
 
 			$this->data("counter",$this->data("counter")+1);
 	        $this->log("Выполняем");

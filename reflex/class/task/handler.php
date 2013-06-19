@@ -26,13 +26,22 @@ class reflex_task_handler implements mod_handler {
 
         return $q;
     } */
+
+    /**
+     * Возвращает список задач, которые уже могут быть выполнены
+     **/
+    public static function tasksToLaunch() {
+        return reflex_task::all()
+            ->leq("nextLaunch",util::now())
+            ->eq("completed",0);
+    }
 	
     /**
      * Выполняет одно задание
      **/
     public static function execOne() {
 
-        $tasks = reflex_task::all()->eq("completed",0);
+        $tasks = self::tasksToLaunch();
         $total = $tasks->count();
 
         if($total==0) {
