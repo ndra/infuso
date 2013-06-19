@@ -8,8 +8,8 @@ class reflex_task_crontab_month extends reflex_task_crontab_field {
     /**
      * Уменьшает дату на одну минуту
      **/
-    public function decrementDate(&$timestamp) {
-        $timestamp = strtotime("-1 month",$timestamp);
+    public function incrementDate(&$timestamp) {
+        $timestamp = strtotime("+1 month",$timestamp);
     }
 
     protected function unitsInTimestamp($timestamp) {

@@ -36,8 +36,9 @@ class reflex_task extends reflex implements mod_handler {
 					'type' => 'datetime',
 					'editable' => '2',
 				), array (
-					'name' => 'executed',
+					'name' => 'called',
 					'type' => 'datetime',
+					'label' => 'Вызвано',
 					'editable' => '2',
 				), array (
 					'name' => 'completed',
@@ -50,7 +51,7 @@ class reflex_task extends reflex implements mod_handler {
 					'editable' => '1',
 					'label' => 'Выполнено раз',
 				), array (
-					'name' => 'pattern',
+					'name' => 'crontab',
 					'type' => 'textfield',
 					'editable' => '1',
 					'label' => 'Шаблон (в формате crontab)',
@@ -61,8 +62,7 @@ class reflex_task extends reflex implements mod_handler {
 	}
 	
     public function reflex_beforeCreate() {
-        //$time = round(util::now()->stamp()/60)*60;
-        $this->data("created",util::now($time));
+        $this->data("created",util::now());
     }
 
     /**
@@ -118,7 +118,7 @@ class reflex_task extends reflex implements mod_handler {
     public static function add($params) {
 
         if(is_array($params)) {
-            $params = util::a($params)->filter("class","query","method","params")->asArray();
+            $params = util::a($params)->filter("class","query","method","params","crontab")->asArray();
 
         } else {
 
@@ -170,6 +170,8 @@ class reflex_task extends reflex implements mod_handler {
     public function exec() {
     
         try {
+        
+			$this->data("called",util::now())->store();
 
 	        $method = $this->method();
 	        $class = $this->className();
@@ -185,9 +187,8 @@ class reflex_task extends reflex implements mod_handler {
 	            return;
 	        }
 	        
-	        call_user_func_array($callback, $params);
+	        call_user_func_array($callback, $params, $this);
 
-			$this->data("executed",util::now());
 			$this->data("counter",$this->data("counter")+1);
 	        $this->log("Выполняем");
 	        

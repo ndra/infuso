@@ -8,8 +8,8 @@ class reflex_task_crontab_weekDay extends reflex_task_crontab_field {
     /**
      * Уменьшает дату на одну минуту
      **/
-    public function decrementDate(&$timestamp) {
-        $timestamp = $timestamp - 3600 * 24;
+    public function incrementDate(&$timestamp) {
+        $timestamp = $timestamp + 3600 * 24;
     }
 
     protected function unitsInTimestamp($timestamp) {

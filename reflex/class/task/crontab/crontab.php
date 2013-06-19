@@ -5,17 +5,17 @@
  **/
 class reflex_task_crontab {
 
-    public function lastDate($pattern) {
+    public function nextDate($pattern) {
 
         $pattern = util::splitAndTrim($pattern," ");
-        $date = util::now()->stamp();
+        $date = util::now()->seconds(0)->stamp();
 
         for($j=0;$j<1000;$j++) {
 
             for($i=0;$i<5;$i++) {
                 $field = self::fieldFactory($i,$pattern[$i]);
                 if(!$field->match($date)) {
-                    $field->decrementDate($date);
+                    $field->incrementDate($date);
                     break;
                 }
 

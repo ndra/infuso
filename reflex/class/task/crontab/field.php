@@ -53,8 +53,8 @@ abstract class reflex_task_crontab_field extends mod_component {
     abstract protected function unitsInRank($timestamp);
 
     /**
-     * Уменьшает дату на единицу (минута, час, день или месяц)
+     * Увеличивает дату на единицу (минута, час, день или месяц)
      **/
-    abstract public function decrementDate(&$timestamp);
+    abstract public function incrementDate(&$timestamp);
 
 }

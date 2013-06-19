@@ -8,8 +8,8 @@ class reflex_task_crontab_minute extends reflex_task_crontab_field {
     /**
      * Уменьшает дату на одну минуту
      **/
-    public function decrementDate(&$timestamp) {
-        $timestamp = $timestamp - 60;
+    public function incrementDate(&$timestamp) {
+        $timestamp = $timestamp + 60;
     }
 
     protected function unitsInTimestamp($timestamp) {
