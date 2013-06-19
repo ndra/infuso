@@ -22,7 +22,7 @@ class board_controller_task extends mod_controller {
         $tasks = board_task::visible()->orderByExpr($status->order())->limit($limit);
         $tasks->eq("status",$p["status"]);
 
-		// Учитываем поиск
+        // Учитываем поиск
         if($search = trim($p["search"])) {
         
             $search2 = util::str($search)->switchLayout();
@@ -60,7 +60,7 @@ class board_controller_task extends mod_controller {
             return false;
         }
 
-		
+        
         foreach($tasks as $task) {
 
             // Вывод дат
@@ -87,23 +87,23 @@ class board_controller_task extends mod_controller {
         $ret["recentProjects"] = array();
         $n = 0;
         $projects = board_task::all()
-			->eq("creator",user::active()->id())
-			->groupBy("projectID")
-			->orderByExpr("max(created) desc");
+            ->eq("creator",user::active()->id())
+            ->groupBy("projectID")
+            ->orderByExpr("max(created) desc");
         foreach($projects as $project) {
-        	$ret["recentProjects"][] = array(
-        	    "id" => $project->project()->id(),
-        	    "title" => $project->project()->title(),
-			);
+            $ret["recentProjects"][] = array(
+                "id" => $project->project()->id(),
+                "title" => $project->project()->title(),
+            );
             $n++;
             if($n>5) {
                 break;
             }
         }
         $ret["recentProjects"][] = array(
-    	    "id" => 0,
-    	    "title" => "<b>Другой</b>",
-		);
+            "id" => 0,
+            "title" => "<b>Другой</b>",
+        );
 
         return $ret;
     }
@@ -214,7 +214,7 @@ class board_controller_task extends mod_controller {
         $task = reflex::create("board_task",array(
             "status" => board_task_status::STATUS_DRAFT,
             "projectID" => $p["projectID"],
-		));
+        ));
         return $task->id();
     }
     
@@ -229,7 +229,7 @@ class board_controller_task extends mod_controller {
         $task = reflex::create("board_task",array(
             "status" => board_task_status::STATUS_DRAFT,
             "hindrance" => true,
-		));
+        ));
         return $task->id();
     }
 
@@ -302,7 +302,12 @@ class board_controller_task extends mod_controller {
     public static function post_changeTaskStatus($p) {
 
         $task = board_task::get($p["taskID"]);
-
+        
+        $currentTaskStatus = $task->status();
+        
+        
+        $taskLogType = board_task_log::TYPE_TASK_STATUS_CHANGED; // по умлчанию тип таск лога у нас "Статус задачи изменен"
+        
         // Параметры задачи
         if(!user::active()->checkAccess("board/changeTaskStatus",array(
             "task" => $task,
@@ -326,7 +331,22 @@ class board_controller_task extends mod_controller {
         $n = $task->storage()->setPath("/log/".$p["sessionHash"])->files()->count();
         $files = $n ? $p["sessionHash"] : "";
 
-        $task->logCustom($statusText,$time,board_task_log::TYPE_TASK_STATUS_CHANGED,$files);
+        if(!$p["status"]){
+            
+            switch($currentTaskStatus->id()){
+               
+                case board_task_status::STATUS_CHECKOUT:
+                    mod::trace(board_task_log::TYPE_TASK_STATUS_RETURNED);
+                    $taskLogType = board_task_log::TYPE_TASK_STATUS_RETURNED; //ставим статус возвращено  
+                break;
+                
+                default:
+                    $taskLogType = board_task_log::TYPE_TASK_STATUS_CHANGED;    
+                break;     
+            }    
+        }
+        mod::trace($taskLogType);
+        $task->logCustom($statusText,$time,$taskLogType,$files);
 
         return true;
     }

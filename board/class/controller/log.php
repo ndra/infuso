@@ -21,7 +21,7 @@ class board_controller_log extends mod_controller {
 
         // Только важные записи
         if($p["mode"]==0) {
-            $log->eq("type",array(board_task_log::TYPE_COMMENT,board_task_log::TYPE_TASK_STATUS_CHANGED));
+            $log->eq("type",array(board_task_log::TYPE_COMMENT,board_task_log::TYPE_TASK_STATUS_CHANGED, board_task_log::TYPE_TASK_STATUS_RETURNED));
         }
 
         foreach($log as $item) {
@@ -35,6 +35,7 @@ class board_controller_log extends mod_controller {
             }
 
             $row = array(
+                "type" => $item->data("type"),
                 "userpick" => $item->user()->userpick()->preview(16,16),
                 "user" => $item->user()->title(),
                 "text" => $item->data("text"),

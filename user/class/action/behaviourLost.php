@@ -56,7 +56,14 @@ class user_action_behaviourLost extends mod_behaviour {
         $msg = "Вы (или кто-то, указавший вашу почту) запросили восстановление пароля.\n";
         $msg.= "Если вы действительно хотите восстановить пароль, перейдите по ссылке ниже\n";
         $msg.= $url;
-        $user->mail($msg,"Восстановление пароля");
+        //$user->mail($msg,"Восстановление пароля");
+        $user->mailer()
+            ->message($msg)
+            ->subject("Восстановление пароля")
+            ->code("user:changePassword")
+            ->param("changePasswordURL",$url)
+            ->send();
+        
         $user->log("Запрос восстановления пароля");
         mod::action("user_action","lostSend")->redirect();
     }

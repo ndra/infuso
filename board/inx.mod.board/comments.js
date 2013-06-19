@@ -66,6 +66,9 @@ inx.ns("inx.mod.board").comments = inx.list.extend({
         
         // Текст
         var textContainer = $("<div>").appendTo(e);
+        if(data.type == 5){
+            textContainer.css({color: "#FFF", background: "red"});    
+        }
         $("<span>").html(data.text+" ").appendTo(textContainer);
         
         if(data.taskText) {

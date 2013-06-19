@@ -8,6 +8,7 @@ class board_task_log extends reflex {
     const TYPE_COMMENT = 1;
     const TYPE_TASK_MODIFIED = 3;
     const TYPE_TASK_STATUS_CHANGED = 4;
+    const TYPE_TASK_STATUS_RETURNED = 5;
 
     public function reflex_table() {
         return array (
@@ -60,6 +61,7 @@ class board_task_log extends reflex {
                         self::TYPE_COMMENT => "Комментарий",
                         self::TYPE_TASK_MODIFIED => "Задача изменена",
                         self::TYPE_TASK_STATUS_CHANGED => "Статус задачи изменен",
+                        self::TYPE_TASK_STATUS_RETURNED => "Задача возвращена с коментраием",
                     ),
                 ), array (
                     'name' => 'files',

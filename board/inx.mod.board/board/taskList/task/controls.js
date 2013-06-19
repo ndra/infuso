@@ -128,17 +128,23 @@ inx.mod.board.board.taskList.task.controls = inx.panel.extend({
     
     cmd_revisionTask:function() {
     
-        var comment = window.prompt("Причина возврата задачи");
+        /*var comment = window.prompt("Причина возврата задачи");
         if(comment===null) {
             return;
-        }
-    
-        this.call({
+        }*/
+        
+        inx({
+            type: 'inx.mod.board.returnTask', 
+            taskID:this.taskID,
+            status:0,
+        }).cmd('render');    
+        
+        /*this.call({
             cmd:"board/controller/task/changeTaskStatus",
             taskID:this.taskID,
             status:0,
             comment:comment
-        },[this.id(),"handleSave"])
+        },[this.id(),"handleSave"])*/
     },
     
     cmd_voteTask:function() {
