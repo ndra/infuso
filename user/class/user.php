@@ -9,10 +9,6 @@ class user extends reflex {
     private $thisIsActiveUser = false;
     private $errorText = "";
 
-    public static function test() {
-        mod::msg("test");
-    }
-    
     /**
      * Удаляем неактивных пользователей через 2 дня после регистрации
      **/
