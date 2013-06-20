@@ -210,6 +210,19 @@ class reflex_task extends reflex implements mod_handler {
         }
     }
 
+    /**
+     * Одноразовая ли задача
+     **/
+    public function oneTime() {
+
+        if(preg_match("/\d{4}-\d{2}-\d{2}\s(\d{2}\:\d{2}\:\d{2})?/",$this->data("crontab"))) {
+            return true;
+        }
+
+        return false;
+
+    }
+
 	/**
 	 * Выполняет данную задачу
 	 **/
@@ -220,6 +233,11 @@ class reflex_task extends reflex implements mod_handler {
         try {
         
 			$this->data("called",util::now());
+
+            if($this->oneTime()) {
+                $this->data("completed",true);
+            }
+
             $this->store();
 
 	        $method = $this->method();
