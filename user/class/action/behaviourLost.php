@@ -59,7 +59,7 @@ class user_action_behaviourLost extends mod_behaviour {
         $user->mailer()
             ->message($msg)
             ->subject("Восстановление пароля")
-            ->code("user:changePassword")
+            ->code("user/passwordRecovery")
             ->param("changePasswordURL",$url)
             ->send();
         

@@ -145,7 +145,7 @@ class user_action_behaviourRegister extends mod_behaviour {
         $user->mailer()
             ->message($txt)
             ->subject("Регистрация")
-            ->code("user:registration")
+            ->code("user/registration")
             ->param("verificationURL",$url)
             ->send();
             

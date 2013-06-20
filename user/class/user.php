@@ -377,8 +377,9 @@ class user extends reflex {
 
         foreach(util::splitAndTrim($this->data("roles")," ") as $role) {
             $role = user_role::get($role);
-            if($role->exists() && $role->code()!="guest")
+            if($role->exists() && $role->code()!="guest") {
                 $ret[] = $role;
+            }
         }
 
         return $ret;
@@ -400,21 +401,29 @@ class user extends reflex {
      **/
     public function addRole($role) {
         $roles = array($role);
-        foreach($this->roles() as $role)
+        foreach($this->roles() as $role) {
             $roles[] = $role->code();
-
+        }
         $roles = array_unique($roles);
-
         $this->data("roles",implode(" ",$roles));
     }
 
     /**
      * Отправляет пользователю письмо
      **/
-    public final function mail($message,$subject) {
+    public final function mail($first,$second=null) {
+
+        if(func_num_args()==1 && is_array($first)) {
+            $params = $first;
+        } else {
+            $params = array(
+                "message" => $first,
+                "subject" => $second,
+            );
+        }
+
         $mail = $this->mailer();
-        $mail->message($message);
-        $mail->subject($subject);
+        $mail->params($params);
         $mail->send();
     }
 
