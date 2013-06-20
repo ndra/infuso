@@ -12,21 +12,20 @@ class reflex_task_handler implements mod_handler {
 		}
 	}
 	
-   /* public function where() {
-
-        $q = trim($this->data("query"));
-
-        if(!$q) {
-            return 1;
-		}
-
-        if(($q*1).""==$q."") {
-            return " `id`='$q' ";
-		}
-
-        return $q;
-    } */
-
+	public static $origin = null;
+	
+	public function on_mod_beforeInit() {
+	    self::$origin = util::id();
+	}
+	
+	public function on_mod_afterInit() {
+	    reflex_task::all()
+			->eq("completed",0)
+			->neq("origin","")
+			->neq("origin",self::$origin)
+			->data("completed",1);
+	}
+	
     /**
      * Возвращает список задач, которые уже могут быть выполнены
      **/

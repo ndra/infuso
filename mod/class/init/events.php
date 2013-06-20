@@ -12,6 +12,7 @@ class mod_init_events extends mod_init {
 	    mod::msg("Firing init events");
 	    mod::fire("mod_beforeInit");
 		mod::fire("mod_init");
+		mod::fire("mod_afterInit");
 	}
 
 	/**

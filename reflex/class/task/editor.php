@@ -22,6 +22,20 @@ class reflex_task_editor extends reflex_editor {
     public function disable() {
         return "list";
     }
+    
+	public function gridData() {
+	    $data = parent::gridData();
+	    
+	    // Если были ошибки в течение часа, выводим строку красной
+	    if(util::now()->stamp() - $this->item()->pdata("lastErrorDate")->stamp() <= 3600) {
+		    $data["css"] = array(
+		        "background-color" => "red",
+		        "color" => "white",
+			);
+		}
+		
+	    return $data;
+	}
 
     public function filters() {
         return array(
@@ -41,19 +55,6 @@ class reflex_task_editor extends reflex_editor {
 
     public function action_exec() {
         $this->item()->exec();
-    }
-
-    public function renderListData() {
-        $ret = "";
-        $ret.= $this->item()->data("class");
-        $ret.= "::";
-        $ret.= $this->item()->data("method");
-        $ret.= "() ";
-        $ret.= "<i style='opacity:.5;' > where ";
-        $ret.= $this->item()->data("query");
-        $ret.= "</i>";
-        $ret.= " — ".$this->item()->data("fromID");
-        return $ret;
     }
 
 }

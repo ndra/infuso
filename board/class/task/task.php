@@ -3,7 +3,7 @@
 class board_task extends reflex {
 
     public function reflex_table() {
-
+    
         return array(
             'name' => 'board_task',
             'fields' => array (

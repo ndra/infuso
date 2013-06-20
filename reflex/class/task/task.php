@@ -56,11 +56,21 @@ class reflex_task extends reflex implements mod_handler {
 					'editable' => '2',
 					'label' => 'Выполнено раз',
 				), array (
+					'name' => 'lastErrorDate',
+					'type' => 'datetime',
+					'editable' => '2',
+					'label' => 'Когда была последняя ошибка',
+				), array (
 					'name' => 'crontab',
 					'type' => 'textfield',
 					'editable' => '1',
 					'label' => 'Шаблон (в формате crontab)',
 					'help' => "Минуты, часы, день месяца, месяц, день недели",
+				), array (
+					'name' => 'origin',
+					'type' => 'textfield',
+					'editable' => '1',
+					'label' => 'Источник',
 				),
 			),
 		);
@@ -106,6 +116,20 @@ class reflex_task extends reflex implements mod_handler {
      * )
      **/
     public static function add($params) {
+    
+        $mode = "reflex";
+        
+        try {
+	        $rmethod = new ReflectionMethod($params["class"],$params["method"]);
+	        if($rmethod->isStatic()) {
+	            $mode = "static";
+	        }
+		} catch (Exception $ex) {}
+    
+        if($mode == "reflex") {
+            reflex_task_reflex::add($params);
+            return;
+        }
 
         if(is_array($params)) {
             $params = util::a($params)->filter("class","query","method","params","crontab")->asArray();
@@ -135,43 +159,17 @@ class reflex_task extends reflex implements mod_handler {
         $item = self::all()
             ->eq($params)
             ->one();
+            
+		$params["origin"] = reflex_task_handler::$origin;
 
         if(!$item->exists()) {
             $item = reflex::create("reflex_task",$params);
+        } else {
+            if($params["origin"]) {
+            	$item->data("origin",$params["origin"]);
+            	$item->store();
+            }
         }
-
-    }
-
-    public static function addReflex($p) {
-        self::add(array(
-            "class" => get_class(),
-            "method" => "execReflex",
-            "params" => array(
-                "class" => $p["class"],
-                "method" => $p["method"],
-                "params" => $p["params"],
-            ),
-        ));
-    }
-
-    public static function execReflex($p,$task) {
-        $item = reflex::get($p["class"])
-            ->asc("id")
-            ->gt("id",$task->data("iterator"))
-            ->one();
-
-        if(!$item->exists()) {
-            $task->data("completed",true);
-            $task->store();
-            return;
-        }
-
-        $task->data("iterator",$item->id());
-        $task->store();
-
-        $method = $p["method"];
-        $params = $p["params"];
-        $item->$method($params);
 
     }
 
@@ -184,7 +182,11 @@ class reflex_task extends reflex implements mod_handler {
     }
 
     public function methodParams(){
-        return unserialize($this->data("params"));
+        $params = $this->pdata("params");
+        if(!is_array($params)) {
+            $params = array();
+        }
+        return $params;
     }
 
     /**
@@ -215,9 +217,6 @@ class reflex_task extends reflex implements mod_handler {
 	        $method = $this->method();
 	        $class = $this->className();
 	        $params = $this->methodParams();
-	        if(!$params) {
-	            $params = array();
-	        }
 	        
 	        $callback = array($class, $method);
 
@@ -233,6 +232,7 @@ class reflex_task extends reflex implements mod_handler {
 	        
 		} catch (Exception $ex) {
 		
+		    $this->data("lastErrorDate",util::now());
 			$this->log("Exception: ".$ex->getMessage());
 		    
 		}
