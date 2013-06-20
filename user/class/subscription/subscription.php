@@ -59,7 +59,7 @@ class user_subscription extends reflex {
             "class" => "user_subscription",
             "query" => "`key`='".reflex_mysql::escape($key)."'",
             "method" => "mail",
-            "params" => array($params),
+            "params" => $params,
         ));
     }
 

@@ -34,8 +34,6 @@ class reflex_task_reflex {
 			$query = $q;
         }
         
-        mod::msg($query);
-        
         $item = reflex::get($p["class"])
             ->asc("id")
             ->gt("id",$task->data("iterator"))
@@ -53,6 +51,7 @@ class reflex_task_reflex {
 
         $method = $p["method"];
         $params = $p["params"];
+        
         $item->$method($params);
 
     }

@@ -117,20 +117,8 @@ class reflex_task extends reflex implements mod_handler {
      **/
     public static function add($params) {
     
-        $mode = "reflex";
-        
-        try {
-	        $rmethod = new ReflectionMethod($params["class"],$params["method"]);
-	        if($rmethod->isStatic()) {
-	            $mode = "static";
-	        }
-		} catch (Exception $ex) {}
+        // Разруливаем олдскульный случай, когда параметры передавались не массивом а в аргументах
     
-        if($mode == "reflex") {
-            reflex_task_reflex::add($params);
-            return;
-        }
-
         if(is_array($params)) {
             $params = util::a($params)->filter("class","query","method","params","crontab")->asArray();
 
@@ -144,6 +132,24 @@ class reflex_task extends reflex implements mod_handler {
                 "params" => $args[3] ? $args[3] : array(),
             );
         }
+        
+        // Разруливаем reflex-задачи
+        
+        $mode = "reflex";
+
+        try {
+	        $rmethod = new ReflectionMethod($params["class"],$params["method"]);
+	        if($rmethod->isStatic()) {
+	            $mode = "static";
+	        }
+		} catch (Exception $ex) {}
+
+        if($mode == "reflex") {
+            reflex_task_reflex::add($params);
+            return;
+        }
+        
+		// Если мы дошли до этого места, у нас обычная статическая задача
         
         if(!$params["class"]) {
             throw new Exception("Параметр <b>class</b> не указан");
