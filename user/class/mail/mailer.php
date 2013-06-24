@@ -147,7 +147,7 @@ class user_mailer extends mod_component {
                         
                 // Выполним код шаблона                
                 ob_start();
-                $this->evalCode(" ?>" . $message . "<?php ",$this->params());
+                $this->evalCode(" ?".">" . $message . "<"."?php ",$this->params());
                 $message = ob_get_clean();
                 
                 // Изменяем исходное сообщение                
@@ -203,6 +203,9 @@ class user_mailer extends mod_component {
         return $this;
     }
     
+    /**
+     * Возвращает объект пользователя, которому адресовано сообщение
+     **/
     public function user() {
         return user::get($this->param("userID"));
     }        

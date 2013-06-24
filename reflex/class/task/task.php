@@ -200,12 +200,27 @@ class reflex_task extends reflex implements mod_handler {
      **/
     public function updateNextLaunchTime() {
 
-        if(trim($this->data("crontab"))=="") {
+        if(preg_match("/\d{4}-\d{2}-\d{2}\s(\d{2}\:\d{2}\:\d{2})?/",$this->data("crontab"))) {
+            $this->data("nextLaunch",$this->data("crontab"));
+        } elseif(trim($this->data("crontab"))=="") {
             $this->data("nextLaunch",util::now());
         } else {
             $time = reflex_task_crontab::nextDate($this->data("crontab"));
             $this->data("nextLaunch",$time);
         }
+    }
+
+    /**
+     * Одноразовая ли задача
+     **/
+    public function oneTime() {
+
+        if(preg_match("/\d{4}-\d{2}-\d{2}\s(\d{2}\:\d{2}\:\d{2})?/",$this->data("crontab"))) {
+            return true;
+        }
+
+        return false;
+
     }
 
 	/**
@@ -218,6 +233,11 @@ class reflex_task extends reflex implements mod_handler {
         try {
         
 			$this->data("called",util::now());
+
+            if($this->oneTime()) {
+                $this->data("completed",true);
+            }
+
             $this->store();
 
 	        $method = $this->method();

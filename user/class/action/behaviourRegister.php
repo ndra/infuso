@@ -54,6 +54,11 @@ class user_action_behaviourRegister extends mod_behaviour {
         if($r) {
             $user->setVerification();
             $user->activate();
+            $user->mailer()
+                ->subject("Ваша учетная запись активирована")
+                ->message("Поздравляем, ваша учетная запись активирована")
+                ->code("user/verification")
+                ->send();
             mod_action::get("user_action","verificationComplete")->redirect();
         }
 
@@ -140,7 +145,7 @@ class user_action_behaviourRegister extends mod_behaviour {
         $user->mailer()
             ->message($txt)
             ->subject("Регистрация")
-            ->code("user:registration")
+            ->code("user/registration")
             ->param("verificationURL",$url)
             ->send();
             
