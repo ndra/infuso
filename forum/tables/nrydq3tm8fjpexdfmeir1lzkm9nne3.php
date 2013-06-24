@@ -46,9 +46,11 @@
       'type' => 'x8g2-xkgh-jc52-tpe2-jcgb',
       'editable' => '1',
       'id' => 'ipomephdic2jvferfwrvkag736t95w',
-      'label' => 'Дата и время',
+      'label' => 'Создано',
       'default' => 'now()',
-      'indexEnabled' => '0',
+      'indexEnabled' => 0,
+      'group' => '',
+      'help' => '',
     ),
     5 => 
     array (
