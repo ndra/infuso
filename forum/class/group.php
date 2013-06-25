@@ -134,7 +134,7 @@ class forum_group extends reflex {
      *
      * @return reflex_list
      **/
-    _public function topics() {
+    public function _topics() {
         return forum_topic::all()
             ->eq("group", $this->id())
             ->asc("date");
