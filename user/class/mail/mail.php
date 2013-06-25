@@ -1,5 +1,8 @@
 <?
 
+/**
+ * Модель письма в админке
+ **/
 class user_mail extends reflex {
 
     public function all() {
@@ -29,70 +32,59 @@ class user_mail extends reflex {
                 array (
                     'name' => 'id',
                     'type' => 'jft7-kef8-ccd6-kg85-iueh',
-                ),
-                array (
+                ), array (
                     "label" => "Отправлено",
                     'name' => "sent",
                     'type' => "x8g2-xkgh-jc52-tpe2-jcgb",
                     "editable" => 2,
                     "default" => "now()",
-                ),
-                array(
+                ), array(
                      "label" => "Прочитано",
                     'name' => "read",
                     'type' => "fsxp-lhdw-ghof-1rnk-5bqp",
                     "editable" => 2,
-                ),
-                array (
+                ), array (
                     "label" => "Пользователь",
                     'name' => 'userID',
                     'type' => "pg03-cv07-y16t-kli7-fe6x",
                     "class" => "user",                    
                     "editable" => 2,
-                ),
-                array (
+                ), array (
                     "label" => "От",
                     'name' => 'from',
                     'type' => "v324-89xr-24nk-0z30-r243",
                     "editable" => 2,
-                ),
-                array (
+                ), array (
                     "label" => "Кому",
                     'name' => 'to',
                     'type' => "v324-89xr-24nk-0z30-r243",
                     "editable" => 2,
-                ),
-                array (
+                ), array (
                     "label" => "Тема",
                     'name' => 'subject',
                     'type' => "v324-89xr-24nk-0z30-r243",
                     "editable" => 2,
-                ),
-                array (
+                ), array (
                     "label" => "Сообщение",
                     'name' => 'message',
                     'type' => "kbd4-xo34-tnb3-4nxl-cmhu",
                     "editable" => 2,
-                ),
-                array (
+                ), array (
                     "label" => "Код склейки",
                     'name' => 'glue',
                     'type' => "v324-89xr-24nk-0z30-r243",
                     "editable" => 2,
-                ),
-                array (
+                ), array (
                     "label" => "Отправить после данного времени (для склеек)",
                     'name' => 'glueSendAfter',
                     'type' => "x8g2-xkgh-jc52-tpe2-jcgb",
                     "editable" => 2,
-                ),
-                array(
+                ), array(
                     "label" => "Отправлено",
                     'name' => 'done',
                     'type' => "fsxp-lhdw-ghof-1rnk-5bqp",
                     "editable" => 2,
-                ),
-                array(
+                ), array(
                     "label" => "Параметры",
                     'name' => 'params',
                     'type' => "puhj-w9sn-c10t-85bt-8e67",

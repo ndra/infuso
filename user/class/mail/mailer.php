@@ -1,27 +1,29 @@
-<?php
+<?
 
 /**
  * Отправка письма
- * 
+ *
  * $mail = new user_mailer("Я <@>");
  * $mail->subject("Руссссс")
  *      ->message("Текст тест русс")
  *      ->from("Русс <@>");
  * $mail->attach("/site/res/img.jpg");
  * $mail->send();
- * 
+ *
  * @package user.mail
  * @author Petr.Grishin
  **/
 class user_mailer extends mod_component {
-    
+
+    private $log = null;
+
     public function initialParams() {
         return array(
             "subject" => "",
             "message" => "",
             "from" => "",
             "to" => "",
-            "template" => "",
+            "layout" => "",
             "headers" => array(),
             "type" => "text/plain",
             "code" => null, // Код типа письма (используется для подключения шаблона)
@@ -32,7 +34,7 @@ class user_mailer extends mod_component {
             "businessRules" => "",
         );
     }
-    
+
     /**
      * Статический метод для использования Mail builder'a
      *
@@ -45,21 +47,21 @@ class user_mailer extends mod_component {
         $mail->to($to);
         //Параметры по умолчанию
         $mail->from(mod::conf("user:email_from"));
-        $mail->template(mod::conf("user:email_template"));
+        $mail->layout(mod::conf("user:email_template"));
         return $mail;
     }
-       
+
     /**
      * Задает тип письма как html
      **/
     public function html() {
         $this->type("text/html");
         return $this;
-    }    
+    }
 
     /**
      * Возвращает список датаврапперов для сайта
-     **/   
+     **/
     public function dataWrappers() {
         return array(
             "subject" => "mixed",
@@ -87,111 +89,95 @@ class user_mailer extends mod_component {
         $this->param("headers",$headers);
         return $this;
     }
-    
+
     /**
-     * Обработка письма шаблоном
+     * Обработка письма reflex-шаблоном
      **/
     public function processTemplate() {
-    
+
         // Находим шаблон с таким же кодом как у текущего почтового события
         // Если шаблон не найден, создаем его
         $tmp = user_mail_template::all()->eq("code",$this->code())->one();
-        
+
         //Отключаем отправку писем если такой параметр указан в шаблоне
         if ($tmp->disable()) {
             $this->disable(true);
         }
-        
+
         if(!$tmp->exists()) {
             $tmp = reflex::create("user_mail_template",array(
                 "code" => $this->code(),
                 "from" => $this->from(),
                 "subject" => $this->subject(),
                 "message" => $this->message(),
-                "template" => $this->template(),
+                "layout" => $this->layout(),
             ));
         }
-        
-        // Подготавливаем параметры для подстановки в шаблон в стиле %%name%% 
+
+        // Подготавливаем параметры для подстановки в шаблон в стиле %%name%%
         $replace = array();
         foreach($this->params() as $key=>$val) {
             if(is_scalar($val)) {
                 $replace["%%".$key."%%"] = $val;
             }
         }
-                
+
+
+        // Записываем в шаблон параметры
         $tmp->data("params",implode(", ",array_keys($replace)));
-        
+
         // Если шаблон включен, выполняем его
         if ($tmp->data("enable") == true) {
-            
-            // Заменяем поле "от кого"
-            
-            if ($from = trim($tmp->data("from"))) {
-                $from = strtr($from,$replace);
-                $this->from($from);
-            }
-            
-            // Заменяем тему
-            
-            if ($subject = trim($tmp->data("subject"))) {
-                $subject = strtr($subject,$replace);
-                $this->subject($subject);
-            }
-            
-            // Заменяем сообщение
-            
-            if ($message = trim($tmp->data("message"))) {
-            
-                $message = strtr($message,$replace);
-                        
-                // Выполним код шаблона                
-                ob_start();
-                $this->evalCode(" ?".">" . $message . "<"."?php ",$this->params());
-                $message = ob_get_clean();
-                
-                // Изменяем исходное сообщение                
-                $this->message($message);
-            }
-            
-            // Заменяем шаблон письма
-            
-            if ($template = trim($tmp->data("template"))) {
-                $template = strtr($template,$replace);
-                $this->template($template);
+
+            // Параметры письма, которые будут заменены шаблоном
+            $templateKeys = array("from","subject","message","layout");
+            foreach($templateKeys as $key) {
+
+                // Заменяем %%key%%
+                if($tmpValue = trim($tmp->data($key))) {
+
+                    // Выполняем шаблон как php-код
+                    ob_start();
+                    $this->evalCode(" ?".">" . $tmpValue . "<"."?php ",$this->params());
+                    $tmpValue = ob_get_clean();
+
+                    $value = strtr($tmpValue,$replace);
+                    $this->param($key,$value);
+                }
+
             }
         }
-        
+
     }
-    
+
     /**
      * Прикрепляет файл к письму
      * @var $file string Файл для прикрепления от корня веб проекта
      * @author Petr.Grishin
      **/
     public function attach($file = null, $name = null, $cid = null) {
-        
+
         if ($file === null || $file == "")
             return $this;
-        
+
         return $this->attachNative(mod_file::get($file)->native(), $name, $cid);
     }
-    
-    
+
+
     /**
      * Прикрепляет файл к письму
      * @var $file string Файл для прикрепления Нативный
      * @author Petr.Grishin
      **/
     public function attachNative($file = null, $name = null, $cid = null) {
-        
+
         if ($file === null || $file == "")
             return $this;
-        
+
         if ($name === null || $name == "") {
             $name = mod_file::get($file)->name();
         }
-        
+
         $attachments = $this->param("attachments");
         $attachments[] = array(
             "name" => $name,
@@ -199,17 +185,17 @@ class user_mailer extends mod_component {
             "cid" => $cid,
         );
         $this->param("attachments",$attachments);
-        
+
         return $this;
     }
-    
+
     /**
      * Возвращает объект пользователя, которому адресовано сообщение
      **/
     public function user() {
         return user::get($this->param("userID"));
-    }        
-    
+    }
+
     /**
      * Получаем список прикрепленных к письму файлов
      **/
@@ -222,97 +208,111 @@ class user_mailer extends mod_component {
      * @author Petr.Grishin
      **/
     public function send() {
-        
+
         mod::fire("user_beforeMail", array("mail" => $this));
-        
+
         // Обработка пользовательскими шаблонами
         if($this->code()) {
             $this->processTemplate();
-        }        
-        
-        //Если письмо заблокированно возвращаем false
+        }
+
+        // Если письмо заблокированно возвращаем false
         if ($this->disable()) {
-            return false;
+            return;
         }
-        
+
         $message = $this->message();
-        
+
         if ($this->type() == "text/html") {
-            $message = self::prepareHtml($message);
+            $this->textToHTML();
         }
-        
-        $params = array();
-        foreach($this->params() as $key=>$val) {
-            if(is_scalar($val)) {
-                $params[$key] = $val;
-            }
-        }
-        
-        $log = reflex::create("user_mail",array(
-            "userID"=> $this->user()->id(),
-            "to" => $this->to(),
-            "from" => $this->from(),
-            "subject"=> $this->subject(),
-            "message" => $message,
-            "glue" => $this->glue(),
-            "params" => $this->params(),
-        ));
-                
-        // Если нет склейки, отправляем письмо
+
+        // Если нет склейки, отправляем письмо сразу
         if(!$this->glue()) {
-            
-            if ($this->template()) {
-                $message = strtr($this->template(), array("%text%"=>$message));
+
+            // Обработка каркаса
+            if ($this->layout()) {
+                $message = strtr($this->layout(), array("%text%" => $message));
             }
-            
+
+            // Выполняем бизнес правила и отправляем письмо
             if($this->evalBusinessRules()) {
                 $mailer = mod::service("mailer");
                 $mailer->params($this->params());
                 $mailer->param("message",$message);
                 $mailer->send();
             }
-            
-            $log->data("done",true);
-        
+
+            $this->log()->data("done",true);
         }
-        
-        return $ret;
-        
+
     }
-    
+
+    /**
+     * Записывает письмо в лог
+     **/
+    public function logMail() {
+
+        // Сохраняем письмо в лог
+        $log = reflex::create("user_mail",array(
+            "userID"=> $this->user()->id(),
+            "to" => $this->to(),
+            "from" => $this->from(),
+            "subject" => $this->subject(),
+            "message" => $this->message(),
+            "glue" => $this->glue(),
+            "params" => $this->params(),
+        ));
+    }
+
+    /**
+     * Возвращает объект лога, в который было сохранено сообщение
+     * Если сообщение не было сохранено, возвращает виртуальный объект лога
+     **/
+    public function log() {
+        if($this->log) {
+            return $this->log;
+        }
+        return reflex::virtual("user_mail");
+    }
+
     /**
      * Подготавливает текст перед отправкой в формате HTML
      *
-     * @return string
+     * @return Object
      * @author Petr.Grishin
      **/
-    private function prepareHtml($text) {
-        
-        if (!$this->param("prepareHtml")) return $text;
-        
+    private function textToHTML() {
+
+        $text = $this->param("message");
+
+        if (!$this->param("prepareHtml")) {
+            return $text;
+        }
+
         //Если в тексте нет ни одного HTML Тега
         if (!preg_match("/<.*>/", $text)) {
-            
             //Добавляет переносы
             $text = nl2br($text, true);
-            
             //Преобразует ссылки
             $text = self::prepareLinks($text);
-            
         }
-        
-        return $text;
+
+        $this->param("message",$text);
+        return $this;
     }
-    
+
+    /**
+     * Выполняет бизнес-правила этого письма и возвращает то что вернул выполненный код
+     * Если у письма отсутствуют бизнес-правила, вернет true
+     **/
     public function evalBusinessRules() {
         if(!trim($this->param("businessRules"))) {
             return true;
         }
-        
         return eval($this->param("businessRules"));
-        
     }
-    
+
     /**
      * Преобразует ссылки в тексте. Список ссылок: http, https, ftp, www, e-mail(@)
      *
@@ -325,6 +325,6 @@ class user_mailer extends mod_component {
         $text = preg_replace("/(^|[\n ])([a-z0-9&\-_\.]+?)@([\w\-]+\.([\w\-\.]+)+)/i", "$1<a href=\"mailto:$2@$3\">$2@$3</a>", $text);
         return($text);
     }
-   
 
-} // END class
+
+}

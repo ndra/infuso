@@ -68,12 +68,15 @@
     ),
     7 => 
     array (
-      'name' => 'template',
+      'name' => 'layout',
       'type' => 'kbd4-xo34-tnb3-4nxl-cmhu',
       'editable' => '1',
       'id' => 'ls805u3sozlwytayc02oqooesaeltw',
       'indexEnabled' => 0,
-      'label' => 'Шаблон письма',
+      'label' => 'Каркас письма',
+      'group' => '',
+      'default' => '',
+      'help' => '',
     ),
     8 => 
     array (
