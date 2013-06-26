@@ -71,7 +71,7 @@ class user_mailer extends mod_component {
             "code" => "mixed",
             "glue" => "mixed",
             "codeAfterGlue" => "mixed",
-            "template" => "mixed",
+            "layout" => "mixed",
             "type" => "mixed",
             "headers" => "mixed",
             "userID" => "mixed",
