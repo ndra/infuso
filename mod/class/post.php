@@ -30,7 +30,15 @@ class mod_post {
 			    if($obj->methodExists("post_".$method)) {
 			        $status = true;
 			        try {
+			        
+			            // Вызываем сообщение
+			            mod::fire("mod_beforecmd",array(
+			                "params" => $p,
+						));
+
+						// Выполняем
 			        	$ret = call_user_func_array(array($obj,"post_".$method),array($p,$files));
+			        	
 			        } catch(mod_userLevelException $ex) {
 			            mod::msg($ex->getMessage(),1);
 			        }
