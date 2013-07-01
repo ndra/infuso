@@ -441,7 +441,7 @@ class user extends reflex {
         
         //Параметры по умолчанию
         $mail->from(mod::conf("user:email_from"));
-        $mail->template(mod::conf("user:email_template"));
+        $mail->layout(mod::conf("user:email_template"));
         
         if($this->param("disableMailer")) {
             $mail->param("disable",true);
