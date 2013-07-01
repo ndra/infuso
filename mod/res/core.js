@@ -21,18 +21,22 @@ mod.on = function(name,handler) {
 	mod.handlers[name].push(handler);
 }
 
+/**
+ * Отправляет команду на сервер
+ **/
 mod.cmd = function(data,fn) {
     var json = JSON.stringify(data);
     this.request = $.ajax({
-        url:"/mod/pub/json.php",
-        data:{data:json},
-        type:"POST",
+        url: "/mod/pub/json.php?cmd="+data.cmd, // Добавляем команду к get-запросу (для логов)
+        data: {data:json},
+        type: "POST",
         success:function(d){
             mod.handleCmd(true,d,fn);
         },
-		error:function(r) {
-            if(r.readyState!=0)
-            	mod.handleCmd(false,r.responseText);
+        error:function(r) {
+            if(r.readyState!=0) {
+                mod.handleCmd(false,r.responseText);
+			}
         }
     })
 },
