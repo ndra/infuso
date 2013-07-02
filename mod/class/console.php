@@ -191,10 +191,6 @@ class mod_console extends mod_controller{
 	    echo "</body></html>";
 	}
 
-	public static function redirect($url) {
-	    header("Location:$url");
-	}
-
 	public static function generateBasePack() {
 	
 		$base = array(
