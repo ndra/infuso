@@ -35,6 +35,7 @@ class user_action extends mod_controller {
 	    
 	        return "Пользователь с электронной почтой $email уже существует.";
 	    }
+	    
 	    return true;
 	}
 

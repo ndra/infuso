@@ -43,9 +43,13 @@ class user_action_behaviour extends mod_behaviour {
      * Команда авторизации
      **/
     public function post_login($p) {
+    
         if(user::login($p["login"],$p["password"],$p["keep"])) {
             user_action::redirectAfterLogin();
+            return true;
         }
+        
+        return false;
     }
 
 }
