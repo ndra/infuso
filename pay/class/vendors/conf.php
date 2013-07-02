@@ -25,6 +25,9 @@ class pay_vendors_conf extends mod_conf {
             array("id"=>"pay:interkasssa-key","title"=>"Interkasssa: секретный ключ"),
             array("id"=>"pay:interkasssa-shopid","title"=>"Interkasssa: Идентификатор магазина"),
             
+            array("id"=>"pay:walletone-key","title"=>"Единая касса: секретный ключ"),
+            array("id"=>"pay:walletone-shopid","title"=>"Единая касса: Идентификатор магазина"),
+            
             array("id"=>"pay:robokassa-key","title"=>"Robokassa: секретный ключ"),
             array("id"=>"pay:robokassa-login","title"=>"Robokassa: логин"),
             array("id"=>"pay:robokassa-secure-1","title"=>"Robokassa: подпись 1"),

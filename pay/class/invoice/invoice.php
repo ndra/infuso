@@ -264,7 +264,7 @@ class pay_invoice extends reflex implements mod_handler {
         
         return $this;
     }
-	
+    
     /**
      * Возвращает владельца счета
      **/
@@ -401,7 +401,7 @@ class pay_invoice extends reflex implements mod_handler {
         
             $this->log("Входящая сумма {$sum} меньше суммы счета " . $this->data("sum"));
             return false;
-			
+            
         }
     }
     
