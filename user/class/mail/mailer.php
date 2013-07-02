@@ -131,23 +131,32 @@ class user_mailer extends mod_component {
 
             // Параметры письма, которые будут заменены шаблоном
             $templateKeys = array("from","subject","message","layout");
+            
             foreach($templateKeys as $key) {
-
                 // Заменяем %%key%%
-                if($tmpValue = trim($tmp->data($key))) {
-
-                    // Выполняем шаблон как php-код
-                    ob_start();
-                    $this->evalCode(" ?".">" . $tmpValue . "<"."?php ",$this->params());
-                    $tmpValue = ob_get_clean();
-
-                    $value = strtr($tmpValue,$replace);
-                    $this->param($key,$value);
+                if($code = trim($tmp->data($key))) {
+                    $this->param($key,$this->evalPart($code));
                 }
-
             }
         }
-
+    }
+    
+    private function evalPart($code) {
+    
+        ob_start();
+        $this->evalCode(" ?".">{$code}<"."?php ",$this->params());
+        $code = ob_get_clean();
+        
+        $replace = array();
+        foreach($this->params() as $key=>$val) {
+            if(is_scalar($val)) {
+                $replace["%%".$key."%%"] = $val;
+            }
+        }
+        
+        $code = strtr($code,$replace);
+        return $code;
+        
     }
 
     /**
@@ -234,7 +243,7 @@ class user_mailer extends mod_component {
 
             // Обработка каркаса
             if ($this->layout()) {
-                $message = strtr($this->layout(), array("%text%" => $message));
+				$message = $this->evalPart($this->layout());
             }
 
             // Выполняем бизнес правила и отправляем письмо
