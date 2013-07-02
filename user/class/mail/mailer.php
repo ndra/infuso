@@ -227,6 +227,8 @@ class user_mailer extends mod_component {
             $this->textToHTML();
         }
 
+        $this->logMail();
+
         // Если нет склейки, отправляем письмо сразу
         if(!$this->glue()) {
 
@@ -263,6 +265,9 @@ class user_mailer extends mod_component {
             "glue" => $this->glue(),
             "params" => $this->params(),
         ));
+
+        $this->log = $log;
+
     }
 
     /**
