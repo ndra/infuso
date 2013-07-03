@@ -93,21 +93,21 @@ class pay_vendors_walletone extends pay_vendors {
                     "driver" => "walletone")
                 );
                 if($result){
-                    print_answer("Ok", "Заказ #" . $p["WMI_PAYMENT_NO"] . " оплачен!");
+                    self::print_answer("Ok", "Заказ #" . $p["WMI_PAYMENT_NO"] . " оплачен!");
                 }
             }
             else
             {
                 // Случилось что-то странное, пришло неизвестное состояние заказа
             
-                print_answer("Retry", "Неверное состояние ". $p["WMI_ORDER_STATE"]);
+                self::print_answer("Retry", "Неверное состояние ". $p["WMI_ORDER_STATE"]);
             }
         }
         else
         {
         // Подпись не совпадает, возможно вы поменяли настройки интернет-магазина
         
-            print_answer("Retry", "Неверная подпись " . $p["WMI_SIGNATURE"]);
+            self::print_answer("Retry", "Неверная подпись " . $p["WMI_SIGNATURE"]);
         }
         
     }
