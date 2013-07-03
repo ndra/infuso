@@ -79,7 +79,7 @@ class board_controller_report extends mod_controller {
         tmp::exec("/board/report/project-detailed", array(
             "project" => $project,
             "params" => $p,
-		));
+        ));
 
     }
 
@@ -95,7 +95,7 @@ class board_controller_report extends mod_controller {
 
         tmp::exec("/board/report/done", array(
             "params" => $p,
-		));
+        ));
 
     }
 
@@ -152,6 +152,10 @@ class board_controller_report extends mod_controller {
         }
 
         return $ret;
+    }
+    
+    public function index_gallery($p) {
+        tmp::exec("/board/report/gallery");
     }
 
     /**

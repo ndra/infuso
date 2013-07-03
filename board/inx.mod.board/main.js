@@ -103,6 +103,13 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
                 }).cmd("setParams",params.params);
                 break;
                 
+            case "report-gallery":
+                this.tabs.cmd("add",{
+                    type:"inx.mod.board.report.gallery",
+                    name:"report-gallery"
+                }).cmd("setParams",params.params);
+                break;
+                
             case "task":
                 this.cmd("editTask",{taskID:params.params.id});
                 history.back();

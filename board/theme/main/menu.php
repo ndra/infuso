@@ -19,6 +19,7 @@
         <a class='item' href='#report-projects' >Проекты</a>
         <a class='item' href='#report-workers' >Пользователи</a>
         <a class='item' href='#report-vote' >Голоса</a>
+        <a class='item' href='#report-gallery' >Галерея</a>
     </div>
 </div>
 
