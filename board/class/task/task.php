@@ -190,13 +190,19 @@ class board_task extends reflex {
         // Устанавливаем новую дату изменения только если задача активна
         // Иначе мы можем влезть в статистику по прошлому периоду
         if($this->field("status")->changed()) {
+        
             if($this->status()->active()) {
                 $this->data("changed",util::now());
             }
+            
             $this->data("paused",false);
             $this->data("pauseTime",0);
 
-            $this->defer("handleStatusChanged");
+			// Отправляем рассылку про выполненные сообщения
+			if($this->field("status")->initialValue() == board_task_status::STATUS_IN_PROGRESS
+				&& in_array($this->data("status"),array(board_task_status::STATUS_COMPLETED, board_task_status::STATUS_CHECKOUT))) {
+            	$this->defer("handleCompleted");
+			}
 
         }
 
@@ -239,12 +245,12 @@ class board_task extends reflex {
     /**
      * Делает рассылку на почту при изменении статуса
      **/
-    public function handleStatusChanged() {
+    public function handleCompleted() {
 
         $taskTextShort = util::str($this->data("text"))->ellipsis(100);
         $taskTextLong = util::str($this->data("text"))->ellipsis(1000);
         $params = array(
-            "subject" => "{$this->responsibleUser()->title()} / {$this->project()->title()} / {$this->status()->title()} / $taskTextShort",
+            "subject" => "{$this->responsibleUser()->title()} / {$this->project()->title()} / {$this->status()->action()} / $taskTextShort",
             "type" => "text/html",
         );
 
@@ -258,7 +264,6 @@ class board_task extends reflex {
         $message.= "<td><img src='{$userpick}' ></td>";
         $message.= "<td>";
         $message.= "Проект: <b>".$this->project()->title()."</b><br/>";
-        $message.= $this->status()->title()."<br/>";
         $logItem = $this->getLogCustom()->geq("created",util::now()->shift(-3))->one();
         $message.= $logItem->data("text");
         $message.= "</td>";
@@ -276,9 +281,9 @@ class board_task extends reflex {
         $params["message"] = $message;
 
         // Рассылка по всем
-        user_subscription::mailByKey("board/statusChange",$params);
+        user_subscription::mailByKey("board/taskCompleted",$params);
         // Рассылка подписанным на конкретный проект
-        user_subscription::mailByKey("board/project-{$this->project()->id()}/statusChange",$params);
+        user_subscription::mailByKey("board/project-{$this->project()->id()}/taskCompleted",$params);
 
     }
 
