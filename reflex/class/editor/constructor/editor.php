@@ -6,7 +6,7 @@ class reflex_editor_constructor_editor extends reflex_editor {
         return array(
             "type" => "inx.mod.reflex.construct",
             "constructorID" => $this->item()->id(),
-            "form" => $this->item()->getList()->editor()->inxForm(),
+            "form" => $this->item()->getList()->editor()->inxConstructorForm(),
         );
 	}
 	

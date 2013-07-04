@@ -253,6 +253,10 @@ class reflex_editor_behaviourInx extends mod_behaviour {
 
         return $ret;
     }
+    
+    public function inxConstructorForm() {
+		return $this->component()->inxForm();
+    }
 
     /**
      * @return bool
