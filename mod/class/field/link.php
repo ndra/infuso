@@ -20,9 +20,9 @@ class mod_field_link extends mod_field {
     }
 
     public function pvalue() {
-        if(trim($this->conf("foreignKey"))){
+        if(trim($this->conf("foreignKey"))) {
             return reflex::get($this->itemClass())->eq(trim($this->conf("foreignKey")),$this->value())->one();    
-        }else{
+        } else {
             return reflex::get($this->itemClass(),$this->value());
         }
     }
@@ -69,7 +69,7 @@ class mod_field_link extends mod_field {
         return array(
             "type" => "inx.mod.reflex.fields.link",
             "value" => $this->value(),
-            "text" => $this->pvalue()->title(),
+            "text" => $this->pvalue()->exists() ? $this->pvalue()->title() : "",
             "className" => $this->itemClass(),
         );
     }
