@@ -50,13 +50,13 @@ inx.mod.board.task.more = inx.panel.extend({
             width:235
         });
     
-        column1.cmd("add",{
+        /*column1.cmd("add",{
             type:"inx.textfield",
             name:"timeScheduled",
             value:data.timeScheduled,
             width:30,            
             label:"Планирую (ч.)"
-        });
+        }); */
         
        column1.cmd("add",{            
             type:"inx.combo",

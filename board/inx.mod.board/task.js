@@ -67,15 +67,36 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
     
         this.data = data;
     
-        // Описание задачи
+        // Описание задачи и время
         this.form.cmd("add",{
-            type:"inx.textarea",
-            value:data.text,
+            type:"inx.panel",            
             label:"Описание задачи",
-            name:"text",
-            style : {
+            items:[{
+                type:"inx.textarea",
+                name:"text",
+                style : {
+                    width:"parent",
+                    height:"content"
+                }, value:data.text
+            }], side:[{
+                type:"inx.panel",
+                width:25,
+                region:"right",
+                style:{background:"none"},
+                items:[{
+                    type:"inx.textfield",
+                    name:"timeScheduled",
+                    value:data.timeScheduled,
+                    width:"parent"
+                }]
+            },{
+                width:5,
+                region:"right",
+                style:{background:"none"}
+            }], style : {
                 width:"parent",
-                height:"content"
+                background:"none",
+                border:0
             }
         }).cmd("focus");
        
@@ -102,6 +123,13 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
             onclick:[this.id(),"save"]
         });
         
+        buttons.cmd("add",{
+            type:"inx.mod.board.taskControls",
+            width:150,
+            tools:data.tools,
+            taskID:this.taskID,
+        });
+        
         buttons.cmd("add",{            
             width:120,
             style:{
@@ -110,13 +138,13 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
             }
         });
         
-        if(data.nextStatusID!==null) {
+       /* if(data.nextStatusID!==null) {
             buttons.cmd("add",{
                 type:"inx.button",
                 text:data.nextStatusText,
                 onclick:inx.cmd(this.id(),"changeStatus",data.nextStatusID)
             });
-        }
+        } */
         
         buttons.cmd("add",{
             type:"inx.button",

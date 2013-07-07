@@ -18,7 +18,7 @@ class board extends mod_controller {
         
         tmp::header();
         inx::add(array(
-            "type" => "inx.mod.board.timeInput",
+            "type" => "inx.mod.board.task",
             "taskID" => 1552,
         ));
         tmp::footer();

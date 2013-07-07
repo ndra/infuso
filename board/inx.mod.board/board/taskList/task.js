@@ -205,7 +205,7 @@ inx.mod.board.board.taskList.task = inx.panel.extend({
             var cmp = inx({
                 width:this.info("width"),
                 tools:this.data.data.tools,
-                type:this.info("type")+".controls",
+                type:"inx.mod.board.taskControls",
                 taskID:this.data.id
             });
             

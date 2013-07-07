@@ -650,6 +650,17 @@ inx.panel = inx.box.extend({
                         heap[j] = data[j];
             }
         });
+        inx(this).axis("side").each(function(){
+            var name = this.info("name");
+            if(name) {
+                heap[name] = this.info("value");
+            } else {
+                var data = this.info("data");
+                if(data)
+                    for(var j in data)
+                        heap[j] = data[j];
+            }
+        });
         return heap;
     }
 
