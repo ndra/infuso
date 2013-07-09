@@ -163,14 +163,13 @@ class board_controller_task extends mod_controller {
         $stickerData = $task->stickerData();
 
         return array(
-            "title" => "Задача #".$task->id()." / ".$task->project()->title()." ({$task->status()->title()})",
+            "title" => "Задача #".$task->id()." / ".$task->project()->title(),
             "text" => $task->data("text"),
             "color" => $task->data("color"),
             "timeScheduled" => $task->data("timeScheduled"),
             "projectID" => $task->data("projectID"),
             "projectTitle" => $task->project()->title(),
-            "nextStatusID" => $task->status()->next()->id(),
-            "nextStatusText" => $task->status()->next()->action(),
+            "statusText" => $task->statusText(),
             "currentStatus" => $task->status()->id(),
             "statuses" => $statuses,
             "deadline" => $task->data("deadline"),

@@ -5,7 +5,7 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
     constructor:function(p) {   
     
         p.style = {
-            spacing:2,
+            spacing:0,
             border:0,
             background:"none"
         }
@@ -44,6 +44,10 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                 icon:"take",
                 onclick:[this.id(),"takeTask"],
                 text:"Взять"
+            }, stop: {
+                icon:"stop",
+                onclick:[this.id(),"stopTask"],
+                text:"Положить обратно"
             }, complete: {
                 icon:"complete",
                 onclick:[this.id(),"completeTask"],
@@ -124,6 +128,16 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
         },[this.id(),"handleSave"])
     },
     
+    /**
+     * Переводит задачу в статус выполнено
+     **/
+    cmd_stopTask:function() {
+        this.call({
+            cmd:"board/controller/task/changeTaskStatus",
+            taskID:this.taskID,
+            status:0
+        },[this.id(),"handleSave"])
+    },    
     
     /**
      * Переводит задачу в статус к исполнению

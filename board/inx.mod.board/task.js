@@ -63,7 +63,7 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
         });
         this.cmd("add",this.form);
     
-        this.cmd("setTitle",data.title+" <a href='#vote/id/"+this.taskID+"' >Оценить</a>");
+        this.cmd("setTitle",data.title);
     
         this.data = data;
     
@@ -117,6 +117,16 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
                     background:"none",
                     spacing:5
                 }
+            },{
+                type:"inx.mod.board.task.status",
+                taskID:this.taskID,
+                statusText:data.statusText,
+                region:"left",                
+                width:220,
+                style:{
+                    background:"none",
+                    spacing:5
+                }                
             }],style:{
                 border:0,                
                 spacing:4,
@@ -131,14 +141,14 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
             taskID:this.taskID,
         });
         
-        buttons.axis("side").cmd("add",{
+        buttons.axis("side").eq("region","right").cmd("add",{
             type:"inx.button",
             icon:"save",
             text:"Сохранить",
             onclick:[this.id(),"save"]
         });
         
-        buttons.axis("side").cmd("add",{
+        buttons.axis("side").eq("region","right").cmd("add",{
             type:"inx.button",
             icon:"gear",
             air:true,

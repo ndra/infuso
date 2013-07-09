@@ -237,9 +237,19 @@ class board_task extends reflex {
             "deliverToClient" => true,
             "taskID" => $this->id(),
             "sticker" => $this->stickerData(),
+            "statusText" => $this->statusText(),
             "changed" => $changed,
         ));
 
+    }
+    
+    public function statusText() {
+    
+        if($this->paused()) {
+            return "На паузе";
+        }
+    
+        return $this->status()->title();
     }
 
     /**
@@ -606,6 +616,7 @@ class board_task extends reflex {
                     $ret["tools"][] = "resume";
                 }
                 $ret["tools"][] = "done";
+                $ret["tools"][] = "stop";
                 break;
 
             case board_task_status::STATUS_NEW:
