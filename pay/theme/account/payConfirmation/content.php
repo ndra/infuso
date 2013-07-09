@@ -5,8 +5,8 @@
     <h1>Подтвердите оплату счета</h1>
     
     <div class='info' >
-        <div>
-            <i>Номер счета: </i> {$invoice->id()}
+        <div class='billno' >
+            echo "Счет №{$invoice->id()}";
         </div>
         <div>
             <i>Назначение платежа: </i> {$invoice->details()}
