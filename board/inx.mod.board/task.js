@@ -109,44 +109,36 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
         var buttons = this.form.cmd("add",{
             type:"inx.panel",
             layout:"inx.layout.column",
-            style:{
-                border:0,
+            side:[{
+                width:120,
+                region:"right",
+                layout:"inx.layout.column",
+                style:{
+                    background:"none",
+                    spacing:5
+                }
+            }],style:{
+                border:0,                
                 spacing:4,
                 background:"none"
             }
         });
         
         buttons.cmd("add",{
+            type:"inx.mod.board.taskControls",
+            big:true,
+            tools:data.tools,
+            taskID:this.taskID,
+        });
+        
+        buttons.axis("side").cmd("add",{
             type:"inx.button",
             icon:"save",
             text:"Сохранить",
             onclick:[this.id(),"save"]
         });
         
-        buttons.cmd("add",{
-            type:"inx.mod.board.taskControls",
-            width:150,
-            tools:data.tools,
-            taskID:this.taskID,
-        });
-        
-        buttons.cmd("add",{            
-            width:120,
-            style:{
-                border:0,
-                background:"none"
-            }
-        });
-        
-       /* if(data.nextStatusID!==null) {
-            buttons.cmd("add",{
-                type:"inx.button",
-                text:data.nextStatusText,
-                onclick:inx.cmd(this.id(),"changeStatus",data.nextStatusID)
-            });
-        } */
-        
-        buttons.cmd("add",{
+        buttons.axis("side").cmd("add",{
             type:"inx.button",
             icon:"gear",
             air:true,

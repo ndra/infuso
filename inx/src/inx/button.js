@@ -13,11 +13,13 @@ inx.button = inx.box.extend({
         if(p.onclick)
             p.listeners.click = p.onclick;
 
-        p.style = {
-            border:0,
-            background:"none",
-            width:"content"
+        if(!p.style) {
+            p.style = {};
         }
+        
+        p.style.border = 0;
+        p.style.background = "none";
+        p.style.width = "content";
 
         if(!p.height && !p.style.height) {
             p.height = "22";
@@ -49,13 +51,16 @@ inx.button = inx.box.extend({
                 backgroundRepeat:"no-repeat",
                 backgroundImage:"url("+icon+")"
             });
-            this.private_input.css({paddingLeft:18+(this.text ? 3 : 0)});
+            
+            var iconWidth = this.style("iconWidth");            
+            this.private_input.css({paddingLeft:iconWidth+2+(this.text ? 3 : 0)});
         }
 
         // Текст
         var html = this.text || "";
-        if(this.href)
+        if(this.href) {
             html = "<a href='"+this.href+"' target='_new'>"+html+"</a>";
+        }
         this.private_input.get(0).innerHTML = html;
 
         this.task("resizeToContents");
@@ -85,16 +90,18 @@ inx.button = inx.box.extend({
         this.cmd("resizeToContents");
     },
 
-    cmd_private_handleMouseover:function() { this.air && this.cmd("showFrame"); },
-    cmd_private_handleMouseout:function() { this.air && this.cmd("hideFrame"); },
+    cmd_private_handleMouseover:function() {
+        this.air && this.cmd("showFrame");
+    },
+    
+    cmd_private_handleMouseout:function() {
+        this.air && this.cmd("hideFrame");
+    },
 
     cmd_showFrame:function() {
-
         this.private_input.addClass("vbjm1zdmgr-button-hover");
-
         if(this.el.data("__extended")) return;
         this.el.data("__extended",true);
-        //this.el.click(inx.cmd(this,"private_handleClick"));
         this.el.mouseout(inx.cmd(this,"private_handleMouseout"))
     },
 

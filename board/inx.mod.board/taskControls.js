@@ -5,7 +5,7 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
     constructor:function(p) {   
     
         p.style = {
-            spacing:4,
+            spacing:2,
             border:0,
             background:"none"
         }
@@ -22,83 +22,65 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
     cmd_handleData:function(tools) {
     
         this.items().cmd("destroy");
-    
-        // Пауза
-        if(tools.indexOf("pause")!=-1) {
-            this.cmd("add",{
-                type:"inx.button",
-                air:true,
-                icon:"/board/res/img/icons16/pause.png",
-                onclick:[this.id(),"pauseTask"]
-            });
+        
+        var buttons = {
+            add:{
+                icon:"add",
+                onclick:[this.id(),"addTask"],
+                text:"К исполнению"
+            }, pause:{
+                icon:"pause",
+                onclick:[this.id(),"pauseTask"],
+                text:"Пауза"
+            }, resume: {
+                icon:"resume",
+                onclick:[this.id(),"pauseTask"],
+                text:"Продолжить"
+            }, done: {
+                icon:"done",
+                onclick:[this.id(),"doneTask"],
+                text:"Выполнено"
+            }, take: {
+                icon:"take",
+                onclick:[this.id(),"takeTask"],
+                text:"Взять"
+            }, complete: {
+                icon:"complete",
+                onclick:[this.id(),"completeTask"],
+                text:"Завершить"
+            }, revision: {
+                icon:"notready",
+                onclick:[this.id(),"revisionTask"],
+                text:"Не готово"
+            }, vote: {
+                icon:"vote",
+                onclick:[this.id(),"voteTask"],
+                text:"Голосовать"
+            }    
         }
         
-        if(tools.indexOf("resume")!=-1) {
+        for(var i in tools) {
+        
+            var button = buttons[tools[i]];
+            
             this.cmd("add",{
                 type:"inx.button",
                 air:true,
-                icon:"/board/res/img/icons16/resume.png",
-                onclick:[this.id(),"pauseTask"]
-            });
-        }
-        
-        // Я все сделал
-        if(tools.indexOf("done")!=-1) {
-            this.cmd("add",{
-                type:"inx.button",
-                help:"Готово",
-                air:true,
-                icon:"ok",
-                onclick:[this.id(),"doneTask"]
-            });
-        }
-        
-        // Буду делать
-        if(tools.indexOf("take")!=-1) {
-            this.cmd("add",{
-                type:"inx.button",
-                air:true,
-                icon:"/board/res/img/icons16/runner.png",
-                onclick:[this.id(),"takeTask"]
-            });
-        }
-        
-        // Проверено
-        if(tools.indexOf("complete")!=-1) {
-            this.cmd("add",{
-                type:"inx.button",
-                help:"Проверено",
-                air:true,
-                icon:"ok",
-                onclick:[this.id(),"completeTask"]
-            });
-        }
-        
-        
-        // На ревизию
-        if(tools.indexOf("revision")!=-1) {
-            this.cmd("add",{
-                type:"inx.button",
-                air:true,
-                icon:"delete",
-                onclick:[this.id(),"revisionTask"]
-            });
-        }
-        
-        // Голосовать
-        if(tools.indexOf("vote")!=-1) {
-            this.cmd("add",{
-                type:"inx.button",
-                air:true,
-                icon:"hand",
-                help:"Голосовать",
-                onclick:[this.id(),"voteTask"]
+                icon:"/board/res/img/icons"+(this.big ? 64 : 16)+"/"+button.icon+".png",                
+                help:button.text,
+                height:(this.big ? 64 : 16) + 4*2,
+                style:{
+                    iconWidth:(this.big ? 64 : 16)
+                }, onclick:button.onclick
             });
         }
     
     },
     
     cmd_handleTaskChanged:function(p) {
+        if(p.taskID!=this.taskID) {
+            return;
+        }
         this.cmd("handleData",p.sticker.tools);
     },
     
@@ -136,6 +118,18 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
             cmd:"board/controller/task/changeTaskStatus",
             taskID:this.taskID,
             status:3
+        },[this.id(),"handleSave"])
+    },
+    
+    
+    /**
+     * Переводит задачу в статус к исполнению
+     **/
+    cmd_addTask:function() {
+        this.call({
+            cmd:"board/controller/task/changeTaskStatus",
+            taskID:this.taskID,
+            status:1
         },[this.id(),"handleSave"])
     },
     

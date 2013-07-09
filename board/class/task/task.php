@@ -594,6 +594,10 @@ class board_task extends reflex {
         // Кнопки задачи
         $ret["tools"] = array();
         switch($this->status()->id()) {
+        
+            case board_task_status::STATUS_DRAFT:
+                $ret["tools"][] = "add";
+                break;
 
             case board_task_status::STATUS_IN_PROGRESS:
                 if(!$this->paused()) {
@@ -613,7 +617,10 @@ class board_task extends reflex {
                 $ret["tools"][] = "revision";
                 break;
         }
-        $ret["tools"][] = "vote";
+        
+        if($this->status()->id()!=board_task_status::STATUS_DRAFT) {
+        	$ret["tools"][] = "vote";
+        }
 
         return $ret;
     }

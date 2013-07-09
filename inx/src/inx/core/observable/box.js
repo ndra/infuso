@@ -161,7 +161,8 @@ inx.box = inx.observable.extend({
             spacing:0,
             titleMargin:0,
             valign:"center",
-            autoWidth:true
+            autoWidth:true,
+            iconWidth:16
         }
     
         // Возврат результата
@@ -211,6 +212,7 @@ inx.box = inx.observable.extend({
                 case "titleMargin":
                 case "valign":
                 case "break":
+                case "iconWidth":
                     this.task("syncLayout");
                     break;                    
                     
