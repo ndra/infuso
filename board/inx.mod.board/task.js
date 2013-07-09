@@ -169,9 +169,25 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
                 dropArea:this,
                 name:"attachments",
                 taskID:this.taskID,
-                region:"bottom"
+                region:"bottom",
+                onload:function(data) {
+                    if(data.length) {
+                        this.cmd("show");
+                    } else {
+                        this.cmd("hide");
+                    }
+                }
             })
         }
+        
+        if(!inx(this).axis("side").eq("name","tags").exists()) {
+            this.cmd("addSidePanel",{
+                type:"inx.mod.board.task.tags",
+                name:"tags",
+                taskID:this.taskID,
+                region:"bottom"
+            })
+        }        
         
         if(!inx(this).axis("side").eq("name","comments").exists()) {
             this.cmd("addSidePanel",{

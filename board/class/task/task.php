@@ -617,5 +617,62 @@ class board_task extends reflex {
 
         return $ret;
     }
+    
+    /**
+     * Возвращает список тэгов задачи
+     **/
+    public function tags() {
+        return board_task_tag::all()->eq("taskID",$this->id());
+    }
+    
+	/**
+	 * Добавляет в задачу тэг
+	 **/
+    public function addTag($tagID) {
+    
+        if(!$this->exists()) {
+            throw new Exception("board_task::addTag - Task not exists");
+        }
+
+        $tag = $this->tags()->eq("tagID",$tagID)->one();
+        if(!$tag->exists()) {
+            $tag = reflex::create("board_task_tag",array(
+                "taskID" => $this->id(),
+                "tagID" => $tagID,
+			));
+        }
+    
+	}
+	
+	/**
+	 * Убирает из задачи тэг
+	 **/
+    public function removeTag($tagID) {
+    
+        if(!$this->exists()) {
+            throw new Exception("board_task::removeTag - Task not exists");
+        }
+    
+        $tag = $this->tags()->eq("tagID",$tagID)->one();
+        $tag->delete();
+	}
+	
+	/**
+	 * Отмечена ли эта задача тэгом
+	 **/
+	public function tagExists($tagID) {
+	    return $this->tags()->eq("tagID",$tagID)->one()->exists();
+	}
+	
+    /**
+	 * Обновляет тэг (добавляет-удаляет тэг автоматически)
+	 **/
+	public function updateTag($tagID,$value) {
+	    if($value) {
+	        $this->addTag($tagID);
+	    } else {
+	        $this->removeTag($tagID);
+	    }
+	}
 
 }
