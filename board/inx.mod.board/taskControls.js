@@ -68,9 +68,12 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                 air:true,
                 icon:"/board/res/img/icons"+(this.big ? 64 : 16)+"/"+button.icon+".png",                
                 help:button.text,
-                height:(this.big ? 64 : 16) + 4*2,
+                text: this.big ? button.text : null,
+                height:(this.big ? 80 : 16) + 4*2,
                 style:{
-                    iconWidth:(this.big ? 64 : 16)
+                    iconWidth:(this.big ? 64 : 16),
+                    iconAlign:(this.big ? "top" : "left"),
+                    iconHeight:(this.big ? 64 : 16),
                 }, onclick:button.onclick
             });
         }

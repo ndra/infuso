@@ -8,12 +8,14 @@ inx.box = inx.observable.extend({
 
     constructor:function(p) {
     
-        if(!p.style)
+        if(!p.style) {
             p.style = {}
+        }
     
         // Рекомендованя ширина компонента, опираясь на внутрений размер 
-        if(!p.private_widthContent)       
+        if(!p.private_widthContent) {
             this.private_widthContent = 1;
+        }
         
         // Рекомендованя ширина компонента, опираясь на внешний размер       
         if(!p.private_widthParent) 
@@ -162,7 +164,10 @@ inx.box = inx.observable.extend({
             titleMargin:0,
             valign:"center",
             autoWidth:true,
-            iconWidth:16
+            iconWidth:16,
+            iconHeight:16,
+            fontSize:12,
+            iconAlign:"left"
         }
     
         // Возврат результата
@@ -213,6 +218,9 @@ inx.box = inx.observable.extend({
                 case "valign":
                 case "break":
                 case "iconWidth":
+                case "iconHeight":
+                case "fontSize":
+                case "iconAlign":
                     this.task("syncLayout");
                     break;                    
                     

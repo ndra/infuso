@@ -1,6 +1,6 @@
 // @include inx.dialog
 
-inx.css(".vbjm1zdmgr-button{cursor:pointer;white-space:nowrap;border:none;float:left;padding:3px 4px 3px 4px;height:16px;border-radius:5px;}");
+inx.css(".vbjm1zdmgr-button{cursor:pointer;white-space:nowrap;border:none;float:left;border-radius:5px;}");
 inx.css(".vbjm1zdmgr-button-hover{box-shadow:0 0 2px rgba(0,0,0,.4) inset;}");
 inx.css(".vbjm1zdmgr-button:hover{background:rgba(255,255,255,.4);}");
 
@@ -9,6 +9,10 @@ inx.css(".vbjm1zdmgr-button:hover{background:rgba(255,255,255,.4);}");
 inx.button = inx.box.extend({
 
     constructor:function(p) {
+    
+        if(p.icon) {
+            p.icon = inx.img(p.icon);
+        }
 
         if(p.onclick)
             p.listeners.click = p.onclick;
@@ -20,6 +24,10 @@ inx.button = inx.box.extend({
         p.style.border = 0;
         p.style.background = "none";
         p.style.width = "content";
+        
+        if(!p.style.padding) {
+            p.style.padding = 4;
+        }
 
         if(!p.height && !p.style.height) {
             p.height = "22";
@@ -40,20 +48,8 @@ inx.button = inx.box.extend({
 
     cmd_updateHTML:function() {
 
-        if(!this.private_input)
+        if(!this.private_input) {
             return;
-
-        // Иконка
-        icon = inx.img(this.icon);
-        if(icon) {
-            this.private_input.css({
-                backgroundPosition:"3px center",
-                backgroundRepeat:"no-repeat",
-                backgroundImage:"url("+icon+")"
-            });
-            
-            var iconWidth = this.style("iconWidth");            
-            this.private_input.css({paddingLeft:iconWidth+2+(this.text ? 3 : 0)});
         }
 
         // Текст
@@ -61,12 +57,16 @@ inx.button = inx.box.extend({
         if(this.href) {
             html = "<a href='"+this.href+"' target='_new'>"+html+"</a>";
         }
+        
         this.private_input.get(0).innerHTML = html;
 
         this.task("resizeToContents");
     },
 
     cmd_setIcon:function(icon) {
+        if(icon) {
+            icon = inx.img(icon);
+        }
         this.icon = icon;
         this.task("updateHTML");
     },
@@ -82,11 +82,51 @@ inx.button = inx.box.extend({
     },
     
     cmd_syncLayout:function() {
+    
         var h = this.info("height");
+        var fontSize = this.style("fontSize");
+        var paddingTop = Math.round((h-fontSize)/2);
+        var padding = this.style("padding");
+        
+        var iconWidth = this.style("iconWidth");
+        var iconHeight = this.style("iconHeight");
+        var paddingLeft = padding;        
+        
+        if(this.icon) {
+        
+            switch(this.style("iconAlign")) {
+            
+                case "left":
+                    paddingLeft += iconWidth;            
+                    this.private_input.css({
+                        backgroundPosition:this.style("padding") + "px center",
+                        backgroundRepeat:"no-repeat",
+                        backgroundImage:"url("+this.icon+")"
+                    });                    
+                    break;
+                    
+                case "top":
+                    paddingTop = Math.round((h + iconHeight - fontSize)/2);
+                    this.private_input.css({
+                        backgroundPosition:"center " + (paddingTop-iconHeight) + "px",
+                        backgroundRepeat:"no-repeat",
+                        backgroundImage:"url("+this.icon+")",
+                        minWidth:iconHeight + padding * 2,
+                        textAlign:"center"
+                    });                    
+                    break;
+            }
+            
+        }
+        
         this.private_input.css({
-            height:h-6,
-            fontSize:h-10
+            height:h - paddingTop,
+            fontSize:fontSize,
+            paddingTop:paddingTop,
+            paddingLeft:paddingLeft,
+            paddingRight:padding
         });
+        
         this.cmd("resizeToContents");
     },
 
