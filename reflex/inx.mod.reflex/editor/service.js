@@ -6,8 +6,8 @@ inx.service.register("reflex",new function() {
         type:"inx.observable"
     });
 
-    this.action = function(action) {
-
+    this.action = function(action,e) {
+    
         var action = (action).split("/");
 
         switch(action[0]) {
@@ -19,8 +19,10 @@ inx.service.register("reflex",new function() {
             case "cmd":
 
                 var cmd = action[1];
-                if(action[2])
+                
+                if(action[2]) {
                     cmd+= ":"+action[2];
+                }
 
                 var p = {
                     cmd:cmd
@@ -28,10 +30,11 @@ inx.service.register("reflex",new function() {
 
                 for(var i in action) {
                     if(i>2) {
-                        if(i%2==1)
+                        if(i%2==1) {
                             key = action[i];
-                        if(i%2==0)
+                        } if(i%2==0) {
                             p[key] = action[i];
+                        }
                     }
                 }
 
@@ -59,7 +62,6 @@ inx.service.register("reflex",new function() {
                     },
                     x:e.cellX-20,
                     y:e.cellY-45
-                    //listeners:{destroy:[this.id(),"focus"]}
                 }).cmd("render");
                 break;
 
@@ -72,16 +74,15 @@ inx.service.register("reflex",new function() {
 
                 for(var i in action) {
                     if(i>1) {
-                        if(i%2==0)
+                        if(i%2==0) {
                             key = action[i];
-                        if(i%2==1)
+                        } if(i%2==1) {
                             p[key] = action[i];
+                        }
                     }
                 }
                 
-                
                 inx(p).cmd("render");
-                
                 break;
 
             case "msg":
