@@ -92,6 +92,9 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
     },
     
     cmd_pauseTask:function() {
+    
+        this.fire("action");
+    
         this.call({
             cmd:"board/controller/task/pauseTask",
             taskID:this.taskID
@@ -99,6 +102,9 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
     },
     
     cmd_takeTask:function() {
+    
+        this.fire("action");
+    
         this.call({
             cmd:"board/controller/task/changeTaskStatus",
             taskID:this.taskID,
@@ -107,6 +113,9 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
     },
     
     cmd_doneTask:function() {
+    
+        this.fire("action");
+    
         inx({
             type:"inx.mod.board.timeInput",
             taskID:this.taskID,
@@ -121,36 +130,48 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
      * Переводит задачу в статус выполнено
      **/
     cmd_completeTask:function() {
+    
+        this.fire("action");
+    
         this.call({
             cmd:"board/controller/task/changeTaskStatus",
             taskID:this.taskID,
             status:3
-        },[this.id(),"handleSave"])
+        });
     },
     
     /**
      * Переводит задачу в статус выполнено
      **/
     cmd_stopTask:function() {
+    
+        this.fire("action");
+    
         this.call({
             cmd:"board/controller/task/changeTaskStatus",
             taskID:this.taskID,
             status:0
-        },[this.id(),"handleSave"])
+        });
     },    
     
     /**
      * Переводит задачу в статус к исполнению
      **/
     cmd_addTask:function() {
+    
+        this.fire("action");
+    
         this.call({
             cmd:"board/controller/task/changeTaskStatus",
             taskID:this.taskID,
-            status:1
-        },[this.id(),"handleSave"])
+            status:0
+        });
     },
     
-    cmd_revisionTask:function() {        
+    cmd_revisionTask:function() {    
+    
+        this.fire("action");
+        
         inx({
             type: 'inx.mod.board.returnTask', 
             taskID:this.taskID,

@@ -139,6 +139,9 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
             big:true,
             tools:data.tools,
             taskID:this.taskID,
+            listeners:{
+                action:[this.id(),"save"]
+            }
         });
         
         buttons.axis("side").eq("region","right").cmd("add",{

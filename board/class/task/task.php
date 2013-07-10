@@ -204,6 +204,12 @@ class board_task extends reflex {
             	$this->defer("handleCompleted");
 			}
 
+			// При переходи задачи в статус к исполнению она ставится на первое место
+			if($this->data("status") == board_task_status::STATUS_NEW) {
+			    $min = board_task::all()->eq("status",board_task_status::STATUS_IN_PROGRESS)->min("priority");
+			    $this->data("priority",$min - 1);
+			}
+
         }
 
         // Если это подзадача, ставим проект как у эпика
@@ -542,7 +548,7 @@ class board_task extends reflex {
             $ret["text"].= $html;
 
         }
-
+        
         $ret["text"].= "<b>".$this->project()->title().".</b> ";
         $ret["text"].= util::str($this->data("text"))->ellipsis(200)->secure()."";
 
