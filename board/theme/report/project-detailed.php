@@ -26,6 +26,10 @@ $to = util::date($params["to"])->date();
         ->geq("date(changed)",$from)
         ->leq("date(changed)",$to)
         ->eq("epicParentTask",0);
+
+    if(($tag = trim($params["tag"])) && $tag!="*") {
+        $tasks->useTag($tag);
+    }
         
     <table>
         <tr>

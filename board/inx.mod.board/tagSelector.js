@@ -13,7 +13,9 @@ inx.ns("inx.mod.board").tagSelector = inx.combo.extend({
         p.loader = {
             cmd:"board/controller/tag/enumTags"
         }        
+        
         this.base(p);        
+        this.cmd("createList");
     }
          
 });

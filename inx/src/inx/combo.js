@@ -70,7 +70,7 @@ inx.combo = inx.textfield.extend({
         }).cmd("hide").cmd("render").setOwner(this);
         
     },
-
+   
     cmd_destroy:function() {
         inx(this.private_popup).cmd("destroy");
         this.base();

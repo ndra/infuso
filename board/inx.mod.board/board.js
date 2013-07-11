@@ -45,6 +45,7 @@ inx.ns("inx.mod.board").board = inx.panel.extend({
     cmd_handleBeforeLoad:function(data) {
         var tbar = inx(this).axis("tbar").info("data");
         data.search = tbar.search;
+        data.tag = tbar.tag;
         data.page = tbar.pager;
     },
     

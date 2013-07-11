@@ -33,6 +33,10 @@ class board_controller_task extends mod_controller {
                 ->orr()->like("text",$search2)
                 ->orr()->like("board_project.title",$search2);
         }
+
+        if(($tag = trim($p["tag"])) && $tag!="*") {
+            $tasks->useTag($tag);
+        }
         
         if(!$status->showEpicSubtasks()) {
             $tasks->eq("epicParentTask",0);

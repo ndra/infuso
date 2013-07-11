@@ -48,5 +48,11 @@
     .subtask {
         display:none;
     }
+    
+    .total {
+        td {
+            font-weight:bold;
+        }
+    }
 
 }

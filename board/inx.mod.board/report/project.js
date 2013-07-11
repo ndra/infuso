@@ -1,4 +1,5 @@
 // @include inx.iframe,inx.date
+// @include inx.mod.board.tagSelector
 
 inx.ns("inx.mod.board.report").project = inx.iframe.extend({
 
@@ -10,6 +11,10 @@ inx.ns("inx.mod.board.report").project = inx.iframe.extend({
         },{
             type:"inx.date",
             name:"to"
+        },{
+            type:"inx.mod.board.tagSelector",
+            name:"tag",
+            onchange:[this.id(),"load"]
         },{
             type:"inx.button",
             text:"Показать",
@@ -35,10 +40,17 @@ inx.ns("inx.mod.board.report").project = inx.iframe.extend({
         // До
         if(!params.to) {
             params.to = new Date();
-        }        
+        } 
         var field = inx(this).axis("tbar").items().eq("name","to");
         field.cmd("setValue",params.to);
         src.to = field.info("value");
+        
+        if(!params.tag) {
+            params.tag = "*";
+        }
+        var field = inx(this).axis("tbar").items().eq("name","tag");
+        field.cmd("setValue",params.tag);
+        src.tag = params.tag;
         
         src.projectID = this.projectID;
         
@@ -56,6 +68,7 @@ inx.ns("inx.mod.board.report").project = inx.iframe.extend({
         var params = p.params;
         params.from = inx(this).axis("tbar").items().eq("name","from").info("value");
         params.to = inx(this).axis("tbar").items().eq("name","to").info("value");
+        params.tag = inx(this).axis("tbar").items().eq("name","tag").info("value");
         inx.direct.setAction(p.action,params);
     }
          

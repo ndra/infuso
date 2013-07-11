@@ -115,6 +115,7 @@ class board_task extends reflex {
      **/
     public static function all() {
         return reflex::get(get_class())
+            ->addBehaviour("board_collectionBehaviour")
             ->asc("priority");
     }
 
