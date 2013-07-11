@@ -19,7 +19,7 @@ class board_task_tag extends reflex {
                     'name' => 'tagID',
                     'type' => 'link',
                     'label' => 'Тэг',
-					'class' => "board_task_tag",
+					'class' => "board_task_tag_description",
                 ),
             ),
         );
@@ -31,6 +31,14 @@ class board_task_tag extends reflex {
 
     public static function get($id) {
         return reflex::get(get_class(),$id);
+    }
+    
+    public function descr() {
+        return $this->pdata("tagID");
+    }
+    
+    public function reflex_title() {
+        return $this->descr()->title();
     }
 
 }

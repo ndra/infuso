@@ -665,6 +665,11 @@ class board_task extends reflex {
                 "tagID" => $tagID,
 			));
         }
+        
+        mod::fire("board/tagsChanged",array(
+            "taskID" => $this->id(),
+            "deliverToClient" => true
+		));
     
 	}
 	
@@ -679,6 +684,11 @@ class board_task extends reflex {
     
         $tag = $this->tags()->eq("tagID",$tagID)->one();
         $tag->delete();
+        
+        mod::fire("board/tagsChanged",array(
+            "taskID" => $this->id(),
+            "deliverToClient" => true
+		));
 	}
 	
 	/**

@@ -38,5 +38,18 @@ class board_controller_tag extends mod_controller {
 		mod::msg("Тэг изменен");
         return $ret;
     }
+    
+    public function post_getWidgetContent($p) {
+    
+        $task = board_task::get($p["taskID"]);
+        $content = tmp::get("/board/widget/tags/ajax",array(
+            "task" => $task,
+		))->getContentForAjax();
+		
+		return array(
+		    "content" => $content,
+		);
+    
+    }
 
 }

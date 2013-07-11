@@ -118,7 +118,13 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
             case "vote":
                 this.cmd("voteTask",{taskID:params.params.id});
                 history.back();
-                break;                
+                break;     
+                
+            case "tags":
+                this.cmd("editTags",{taskID:params.params.id});
+                history.back();
+                break;   
+                           
         }
 
     },
@@ -145,6 +151,16 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
                 type:"inx.mod.board.vote",
                 taskID:p.taskID
             }]
+        }).cmd("render").setOwner(this);
+    }, 
+    
+    /**
+     * Открывает диалог редактирования тэгов
+     **/
+    cmd_editTags:function(p) {
+        inx({
+            type:"inx.mod.board.tagEditor",
+            taskID:p.taskID
         }).cmd("render").setOwner(this);
     }, 
     

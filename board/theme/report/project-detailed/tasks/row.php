@@ -25,10 +25,15 @@ $h->begin();
     </td>
     <td class='status' >{$task->status()->title()}</td>
     <td>
+        tmp::widget("board_widget_tags",array(
+            "task" => $task,
+        ))->exec();
+    </td>
+    <td>
         tmp::exec("../notice",array(
             "task" => $task,
         ));
-    </td>
+    </td>    
     <td>
         tmp::widget("board_widget_vote",array(
             "task" => $task,

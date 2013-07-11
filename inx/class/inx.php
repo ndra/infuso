@@ -17,10 +17,12 @@ class inx {
 		$ret = "";
 		$ret.= "<script>\n";
 
-		if(!self::$included)
+		if(!self::$included) {
 		    $ret.= "inx.conf.url='/inx/version/".file::get("/inx/build_id.txt")->data()."/';\n";
-		foreach(self::$conf as $key=>$val)
-		    $ret.= "inx.conf.$key='$val';\n";
+		    foreach(self::$conf as $key => $val) {
+		    	$ret.= "inx.conf.$key='$val';\n";
+			}
+		}
 
 		// Только если мы добавляем компонент
 		if($params) {
@@ -32,6 +34,7 @@ class inx {
 		}
 
 		$ret.= "</script>\n";
+		
 		echo $ret;
 
 		self::$included = true;

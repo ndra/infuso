@@ -3,10 +3,24 @@
 inx.iframe = inx.panel.extend({
 
     constructor:function(p) {
-        if(!p.style)
+    
+        if(!p.style) {
             p.style = {};
+        }
+        
         p.style.padding = 0;
+        
         this.base(p);
+        
+        inx.service("events").global([this.id(),"handleEvent"]);
+    },
+    
+    cmd_handleEvent:function(name,p1,p2,p3) {
+        var wnd = this.iframe.get(0).contentWindow;
+        if(!wnd.inx) {
+            return;
+        }
+        wnd.inx.fire(name,p1,p2,p3);
     },
     
     cmd_render:function() {

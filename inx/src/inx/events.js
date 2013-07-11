@@ -8,6 +8,7 @@ inx.events = new function() {
     var that = this;
     
     var handlers = [];
+    var globalHandlers = [];
 
     this.on = function(name,handler) {
         if(!handlers[name]) {
@@ -16,12 +17,17 @@ inx.events = new function() {
         handlers[name].push(handler);
     }
     
+    this.global = function(handler) {
+        globalHandlers.push(handler);
+    }
+    
     /**
      * Вызывает глобальное событие name
      **/
     this.fire = function(name,p1,p2,p3) {
         var h = handlers[name];
-        return that.processHandlersArray(h,p1,p2,p3);
+        that.processHandlersArray(globalHandlers,name,p1,p2,p3);
+        return that.processHandlersArray(h,p1,p2,p3);                
     }
     
     /**
@@ -36,6 +42,8 @@ inx.events = new function() {
         }
     
         var retFalse = false;
+        var ret = null;        
+        
         for(var i in handlers) {
         
             var handler = handlers[i];
