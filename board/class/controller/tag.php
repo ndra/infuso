@@ -51,5 +51,24 @@ class board_controller_tag extends mod_controller {
 		);
     
     }
+    
+    public function post_enumTags() {
+    
+        $ret = array();
+        
+        $ret[] = array(
+            "id" => "*",
+            "text" => "Все",
+		);
+        
+        foreach(board_task_tag_description::all() as $tag) {
+            $ret[] = array(
+                "id" => $tag->id(),
+                "text" => $tag->title(),
+			);
+        }
+    
+        return $ret;
+    }
 
 }

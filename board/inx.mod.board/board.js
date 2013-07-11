@@ -23,6 +23,10 @@ inx.ns("inx.mod.board").board = inx.panel.extend({
                 width:100
             }
         },{
+            type:"inx.mod.board.tagSelector",
+            name:"tag",
+            onchange:[this.id(),"load"]
+        },{
             type:"inx.pager",
             name:"pager",
             onchange:[this.id(),"load"],
