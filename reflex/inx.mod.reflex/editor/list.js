@@ -300,7 +300,7 @@ inx.mod.reflex.editor.list = inx.tabs.extend({
         if(!e.action)
             return;
             
-        inx.service("reflex").action(e.action);
+        inx.service("reflex").action(e.action,e);
 
     },
 
