@@ -3,7 +3,7 @@
 <div class='qmky1dx6t' >
     
     <a href='/board/#vote/id/{$task->id()}' target='_top' >
-        <img class='edit' data:task='{$task->id()}' src='/board/res/img/icons16/vote.gif' >
+        <img class='edit' data:task='{$task->id()}' src='/board/res/img/icons16/vote.png' >
     </a>
     
     foreach($task->votes()->distinct("ownerID") as $ownerID) {
