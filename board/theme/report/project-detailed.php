@@ -39,8 +39,9 @@ $to = util::date($params["to"])->date();
                 ));
             </td>
             <td style='padding-left:20px;' >
-                tmp::exec("contributors",array(
-                    "tasks" => $tasks,
+                tmp::exec("../contributors",array(
+                    "from" => $from,
+                    "to" => $to,
                     "project" => $project,
                 ));
             </td>

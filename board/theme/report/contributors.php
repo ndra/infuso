@@ -1,12 +1,16 @@
 <? 
 
-$userList = $tasks->distinct("responsibleUser");
-$users = user::all()->eq("id",$userList);
-
 $spentAllUsers = board_task_log::all()
     ->joinByField("taskID")
-    ->eq("board_task.projectID",$project->id())
-    ->gt("board_task.changed",util::now()->shiftDay(-30));
+    ->geq("date(created)",$from)
+    ->leq("date(created)",$to);
+    
+if($project) {
+    $spentAllUsers->eq("board_task.projectID",$project->id());
+}
+    
+$userList = $spentAllUsers->distinct("userID");
+$users = user::all()->eq("id",$userList);
     
 $spentSum = $spentAllUsers->sum("timeSpent");
 

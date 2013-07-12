@@ -81,6 +81,12 @@ tmp::reset();
     
     </table>
     
+    <br/><br/>
+    tmp::exec("../contributors",array(
+        "from" => $from,
+        "to" => $to,
+    ));
+    
 </div>
 
 tmp::footer();
