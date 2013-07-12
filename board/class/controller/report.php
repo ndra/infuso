@@ -181,4 +181,16 @@ class board_controller_report extends mod_controller {
 
     }
 
+    /**
+     * Контроллер для ленты с моей активностью за день
+     **/
+    public function index_projectChart($p) {
+
+        tmp::exec("/board/report/chart",array(
+            "params" => $p,
+        ));
+
+    }
+
+
 }

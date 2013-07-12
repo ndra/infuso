@@ -25,6 +25,7 @@ tmp::reset();
     
         <tr>
             <td>Проект</td>
+            <td></td>
             <td>Потрачено времени</td>
             <td>Поставлено задач</td>
             <td>Закрыто задач (ч.)</td>
@@ -59,6 +60,9 @@ tmp::reset();
                         <a href='{$url}' target='_parent' >
                             echo $project->title();
                         </a>
+                    </td>
+                    <td>
+                        <a href='/board/#report-chart/id/{$project->id()}' target='_top' >за год</a>
                     </td>
                     <td>
                         echo round($row["spent"],2);
