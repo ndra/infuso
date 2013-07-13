@@ -23,8 +23,7 @@ inx.mod.reflex.editor.menu = inx.tree.extend({
         
             var node = this.info("node",id);
             if(node.noedit) return;
-            var index = (id+"").split("/");
-            index = index[index.length-1];
+            var index = (id+"").split("/").pop();
             var url = "#"+index;
             if(index) {
                 

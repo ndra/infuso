@@ -45,7 +45,7 @@ inx.service.register("reflex",new function() {
                 break;
 
             case "edit":
-                window.location.href = "#"+action[1]+":"+action[2];
+                window.location.href = "#"+action[1];
                 break;
 
             case "url":
