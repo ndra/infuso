@@ -77,7 +77,7 @@ inx.ns("inx.mod.reflex.fields").arr = inx.list.extend({
     info_value:function() {
         var ret = {};
         for(var i in this.data)
-            ret[this.data[i].key] = this.data[i].val;
+            ret[this.data[i].data.key] = this.data[i].data.val;
         ret = inx.json.encode(ret);
         return ret;
     },
