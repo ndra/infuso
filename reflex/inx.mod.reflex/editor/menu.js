@@ -18,7 +18,7 @@ inx.mod.reflex.editor.menu = inx.tree.extend({
         
         p.listeners.beforeload = [this.id(),"beforeLoad"];
         p.listeners.load = [this.id(),"handleLoad"];
-        p.listeners.show = [this.id(),"reaction"];
+        p.listeners.show = [this.id(),"refresh"];
         p.onclick = function(id,e) {
         
             var node = this.info("node",id);
@@ -47,7 +47,10 @@ inx.mod.reflex.editor.menu = inx.tree.extend({
         
         p.side = [this.tabs]  
         
-        this.base(p);                      
+        this.base(p);        
+        
+        inx.on("reflex/refresh",[this.id(),"refresh"]);        
+                      
     },
     
     cmd_setTab:function(tab) {
@@ -66,7 +69,7 @@ inx.mod.reflex.editor.menu = inx.tree.extend({
             clearInterval(this.refreshInterval);
         } catch(ex) {}
         
-        this.refreshInterval = setInterval(inx.cmd(this.id(),"reaction"),60*1000);
+        this.refreshInterval = setInterval(inx.cmd(this.id(),"refresh"),60*1000);
     },
     
     cmd_beforeLoad:function(data) {
@@ -80,11 +83,14 @@ inx.mod.reflex.editor.menu = inx.tree.extend({
         var expanded = [];
         this.cmd("eachVisible",function(id){
             var node = this.info("node",id);
-            if(node.expanded)
+            if(node.expanded) {
                 expanded.push(node.id);
+            }
         },0,data.id);
         data.starred = data.id==0 && this.starred;
         data.expanded = expanded;
+
+        
     },
     
     cmd_handleLoad:function() {
@@ -92,7 +98,8 @@ inx.mod.reflex.editor.menu = inx.tree.extend({
         this.cmd("planRefresh");
     },
     
-    cmd_reaction:function() {
+    cmd_refresh:function() {
+    
         var data = {};
         this.cmd("eachVisible",function(id) {
             var node = this.info("node",id);
@@ -101,10 +108,10 @@ inx.mod.reflex.editor.menu = inx.tree.extend({
         this.call({
             cmd:"reflex:editor:controller:checkTreeChanges",
             data:data
-        },[this.id(),"handleReaction"]);
+        },[this.id(),"handleRefreshData"]);
     },
     
-    cmd_handleReaction:function(p) {
+    cmd_handleRefreshData:function(p) {
         if(p)
             this.cmd("load",0);
     } 

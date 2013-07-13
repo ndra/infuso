@@ -13,11 +13,18 @@ inx.layout["default"] = {
             return;
             
         // Контейнер панели
+       /* var bg = $("<div>").css({
+            position:"absolute",
+            background:"red"
+        }).appendTo(this.__body);
+        cmp.data("layoutBackground",bg); */
+            
+        // Контейнер панели
         var e = $("<div>").css({
             position:"absolute"
         }).appendTo(this.__body);
         cmp.data("layoutContainer",e);
-        
+                
         // Контейнер заголовка
         var te = $("<div>").addClass("f50tpvh3plh-label").css({
             position:"absolute"
@@ -54,9 +61,15 @@ inx.layout["default"] = {
     
             this.items().each(function(n) {    
             
+                var areaHeight = 0;
+                var areaStart = y;
+            
                 var e = this.data("layoutContainer");
-                if(!e)
+                if(!e) {
                     return;
+                }
+                
+                var bg = this.data("layoutBackground");
                     
                 var doSpacing = false;
                 
@@ -75,12 +88,13 @@ inx.layout["default"] = {
                         backgroundImage:"url("+inx.img(this.info("hidden") ? "expand" : "collapse")+")"
                     })
                     
-                    
                     var h = inx.height(t);
                     y += h;
+                    areaHeight += h;
                     
-                    if(this.info("visible"))
+                    if(this.info("visible")) {
                         y += that.style("titleMargin");                    
+                    }
                     
                     doSpacing = true;
                     
@@ -98,7 +112,18 @@ inx.layout["default"] = {
                     
                     this.cmd("width",width);
                     
-                    y += this.info("height"); 
+                    var h = this.info("height");
+                    areaHeight +=h ;
+                
+                   /* bg.css({
+                        left:-padding,
+                        width:width + padding * 2,
+                        height:areaHeight + spacing / 2,
+                        top:areaStart
+                    }); */
+                    
+                    y += h; 
+                    
                     doSpacing = true;
                     
                 } else {

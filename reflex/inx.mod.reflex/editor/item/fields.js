@@ -88,15 +88,9 @@ inx.mod.reflex.editor.item.fields = inx.panel.extend({
     
     cmd_handleSave:function(data) {
         if(!data) return;
-        this.bubble("menuChanged");
         this.items().cmd("load");
+        inx.service("reflex").action("refresh");
     },
-    
-    /*cmd_handleSaveAndClose:function(data) {
-        if(!data) return;
-        this.bubble("menuChanged");
-        this.cmd("close");
-    }, */
     
     cmd_deleteSelf:function() {
         if(!confirm("Удалить элемент?")) return;

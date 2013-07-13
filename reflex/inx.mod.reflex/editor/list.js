@@ -285,7 +285,7 @@ inx.mod.reflex.editor.list = inx.tabs.extend({
 
     cmd_handleSortStored:function() {
         this.cmd("planRefresh");
-        this.bubble("menuChanged");
+        inx.service("reflex").action("refresh");
     },
 
     /**
@@ -447,11 +447,11 @@ inx.mod.reflex.editor.list = inx.tabs.extend({
     cmd_handleAdd:function(id) {
         if(!id) return;
         this.cmd("editItem",id);
-        this.bubble("menuChanged");
+        inx.service("reflex").action("refresh");
     },
 
     cmd_handleShow:function() {
-        this.cmd("load");
+        this.task("load");
     },
 
     cmd_deleteItem:function() {
@@ -469,7 +469,7 @@ inx.mod.reflex.editor.list = inx.tabs.extend({
      **/
     cmd_handleChanges:function() {
         this.cmd("load");
-        this.bubble("menuChanged");
+        inx.service("reflex").action("refresh");
     },
 
     cmd_moveDown:function() {

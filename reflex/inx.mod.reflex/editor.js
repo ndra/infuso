@@ -35,14 +35,9 @@ inx.ns("inx.mod.reflex").editor = inx.viewport.extend({
 
         this.base(p);
         this.on("editItem",[this.id(),"editItem"]);
-        this.on("menuChanged",[this.id(),"menuChanged"]);
         inx.direct.bind(this.id(),"onDirect");
         
     },     
-    
-    cmd_menuChanged:function() {
-        inx(this).axis("side").eq("name","menu").cmd("reaction");
-    },
     
     cmd_handleSelectItem:function(id) {
         var name = inx(id).info("name");

@@ -98,6 +98,11 @@ inx.button = inx.box.extend({
             
                 case "left":
                     paddingLeft += iconWidth;            
+                    
+                    if(this.text) {
+                        paddingLeft += 2;
+                    }
+                    
                     this.private_input.css({
                         backgroundPosition:this.style("padding") + "px center",
                         backgroundRepeat:"no-repeat",
