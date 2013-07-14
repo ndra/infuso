@@ -7,6 +7,14 @@ class reflex_editor_root extends reflex {
 
     private static $sessionHashKey = "root-hash";
     private static $sessionDataKey = "root-data";
+
+    public static function all() {
+        return reflex::get(get_class());
+    }
+
+    public static function get($id) {
+        return reflex::get(get_class(),$id);
+    }
     
     public function reflex_children() {
 

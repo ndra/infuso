@@ -9,7 +9,26 @@ class reflex_handler implements mod_handler {
 			
 		user_operation::create("reflex:viewLog","Редактирование лога")
 			->appendTo("admin");
+
+        reflex_task::add(array(
+            "class" => "reflex_handler",
+            "method" => "cleanup",
+            "crontab" => "0 0 * * *",
+        ));
 	
 	}
+
+    public static function cleanup() {
+
+		// Удаляем старые записи из лога
+		reflex_log::all()->leq("datetime",util::now()->shiftMonth(-6))->delete();
+
+		// Удаляем старые руты из каталога
+		reflex_editor_root::all()->leq("created",util::now()->shiftDay(-7))->delete();
+
+		// Удаляем старые конструкторы
+		reflex_editor_constructor::all()->leq("created",util::now()->shiftDay(-7))->delete();
+
+    }
 
 }
