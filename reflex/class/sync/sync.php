@@ -55,7 +55,9 @@ class reflex_sync extends mod_controller {
         }
 
         header("content-type:application/json");
-        echo json_encode($data);
+        $data = json_encode($data);
+        $data = gzcompress($data);
+        echo $data;
 
     }
 
@@ -83,6 +85,8 @@ class reflex_sync extends mod_controller {
             mod::msg("No data received",1);
             return false;
         }
+
+        $data = gzuncompress($data);
 
         $data = json_decode($data,1);
         if($data===null) {
