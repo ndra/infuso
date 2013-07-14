@@ -10,10 +10,9 @@ inx.mod.reflex.editor.item.fields = inx.panel.extend({
         p.style = {
             background:"white",
             vscroll:true,
-            padding:0,
+            padding:20,
             spacing:20
-        }
-        
+        }        
         
         var tbar = [];        
         for(var i in p.toolbar) {
@@ -51,8 +50,9 @@ inx.mod.reflex.editor.item.fields = inx.panel.extend({
             }            
         }
             
-        if(tbar.length)
+        if(tbar.length) {
             p.tbar = tbar;
+        }
         
         this.base(p);
         this.cmd("handleData",p.data);
@@ -93,12 +93,19 @@ inx.mod.reflex.editor.item.fields = inx.panel.extend({
     },
     
     cmd_deleteSelf:function() {
-        if(!confirm("Удалить элемент?")) return;
-        this.call({cmd:"reflex:editor:controller:delete",ids:[this.index]},[this.id(),"handleDeleteSelf"]);
+    
+        if(!confirm("Удалить элемент?")) {
+            return;
+        }
+        
+        this.call({
+            cmd:"reflex:editor:controller:delete",
+            ids:[this.index]
+        },[this.id(),"handleDeleteSelf"]);
     },
     
     cmd_handleDeleteSelf:function() {
-        this.bubble("menuChanged");
+        inx.service("reflex").action("refresh");
         this.cmd("close");
     }
     

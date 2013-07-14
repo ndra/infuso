@@ -1,6 +1,6 @@
 <?
 
-class reflex_route_editor extends mod_controller{
+class reflex_route_editor extends mod_controller {
 
 	public static function postTest() {
 		return true;

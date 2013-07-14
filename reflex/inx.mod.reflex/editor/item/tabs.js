@@ -4,12 +4,12 @@
 inx.mod.reflex.editor.item.tabs = inx.tabs.extend({
     
     constructor:function(p) {
-        //p.keepSelection = "tcabt85:"+p.className;
         p.selectNew = false;
         p.height = "parent";
         this.base(p);
-        if(this.items().length()<2)
+        if(this.items().length()<2) {
             this.cmd("hideTabs");
+        }
         this.on("show",this.id(),"handleShow");        
     },
     

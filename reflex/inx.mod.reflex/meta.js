@@ -18,7 +18,7 @@ inx.ns("inx.mod.reflex").meta = inx.panel.extend({
   
         p.items = [{
             type:"inx.mod.reflex.meta.route",
-            title:"Адрес страницы",
+            title:"<div style='font-size:18px;' >Адрес страницы</div>",
             index:p.index,
             style:{
                 border:0,
@@ -26,7 +26,7 @@ inx.ns("inx.mod.reflex").meta = inx.panel.extend({
             }
         },{
             type:"inx.mod.reflex.meta.title",
-            title:"Заголовки",
+            title:"<div style='font-size:18px;' >Мета-данные</div>",
             index:p.index,
             style:{
                 border:0,

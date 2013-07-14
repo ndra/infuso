@@ -6,7 +6,7 @@ inx.mod.reflex.meta.title.lang = inx.panel.extend({
         if(!p.style)
             p.style = {};
         p.style.background = "none";
-        p.tbar = [
+        p.bbar = [
             {text:"Сохранить (Ctrl+S)",icon:"save",onclick:[this.id(),"save"]},"|",
             {text:"Удалить метаданные",icon:"delete",onclick:[this.id(),"deleteMeta"]},
         ];
@@ -39,7 +39,7 @@ inx.mod.reflex.meta.title.lang = inx.panel.extend({
     
     cmd_handleData:function(data) {
     
-        inx(this).axis("tbar").cmd(data.form ? "show" : "hide");
+        inx(this).axis("bbar").cmd(data.form ? "show" : "hide");
     
         this.items().cmd("destroy");
         if(data.error) {

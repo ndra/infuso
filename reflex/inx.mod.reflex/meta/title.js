@@ -18,7 +18,9 @@ inx.mod.reflex.meta.title = inx.tabs.extend({
     cmd_handleData:function(data) {
     
         var that = this;
+        var n = 0;
         for(var i in data) {
+            n++;
             that.cmd("add",{
                 type:"inx.mod.reflex.meta.title.lang",
                 index:that.index,
@@ -27,6 +29,10 @@ inx.mod.reflex.meta.title = inx.tabs.extend({
                 lazy:true
             });
         }
+        
+        if(n < 2) {
+            this.cmd("hideTabs");
+        }        
         
     }
      

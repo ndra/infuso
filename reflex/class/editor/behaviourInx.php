@@ -176,9 +176,10 @@ class reflex_editor_behaviourInx extends mod_behaviour {
             "type" => "inx.panel",
             "items" => array(),
             "style" => array(
+                "titleMargin" => 10,
                 "padding" => 0,
                 "border" => 0,
-                "spacing" => 0,
+                "spacing" => 10,
                 "background" => "none",
             )
         );
@@ -200,7 +201,7 @@ class reflex_editor_behaviourInx extends mod_behaviour {
             
             $items = array();
 
-            foreach($this->item()->fields() as $field) {
+            foreach($this->fields() as $field) {
                 if($field->group()==$group->name() && !in_array($field->name(),$usedFields)) {
                     if($field->editable() || ($field->readonly() && $this->item()->exists()) ) {
                         $items[] = $field->editorInxFull();
@@ -213,33 +214,20 @@ class reflex_editor_behaviourInx extends mod_behaviour {
                 continue;
             }
             
-            $groupTitle = $group->title() ? $group->title() : "&mdash;";
+            $groupTitle = $group->title();
 
             $group = array(
-
-                "type" => "inx.panel",
+                "type" => "inx.form",
+                "title" => "<b style='font-size:16px;' >{$groupTitle}</b>",
+                "items" => $items,
+                "hidden" => $hidden,
                 "style" => array(
                     "border" => 0,
-                    "padding" => 10,
-                    "background" => $n%2==1 ? "rgb(245, 245, 234)" : "white",
+                    "padding" => 00,
+                    "spacing" => 15,
+                    "background" => "none",
                 ),
-                "items" => array(
-
-                    array(
-                        "type" => "inx.form",
-                        "title" => "<b style='font-size:16px;' >{$groupTitle}</b>",
-                        "items" => $items,
-                        "hidden" => $hidden,
-                        "style" => array(
-                            "titleMargin" => 0,
-                            "border" => 0,
-                            "padding" => 20,
-                            "spacing" => 15,
-                            "background" => "none",
-                        ),
-                        "lazy" => $hidden
-                    ),
-                ),
+                "lazy" => $hidden
             );
 
             $groups[] = $group;

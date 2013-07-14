@@ -6,7 +6,7 @@ inx.mod.reflex.meta.route = inx.panel.extend({
     
         p.style.spacing = 10; 
     
-        p.tbar = [
+        p.bbar = [
             {text:"Сохранить (Ctrl+S)",icon:"save",onclick:[this.id(),"save"]},"|",
             {text:"Удалить адрес",icon:"delete",onclick:[this.id(),"deleteRoute"]},
         ];
@@ -45,7 +45,7 @@ inx.mod.reflex.meta.route = inx.panel.extend({
             return;
         }
         
-        inx(this).axis("tbar").cmd(data.form ? "show" : "hide");
+        inx(this).axis("bbar").cmd(data.form ? "show" : "hide");
         this.enableSave = false;
     
         this.items().cmd("destroy");
