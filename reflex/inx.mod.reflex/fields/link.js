@@ -15,7 +15,7 @@ inx.ns("inx.mod.reflex.fields").link = inx.panel.extend({
         
         this.combo = inx({
             type:"inx.combo",
-            width:276,
+            width:274,
             name:"combo",
             value:p.value,
             text:p.text,

@@ -77,6 +77,7 @@ class user_editorBehaviour extends mod_behaviour {
     public function inxBeforeForm() {
         return array(
             "type" => "inx.mod.user.editor.roles",
+            "title" => "<div style='font-size:16px;font-weight:bold;' >Роли</div>",
             "userID" => $this->item()->id(),
         );
     }

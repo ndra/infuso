@@ -179,7 +179,7 @@ class reflex_editor_behaviourInx extends mod_behaviour {
                 "titleMargin" => 10,
                 "padding" => 0,
                 "border" => 0,
-                "spacing" => 10,
+                "spacing" => 20,
                 "background" => "none",
             )
         );

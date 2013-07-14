@@ -20,9 +20,14 @@ inx.mod.reflex.editor.item.fields = inx.panel.extend({
             
                 case "save":
                     tbar.push({
-                        text:"Сохранить (Ctrl+S)",
+                        
+                        style:{
+                            height:32,
+                            fontSize:18
+                        },
+                        text:"Сохранить",
                         icon:"save",
-                        air:true,
+                        //air:true,
                         onclick:[this.id(),"save"]
                     });
                     break;
@@ -60,12 +65,16 @@ inx.mod.reflex.editor.item.fields = inx.panel.extend({
     
     cmd_handleData:function(data) {
         inx.hotkey("ctrl+s",[this.id(),"save"]);
-        this.cmd("add",{
+        /*this.cmd("add",{
             type:"inx.button",
             text:"Сохранить",
+            style:{
+                height:32,
+                fontSize:18
+            },
             icon:"save",
             onclick:[this.id(),"save"]
-        });
+        }); */
     },
     
     cmd_close:function() {
