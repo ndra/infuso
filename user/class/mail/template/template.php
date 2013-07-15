@@ -10,7 +10,7 @@ class user_mail_template extends reflex {
      * Возвращает коллекцию всех элементов
      **/
     public static function all() {
-        return reflex::get(get_class());
+        return reflex::get(get_class())->asc("code");
     }
 
     /**
