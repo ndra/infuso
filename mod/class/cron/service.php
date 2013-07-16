@@ -43,7 +43,7 @@ class mod_cron_service extends mod_service {
         $left = $time->stamp() + $delay - util::now()->stamp();
 
         // Рарзрешаем обработчикам крона запуститься только если истек кулдаун или мы в режиме суперадмина
-        if($left<0) {
+        if($left<0 || mod_superadmin::check()) {
             $file->put("processing");
             $t1 = util::now()->stamp();
             self::process();
