@@ -1,7 +1,7 @@
 <?
 
 /**
- * Контроллер лога крона
+ * Контроллер отчета крона
  **/
 class mod_cron_log extends mod_controller {
 
