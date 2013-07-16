@@ -7,6 +7,7 @@ class form extends tmp_helper {
 
 	private $blocks = array();
 	private $fields = array();
+	
 	public static $widgetStack = array();
     
 	public function addGeneric($generic) {
