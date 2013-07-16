@@ -15,7 +15,8 @@ inx.ns("inx.mod.board").tagSelector = inx.combo.extend({
         }        
         
         this.base(p);        
-        this.cmd("createList");
+        this.on("render",[this.id(),"createList"]);
+        
     }
          
 });
