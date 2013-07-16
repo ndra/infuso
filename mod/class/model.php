@@ -47,9 +47,11 @@ abstract class mod_model extends mod_controller {
         if(!$data) {
             $data = array();
 		}
+		
+		$modelFields = $this->modelFields();
 
         $fields = array();
-        foreach($this->modelFields() as $field) {
+        foreach($modelFields as $field) {
             $field = clone $field;
             $field->setModel($this);
             $field->initialValue(array_key_exists($field->name(),$data) ?
@@ -58,7 +60,7 @@ abstract class mod_model extends mod_controller {
             $fields[] = $field;
         }
         
-        $this->fields = new mod_fieldset($fields);
+        $this->fields = $modelFields->copyBehaviours($fields);
     }
 
     /**

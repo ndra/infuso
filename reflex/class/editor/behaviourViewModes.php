@@ -47,12 +47,16 @@ class reflex_editor_behaviourViewModes extends mod_behaviour {
      * Функция возвращает список полей для табличного режима в таблице
      **/
     public function gridFields() {
+    
         $ret = array();
-        foreach($this->item()->fields() as $field)
+        $fields = $this->item()->fields();
+        foreach($fields as $field) {
             if($field->editable() || $field->readonly()) {
                 $ret[] = $field;
             }
-        return new mod_fieldset($ret);
+		}
+
+        return $fields->copyBehaviours($ret);
     }
 
     public function gridColWIdth() {

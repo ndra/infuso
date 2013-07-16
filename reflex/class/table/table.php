@@ -332,7 +332,9 @@ class reflex_table extends mod_component {
             }
         }
         
-        return new mod_fieldset($this->fields);
+		$fieldset = new mod_fieldset($this->fields);
+        $fieldset->addBehaviour("reflex_table_fieldBehaviour");
+        return $fieldset;
     }
     
     public function field($name) {

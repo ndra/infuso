@@ -54,9 +54,13 @@ class mod_fieldset implements Iterator{
      * Возвращает поле по типу
      **/
     public function type($typeID) {
-        foreach($this->fields as $field)
-            if($field->typeID()==$typeID)
+    
+        foreach($this->fields as $field) {
+            if($field->typeID()==$typeID) {
                 return $field;
+			}
+		}
+		
         return self::zero();
     }
 
@@ -64,9 +68,13 @@ class mod_fieldset implements Iterator{
      * Возвращает поле по id
      **/
     public function id($id) {
-        foreach($this->fields as $field)
-            if($field->id()==$id)
+    
+        foreach($this->fields as $field) {
+            if($field->id()==$id) {
                 return $field;
+			}
+		}
+		
         return self::zero();
     }
 
@@ -74,11 +82,15 @@ class mod_fieldset implements Iterator{
      * Возвращает измененные поля
      **/
     public function changed() {
+    
         $ret = array();
-        foreach($this->fields as $field)
-            if($field->changed())
+        foreach($this->fields as $field) {
+            if($field->changed()) {
                 $ret[] = $field;
-        return new self($ret);
+			}
+		}
+		
+        return $this->copyBehaviours($ret);
     }
 
     /**
@@ -86,10 +98,12 @@ class mod_fieldset implements Iterator{
      **/
     public function visible() {
         $ret = array();
-        foreach($this->fields as $field)
-            if($field->visible())
+        foreach($this->fields as $field) {
+            if($field->visible()) {
                 $ret[] = $field;
-        return new self($ret);
+			}
+		}
+        return $this->copyBehaviours($ret);
     }
 
     /**
@@ -97,10 +111,24 @@ class mod_fieldset implements Iterator{
      **/
     public function group($group) {
         $ret = array();
-        foreach($this->fields as $field)
-            if($field->group()==$group)
+        foreach($this->fields as $field) {
+            if($field->group()==$group) {
                 $ret[] = $field;
-        return new self($ret);
+            }
+		}
+        return $this->copyBehaviours($ret);
+    }
+
+	/**
+	 * Создает набор полей на основе данного,
+	 * При этом сами поля передаются аргументом, а поведения берутся из данного филдсета
+	 **/
+    public function copyBehaviours($fields) {
+        $fieldset = new self($fields);
+		foreach($this->behaviours() as $b) {
+		    $fieldset->addBehaviour($b);
+		}
+		return $fieldset;
     }
 
     /**
@@ -152,6 +180,10 @@ class mod_fieldset implements Iterator{
      **/
     public function addBehaviour($class) {
         $this->behaviours[] = $class;
+    }
+    
+    public function behaviours() {
+        return $this->behaviours;
     }
 
 }
