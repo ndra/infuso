@@ -24,8 +24,9 @@ inx.textarea = inx.textfield.extend({
             p.style.height = 50;
         }
         
-        if(!p.labelAlign)
+        if(!p.labelAlign) {
             p.labelAlign = "top";
+        }
             
         this.base(p);        
         this.on("change","syncLayout");
@@ -37,7 +38,7 @@ inx.textarea = inx.textfield.extend({
         this.base();
     },
     
-    info_textareaContentHeight:function() {
+    info_textareaContentHeight:function() {    
     
         // Если текстовое поле растягивается автоматически
         if(this.style("height")!="content") {
@@ -65,24 +66,32 @@ inx.textarea = inx.textfield.extend({
         
         var h = this.rulerInput.prop("scrollHeight")+11;
         
-        if(h>200)
+        if(h>200) {
             h = 200;
+        }
             
         return h;
             
     },
     
     cmd_syncLayout:function() {    
-        this.input.width(this.info("innerWidth")-10);        
+    
+        var inputWidth = this.info("innerWidth")-10;    
+        this.input.width(inputWidth);
         this.base();
-        var contentHeight = this.info("textareaContentHeight");
-        this.input.css("height",contentHeight-10,true);
-        this.cmd("setContentHeight",contentHeight);
+        
+        // Чтобы текстовое поле не прыгало
+        if(inputWidth>10) {
+            var contentHeight = this.info("textareaContentHeight");
+            this.input.css("height",contentHeight-10,true);
+            this.cmd("setContentHeight",contentHeight);
+        }
     },
     
     cmd_keydown:function(e) {
-        if(e.which==13)
+        if(e.which==13) {
             this.task("syncLayout");
+        }
         return "stop";
     }
 
