@@ -133,7 +133,6 @@ inx.list.gridItem = inx.panel.extend({
                 
                 var w = this.head.info("colWidth",name)-8;
                 cmp.cmd("width",w);
-                
             }
             
         }

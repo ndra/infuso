@@ -33,8 +33,9 @@ inx.list.head = inx.panel.extend({
     cmd_handleMouseOver:function(e) {
         var target = $(e.target);
         var col = this.owner().info("col",target.data("name"),"title");
-        if(col)
+        if(col) {
             this.help = col;
+        }
               
         if(!target.data("name"))
             return;
@@ -101,8 +102,9 @@ inx.list.head = inx.panel.extend({
      **/
     info_colWidth:function(name) {
         var ret =  this.private_colWidth[name];
-        if(ret<16 + 8)
+        if(ret < 16 + 8) {
             ret = 16 + 8;
+        }
         return ret;        
     },
     
@@ -110,9 +112,10 @@ inx.list.head = inx.panel.extend({
      * Возвращает суммарную ширину колонок
      **/
     info_totalWidth:function() {
-        var ret = 5;
-        for(var i in this.cols)
-            ret+= this.info("colWidth",this.cols[i].name);
+        var ret = 0;
+        for(var i in this.cols) {
+            ret += this.info("colWidth",this.cols[i].name);
+        }
         return ret;
     },
     
@@ -120,10 +123,12 @@ inx.list.head = inx.panel.extend({
      * Возвращает отступ колонки от левого края
      **/
     info_colLeft:function(name) {
-        var left = 5;
+        var left = this.owner().style("padding");
         for(var i in this.cols) {
-            if(this.cols[i].name==name) break;
-            left+=this.info("colWidth",this.cols[i].name);
+            if(this.cols[i].name==name) {
+                break;
+            }
+            left += this.info("colWidth",this.cols[i].name);
         }
         return left;
     },
@@ -132,7 +137,9 @@ inx.list.head = inx.panel.extend({
      * Устанавливает ширину колонки
      **/
     cmd_setColWidth:function(name,width,init) {
-        if(this.private_colWidth[name] && init) return;
+        if(this.private_colWidth[name] && init) {
+            return;
+        }
         this.private_colWidth[name] = width;
         this.task("renderCols");
         this.task("rebuildHash");
@@ -157,7 +164,7 @@ inx.list.head = inx.panel.extend({
      * Т.е. в какую колонку мы попадем, если нажмен на расстоянии x от левого края
      **/
     info_offsetToName:function(x) {
-        var left = 5;
+        var left = 0;
         for(var i in this.cols) {
             left+=this.info("colWidth",this.cols[i].name);
             if(left>x)

@@ -543,8 +543,9 @@ inx.box = inx.observable.extend({
     },
     
     cmd_syncLayout:function() {
-        if(this.style("height")=="content")
+        if(this.style("height")=="content") {
             this.task("resizeToContents");
+        }
     },
         
     info_help:function() {
