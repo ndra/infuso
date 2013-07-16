@@ -258,8 +258,9 @@ inx.panel = inx.box.extend({
             if(panel.info("resizable")) 
                 panel.style("height","parent");        
         
-        if(!this.private_side)
+        if(!this.private_side) {
             this.private_side = [];
+        }
         this.private_side.push(panel.id());
         panel.setOwner(this.id());
 
@@ -275,11 +276,12 @@ inx.panel = inx.box.extend({
         // Разделитель
         var e = $("<div />").addClass((panel.info("region")=="left" || panel.info("region")=="right") ? "inx-panel-vs" : "inx-panel-hs").appendTo(this.el);
         panel.data("sidebarSeparator",e);
-        if(panel.info("resizable"))
+        if(panel.info("resizable")) {
             inx.dd.enable(e,this,"dragSeparator",panel);
+        }
 
         inx.storage.onready(this.id(),"restoreLayout");
-        this.task("syncLayout");        
+        this.task("syncLayout");
         
     },
 

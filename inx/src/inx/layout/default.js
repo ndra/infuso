@@ -9,8 +9,9 @@ inx.layout["default"] = {
     add:function(id) {
     
         var cmp = inx(id);    
-        if(cmp.data("ij89238v67"))
+        if(cmp.data("ij89238v67")) {
             return;
+        }
             
         // Контейнер панели
        /* var bg = $("<div>").css({
@@ -21,13 +22,15 @@ inx.layout["default"] = {
             
         // Контейнер панели
         var e = $("<div>").css({
-            position:"absolute"
+            position:"absolute",
+            visibility:"hidden"
         }).appendTo(this.__body);
         cmp.data("layoutContainer",e);
                 
         // Контейнер заголовка
         var te = $("<div>").addClass("f50tpvh3plh-label").css({
-            position:"absolute"
+            position:"absolute",
+            visibility:"hidden"
         }).click(inx.cmd(cmp,"toggle"))
         .appendTo(this.__body);
         cmp.data("titleContainer",te);        
@@ -69,7 +72,9 @@ inx.layout["default"] = {
                     return;
                 }
                 
-                var bg = this.data("layoutBackground");
+                e.css({visibility:"visible"});
+                
+                //var bg = this.data("layoutBackground");
                     
                 var doSpacing = false;
                 
@@ -79,6 +84,8 @@ inx.layout["default"] = {
                 if(title) {
                                           
                     t.html(this.info("title"));
+                    
+                    t.css({visibility:"visible"});
                     
                     t.css({
                         top:y,

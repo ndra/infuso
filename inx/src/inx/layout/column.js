@@ -10,7 +10,8 @@ inx.layout.column = {
             
         cmp = inx(cmp);
         var c = $("<div>").css({
-            position:"absolute"
+            position:"absolute",
+            visibility:"hidden"
         }).appendTo(this.__body);
         
         cmp.cmd("render");
@@ -34,8 +35,9 @@ inx.layout.column = {
         
         var completeLine = function() {
         
-            if(!line.length)
+            if(!line.length) {
                 return;
+            }
         
             // Определяем высоту линии элементов
             var height = 0;
@@ -64,13 +66,24 @@ inx.layout.column = {
         }
         
         var clientWidth = this.info("clientWidth");
+        
+        if(clientWidth<1) {
+            return;
+        }
+        
         this.items().each(function() {
+        
+            if(!this.info("layoutReady")) {
+                return;
+            }
         
             if(this.style("break")) {
                 completeLine();
             }
         
             e = this.data("layoutContainer");
+            
+            e.css({visibility:"visible"});
             
             if(this.info("visible")) {
             

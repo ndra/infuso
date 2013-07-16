@@ -42,12 +42,17 @@ inx.panel = inx.panel.extend({
         return this.__bodyWidth || 0;
     },
     
+    /**
+     * Возвращает ширину доступной области
+     * Доступная область - та в которой можно вывести информацию
+     * Это внутренний размер, без паддинга, скроллбара и т.п.
+     **/
     info_clientWidth:function() {
-        return (this.__bodyWidth || 0) - this.style("padding")*2 - (this.private_style.vscroll ? 10 : 0);
+        return Math.max(0,(this.__bodyWidth || 0) - this.style("padding")*2 - (this.private_style.vscroll ? 10 : 0));
     },
     
     info_clientHeight:function() {
-        return (this.__bodyHeight || 0) - this.style("padding")*2 - (this.private_style.hscroll ? 10 : 0);
+        return Math.max(0,(this.__bodyHeight || 0) - this.style("padding")*2 - (this.private_style.hscroll ? 10 : 0));
     },
     
 });

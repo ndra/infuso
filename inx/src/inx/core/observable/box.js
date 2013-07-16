@@ -33,18 +33,23 @@ inx.box = inx.observable.extend({
         
         this.private_styleChangedKeys = {};
         
-        if(p.style)            
-            for(var i in p.style)
+        if(p.style) {          
+            for(var i in p.style) {
                 this.style(i,p.style[i]);
+            }
+        }
                 
-        if(p.width && !p.style.width)
+        if(p.width && !p.style.width) {
             this.style("width",p.width)
+        }
             
-        if(p.height && !p.style.height)
+        if(p.height && !p.style.height) {
             this.style("height",p.height)
+        }
                 
-        if(this.private_style.border===undefined)
+        if(this.private_style.border===undefined) {
             this.style("border",1);
+        }
         
         this.base(p);
                 
@@ -133,10 +138,20 @@ inx.box = inx.observable.extend({
         
         if(this.private_hidden) {
             this.cmd("hide");
-        }
-            
-        inx.box.manager.watch(this.id());
+        }    
+        
         this.task("completeRender");
+    },
+    
+    cmd_completeRender:function() {
+        this.fire("render");
+        this.cmd("updateStyle");
+        this.private_layoutReady = true;
+        inx.service("boxManager").watch(this.id());
+    },
+    
+    info_layoutReady:function() {
+        return !!this.private_layoutReady;
     },
     
     cmd_appendTo:function(container) {
@@ -145,8 +160,9 @@ inx.box = inx.observable.extend({
            return;
         }
            
-        if(container)
+        if(container) {
             this.container = $(container);
+        }
             
         this.el.appendTo(this.container);
         this.task("syncLayout");
@@ -205,7 +221,7 @@ inx.box = inx.observable.extend({
                 case "border":
                     this.el.css("border",(this.private_style["border"] ? 1 : 0 )+"px solid #cccccc");
                     this.cmd("updateBox");
-                    inx.box.manager.watch(this.id());
+                    inx.service("boxManager").watch(this.id());
                     break;
                     
                 case "padding":
@@ -237,11 +253,6 @@ inx.box = inx.observable.extend({
         this.private_styleChangedKeys = {};
     },
 
-    cmd_completeRender:function() {
-        this.fire("render");
-        this.cmd("updateStyle");
-    },
-    
     info_container:function() {
         return this.container;
     },
@@ -305,7 +316,7 @@ inx.box = inx.observable.extend({
                     .width(width)
                     .height(height);
             }
-            inx.box.manager.watch(this.id());
+            inx.service("boxManager").watch(this.id());
         }
         
         this.private_boxHash = hash;
@@ -464,16 +475,17 @@ inx.box = inx.observable.extend({
             
         this.fire("show");
 
-        inx.box.manager.watch(this.id());
+        inx.service("boxManager").watch(this.id());
         this.private_hidden = false;
         this.task("updateBox");
     },
     
     cmd_hide:function() {
-        if(this.el)
+        if(this.el) {
             this.el.css("display","none");
+        }
         this.fire("hide");
-        inx.box.manager.watch(this.id());
+        inx.service("boxManager").watch(this.id());
         this.private_hidden = true;
     },
     

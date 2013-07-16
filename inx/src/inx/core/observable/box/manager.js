@@ -77,4 +77,7 @@ inx.box.manager = new function() {
         }
         return ret;
     }
+    
+    inx.service.register("boxManager",this);
+    
 }
