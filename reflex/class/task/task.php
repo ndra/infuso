@@ -205,7 +205,7 @@ class reflex_task extends reflex implements mod_handler {
             $this->data("nextLaunch",$this->data("crontab"));
             
         // Mysql Date format
-        elseif(preg_match("/\d{4}-\d{2}-\d{2}\s(\d{2}\:\d{2}\:\d{2})?/",$this->data("crontab"))) {
+        } elseif(preg_match("/\d{4}-\d{2}-\d{2}\s(\d{2}\:\d{2}\:\d{2})?/",$this->data("crontab"))) {
             $this->data("nextLaunch",$this->data("crontab"));
             
         // Пустая строка
