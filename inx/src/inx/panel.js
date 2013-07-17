@@ -80,9 +80,14 @@ inx.panel = inx.box.extend({
     
     private_layoutManager:function() {
         var layout = this.layout; 
-        if(layout=="inx.layout.default")
+        if(layout == "inx.layout.default") {
             layout = "inx.layout['default']";
-        return eval(layout);
+        }
+        var ret = eval(layout);
+        if(!ret) {
+            throw new Error("Bad layout"+this.layout);
+        }
+        return ret;
     },
     
     cmd_render:function() {    
