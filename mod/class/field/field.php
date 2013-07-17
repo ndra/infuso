@@ -18,6 +18,10 @@ abstract class mod_field extends mod_component {
      **/
     private $changed = false;
     
+	private static $path = "/mod/service/field.inc.php";
+	
+    private static $descr = array();
+    
     public static function get($arg) {
         return self::factory($arg);
     }
@@ -113,15 +117,13 @@ abstract class mod_field extends mod_component {
         return $ret;
     }
 
-    private static $path = "/mod/service/field.inc.php";
-    private static $descr = array();
-
     /**
      * Загружает описание типов полей
      **/
     private function loadDescription() {
-        if(!self::$descr)
+        if(!self::$descr) {
             self::$descr = file::get(self::$path)->inc();
+        }
     }
 
     /**
@@ -155,8 +157,9 @@ abstract class mod_field extends mod_component {
      **/
     public function typeAlias() {
         $class = get_class($this);
-        if(preg_match("/^mod_field_(.*)/",$class,$matches))
+        if(preg_match("/^mod_field_(.*)/",$class,$matches)) {
             return $matches[1];
+		}
     }
 
     /**
@@ -181,6 +184,7 @@ abstract class mod_field extends mod_component {
         if(func_num_args()==0) {
             return $this->value;
         }
+        
         if(func_num_args()==1) {
             $this->value = $this->prepareValue($val);
         }
@@ -344,10 +348,15 @@ abstract class mod_field extends mod_component {
      * 2 - Только чтение
      **/
     public final function editMode() {
-        if($this->editable())
+    
+        if($this->editable()) {
             return 1;
-        if($this->readonly())
+        }
+        
+        if($this->readonly()) {
             return 2;
+		}
+		
         return 0;
     }
 
@@ -362,8 +371,9 @@ abstract class mod_field extends mod_component {
      * @return Можно ли редактировать данное поле
      **/
     public final function editable() {
-        if($this->name()=="id")
+        if($this->name()=="id") {
             return false;
+		}
         return $this->conf("editable")==1;
     }
 
