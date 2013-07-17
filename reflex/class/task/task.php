@@ -200,10 +200,19 @@ class reflex_task extends reflex implements mod_handler {
      **/
     public function updateNextLaunchTime() {
 
-        if(preg_match("/\d{4}-\d{2}-\d{2}\s(\d{2}\:\d{2}\:\d{2})?/",$this->data("crontab"))) {
+		// Таймстэмп
+		if(preg_match("/^\d+$/",$this->data("crontab"))) {
             $this->data("nextLaunch",$this->data("crontab"));
+            
+        // Mysql Date format
+        elseif(preg_match("/\d{4}-\d{2}-\d{2}\s(\d{2}\:\d{2}\:\d{2})?/",$this->data("crontab"))) {
+            $this->data("nextLaunch",$this->data("crontab"));
+            
+        // Пустая строка
         } elseif(trim($this->data("crontab"))=="") {
             $this->data("nextLaunch",util::now());
+            
+		// Прочее - кронтаб
         } else {
             $time = reflex_task_crontab::nextDate($this->data("crontab"));
             $this->data("nextLaunch",$time);
