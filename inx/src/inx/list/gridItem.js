@@ -49,10 +49,14 @@ inx.list.gridItem = inx.panel.extend({
         // Действие
         switch(e.type) {
             case "click":
-                e.action = e.cellData.click;
+                if(e.cellData) {
+                    e.action = e.cellData.click;
+                }
                 break;
             case "dblclick":
-                e.action = e.cellData.dblclick;
+                if(e.cellData) {
+                    e.action = e.cellData.dblclick;
+                }
                 break;
         }
         
