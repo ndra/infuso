@@ -15,18 +15,23 @@ class reflex_editor_fieldController extends mod_controller {
      * Возвращает список опций для селекта
      **/
     public function post_getSelectOptions($p) {
-
-        $ret = array();
+        
         // Определяем последовательность
         $editor = reflex_editor_controller::byOldIndex($p["index"])->editor();
 
-        if(!$editor->beforeView())
+		// Для получения списка элементов достаточно права просматривать коллекцию
+        if(!$editor->beforeCollectionView()) {
             return array();
+        }
 
-        foreach($editor->item()->fields() as $field)
-            if($field->name()==$p["name"])
-                foreach($field->options() as $key=>$val)
+        $ret = array();
+        foreach($editor->item()->fields() as $field) {
+            if($field->name()==$p["name"]) {
+                foreach($field->options() as $key=>$val) {
                     $ret[] = array("id"=>$key,"text"=>$val);
+                }
+            }
+        }
         return $ret;
 
     }
@@ -89,10 +94,13 @@ class reflex_editor_fieldController extends mod_controller {
         $ret = array();
         $fn = trim($field->itemTitleMethod());
         foreach($items as $item) {
-            if($fn)
+        
+            if($fn) {
                 $title = $item->editor()->$fn();
-            else
+            } else {
                 $title = $item->title();
+			}
+                
             $ret["data"][] = array (
                 "id" => $item->data($field->foreignKey()),
                 "data" => array (
