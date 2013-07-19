@@ -151,6 +151,7 @@ inx.box = inx.observable.extend({
     },
     
     info_layoutReady:function() {
+    
         return !!this.private_layoutReady;
     },
     
@@ -344,11 +345,11 @@ inx.box = inx.observable.extend({
      * Устанавливает высоту панели в режиме "По контенту"
      **/
     cmd_setContentHeight:function(height) {
-    
+
         if(this.private_heightContent == height) {
             return;
         }
-     
+        
         this.private_heightContent = height;
         this.task("updateBox");
     },
@@ -378,7 +379,7 @@ inx.box = inx.observable.extend({
         if(height=="content") {
         
             height = this.private_heightContent;
-                
+            
             height+= this.style("padding")*2;
             height+= this.private_style.border ? 2 : 0;
             height+= this.info("sideHeight") || 0;
@@ -386,6 +387,7 @@ inx.box = inx.observable.extend({
             var maxh = this.style("maxHeight");
             if(maxh && height>maxh)
                 height = maxh;     
+                
             
         }
                     
@@ -555,9 +557,7 @@ inx.box = inx.observable.extend({
     },
     
     cmd_syncLayout:function() {
-        if(this.style("height")=="content") {
-            this.task("resizeToContents");
-        }
+
     },
         
     info_help:function() {

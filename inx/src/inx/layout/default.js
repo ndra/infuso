@@ -13,7 +13,7 @@ inx.layout["default"] = {
             return;
         }
             
-        // Контейнер панели
+        // Фон панели
        /* var bg = $("<div>").css({
             position:"absolute",
             background:"red"
@@ -49,6 +49,10 @@ inx.layout["default"] = {
     
     sync:function() {     
     
+        if(!this.info("rendered")) {
+            inx.msg(12);
+        }
+    
         var padding = this.style("padding");
         var width = this.info("clientWidth");
         
@@ -63,6 +67,10 @@ inx.layout["default"] = {
             var spacing = this.style("spacing");                
     
             this.items().each(function(n) {    
+            
+                if(!this.info("layoutReady")) {
+                    return;
+                }
             
                 var areaHeight = 0;
                 var areaStart = y;
@@ -120,6 +128,7 @@ inx.layout["default"] = {
                     this.cmd("width",width);
                     
                     var h = this.info("height");
+                    
                     areaHeight +=h ;
                 
                    /* bg.css({
@@ -137,8 +146,9 @@ inx.layout["default"] = {
                     e.css("display","none");
                 }
                 
-                if(doSpacing)
+                if(doSpacing) {
                     y += spacing;
+                }
     
             })            
             
@@ -156,7 +166,7 @@ inx.layout["default"] = {
                 
             var contentHeight = inx.height(this.private_htmlContainer);
             this.cmd("setContentHeight",contentHeight);
-
+            
         }        
 
     }

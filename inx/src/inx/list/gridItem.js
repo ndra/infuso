@@ -82,10 +82,12 @@ inx.list.gridItem = inx.panel.extend({
         
         var e = $("<tr>");        
         
-       if(this.fullData.css)
-           for(var i in this.fullData.css)
-               e.css(i,this.fullData.css[i]);
-               
+        if(this.fullData.css) {
+            for(var i in this.fullData.css) {
+                e.css(i,this.fullData.css[i]);
+            }
+        }
+            
         var table = $("<table>").addClass("ubd4v2nfv-table");
         e.appendTo(table)
         this.cmd("html",table);
@@ -104,8 +106,7 @@ inx.list.gridItem = inx.panel.extend({
             
             var td = $("<td>")
             .addClass("ubd4v2nfv")
-            .css({
-                //width:this.head.info("colWidth",name), // Учитываем паддинг                        
+            .css({                
                 left:this.head.info("colLeft",name),
                 textAlign:this.head.info("colAlign",name)
             }).appendTo(e);    

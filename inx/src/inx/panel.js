@@ -13,16 +13,18 @@ inx.panel = inx.box.extend({
 
     constructor:function(p) {
     
-        if(!p.title)
+        if(!p.title) {
             p.title = "";
+        }
             
         this.layout = p.layout || "inx.layout['default']";
             
         this.private_html = p.html;
         
         // Тулбар
-        if(!p.side)
+        if(!p.side) {
             p.side = [];
+        }
             
         if(p.tbar && p.tbar.length) {
             this.tbar = inx.cmp.create({
@@ -112,8 +114,9 @@ inx.panel = inx.box.extend({
             that.private_layoutManager().add.apply(that,[this]);
         });
 
-        if(this.keepLayout)
+        if(this.keepLayout) {
             inx.storage.onready(this.id(),"restoreLayout");
+        }
 
         if(this.private_html!==undefined) {
             this.cmd("html",this.private_html);
@@ -136,10 +139,11 @@ inx.panel = inx.box.extend({
 
         if(this.__body) {
         
-            if(!this.private_htmlContainer)
+            if(!this.private_htmlContainer) {
                 this.private_htmlContainer = $("<div>").css({
                     position:"relative"
                 }).appendTo(this.__body);
+            }
         
             if(typeof(html)=="object") {
                 this.private_htmlContainer.html("");
