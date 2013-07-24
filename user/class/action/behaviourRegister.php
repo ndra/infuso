@@ -59,7 +59,10 @@ class user_action_behaviourRegister extends mod_behaviour {
                 ->message("Поздравляем, ваша учетная запись активирована")
                 ->code("user/verification")
                 ->send();
+
             mod_action::get("user_action","verificationComplete")->redirect();
+            mod::fire("userVerificatrionComplete");
+
         }
 
         tmp::exec("/user/verificationFailed");
