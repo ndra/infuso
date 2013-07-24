@@ -61,8 +61,24 @@ class reflex_sync extends mod_controller {
 
     }
 
+    /**
+     * Контроллер, возвращающий список классов
+     **/
     public function post_getClassList() {
-        return reflex::classes();
+
+        $skip = $this->param("skip");
+        if(!is_array($skip)) {
+            $skip = array();
+        }
+
+        foreach(reflex::classes() as $class) {
+            if(!in_array($class,$skip)) {
+                $ret[] = $class;
+            }
+        }
+
+        return $ret;
+
     }
 
     public function post_syncStep($p) {
@@ -122,11 +138,13 @@ class reflex_sync extends mod_controller {
             reflex_mysql::query($query);
         }
 
-        mod::msg("$class:{$p[fromID]} total {$data[total]}");
-
         return array(
             "action" => "nextID",
             "nextID" => $data["nextID"],
+            "log" => array(
+                "class" => $class,
+                "message" => $class.": {$data[nextID]} total {$data[total]}"
+            ),
         );
 
     }

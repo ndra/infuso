@@ -13,7 +13,10 @@ inx.ns("inx.mod.reflex").sync = inx.panel.extend({
         
         p.items = [{
             type:"inx.panel",
-            height:100
+            name:"log",
+            style:{
+                padding:10
+            }
         },{
             type:"inx.button",
             text:"Синхронизировать",
@@ -31,15 +34,26 @@ inx.ns("inx.mod.reflex").sync = inx.panel.extend({
     
     cmd_handleClassList:function(data) {
         this.classList = data;
+        
+        var container = $("<div>");
+        
+        for(var i in data) {
+            $("<div>")
+                .html(data[i])
+                .addClass(data[i])
+                .appendTo(container);
+        }
+        
+        this.items().eq("name","log").cmd("html",container);
+        
         this.cmd("fetchClass");
     },
     
     cmd_fetchClass:function() {
-        this.className = this.classList.pop();
+        this.className = this.classList.shift();
         if(!this.className) {
             this.cmd("done");
         } else {
-            this.cmd("log",this.className);
             this.fromID = 0;
             this.cmd("step");
         }
@@ -50,7 +64,11 @@ inx.ns("inx.mod.reflex").sync = inx.panel.extend({
     },
     
     cmd_log:function(log) {
-        inx.msg(log);
+        var container = this.items().eq("name","log").info("param","__body");
+        
+        var item = container.find("."+log["class"]);
+       
+        item.html(log.message);
     },
     
     cmd_step:function() {
@@ -71,6 +89,10 @@ inx.ns("inx.mod.reflex").sync = inx.panel.extend({
             this.cmd("stepFailed");
             return;
         }        
+        
+        if(data.log) {
+            this.cmd("log",data.log)
+        }
         
         if(data.action == "nextClass") {
             this.cmd("fetchClass");
