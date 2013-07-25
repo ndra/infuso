@@ -150,7 +150,7 @@ class tmp_template extends tmp_generic {
             $cached = mod_cache::get($hash);
 
             // Если в кэше еще нет шаблона
-            if(!$cached || $this->recashe) {
+            if(!$cached || $this->recache) {
 
                 mod_profiler::beginOperation("tmp","cached miss",$this->template());
 
