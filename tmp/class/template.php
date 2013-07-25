@@ -6,6 +6,8 @@ class tmp_template extends tmp_generic {
     private static $current = null;
 
     public $cache = null;
+    
+    public $recache = null;
 
     public function __construct($name=null) {
 
@@ -103,17 +105,23 @@ class tmp_template extends tmp_generic {
 
     }
 
-	
-	/**
+
+    /**
      * Очистка кэша шаблона
      **/
     public function clearCache() {
         $p = $this->params();
         $hash = $this->template().":".$this->cache.":".serialize($p);
         mod_cache::set($hash,null);
+        return $this;
     }
-	
-	
+    
+    
+    public function recache() {
+        $this->recache = 1;
+        return $this;    
+    }
+
     /**
      * Выполняет шаблон
      * Первый параметр - шаблон.
@@ -142,7 +150,7 @@ class tmp_template extends tmp_generic {
             $cached = mod_cache::get($hash);
 
             // Если в кэше еще нет шаблона
-            if(!$cached) {
+            if(!$cached || $this->recashe) {
 
                 mod_profiler::beginOperation("tmp","cached miss",$this->template());
 
