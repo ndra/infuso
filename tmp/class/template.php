@@ -103,6 +103,17 @@ class tmp_template extends tmp_generic {
 
     }
 
+	
+	/**
+     * Очистка кэша шаблона
+     **/
+    public function clearCache() {
+        $p = $this->params();
+        $hash = $this->template().":".$this->cache.":".serialize($p);
+        mod_cache::set($hash,null);
+    }
+	
+	
     /**
      * Выполняет шаблон
      * Первый параметр - шаблон.
