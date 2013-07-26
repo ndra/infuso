@@ -351,6 +351,17 @@ class user extends reflex {
         
         return !!$ret;
     }
+
+    /**
+     * Проверяет возможность выполнить операцию.
+     * Если в доступе отказано, выкидывает Исключение
+     **/
+    public function checkAccessThrowException($operationCode,$params=array()) {
+
+        if(!$this->checkAccess($operationCode,$params)) {
+            throw new Exception($this->errorText());
+        }
+    }
     
     public function clearErrorText() {
         $this->errorText = "";

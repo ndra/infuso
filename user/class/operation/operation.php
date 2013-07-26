@@ -141,17 +141,24 @@ class user_operation extends reflex {
             $ret = true;
         }
 
-        foreach($user->roles() as $role) {
-            if($role->code()==$this->code()) {
-                $ret = true;
+        // Проверяем наличие у пользователя этой роли
+        if(!$ret) {
+            foreach($user->roles() as $role) {
+                if($role->code()==$this->code()) {
+                    $ret = true;
+                    break;
+                }
             }
         }
         
         // Проверяем наличие у пользователя роли, к которым прикреплена операция
-        foreach($this->parentOperations() as $operation) {
-            if($user->checkAccess($operation->code(),$params)) {
-                $ret = true;
-                break;
+        if(!$ret) {
+            foreach($this->parentOperations() as $operation) {
+                if($user->checkAccess($operation->code(),$params)) {
+                    $ret = true;
+                    break;
+                    break;
+                }
             }
         }
 

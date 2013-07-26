@@ -13,7 +13,7 @@ class board_controller_log extends mod_controller {
 
         $ret = array();
 
-        $log = board_task_log::all();
+        $log = board_task_log::visible();
 
         if($taskID = $p["taskID"]) {
             $log->eq("taskID",$taskID);

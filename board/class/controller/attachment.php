@@ -17,12 +17,9 @@ class board_controller_attachment extends mod_controller {
         $task = board_task::get($p["taskID"]);
 
         // Параметры задачи
-        if(!user::active()->checkAccess("board/listTaskAttachments",array(
+        user::active()->checkAccessThrowException("board/listTaskAttachments",array(
             "task" => $task
-        ))) {
-            mod::msg(user::active()->errorText(),1);
-            return;
-        }
+        ));
 
         $ret = array();
 

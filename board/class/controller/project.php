@@ -13,12 +13,6 @@ class board_controller_project extends mod_controller {
      * Возвращает список проектов
      **/
     public function post_listProjects($p) {
-    
-        // Параметры задачи
-        if(!user::active()->checkAccess("board/viewProjectList")) {
-            mod::msg(user::active()->errorText(),1);
-            return;
-        }
 
         $ret = array();
 
@@ -39,11 +33,6 @@ class board_controller_project extends mod_controller {
      * Возвращает простой список проектов (для выбиралки)
      **/    
     public static function post_listProjectsSimple($p) {
-    
-        if(!user::active()->checkAccess("board/viewProjectList")) {
-            mod::msg(user::active()->errorText(),1);
-            return;
-        }
 
         $ret = array();
 

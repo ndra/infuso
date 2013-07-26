@@ -457,7 +457,7 @@ class mod_component {
         if(func_num_args()==2 && is_array(func_get_arg(1))) {
             extract(func_get_arg(1));
         }
-        eval(func_get_arg(0));
+        return eval(func_get_arg(0));
     }
 
 }

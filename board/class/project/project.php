@@ -14,10 +14,16 @@ class board_project extends reflex {
 	 **/	 	
 	public static function visible() {
 
-		if(user::active()->checkAccess("board:viewAllProjects"))
+		if(user::active()->checkAccess("board:viewAllProjects")) {
 			$projects = board_project::all();
-		else
-			$projects = board_project::all()->eq("customerUserID",user::active()->id())->neq("customerUserID",0);
+        } else {
+
+            $access = board_access::all()
+                ->eq("userID",user::active()->id())
+                ->neq("userID",0);
+
+			$projects = board_project::all()->eq("id",$access->distinct("projectID"));
+        }
 
 		return $projects;
 	}

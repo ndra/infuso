@@ -18,7 +18,6 @@ class board_task_log extends reflex {
                   'name' => 'id',
                   'type' => 'jft7-kef8-ccd6-kg85-iueh',
                 ), array (
-                  'id' => 'cvbqp5iqy5zxwesq41rd8as7w12tc9',
                   'name' => 'created',
                   'type' => 'x8g2-xkgh-jc52-tpe2-jcgb',
                   'editable' => '2',
@@ -78,6 +77,14 @@ class board_task_log extends reflex {
      **/
     public static function all() {
         return reflex::get(get_class())->desc("created");
+    }
+
+    public static function visible() {
+
+        $visibleTasks = board_task::visible();
+        $log = self::all()->joinByField("taskID",$visibleTasks);
+        return $log;
+
     }
 
     /**

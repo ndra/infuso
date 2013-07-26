@@ -149,12 +149,9 @@ class board_controller_task extends mod_controller {
         $task = board_task::get($p["taskID"]);
 
         // Параметры задачи
-        if(!user::active()->checkAccess("board/getTaskParams",array(
-            "task" => $task
-        ))) {
-            mod::msg(user::active()->errorText(),1);
-            return;
-        }
+        user::active()->checkAccessThrowException("board/getTaskParams",array(
+            "task" => $task,
+        ));
 
         $statuses = array();
         foreach(board_task_status::all() as $status) {
@@ -191,12 +188,9 @@ class board_controller_task extends mod_controller {
         $data = util::a($p["data"])->filter("text","timeScheduled","projectID","color","deadline","deadlineDate")->asArray();
 
         // Параметры задачи
-        if(!user::active()->checkAccess("board/updateTaskParams",array(
+        user::active()->checkAccessThrowException("board/updateTaskParams",array(
             "task" => $task
-        ))) {
-            mod::msg(user::active()->errorText(),1);
-            return;
-        }
+        ));
         
         foreach($data as $key => $val) {
             $task->data($key,$val);

@@ -19,21 +19,40 @@ class board_init implements mod_handler {
         user_operation::create("board/createProject","Создание проекта в доске")
             ->appendTo("boardUser");
 
-        user_operation::create("board/viewProjectList","Создание проекта в доске")
+        user_operation::create("board/viewAllProjects","Создание проекта в доске")
             ->appendTo("boardUser");
+
+        user_operation::create("board/viewGrantedProject","Просмотр проекта (когда предоставлен доступ к проекту) ")
+            ->addBusinessRule('$projects = board_project::visible()->eq("id",$project->id()); return !$projects->void(); ')
+			->appendTo('guest');
+
+        user_operation::create("board/viewProject","Просмотр проекта")
+            ->appendTo("board/viewAllProjects")
+            ->appendTo("board/viewGrantedProject");
         
         // Операции с задачами
 
-        $o = user_operation::create("board/editTask","Редактирование задачи")
+        user_operation::create("board/editTask","Редактирование задачи")
             ->addBusinessRule('if(!$task->exists()) $this->error("Задача не существует"); ')
             ->addBusinessRule('return true;')
 			->appendTo('boardUser');
+
+        user_operation::create("board/viewAllTasks","Просмотр всех задач")
+			->appendTo('boardUser');
+
+        user_operation::create("board/viewGrantedTask","Просмотр задачи (когда предоставлен доступ к проекту) ")
+            ->addBusinessRule('$tasks = board_task::visible()->eq("id",$task->id()); return !$tasks->void(); ')
+			->appendTo('guest');
+
+        user_operation::create("board/viewTask","Просмотр задачи")
+            ->appendTo("board/viewAllTasks")
+			->appendTo('board/viewGrantedTask');
         
         user_operation::create("board/updateTaskParams","Обновление полей задачи")
             ->appendTo("board/editTask");
         
         user_operation::create("board/getTaskParams","Получение полей задачи")
-            ->appendTo("board/editTask");
+            ->appendTo("board/viewTask");
 
         user_operation::create("board/getTaskTime","Получение времени, потраченного на задачу")
             ->appendTo("board/editTask");
@@ -62,7 +81,7 @@ class board_init implements mod_handler {
             ->appendTo("boardUser");
 
        user_operation::create("board/listTaskAttachments","Получение списка вложений для задачи")
-            ->appendTo("board/editTask");
+            ->appendTo("board/viewTask");
 
        user_operation::create("board/uploadFile","Закачивание файла в задачу")
             ->appendTo("board/editTask");
@@ -74,6 +93,25 @@ class board_init implements mod_handler {
 
        user_operation::create("board/updateTaskNotice","Изменение заметки")
             ->appendTo("board/editTask");
+
+       user_operation::create("board/updateTaskTag","Изменение заметки")
+            ->appendTo("board/editTask");
+
+        // Доступ
+
+       user_operation::create("board/showAccessList","Просмотр списка доступов")
+            ->appendTo("boardUser");
+
+       user_operation::create("board/getAccessData","Получить данные доступа")
+            ->appendTo("boardUser");
+
+       user_operation::create("board/updateAccessData","Изменить данные доступа")
+            ->appendTo("boardUser");
+
+        // Пользователи
+
+        user_operation::create("board/getUserList","Просмотр списка пользователей")
+			->appendTo("boardUser");
             
 		// Голосование
 		
@@ -85,14 +123,26 @@ class board_init implements mod_handler {
 
 		// Отчеты
 
-		user_operation::create("board/showUserReport","Просмотр отчета по пользователям")
+		user_operation::create("board/showReportUsers","Просмотр отчета по пользователям")
 			->appendTo("boardUser");
 
+		user_operation::create("board/showReportVote","Просмотр отчета по голосованиям")
+			->appendTo("boardUser");
+
+		user_operation::create("board/showReportGallery","Просмотр галереи")
+			->appendTo("boardUser");
+
+		user_operation::create("board/showAllUsersDailyActivity","Просмотр активности пользователей")
+			->appendTo("boardUser");
+
+		user_operation::create("board/showReportProjectActivity","Просмотр отчета активности по проекту")
+			->appendTo("board/viewProject");
+
 		user_operation::create("board/showProjectsReport","Просмотр отчета по пользователям")
-		    ->appendTo("boardUser");
+		    ->appendTo("guest");
 
 		user_operation::create("board/showReportDone","Просмотр отчета по сделанному")
-		    ->appendTo("boardUser");
+		    ->appendTo("guest");
         
     }
 

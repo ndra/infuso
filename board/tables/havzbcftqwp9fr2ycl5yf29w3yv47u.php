@@ -1,6 +1,5 @@
 <? return array (
   'name' => 'board_project',
-  'parent' => '',
   'fields' => 
   array (
     0 => 
@@ -37,22 +36,16 @@
       'indexEnabled' => '1',
       'help' => '',
     ),
-    3 => 
-    array (
-      'id' => '7flh3wgi7mg0ncubowasocv63cu6dp',
-      'name' => 'customerUserID',
-      'type' => 'pg03-cv07-y16t-kli7-fe6x',
-      'editable' => '1',
-      'label' => 'Пользователь заказчика',
-      'default' => '',
-      'indexEnabled' => '1',
-      'help' => '',
-      'class' => 'user',
-      'collection' => '',
-      'titleMethod' => '',
-    ),
   ),
   'indexes' => 
   array (
+  ),
+  'fieldGroups' => 
+  array (
+    0 => 
+    array (
+      'name' => NULL,
+      'title' => NULL,
+    ),
   ),
 ); ?>

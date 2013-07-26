@@ -8,7 +8,7 @@ $to = util::date($params["to"])->date();
 
 <div style='padding:20px;' >
 
-    $tasks = board_task::all()
+    $tasks = board_task::visible()
         ->eq("status",array(board_task_status::STATUS_CHECKOUT,board_task_status::STATUS_COMPLETED))
         ->geq("date(changed)",$from)
         ->leq("date(changed)",$to);
@@ -17,12 +17,14 @@ $to = util::date($params["to"])->date();
     
         <thead>
             <tr>
+                <td>Измененение статуса</td>
                 <td>id</td>
+                <td>Проект</td>
                 <td>Задача</td>
                 <td>План</td>
                 <td>Потрачено</td>
                 <td>Статус</td>
-                <td>Заметка</td>
+                <td></td>
             </tr>
         </thead>
     

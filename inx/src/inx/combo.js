@@ -60,7 +60,7 @@ inx.combo = inx.textfield.extend({
         this.private_popup = inx({
             type:"inx.dialog",
             style:{
-                background:"none",
+                background:"white",
                 width:200,
                 border:0
             },showTitle:false,            

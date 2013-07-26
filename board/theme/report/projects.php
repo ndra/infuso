@@ -12,7 +12,7 @@ tmp::reset();
         echo "Отчет по проектам {$from->text()} &mdash; {$to->text()}";
     </div>
 
-    $items = board_task_log::all()
+    $items = board_task_log::visible()
         ->groupBy("board_task.projectID")
         ->joinByField("taskID")
         ->orderByExpr("`spent` desc ")
