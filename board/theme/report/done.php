@@ -9,6 +9,7 @@ $to = util::date($params["to"])->date();
 <div style='padding:20px;' >
 
     $tasks = board_task::visible()
+        ->desc("changed")
         ->eq("status",array(board_task_status::STATUS_CHECKOUT,board_task_status::STATUS_COMPLETED))
         ->geq("date(changed)",$from)
         ->leq("date(changed)",$to);
