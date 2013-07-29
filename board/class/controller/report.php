@@ -16,7 +16,7 @@ class board_controller_report extends mod_controller {
     public static function index_workers($p) {
 
         // Параметры задачи
-        if(!user::active()->checkAccess("board/showUserReport",array(
+        if(!user::active()->checkAccess("board/showReportUsers",array(
             "task" => $task
         ))) {
             mod::msg(user::active()->errorText(),1);
@@ -104,6 +104,11 @@ class board_controller_report extends mod_controller {
      **/
     public function post_getMyDayActivity($p) {
 
+        // Параметры задачи
+        if(!user::active()->checkAccess("board/showAllUsersDailyActivity")) {
+            return false;
+        }
+
         $user = $p["userID"] ? user::get($p["userID"]) : user::active();
         $ret = array(
             "tasks" => array(),
@@ -155,6 +160,15 @@ class board_controller_report extends mod_controller {
     }
     
     public function index_gallery($p) {
+
+        // Параметры задачи
+        if(!user::active()->checkAccess("board/showReportVote")) {
+            mod::msg(user::active()->errorText(),1);
+            tmp::header();
+            tmp::footer();
+            return;
+        }
+
         tmp::exec("/board/report/gallery");
     }
 
@@ -162,6 +176,12 @@ class board_controller_report extends mod_controller {
      * Контроллер для ленты с моей активностью за день
      **/
     public function post_getUsers() {
+
+        // Параметры задачи
+        if(!user::active()->checkAccess("board/showAllUsersDailyActivity")) {
+            return array();
+        }
+
         $ret = array();
         $users = user::all()->like("roles","boardUser")->neq("id",user::active()->id());
         foreach($users as $user) {
@@ -177,6 +197,14 @@ class board_controller_report extends mod_controller {
      **/
     public function index_vote() {
 
+        // Параметры задачи
+        if(!user::active()->checkAccess("board/showReportVote")) {
+            mod::msg(user::active()->errorText(),1);
+            tmp::header();
+            tmp::footer();
+            return;
+        }
+
         tmp::exec("/board/report/vote");
 
     }
@@ -185,6 +213,18 @@ class board_controller_report extends mod_controller {
      * Контроллер для ленты с моей активностью за день
      **/
     public function index_projectChart($p) {
+
+        $project = board_project::get($p["id"]);
+
+        // Параметры задачи
+        if(!user::active()->checkAccess("board/showReportProjectActivity",array(
+            "project" => $project,
+        ))) {
+            mod::msg(user::active()->errorText(),1);
+            tmp::header();
+            tmp::footer();
+            return;
+        }
 
         tmp::exec("/board/report/chart",array(
             "params" => $p,

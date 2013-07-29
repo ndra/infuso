@@ -234,9 +234,10 @@ class reflex_collection extends mod_component implements Iterator {
     /**
      * Присоединяет к коллекции коллекцию по внешнему ключу
      **/
-    public function joinByField($name) {
+    public function joinByField($name,$collection=null) {
 
         $field = $this->virtual()->field($name);
+
         if($field->typeID()!="pg03-cv07-y16t-kli7-fe6x") {
             return $this;
 		}
@@ -250,6 +251,16 @@ class reflex_collection extends mod_component implements Iterator {
         $class = $field->itemClass();
         $list = reflex::get($class);
         $this->join($list,$field->name(), $field->foreignKey());
+
+        if($collection) {
+
+            foreach($collection->listJoins as $join) {
+                $this->listJoins[] = $join;
+            }
+
+            $this->where($collection->whereQuery());
+        }
+
         return $this;
     }
 

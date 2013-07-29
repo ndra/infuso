@@ -117,6 +117,13 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
                 }).cmd("setParams",params.params);
                 break;
                 
+            case "conf-access":
+                this.tabs.cmd("add",{
+                    type:"inx.mod.board.access",
+                    name:"access"
+                }).cmd("setParams",params.params);
+                break;
+                
             case "task":
                 this.cmd("editTask",{taskID:params.params.id});
                 history.back();

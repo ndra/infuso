@@ -6,22 +6,24 @@ inx.textfield = inx.box.extend({
 
     constructor:function(p) {
     
+        if(!p.style)
+            p.style = {};
+        if(p.style.autoWidth===undefined)
+            p.style.autoWidth = false;
+    
         if(!p.labelAlign)
             p.labelAlign = "left";
             
         if(!p.height)
             p.height = 22;
         
-        if(!p.width)
-            p.width = 300;
+        if(p.width===undefined && p.style.width===undefined) {
+           p.width = 300;
+        }
             
         if(p.value===undefined)
             p.value = "";
             
-        if(!p.style)
-            p.style = {};
-        if(p.style.autoWidth===undefined)
-            p.style.autoWidth = false;
         
         if(!p.autocreate) {
             p.autocreate = p.password ? "<input type='password' class='dfehopg6' />" : "<input class='dfehopg6' />";

@@ -33,7 +33,11 @@ class board_controller_tag extends mod_controller {
      **/
     public function post_updateTag($p) {
 
-		$task = board_task::get($p["taskID"]);
+        $task = board_task::get($p["taskID"]);
+        user::active()->checkAccessThrowException("board/updateTaskTag",array(
+            "task" => $task,
+        ));
+
 		$task->updateTag($p["tagID"],$p["value"]);
 		mod::msg("Тэг изменен");
         return $ret;

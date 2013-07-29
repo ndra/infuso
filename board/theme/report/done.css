@@ -34,7 +34,7 @@
         font-size:12px;
     }
     
-    .id {
+    .id,.date {
         white-space:nowrap;
         color:gray;
         font-size:12px;

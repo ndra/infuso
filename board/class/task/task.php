@@ -123,15 +123,10 @@ class board_task extends reflex {
      * Возвращает список видимых задач для активного пользователя
      **/
     public static function visible() {
-        $list = self::all();
 
-        if(user::active()->checkAccess("board/viewAllTasks")) {
-            return $list;
-        }
+        $projects = board_project::visible();
+        return self::all()->joinByField("projectID",$projects);
 
-        $projects = board_project::visible()->limit(0)->idList();
-        $list->eq("projectID",$projects);
-        return $list;
     }
 
     /**
@@ -608,37 +603,45 @@ class board_task extends reflex {
             $ret["backgroundImage"] = "/board/res/img/icons64/pause.png";
         }
 
-        // Кнопки задачи
+        // Кнопки задачи (видны только если можно изменять задачу)
         $ret["tools"] = array();
-        switch($this->status()->id()) {
-        
-            case board_task_status::STATUS_DRAFT:
-                $ret["tools"][] = "add";
-                break;
+        if(user::active()->checkAccess("board/updateTaskParams",array(
+            "task" => $this,
+        ))) {
 
-            case board_task_status::STATUS_IN_PROGRESS:
-                if(!$this->paused()) {
-                    $ret["tools"][] = "pause";
-                } else {
-                    $ret["tools"][] = "resume";
-                }
-                $ret["tools"][] = "done";
-                $ret["tools"][] = "stop";
-                break;
+            switch($this->status()->id()) {
 
-            case board_task_status::STATUS_NEW:
-                $ret["tools"][] = "take";
-                break;
+                case board_task_status::STATUS_DRAFT:
+                    $ret["tools"][] = "add";
+                    break;
 
-            case board_task_status::STATUS_CHECKOUT:
-                $ret["tools"][] = "complete";
-                $ret["tools"][] = "revision";
-                break;
+                case board_task_status::STATUS_IN_PROGRESS:
+                    if(!$this->paused()) {
+                        $ret["tools"][] = "pause";
+                    } else {
+                        $ret["tools"][] = "resume";
+                    }
+                    $ret["tools"][] = "done";
+                    $ret["tools"][] = "stop";
+                    break;
+
+                case board_task_status::STATUS_NEW:
+                    $ret["tools"][] = "take";
+                    break;
+
+                case board_task_status::STATUS_CHECKOUT:
+                    $ret["tools"][] = "complete";
+                    $ret["tools"][] = "revision";
+                    break;
+            }
+
+            if($this->status()->id()!=board_task_status::STATUS_DRAFT) {
+                $ret["tools"][] = "vote";
+            }
+
         }
         
-        if($this->status()->id()!=board_task_status::STATUS_DRAFT) {
-        	$ret["tools"][] = "vote";
-        }
+
 
         return $ret;
     }
