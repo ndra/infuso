@@ -13,16 +13,7 @@ class mod_cache_xcache extends mod_cache_driver {
 	 * очистка кэша
 	 **/
 	public function prefix() {
-	    /*if(!self::$prefix) {
-	        self::$prefix = xcache_get("ok1bdpvrqw92d8lbx8u0");
-	        if(!self::$prefix) {
-	            xcache_set("ok1bdpvrqw92d8lbx8u0",util::id(5));
-	            self::$prefix = xcache_get("ok1bdpvrqw92d8lbx8u0");
-	        }
-	    }
-	    return self::$prefix; */
-	    
-	    return $_SERVER["DOCUMENT_ROOT"];
+	    return $_SERVER["DOCUMENT_ROOT"]."/";
 	}
 
 	/**
@@ -43,8 +34,6 @@ class mod_cache_xcache extends mod_cache_driver {
 	 * Очищает кэш
 	 **/
 	public function clear() {
-	    //xcache_set("ok1bdpvrqw92d8lbx8u0",util::id(5));
-	    
 	    xcache_unset_by_prefix("");
 	}
 
