@@ -91,7 +91,7 @@ class reflex_task extends reflex implements mod_handler {
      * Возвращает коллекцию задач
      **/
     public static function all() {
-        return reflex::get(get_class())->desc("priority")->desc("time",true);
+        return reflex::get(get_class())->desc("nextLaunch",true);
     }
 
     /**

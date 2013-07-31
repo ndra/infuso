@@ -114,6 +114,8 @@ abstract class reflex_editor extends mod_component {
             "editor" => $this->component(),
         ));
     }
+    
+    public function _afterChange() {}
 
     /**
      * Триггер, вызывающийся перед удалением элемента через каталог

@@ -326,8 +326,9 @@ class reflex_editor_controller extends mod_controller {
 
         // Список измененных полей в текстовом формате
         $dirty = array();
-        foreach($item->fields()->changed() as $field)
+        foreach($item->fields()->changed() as $field) {
             $dirty[] = $field->name();
+        }
         $dirty = implode(",",$dirty);
 
         if(!$item->fields()->changed()->count()) {
@@ -338,8 +339,11 @@ class reflex_editor_controller extends mod_controller {
 
             mod::msg("Сохранено");
 
-            if($editor->log())
+            if($editor->log()) {
                 $item->log("Изменение данных ".$dirty);
+			}
+			
+			$editor->afterChange();
 
             return true;
 
