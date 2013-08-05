@@ -81,15 +81,11 @@ class pay_vendors_walletone extends pay_vendors {
             $values .= $value;
         }
 
-        mod::trace($params);
-
         // Формирование подписи для сравнения ее с параметром WMI_SIGNATURE
 
         $signature = base64_encode(pack("H*", md5($values . $skey)));
 
         //Сравнение полученной подписи с подписью W1
-
-        mod::trace("sign: ".$signature." / ".$p["WMI_SIGNATURE"]);
 
         if ($signature == $p["WMI_SIGNATURE"]) {
 
