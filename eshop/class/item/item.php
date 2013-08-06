@@ -407,6 +407,34 @@ class eshop_item extends reflex {
         $price = $this->price()*1;
         return $this->group()->items()->neq("id",$this->id())->orderByExpr("abs(`price`-'$price')");
     }
+    
+    public function photos() {
+
+        $fn = "photos";
+        $ret = array();
+        foreach(array_reverse($this->behaviours()) as $b) {
+            if(method_exists($b,$fn)) {
+                $items = call_user_func(array($b,$fn));
+                foreach($items as $item) {
+                    $ret[] = $item;
+                }
+            }
+        }
+
+        if(!sizeof($ret)) {
+            if($nophoto = $this->nophoto()) {
+                $ret[] = $nophoto;
+            }
+        }
+
+        return new file_list($ret);
+    }
+
+    /**
+     * Возвращает картинку по умолчанию для товара,
+     * например, лого производителя
+     **/
+    public function _nophoto() {}
 
     /**
      * Возвращает список товаров которые часто покупают с данным товаром
