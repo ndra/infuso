@@ -1,7 +1,7 @@
 // @link_with_parent
  
 inx.css(
-    ".inx-box{background:white;font-family:Arial, Helvetica, sans-serif;font-size:12px;position:relative;overflow:hidden;color:black;cursor:default;white-space:normal;}"
+    ".inx-box{background:none;font-family:Arial, Helvetica, sans-serif;font-size:12px;position:relative;overflow:hidden;color:black;cursor:default;white-space:normal;}"
 );
 
 inx.box = inx.observable.extend({
@@ -10,6 +10,10 @@ inx.box = inx.observable.extend({
     
         if(!p.style) {
             p.style = {}
+        }
+        
+        if(!p.defaultStyle) {
+            p.defaultStyle = {}
         }
     
         // Рекомендованя ширина компонента, опираясь на внутрений размер 
@@ -45,11 +49,7 @@ inx.box = inx.observable.extend({
             
         if(p.height && !p.style.height) {
             this.style("height",p.height)
-        }
-                
-        if(this.private_style.border===undefined) {
-            this.style("border",1);
-        }
+        }  
         
         this.base(p);
                 
@@ -129,6 +129,12 @@ inx.box = inx.observable.extend({
     
     cmd_render:function() { 
     
+        for(var i in this.defaultStyle) {
+            if(this.private_style[i]===undefined) {
+                this.style(i,this.defaultStyle[i]);
+            }
+        }
+    
         this.el = $("<div class='inx-box' >");
         this.el.data("id",this.id());
 
@@ -151,6 +157,10 @@ inx.box = inx.observable.extend({
     },
     
     info_layoutReady:function() {
+    
+        if(this.style("width")=="parent" && !this.private_widthParentSet) {
+            return false;
+        }
     
         return !!this.private_layoutReady;
     },
@@ -184,7 +194,12 @@ inx.box = inx.observable.extend({
             iconWidth:16,
             iconHeight:16,
             fontSize:12,
-            iconAlign:"left"
+            iconAlign:"left",
+            borderRadius:0,
+            shadow:0,
+            textColor:"black",
+            vscroll:false,
+            hscroll:false
         }
     
         // Возврат результата
@@ -219,10 +234,23 @@ inx.box = inx.observable.extend({
                 case "background":
                     this.el.css("background",this.private_style["background"]);
                     break;
+                    
+                case "color":
+                    this.el.css("color",this.private_style["color"]);
+                    break;
+                    
+                case "borderRadius":
+                    this.el.css("borderRadius",this.private_style["borderRadius"]);
+                    break;
+                    
                 case "border":
                     this.el.css("border",(this.private_style["border"] ? 1 : 0 )+"px solid #cccccc");
                     this.cmd("updateBox");
                     inx.service("boxManager").watch(this.id());
+                    break;
+                    
+                case "shadow":
+                    this.el.css("box-shadow",this.private_style["shadow"] ? "0 0 10px rgba(0,0,0,.2)" : "none" );
                     break;
                     
                 case "padding":
@@ -263,9 +291,18 @@ inx.box = inx.observable.extend({
      * Ширина расчитывается с учетом рамки
      **/
     cmd_width:function(width) {    
+    
         width*=1;
-        if(width<0)
+        if(width<0) {
             width = 1;
+        }
+        
+        this.private_widthParentSet = true;
+            
+        if(this.private_widthParent == width) {
+            return;
+        }
+            
         this.private_widthParent = width;
         this.task("updateBox");   
     },
@@ -275,6 +312,11 @@ inx.box = inx.observable.extend({
      * Ширина расчитывается с учетом рамки
      **/
     cmd_widthContent:function(width) {    
+    
+        if(this.private_widthContent == width) {
+            return;
+        }
+    
         this.private_widthContent = width;
         this.task("updateBox");   
     },

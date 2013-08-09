@@ -5,13 +5,15 @@ inx.layout.column = {
     add:function(id) {    
         
         var cmp = inx(id);   
-        if(cmp.data("d4ubdy9sopvh7"))
+        if(cmp.data("d4ubdy9sopvh7")) {
             return;
+        }
+        
+        // Создаем элемент для компонента
             
         cmp = inx(cmp);
         var c = $("<div>").css({
-            position:"absolute",
-            visibility:"hidden"
+            position:"absolute"
         }).appendTo(this.__body);
         
         cmp.cmd("render");
@@ -41,8 +43,9 @@ inx.layout.column = {
         
             // Определяем высоту линии элементов
             var height = 0;
-            for(var i in line)
+            for(var i in line) {
                 height = Math.max(height,line[i].info("height"));
+            }
 
             // Центруем элементы по вертикали
             for(var i in line) {
@@ -73,6 +76,8 @@ inx.layout.column = {
         
         this.items().each(function() {
         
+            this.cmd("width",clientWidth);
+        
             if(!this.info("layoutReady")) {
                 return;
             }
@@ -83,21 +88,19 @@ inx.layout.column = {
         
             e = this.data("layoutContainer");
             
-            e.css({visibility:"visible"});
-            
             if(this.info("visible")) {
-            
-                this.cmd("width",clientWidth);
             
                 var width = this.info("width");
                 
-                if(x + width > clientWidth)
+                if(x + width > clientWidth) {
                     completeLine();
+                }
                 
                 e.css({
                     left:x,
                     display:"block"
-                })
+                });
+                
                 line.push(this);
                 
                 x += this.info("width");

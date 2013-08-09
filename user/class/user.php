@@ -332,7 +332,7 @@ class user extends reflex {
      * Проверяет, может ли пользователь выполнить операцию $operation с парамтерами $params
      **/
     public final function checkAccess($operationCode,$params=array()) {
-    
+
         mod_profiler::beginOperation("user","checkAccess",$operationCode);
     
         if(!is_array($params)) {
@@ -378,22 +378,33 @@ class user extends reflex {
         return $this->errorText;
     }
 
+    private $roles = null;
+
     /**
      * Возвращает массив ролей данного пользователя
      **/
     public function roles() {
-        $ret = array();
 
-        $ret[] = user_role::get("guest");
+        mod_profiler::beginOperation("user","roles",1);
 
-        foreach(util::splitAndTrim($this->data("roles")," ") as $role) {
-            $role = user_role::get($role);
-            if($role->exists() && $role->code()!="guest") {
-                $ret[] = $role;
+        if($this->roles===null) {
+
+            $this->roles = array();
+
+            $this->roles[] = user_role::get("guest");
+
+            foreach(util::splitAndTrim($this->data("roles")," ") as $role) {
+                $role = user_role::get($role);
+                if($role->exists() && $role->code()!="guest") {
+                    $this->roles[] = $role;
+                }
             }
+
         }
 
-        return $ret;
+        mod_profiler::endOperation();
+
+        return $this->roles;
     }
 
     /**

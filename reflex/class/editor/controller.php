@@ -25,7 +25,7 @@ class reflex_editor_controller extends mod_controller {
     public static function index($p) {
         admin::header("Каталог");
 
-        reflex_editor_root::clearCache();
+        mod::service("reflexEditor")->clearCache();
         
         inx::add(array(
             "type" => "inx.mod.reflex.editor",
@@ -33,10 +33,13 @@ class reflex_editor_controller extends mod_controller {
             "tabData" => self::tabData(),
         ));
 
+        //util::profiler();
+
         admin::footer();
     }
     
     private static function tabData() {
+
         $ret = array();
         
         foreach(reflex_editor_rootTab::allVisible() as $tab) {

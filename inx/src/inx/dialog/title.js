@@ -2,33 +2,37 @@
 // @include inx.dd
 
 inx.css(    
-    ".inx-dialog-closeButton{float:right;cursor:pointer;width:20px;height:18px;background:url(%res%/img/components/close.gif) center center no-repeat}",
-    ".inx-dialog-title{cursor:move;background:none;}",
-    ".inx-dialog-titleText{float:left;padding:3px 0px 0px 5px;font-weight:bold;color:#555555;}"    
+    ".inx-dialog-closeButton{position:absolute;top:3px;right:3px;cursor:pointer;width:20px;height:18px;background:url(%res%/img/components/close.gif) center center no-repeat}",
+    ".inx-dialog-title{cursor:move;positionL:relative;}",
+    ".inx-dialog-titleText{padding:6px;font-weight:bold;color:#555555;}"    
 );
 
-inx.dialog.title = inx.box.extend({
+inx.dialog.title = inx.panel.extend({
 
     constructor:function(p) {
-        p.style = {
-            border:0
-        }
         this.base(p);
+        this.style("background","none");
     },
 
     cmd_render:function(c) {
         this.base(c);
-        this.el.addClass("inx-dialog-title");
         
-        this.titleText = $("<div>").addClass("inx-dialog-titleText").html(this.title+"").appendTo(this.el);
+        var el = $("<div>").addClass("inx-dialog-title");
         
-        if(this.closeButton)
+        this.titleText = $("<div>")
+            .addClass("inx-dialog-titleText")
+            .html(this.title+"")
+            .appendTo(el);
+        
+        if(this.closeButton) {
             this.closeButton = $("<div>")
                 .addClass("inx-dialog-closeButton")
-                .appendTo(this.el)
-                .click(inx.dialog.title.close);
+                .appendTo(el)
+                .click(inx.cmd(this,"close"));
+        }
                 
-        inx.dd.enable(this.el,this,"drag");        
+        inx.dd.enable(el,this,"drag");    
+        this.cmd("html",el);
     },
     
     cmd_drag:function(x,y) {
@@ -37,10 +41,10 @@ inx.dialog.title = inx.box.extend({
     
     cmd_setTitle:function(title) {
         $(this.titleText).html(title);
+    },
+    
+    cmd_close:function() {
+        this.owner().cmd("destroy");
     }
     
 })
-
-inx.dialog.title.close = function(e) {
-    inx.cmp.fromElement(e.target).owner().cmd("destroy");    
-}

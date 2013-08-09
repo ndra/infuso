@@ -14,8 +14,9 @@ class reflex_editor_root_editor extends reflex_editor {
 
 	    if($this->item()->id()==0) {
 	        $ret = array();
-	        foreach(reflex_editor_root::level0() as $editor)
+	        foreach(mod::service("reflexEditor")->level0() as $editor) {
 	            $ret[] = $editor;
+            }
 	        return $ret;
 	    }
 

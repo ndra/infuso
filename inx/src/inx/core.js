@@ -3,7 +3,7 @@
 // inline-block
 inx.css(".inx-core-inlineBlock{display: -moz-inline-box;display: inline-table;display: inline-block;}");
 inx.css(".inx-unselectable{-o-user-select: none;-webkit-user-select: none;-moz-user-select: -moz-none;-khtml-user-select: none;-ms-user-select: none;user-select: none;}");
-inx.css(".inx-shadowframe{padding:5px;border-radius: 3px;box-shadow: 0 0 30px rgba(0,0,0,.5);}");
+inx.css(".inx-shadowframe{box-shadow: 0 0 30px rgba(0,0,0,.5);}");
 inx.css(".inx-shadow{box-shadow: 0 0 30px rgba(0,0,0,.5);}");
 inx.css(".inx-roundcorners{border-radius: 5px;-moz-border-radius: 5px; -webkit-border-radius: 5px;}");
 

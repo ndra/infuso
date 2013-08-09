@@ -16,9 +16,7 @@ inx.box.manager = new function() {
      **/   
     this.watch = function(id) {
         this.__buffer[id] = true;
-        if(!m.timeout) {
-            m.timeout = setTimeout(m.processBuffer,0);
-        }
+        inx.box.manager.task.cmd("createTask");
     }
     
     /**
@@ -81,3 +79,14 @@ inx.box.manager = new function() {
     inx.service.register("boxManager",this);
     
 }
+
+inx.box.manager.task = inx({
+    type:"inx.observable",
+    cmd_createTask:function() {
+        this.task("processBuffer");
+    },
+    cmd_processBuffer:function() {
+        inx.box.manager.processBuffer();
+    }
+})
+

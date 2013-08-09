@@ -23,7 +23,9 @@ inx.mod.reflex.editor.item.fields = inx.panel.extend({
                         
                         style:{
                             height:32,
-                            fontSize:18
+                            fontSize:18,
+                            color:"white",
+                            background:"red"
                         },
                         text:"Сохранить",
                         icon:"save",

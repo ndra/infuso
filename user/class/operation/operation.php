@@ -6,6 +6,8 @@ class user_operation extends reflex {
     
     private $errorText = null;
 
+    private $parents = null;
+
     /**
      * Возвращает коллекцию всех операций
      **/
@@ -83,10 +85,14 @@ class user_operation extends reflex {
      * Возвращает массив (!) родительских операций
      **/
     public function parentOperations() {
-        $ret = array();
-        foreach(util::splitAndTrim($this->data("parents")," ") as $operationCode)
-            $ret[] = user_operation::get($operationCode);
-        return $ret;
+
+        if($this->parents===null) {
+            $this->parents = array();
+            foreach(util::splitAndTrim($this->data("parents")," ") as $operationCode) {
+                $this->parents[] = user_operation::get($operationCode);
+            }
+        }
+        return $this->parents;
     }
     
     public function code() {
@@ -132,16 +138,19 @@ class user_operation extends reflex {
 
         $ret = false;
         
-        if(mod_superadmin::check() && $this->data("parents")=="") {
+        if(mod_superadmin::check() && $this->data("role")==true) {
             $ret = true;
         }
 
         // Роль "Гость" есть у каждого пользователя
-        if($this->code()=="guest") {
-            $ret = true;
+        if(!$ret) {
+            if($this->code()=="guest") {
+                $ret = true;
+            }
         }
 
         // Проверяем наличие у пользователя этой роли
+
         if(!$ret) {
             foreach($user->roles() as $role) {
                 if($role->code()==$this->code()) {
@@ -156,7 +165,6 @@ class user_operation extends reflex {
             foreach($this->parentOperations() as $operation) {
                 if($user->checkAccess($operation->code(),$params)) {
                     $ret = true;
-                    break;
                     break;
                 }
             }

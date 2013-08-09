@@ -134,8 +134,9 @@ inx.panel = inx.box.extend({
             params.syncLayout = true;
         }
 
-        if(!html && html!==0 && html!=="0")
+        if(!html && html!==0 && html!=="0") {
             html = "";
+        }
 
         if(this.__body) {
         
@@ -181,11 +182,11 @@ inx.panel = inx.box.extend({
         this.task("updateBox");
             
         // Обновляем скролл
-        if(this.private_style.vscroll) {
+        if(this.style("vscroll")) {
             this.cmd("updateVScroll");
         }
         
-        if(this.private_style.hscroll) {
+        if(this.style("hscroll")) {
             this.cmd("updateHScroll");
         }
             
@@ -317,7 +318,6 @@ inx.panel = inx.box.extend({
             case "top": panel.cmd("height",panel.info("height")+p.dy);break;
             case "bottom": panel.cmd("height",panel.info("height")-p.dy);break;
         }
-        this.cmd("updateSidePanels");
         this.task("saveLayout");
     },
 
@@ -487,17 +487,6 @@ inx.panel = inx.box.extend({
         return h;
         
     },
-
-    cmd_mousewheel:function(deltha,e) {
-    
-        if(!this.style("vscroll")) {
-            this.owner().cmd("mousewheel",deltha,e);
-            return;
-        }
-            
-        this.cmd("scrollTop",-deltha,{add:true,bubble:true});
-        return false;
-    },
     
     // Ревизия!
     cmd_add:function(c,position) {    
@@ -646,6 +635,10 @@ inx.panel = inx.box.extend({
     cmd_destroyChildren:function() {
         this.items().cmd("destroy");
     }, 
+    
+    info_formDataProvider:function() {
+        return true;
+    },
 
     // Возвращает данные формы
     info_data:function() {
@@ -655,10 +648,12 @@ inx.panel = inx.box.extend({
             if(name) {
                 heap[name] = this.info("value");
             } else {
-                var data = this.info("data");
-                if(data)
-                    for(var j in data)
-                        heap[j] = data[j];
+                if(this.info("formDataProvider")) {
+                    var data = this.info("data");
+                    if(data)
+                        for(var j in data)
+                            heap[j] = data[j];
+                }
             }
         });
         inx(this).axis("side").each(function(){

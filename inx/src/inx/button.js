@@ -1,6 +1,6 @@
 // @include inx.dialog
 
-inx.css(".vbjm1zdmgr-button{cursor:pointer;white-space:nowrap;border:none;float:left;border-radius:5px;}");
+inx.css(".vbjm1zdmgr-button{cursor:pointer;white-space:nowrap;border:none;float:left;border-radius:3px;}");
 inx.css(".vbjm1zdmgr-button-hover{box-shadow:0 0 2px rgba(0,0,0,.4) inset;}");
 inx.css(".vbjm1zdmgr-button:hover{background:rgba(255,255,255,.4);}");
 
@@ -22,7 +22,11 @@ inx.button = inx.box.extend({
         }
         
         p.style.border = 0;
-        p.style.background = "none";
+        
+        if(p.style.background===undefined) {
+            p.style.background = "none";
+        }
+        
         p.style.width = "content";
         
         if(!p.style.padding) {
@@ -32,6 +36,8 @@ inx.button = inx.box.extend({
         if(!p.height && !p.style.height) {
             p.height = "22";
         }
+        
+        p.style.borderRadius = 3;
 
         this.base(p);
 
@@ -41,7 +47,7 @@ inx.button = inx.box.extend({
     cmd_render:function(c) {
         this.base(c);
         this.private_input = $("<div class='vbjm1zdmgr-button' >").appendTo(this.el);
-        this.el.addClass("inx-unselectable");        
+       // this.el.addClass("inx-unselectable");        
         this.el.mouseover(inx.cmd(this,"private_handleMouseover"));
         this.cmd("updateHTML");
     },
@@ -83,7 +89,7 @@ inx.button = inx.box.extend({
     
     cmd_syncLayout:function() {
     
-        var h = this.info("height");
+        var h = this.info("height") - 2;
         var fontSize = this.style("fontSize");
         var paddingTop = Math.round((h-fontSize)/2);
         var padding = this.style("padding");
@@ -125,7 +131,7 @@ inx.button = inx.box.extend({
         }
         
         this.private_input.css({
-            height:h - paddingTop,
+            height:h - paddingTop + 2,
             fontSize:fontSize,
             paddingTop:paddingTop,
             paddingLeft:paddingLeft,

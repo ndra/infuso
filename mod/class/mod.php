@@ -142,19 +142,23 @@ class mod extends mod_controller {
 	 **/
 	public static function testClass($class,$extends=null) {
 
-		if($class=="mod" && $extends=="mod_controller")
+		if($class=="mod" && $extends=="mod_controller") {
 		    return true;
+        }
 
 	    $classes = self::classmap("map");
-	    if(!$classes)
+	    if(!$classes) {
 	        return;
+        }
 
-		if(!array_key_exists($class."",$classes))
+		if(!array_key_exists($class."",$classes)) {
 			return false;
+        }
 
 		if($extends) {
-			if(!in_array($extends,$classes[$class]["p"]) && $extends!=$class)
+			if(!in_array($extends,$classes[$class]["p"]) && $extends!=$class) {
 			    return false;
+            }
 		}
 		    
 		return true;

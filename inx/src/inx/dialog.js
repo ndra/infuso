@@ -14,19 +14,37 @@ inx.dialog = inx.panel.extend({
         
         this.centred = !this.x && !this.y;
         
-        p.border =0;
-        if(p.shadeOpacity===undefined) p.shadeOpacity = .3;
+        if(p.shadeOpacity===undefined) {
+            p.shadeOpacity = .3;
+        }
         
-        if(p.padding===undefined)
+        if(p.padding===undefined) {
             p.padding = 0;
-        if(p.showTitle===undefined)
+        }
+        
+        if(p.showTitle===undefined) {
             p.showTitle = true;
-        if(p.modal===undefined)
-            p.modal = true;       
-        if(p.closeButton===undefined)
+        }
+        
+        if(p.modal===undefined) {
+            p.modal = true;      
+        } 
+        
+        if(p.closeButton===undefined) {
             p.closeButton = true;  
+        }
             
         p.height = "content";
+        
+        if(!p.style) {
+            p.style = {};
+        }
+        
+        p.defaultStyle = {
+            borderRadius:3,
+            shadow:true,
+            background:"white"
+        }
                
         this.base(p);
         this.on("titleChanged",[this.id(),"private_handleTitleChanged"]);
@@ -57,26 +75,30 @@ inx.dialog = inx.panel.extend({
             this.mate.css("zIndex",inx.conf.z_index_dialog);
         }
         
-        this.private_wnd = $("<div>").addClass("inx-shadowframe").css({
-            background:this.style("background") || "#ededed",
+        this.private_wnd = $("<div>").css({
             position:"absolute",
             zIndex:inx.conf.z_index_dialog
         }).appendTo("body");
         
-        var c = $("<div>").css("margin","0px 0px 3px 0px").appendTo(this.private_wnd);
-        if(this.showTitle) {
-            this.titleBar = inx.cmp.create({
-                type:"inx.dialog.title",
-                height:20,
-                width:this.info("width"),
-                closeButton:this.closeButton,
-                title:this.title
-            }).cmd("render").cmd("appendTo",c);
-            this.titleBar.on("drag",[this.id(),"drag"]);
-            this.titleBar.setOwner(this);
-        }
+        //var c = $("<div>").appendTo(this.private_wnd);
+
         
         this.base();
+
+        if(this.showTitle) {
+        
+            this.titleBar = inx({
+                type:"inx.dialog.title",
+                region:"top",
+                closeButton:this.closeButton,
+                title:this.title
+            });
+            
+            this.cmd("addSidePanel",this.titleBar);
+            
+            this.titleBar.on("drag",[this.id(),"drag"]);
+
+        }
         
         var that = this;
         setTimeout(function(){

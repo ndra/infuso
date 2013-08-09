@@ -54,6 +54,10 @@ inx.panel = inx.panel.extend({
      * Устанавливает вертикальный скролл
      **/
     cmd_scrollTop:function(vscroll,params) {
+    
+        if(!this.style("vscroll")) {
+            return;
+        }
 
         if(!params)
             params = {};

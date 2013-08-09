@@ -13,10 +13,9 @@ inx.msg = function(text,error,adv) {
     inx.msg.log.push({text:text,error:error});
     inx.msg.log = inx.msg.log.splice(-30);
 
-
     if(!inx.msg.__container)
         inx.msg.__container = $("<div class='inx-msg-container' />").prependTo("body");
-    inx.msg.__container.css("left",$("body").width()-330);
+    inx.msg.updateContainerPosition();
 
     if(typeof(text)=="object") {
         var str = "";
@@ -52,5 +51,24 @@ inx.msg = function(text,error,adv) {
         .animate({opacity:0},"slow")
         .hide("slow");
 }
+
+inx.msg.updateContainerPosition = function() {
+
+    if(!inx.msg.__container) {
+        return;
+    }
+
+    if(inx.msg.mouseX < $("body").width() - 300 - 30) {
+        var left = $("body").width()-330;
+    } else {
+        var left = 30;
+    }
+    inx.msg.__container.css("left",left);
+}
+
+$(document).mousemove(function(event) {
+    inx.msg.mouseX = event.clientX;
+    inx.msg.updateContainerPosition();
+})
 
 

@@ -47,18 +47,14 @@ inx.layout["default"] = {
         cmp.data("ij89238v67",false);
     },
     
-    sync:function() {     
-    
-        if(!this.info("rendered")) {
-            inx.msg(12);
-        }
+    sync:function() {   
     
         var padding = this.style("padding");
         var width = this.info("clientWidth");
         
         if(width<=0)
             return;
-        
+                    
         var that = this;
         
         if(this.private_html===undefined) {
@@ -66,7 +62,9 @@ inx.layout["default"] = {
             var y = 0;
             var spacing = this.style("spacing");                
     
-            this.items().each(function(n) {    
+            this.items().each(function(n) {   
+            
+                this.cmd("width",width); 
             
                 if(!this.info("layoutReady")) {
                     return;
@@ -125,18 +123,11 @@ inx.layout["default"] = {
                         display:"block"
                     });
                     
-                    this.cmd("width",width);
+                    //this.cmd("width",width);
                     
                     var h = this.info("height");
                     
                     areaHeight +=h ;
-                
-                   /* bg.css({
-                        left:-padding,
-                        width:width + padding * 2,
-                        height:areaHeight + spacing / 2,
-                        top:areaStart
-                    }); */
                     
                     y += h; 
                     

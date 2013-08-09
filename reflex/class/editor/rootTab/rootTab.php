@@ -60,7 +60,7 @@ class reflex_editor_rootTab extends reflex {
 
     public function roots() {
         $ret = array();
-        foreach(reflex_editor_root::level0() as $root) {
+        foreach(mod::service("reflexEditor")->level0() as $root) {
             if($root->tab()==$this->name()) {
                 $ret[] = $root;
             }

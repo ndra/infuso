@@ -36,7 +36,9 @@ inx.list = inx.panel.extend({
         if(!p.style)
             p.style = {}        
                 
-        p.style.vscroll = true;
+        if(p.style.vscroll===undefined) {
+            p.style.vscroll = true;
+        }
         p.style.hscroll = true;
         
         if(p.style.padding === undefined) {
@@ -748,6 +750,10 @@ inx.list = inx.panel.extend({
             if(keep) data.push(this.data[i]);
         }
         this.cmd("setData",data);
+    },
+    
+    info_formDataProvider:function() {
+        return false;
     },
     
     cmd_destroy:function() {

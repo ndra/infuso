@@ -1,9 +1,9 @@
 // @link_with_parent
 
 inx.css(
-    ".inx-tabs-tab{cursor:pointer;vertical-align:bottom;padding:6px 6px;border-radius:5px;}",
-    ".inx-tabs-tab:hover{background:#cccccc;}",
-    ".inx-tabs-selectedTab{background:#cccccc;font-weight:bold;}",
+    ".inx-tabs-tab{cursor:pointer;vertical-align:bottom;padding:6px 6px;border-radius:5px 5px 0 0;margin-top:4px;}",
+    ".inx-tabs-tab:hover{background:white;}",
+    ".inx-tabs-selectedTab{background:white;font-weight:bold;box-shadow:0 0 10px rgba(0,0,0,.2);}",
     ".inx-tabs-close{width:11px;height:11px;cursor:pointer;margin-left:4px;vertical-align:middle;}"
 )
 
@@ -12,7 +12,7 @@ inx.tabs.head = inx.panel.extend({
     constructor:function(p) {
         p.style = {
             background:"#ededed",
-            padding:5,
+            padding:0,
             height:"content",
             border:0            
         }
@@ -61,6 +61,7 @@ inx.tabs.head = inx.panel.extend({
     cmd_render:function(c) {
         this.base(c);
         this.__body.addClass("inx-unselectable");
+        this.__body.css({boxShadow:"0 -5px 10px rgba(0,0,0,.1) inset"});
     },
 
     cmd_mousedown:function(e) {
