@@ -98,11 +98,13 @@ class user_mail extends reflex {
      * Возвращает список писем, склееных с данным
      **/
     public function glueMails() {
-        return self::all()->eq("to",$this->to())->eq("glue",$this->glue())->eq("done",0);
+        return self::all()
+			->eq("to",$this->to())
+			->eq("glue",$this->glue())
+			->eq("done",0);
     }
     
     public function reflex_beforeCreate() {
-    
         // Устанавливаем задержку в 10 минут до отправки
         $this->data("glueSendAfter",util::now()->shift(60*10));
     }
@@ -124,7 +126,7 @@ class user_mail extends reflex {
         $mailer = $user->mailer();
         
         // Записываем в параметры мейлера параметры этого письма
-        $mailer->params($this->params());
+        $mailer->params($this->pdata("params"));
         
         $mailer->from($this->from());
         $mailer->to($this->to());
