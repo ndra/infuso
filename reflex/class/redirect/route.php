@@ -19,7 +19,6 @@ class reflex_redirect_route extends mod_route {
 		}
 	}
 
-	public function backward() {
-	}
+	public function backward($controller) {}
 
 }

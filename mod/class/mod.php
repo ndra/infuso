@@ -122,9 +122,11 @@ class mod extends mod_controller {
 
 		    if(!array_key_exists($extends,self::$extends)) {
 				self::$extends[$extends] = array();
-		        foreach($ret as $key=>$classProos)
-		            if(in_array($extends,$classProos["p"]) && !$classProos["a"])
+		        foreach($ret as $key=>$classProos) {
+		            if(in_array($extends,$classProos["p"]) && !$classProos["a"]) {
 		                self::$extends[$extends][] = $key;
+					}
+				}
 		    }
 
 		    return self::$extends[$extends];

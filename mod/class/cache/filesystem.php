@@ -36,5 +36,13 @@ class mod_cache_filesystem extends mod_cache_driver {
 	public function clear() {
 	    file::get("/mod/cache/")->delete(true);
 	}
+	
+	/**
+	 * Очищает кэш
+	 * Удаляет папку /mod/cache/
+	 **/
+	public function clearByPrefix($prefix) {
+	    return false;
+	}
 
 }

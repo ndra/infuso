@@ -33,7 +33,7 @@ public function exec() {
 	}
 	
 	if(mod_superadmin::check()) {
-		$url = mod_action::get("mod_cache")->url();
+		$url = mod_action::get("mod_cache_admin")->url();
 		echo "<a href='{$url}' >Кэш</a> ";
 	}
 	

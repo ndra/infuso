@@ -26,7 +26,7 @@ function __autoload($class) {
         "mod_event" => "/mod/class/event.php",
         "mod_url" => "/mod/class/url.php",
         "mod_action" => "/mod/class/action.php",
-        "mod_route" => "/mod/class/route.php",
+       // "mod_route" => "/mod/class/route/route.php",
         "mod_console" => "/mod/class/console.php",
         "mod_conf" => "/mod/class/conf/conf.php",
         "mod_update" => "/mod/class/update.php",

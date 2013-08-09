@@ -36,5 +36,13 @@ class mod_cache_xcache extends mod_cache_driver {
 	public function clear() {
 	    xcache_unset_by_prefix("");
 	}
+	
+	/**
+	 * Очищает кэш
+	 **/
+	public function clearByPrefix($prefix) {
+	    xcache_unset_by_prefix(self::prefix().$prefix);
+	    return true;
+	}
 
 }

@@ -70,8 +70,29 @@
       'class' => 'reflex_domain',
       'indexEnabled' => 0,
     ),
+    8 => 
+    array (
+      'editable' => 2,
+      'id' => '1bqw1btwlhxp1bncub7w1sdk9ijf9z',
+      'name' => 'suffix',
+      'type' => 'v324-89xr-24nk-0z30-r243',
+      'label' => 'Суффикс',
+      'group' => '',
+      'default' => '',
+      'indexEnabled' => 0,
+      'help' => '',
+      'length' => '7',
+    ),
   ),
   'indexes' => 
   array (
+  ),
+  'fieldGroups' => 
+  array (
+    0 => 
+    array (
+      'name' => NULL,
+      'title' => NULL,
+    ),
   ),
 ); ?>

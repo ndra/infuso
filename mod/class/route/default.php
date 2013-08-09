@@ -1,6 +1,6 @@
 <?
 
-class mod_route {
+class mod_route_default extends mod_route {
 
 	public function priority() {
 		return -1000;
@@ -28,8 +28,9 @@ class mod_route {
 
 	public function backward($controller) {
 		$ret = "/".$controller->className()."/".$controller->action()."/";
-		foreach($controller->params() as $key=>$val)
+		foreach($controller->params() as $key=>$val) {
 		    $ret.= "$key/$val/";
+		}
 		return $ret;
 	}
 

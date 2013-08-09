@@ -6,27 +6,27 @@
 
 class user_theme extends tmp_theme {
 
-/**
- * @return Приоритет темы =-1
- **/
-public function priority() {
-	return -1;
-}
+	/**
+	 * @return Приоритет темы =-1
+	 **/
+	public function priority() {
+		return -1;
+	}
 
-public function path() {
-	return "/user/theme/";
-}
+	public function path() {
+		return "/user/theme/";
+	}
 
-public function base() {
-	return "user";
-}
+	public function base() {
+		return "user";
+	}
 
-public function autoload() {
-	return true;
-}
+	public function autoload() {
+		return true;
+	}
 
-public function name() {
-	return "user";
-}
+	public function name() {
+		return "user";
+	}
 
 }

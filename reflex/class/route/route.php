@@ -5,7 +5,11 @@
  * Отвечает за то что мы видем в каталоге в разделе «Роуты»
  **/
 
-class reflex_route extends mod_route implements mod_handler{
+class reflex_route extends mod_route implements mod_handler {
+
+	private static $n = 0;
+	private static $reg = array();
+	private static $keys = array();
 
 	public function priority() {
 		return 100;
@@ -29,6 +33,7 @@ class reflex_route extends mod_route implements mod_handler{
 
 	/**
 	 * url => action
+	 * @todo вынести отсюда tmp::obj
 	 **/
 	public function forward($url) {
 
@@ -43,24 +48,31 @@ class reflex_route extends mod_route implements mod_handler{
 	    }
 
 	    foreach(self::allRoutes() as $route) {
+	    
 	        self::$keys = array();
 	        $r = $route->data("url");
 	        $r = preg_replace_callback("/\<([a-z0-9]+)\:(.*?)\>/s",array("self","replace"),$r);
 	        $r = preg_quote($r);
 	        $r = "<^".preg_replace_callback("/#(\d+)#/s",array("self","replaceBack"),$r).'$>';
+	        
 	        if(preg_match($r,$url->path(),$matches,PREG_OFFSET_CAPTURE)) {
+	        
 	            array_shift($matches);
 	            $values = array();
+	            
 	            foreach($matches as $m) {
 	                $key = $m[1];
 	                $val = $m[0];
-	                if(strlen($val)>strlen($ret[$key]))
+	                if(strlen($val)>strlen($ret[$key])) {
 	                    $values[$key] = $val;
+					}
 	            }
-	            if(sizeof(self::$keys))
+	            
+	            if(sizeof(self::$keys)) {
 	                $params = array_combine(self::$keys,$values);
-	            else
+				} else {
 	                $params = array();
+				}
 
 	            $params = array_merge($url->query(),$params);
 	            $params = array_merge($params,$route->pdata("params"));
@@ -71,9 +83,6 @@ class reflex_route extends mod_route implements mod_handler{
 	    }
 	}
 
-	private static $n = 0;
-	private static $reg = array();
-	private static $keys = array();
 	private function replace($a) {
 	    self::$n++;
 	    self::$keys[self::$n] = $a[1];

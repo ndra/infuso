@@ -185,16 +185,15 @@ class mod_classmap implements mod_handler {
 	    return $b->priority() - $a->priority();
 	}
 	
-	public static function routes() {
+	public static function getRoutes() {
 
 		$ret = array();
-		$ret[] = "mod_route";
 
 		// Берем поведения по умолчанию (на основании mod_behaviour::addToClass)
 		foreach(mod::classes("mod_route") as $class) {
 			$ret[] = $class;
 		}
-
+		
 		// Сортируем поведения
 	    usort($ret,array(self,"sortRoutes"));
 
@@ -202,6 +201,9 @@ class mod_classmap implements mod_handler {
 		return $ret;
 	}
 
+	/**
+	 * Строит карту классов
+	 **/
 	public static function buildClassMap() {
 
 		$map = array();
@@ -213,10 +215,10 @@ class mod_classmap implements mod_handler {
 		mod::setClassMap($map);
 		$map["map"] = self::classMap(true);
 		mod::setClassMap($map);
-
+		
 		$map["behaviours"] = self::defaultBehaviours();
 		$map["handlers"] = self::handlers();
-		$map["routes"] = self::routes();
+		$map["routes"] = self::getRoutes();
 		$map["services"] = self::services();
 
 		// Сохраняем карту классов в памяти, чтобы использовать ее уже в этом запуске скрипта
