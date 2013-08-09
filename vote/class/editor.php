@@ -34,7 +34,7 @@ class vote_editor extends reflex_editor {
 	
 	public function root() {
         return array(
-			vote::allEvenHidden()->title("Опросы")->param("starred",true)->param("tab","system"),
+			vote::allEvenHidden()->title("Опросы")->param("tab","system"),
 		);
 	}
 	

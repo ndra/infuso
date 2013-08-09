@@ -1,4 +1,6 @@
-<? class eshop_item_editorBehaviour extends mod_behaviour {
+<?
+
+class eshop_item_editorBehaviour extends mod_behaviour {
 
 	public function filters() {
 	    return array(

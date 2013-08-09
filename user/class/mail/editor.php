@@ -7,7 +7,7 @@ class user_mail_editor extends reflex_editor {
 
     public function root() {
         return array(
-            user_mail::all()->param("tab","user")->param("starred",true)->title("Письма"),
+            user_mail::all()->param("tab","user")->title("Письма"),
         );
     }
     

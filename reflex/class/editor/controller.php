@@ -122,7 +122,7 @@ class reflex_editor_controller extends mod_controller {
 
         $p["expanded"][] = $p["id"]."";
 
-        $node = self::treeNode($p["id"],$p["expanded"],$p["starred"],$p["tab"]);
+        $node = self::treeNode($p["id"],$p["expanded"],$p["tab"]);
         $nodes = $node["children"];
 
         return array(
@@ -133,7 +133,7 @@ class reflex_editor_controller extends mod_controller {
     /**
      * Возвращает данные ноды дерева
      **/
-    public function treeNode($nodeID,&$expanded=array(),$starred = null,$tab=null) {
+    public function treeNode($nodeID,&$expanded=array(),$tab=null) {
 
         $index = explode("/",$nodeID);
         $index = end($index);
@@ -173,9 +173,8 @@ class reflex_editor_controller extends mod_controller {
             // Собираем ноды дочерних элемиентов
             $children = array();
             $lastGroup = null;
-            foreach($item->editor()->editorChildren() as $key=>$editor)
-                if($editor->tab() == $tab)
-                if($editor->starred() || !$starred) {
+            foreach($item->editor()->editorChildren() as $key=>$editor) {
+                if($editor->tab() == $tab) {
 
                     // Пропускаем редакторы, которые нельзя просматривать
                     if(!$editor->beforeView()) {
@@ -214,7 +213,7 @@ class reflex_editor_controller extends mod_controller {
 
                     $childID = $nodeID."/".$editor->hash();
                     $children[$childID] = self::treeNode($childID,$expanded);
-
+				}
             }
 
             // На данный момент в массиве $children ключами нод являются их id

@@ -18,8 +18,9 @@ class reflex_editor_root extends reflex {
     
     public function reflex_children() {
 
-        if($this->data("data"))
+        if($this->data("data")) {
             return array($this->getList());
+        }
             
         return array();
     }
@@ -114,7 +115,6 @@ class reflex_editor_root extends reflex {
 	            "data" => $collection->serialize(),
 	            "title" => $collection->title(),
 	            "group" => $group,
-	            "starred" => $collection->param("starred"),
 	            "priority" => $collection->param("priority"),
 	            "tab" => $collection->param("tab"),
 	        ));

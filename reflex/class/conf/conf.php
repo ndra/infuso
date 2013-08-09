@@ -36,7 +36,7 @@ class reflex_conf extends reflex{
 	 **/
 	public function reflex_root() {
 		return array(
-			self::all()->eq("parent",0)->title("Настройки")->param("group","Настройки")->param("starred",true)->param("tab","system"),
+			self::all()->eq("parent",0)->title("Настройки")->param("group","Настройки")->param("tab","system"),
 		);
 	}
 

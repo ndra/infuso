@@ -53,14 +53,6 @@
     ),
     6 => 
     array (
-      'name' => 'starred',
-      'type' => 'fsxp-lhdw-ghof-1rnk-5bqp',
-      'editable' => 2,
-      'id' => 'u8t6nlm7yeb4iqmphhrf00aw6gcge3',
-      'indexEnabled' => 1,
-    ),
-    7 => 
-    array (
       'editable' => 2,
       'id' => 'gznw503curtcgit4u0tf10dpabtce0',
       'name' => 'priority',
@@ -71,7 +63,7 @@
       'indexEnabled' => 1,
       'help' => '',
     ),
-    8 => 
+    7 => 
     array (
       'editable' => 2,
       'id' => '5rdf9rq8v0nkehnfl0jcvstwu2t8e0',

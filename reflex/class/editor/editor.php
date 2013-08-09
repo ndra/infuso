@@ -19,10 +19,6 @@ abstract class reflex_editor extends mod_component {
         return $this->item()->title();
     }
 
-    public function starred() {
-        return $this->item()->data("starred");
-    }
-
     /**
      * Конструктор
      **/
