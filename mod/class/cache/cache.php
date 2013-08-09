@@ -78,7 +78,7 @@ class mod_cache extends mod_service {
 	}
 	
 	public static function clearByPrefix($prefix) {
-	    self::driver()->clearByPrefix($prefix);
+	    return self::driver()->clearByPrefix($prefix);
 	}
 
 }

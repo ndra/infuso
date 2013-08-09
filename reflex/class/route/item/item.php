@@ -213,7 +213,7 @@ class reflex_route_item extends reflex {
 	}
 	
 	public function reflex_afterStore() {
-	    mod_cache::clear();
+	    mod::service("route")->clearCache();
 	}
 
 	/**
