@@ -141,7 +141,7 @@ class user_mailer extends mod_component {
         }
     }
     
-    private function evalPart($code) {
+    public function evalPart($code) {
     
         ob_start();
         $this->evalCode(" ?".">{$code}<"."?php ",$this->params());
