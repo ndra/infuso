@@ -53,8 +53,9 @@ abstract class mod_field extends mod_component {
             
         } else {
             $class = self::$descr[$conf["type"]];
-            if(!$class)
+            if(!$class) {
                 $class = "mod_field_textarea";
+            }
         }
 
         return new $class($conf);
