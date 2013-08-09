@@ -3,17 +3,15 @@
 class reflex_task_handler implements mod_handler {
 
     private static $timeout = 2;
+    public static $origin = null;
 
     public function on_mod_cron() {
         mod::service("task")->runTasks();     
     }
     
-    public static $origin = null;
-    
     public function on_mod_beforeInit() {
         self::$origin = util::id();
     }
-    
     
     /**
     * Грохает задачи кототыре были добавлены в предущий mod_init
