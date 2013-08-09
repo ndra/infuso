@@ -223,7 +223,13 @@ class reflex_task extends reflex implements mod_handler {
      * Одноразовая ли задача
      **/
     public function oneTime() {
+    
+        // Если время выполнения задано как таймстэмп - задача одноразовая
+        if(preg_match("/^\d+$/",$this->data("crontab"))) {
+            return true;
+        }
 
+		// MySQL-формат - одноразовая задача
         if(preg_match("/\d{4}-\d{2}-\d{2}\s(\d{2}\:\d{2}\:\d{2})?/",$this->data("crontab"))) {
             return true;
         }
