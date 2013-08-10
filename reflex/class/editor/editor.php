@@ -124,7 +124,7 @@ abstract class reflex_editor extends mod_component {
      * Триггер, вызывающийся перед созданием элемента через каталог
      * Контекст - виртуальный объект
      **/
-    public function beforeCreate() {
+    public function beforeCreate($data) {
         return $this->component()->beforeEdit();
     }
 

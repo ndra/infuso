@@ -451,10 +451,16 @@ class reflex_editor_controller extends mod_controller {
 
         $constructor = reflex_editor_constructor::get($p["constructorID"]);
         $list = $constructor->getList();
+        
+        $ret = $list->editor()->beforeCreate($p["data"]);
 
-        if(!$list->editor()->beforeCreate()) {
+        if(!$ret) {
             mod::msg("У вас нет прав для создания объекта",1);
             return;
+        }
+        
+        if(is_array($ret)) {
+            $p["data"] = $ret;
         }
 
         $item = $list->create($p["data"]);
@@ -475,7 +481,7 @@ class reflex_editor_controller extends mod_controller {
     public static function post_upload($p,$files) {
         $list = self::getListByP($p);
 
-        if(!$list->editor()->beforeCreate()) {
+        if(!$list->editor()->beforeCreate(array())) {
             mod::msg("У вас нет прав для создания объекта",1);
             return;
         }
