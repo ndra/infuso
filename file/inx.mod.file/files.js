@@ -8,7 +8,11 @@ inx.ns("inx.mod.file").files = inx.list.extend({
 
     constructor:function(p) {
         p.layout = "inx.layout.column";
-        p.autoHeight = true;
+        
+        p.style = {
+            border:1
+        }
+
         p.tbar = [
             {text:"Добавить файл",icon:"plus","onclick":[this.id(),"showAddDlg"]},"|",
             {icon:"left",onclick:[this.id(),"moveSelectedItemUp"]},

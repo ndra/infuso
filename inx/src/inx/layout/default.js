@@ -51,9 +51,10 @@ inx.layout["default"] = {
     
         var padding = this.style("padding");
         var width = this.info("clientWidth");
-        
-        if(width<=0)
+       
+        if(width<=0) {
             return;
+        }
                     
         var that = this;
         
@@ -62,10 +63,10 @@ inx.layout["default"] = {
             var y = 0;
             var spacing = this.style("spacing");                
     
-            this.items().each(function(n) {   
+            this.items().each(function(n) {
             
                 this.cmd("width",width); 
-            
+                            
                 if(!this.info("layoutReady")) {
                     return;
                 }
@@ -79,9 +80,7 @@ inx.layout["default"] = {
                 }
                 
                 e.css({visibility:"visible"});
-                
-                //var bg = this.data("layoutBackground");
-                    
+                  
                 var doSpacing = false;
                 
                 var title = this.info("title");
@@ -122,9 +121,7 @@ inx.layout["default"] = {
                         top:y,
                         display:"block"
                     });
-                    
-                    //this.cmd("width",width);
-                    
+                   
                     var h = this.info("height");
                     
                     areaHeight +=h ;
@@ -152,11 +149,13 @@ inx.layout["default"] = {
                 if(this.lastHTMLWidth!=width) {
                     this.private_htmlContainer.width(width);
                     this.lastHTMLWidth = width;
+                    
+                    var c = this.private_htmlContainer;
+                    this.cmd("setContentHeight",function() {
+                        return inx.height(c);
+                    });
                 }
             } 
-                
-            var contentHeight = inx.height(this.private_htmlContainer);
-            this.cmd("setContentHeight",contentHeight);
             
         }        
 

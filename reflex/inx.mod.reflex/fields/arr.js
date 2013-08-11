@@ -4,8 +4,9 @@ inx.ns("inx.mod.reflex.fields").arr = inx.list.extend({
 
     constructor:function(p) {
     
-        p.autoHeight = true;
-        p.maxHeight = 200;
+        p.style = {
+            border:1
+        }
         
         p.tbar = [
             {icon:"plus",text:"Добавить",onclick:[this.id(),"addItem"]},

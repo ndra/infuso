@@ -208,7 +208,10 @@ inx.crc32 = function(str) {
  **/ 
 inx.height = function(e) {
 
-    if(!inx.ruler)
+    var t1 = new Date().getTime();
+    var hname = "inx.height";
+
+    if(!inx.ruler) {
         inx.ruler = $("<div>").addClass("inx-box").appendTo("body").css({
             position:"absolute",
             left:-10,
@@ -217,17 +220,27 @@ inx.height = function(e) {
             height:1,
             overflow:"hidden"
         });
+    }
 
     var h = e.height();
     if(!h) {
         var e2 = e.clone().appendTo(inx.ruler);
         h = e2.height();
+        hname = "inx.height(hidden)";
         e2.remove();
     }
+    
+    var t2 = new Date().getTime();
+    var time = t2-t1;
+    inx.observable.debug.cmdCountByName[hname] = (inx.observable.debug.cmdCountByName[hname] || 0) + 1;
+    inx.observable.debug.totalTime[hname] = (inx.observable.debug.totalTime[hname] || 0) + time;
+    
     return h;
 }
 
 inx.width = function(e) {
+
+    var t1 = new Date().getTime();
 
     var ruler = inx.getRuler();
 
@@ -237,11 +250,17 @@ inx.width = function(e) {
         w = e2.width();
         e2.remove();
     }
+    
+    var t2 = new Date().getTime();
+    var time = t2-t1;
+    inx.observable.debug.cmdCountByName["inx.width"] = (inx.observable.debug.cmdCountByName["inx.width"] || 0) + 1;
+    inx.observable.debug.totalTime["inx.width"] = (inx.observable.debug.totalTime["inx.width"] || 0) + time;
+    
     return w;
 }
 
 inx.getRuler = function() {
-    if(!inx.ruler)
+    if(!inx.ruler) {
         inx.ruler = $("<div>").addClass("inx-box").appendTo("body").css({
             position:"absolute",
             left:-10,
@@ -250,6 +269,7 @@ inx.getRuler = function() {
             height:1,
             overflow:"hidden"
         });
+    }
     return inx.ruler;
 }
 

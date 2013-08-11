@@ -155,7 +155,7 @@ inx.panel = inx.box.extend({
 
             var cmpid = this.id();
             var f = function() {
-                inx(cmpid).task("syncLayout",500);
+                inx(cmpid).task("resizeToContents",500);
             }
             this.__body.find("img").load(f);
             
@@ -169,6 +169,13 @@ inx.panel = inx.box.extend({
         
     },
     
+    cmd_resizeToContents:function() {
+        var c = this.private_htmlContainer;
+        this.cmd("setContentHeight",function() {
+            return inx.height(c);
+        });
+    },
+    
     cmd_syncLayout:function() {
     
         if(!this.info("rendered")) {
@@ -179,7 +186,7 @@ inx.panel = inx.box.extend({
         
         this.cmd("updateItemsLayout");
         
-        this.task("updateBox");
+        this.cmd("updateBox");
             
         // Обновляем скролл
         if(this.style("vscroll")) {
@@ -335,11 +342,13 @@ inx.panel = inx.box.extend({
         // Прячем контейнеры скрытых панелей
         inx(this).axis("side").eq("hidden",true).each(function() {
             var e = this.data("sidebarContainer");
-            if(e)
+            if(e) { 
                 e.css({display:"none"});
+            }
             var e = this.data("sidebarSeparator");
-            if(e)
+            if(e) {
                 e.css({display:"none"});
+            }
         })
         
         if(!panels.length()) {
@@ -419,7 +428,8 @@ inx.panel = inx.box.extend({
             var r = this.info("region");
             
             var container = this.data("sidebarContainer");
-            var separator = this.data("sidebarSeparator")
+            var separator = this.data("sidebarSeparator");
+            
             if(container && separator) {
             
                 container

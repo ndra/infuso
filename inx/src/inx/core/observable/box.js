@@ -182,31 +182,11 @@ inx.box = inx.observable.extend({
     
     style:function(key,val) {       
   
-        var defaultValues = {
-            width:"parent",
-            height:"content",
-            sidePriority:"v",
-            padding:0,
-            spacing:0,
-            titleMargin:0,
-            valign:"center",
-            autoWidth:true,
-            iconWidth:16,
-            iconHeight:16,
-            fontSize:12,
-            iconAlign:"left",
-            borderRadius:0,
-            shadow:0,
-            textColor:"black",
-            vscroll:false,
-            hscroll:false
-        }
-    
         // Возврат результата
         if(val===undefined) {        
             var ret = this.private_style[key];
             if(ret===undefined) {
-                return defaultValues[key];     
+                return inx.box.defaultValues[key];     
             }
             return ret;
         }                
@@ -216,6 +196,7 @@ inx.box = inx.observable.extend({
         if(s!=val) {
             this.private_style[key] = val; 
             this.private_styleChangedKeys[key] = true;
+            this.cmd("clearInfoBuffer");
             this.task("updateStyle");
         }        
         return this;
@@ -292,7 +273,7 @@ inx.box = inx.observable.extend({
      **/
     cmd_width:function(width) {    
     
-        width*=1;
+        width = parseInt(width);
         if(width<0) {
             width = 1;
         }
@@ -302,9 +283,13 @@ inx.box = inx.observable.extend({
         if(this.private_widthParent == width) {
             return;
         }
-            
+        
         this.private_widthParent = width;
-        this.task("updateBox");   
+        
+        if(this.style("width")=="parent") {
+            this.cmd("clearInfoBuffer");
+            this.task("updateBox");   
+        }
     },
     
     /**
@@ -316,6 +301,8 @@ inx.box = inx.observable.extend({
         if(this.private_widthContent == width) {
             return;
         }
+    
+        this.cmd("clearInfoBuffer");
     
         this.private_widthContent = width;
         this.task("updateBox");   
@@ -332,11 +319,13 @@ inx.box = inx.observable.extend({
             
         var width = this.style("width");
         
-        if(width=="parent")
+        if(width=="parent") {
             width = this.private_widthParent;            
+        }
 
-        if(width=="content")
+        if(width=="content") {
             width = this.private_widthContent;
+        }
                     
         return width*1;
     },
@@ -378,6 +367,8 @@ inx.box = inx.observable.extend({
         if(this.private_heightParent == height) {
             return;
         }
+        
+        this.cmd("clearInfoBuffer");
       
         this.private_heightParent = height;
         this.task("updateBox");
@@ -392,6 +383,8 @@ inx.box = inx.observable.extend({
             return;
         }
         
+        this.cmd("clearInfoBuffer");
+        
         this.private_heightContent = height;
         this.task("updateBox");
     },
@@ -400,6 +393,11 @@ inx.box = inx.observable.extend({
      * Возвращает высоту контента
      **/         
     info_contentHeight:function() {
+    
+        if(this.private_heightContent instanceof Function) {
+            this.private_heightContent = this.private_heightContent();    
+        }
+    
         return this.private_heightContent;
     },
 
@@ -420,16 +418,16 @@ inx.box = inx.observable.extend({
 
         if(height=="content") {
         
-            height = this.private_heightContent;
+            height = this.info("contentHeight");
             
             height+= this.style("padding")*2;
             height+= this.private_style.border ? 2 : 0;
             height+= this.info("sideHeight") || 0;
             
             var maxh = this.style("maxHeight");
-            if(maxh && height>maxh)
+            if(maxh && height>maxh) {
                 height = maxh;     
-                
+            }   
             
         }
                     
@@ -516,21 +514,28 @@ inx.box = inx.observable.extend({
         if(this.el) {
             this.el.css("display","block");
         }
+        
+        this.cmd("clearInfoBuffer");
             
         this.fire("show");
 
         inx.service("boxManager").watch(this.id());
         this.private_hidden = false;
         this.task("updateBox");
+        
     },
     
     cmd_hide:function() {
+    
         if(this.el) {
             this.el.css("display","none");
         }
+        
+        this.cmd("clearInfoBuffer");
         this.fire("hide");
         inx.service("boxManager").watch(this.id());
         this.private_hidden = true;
+        
     },
     
     cmd_toggle:function() {
@@ -608,6 +613,7 @@ inx.box = inx.observable.extend({
    
     cmd_heightContentRaw:function(height) {     
         this.cmd("heightContent",height);
+        this.cmd("clearInfoBuffer");
     },
     
     cmd_nativeUpdateLoader:function() {
@@ -631,3 +637,22 @@ inx.box = inx.observable.extend({
     }
         
 }); 
+inx.box.defaultValues = {
+    width:"parent",
+    height:"content",
+    sidePriority:"v",
+    padding:0,
+    spacing:0,
+    titleMargin:0,
+    valign:"center",
+    autoWidth:true,
+    iconWidth:16,
+    iconHeight:16,
+    fontSize:12,
+    iconAlign:"left",
+    borderRadius:0,
+    shadow:0,
+    textColor:"black",
+    vscroll:false,
+    hscroll:false
+}

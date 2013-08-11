@@ -10,9 +10,14 @@ inx.observable = Base.extend({
 
         // Записываем параметры в свойства объекта
         // Если у объекта уже есть свойство, оно не перезаписывается
-        for(var i in p)
-            if(this[i]===undefined)
+        for(var i in p) {
+            if(this[i]===undefined) {
                 this[i] = p[i];
+            }
+        }
+        
+        this.private_infoBuffer = {};
+        
     },
     
     id:function() { return this.private_id; },
@@ -21,22 +26,12 @@ inx.observable = Base.extend({
     
         // Делаем чтобы рндер выполнялся только 1 раз
         if(name=="render") {
-            if(this.private_z74gi3f1in)
+            if(this.private_z74gi3f1in) {
                 return;            
+            }
             this.private_z74gi3f1in = true;
-        }
-    
-        if(inx.debug) {
-            inx.observable.debug.cmd++;
-            inx.observable.debug.cmdCountByID[this.id()] = (inx.observable.debug.cmdCountByID[this.id()] || 0) + 1  ;
-            
-            if(!inx.observable.debug.cmds[this.id()])
-                inx.observable.debug.cmds[this.id()] = {};
-            if(!inx.observable.debug.cmds[this.id()][name])
-                inx.observable.debug.cmds[this.id()][name] = 0;
-            inx.observable.debug.cmds[this.id()][name]++;
-        }
-        
+        }    
+
         var a = [];
         for(var i=1;i<arguments.length;i++)
             a[i-1] = arguments[i];
@@ -45,23 +40,29 @@ inx.observable = Base.extend({
             
         var ret = null;
         
-        if(inx.debug)
+        if(inx.debug) {
             inx.observable.debug.stack.push(this.type+":"+name);
+        }
         
-        if(typeof(this[name])=="function")
+        if(typeof(this[name])=="function") {
             try {
                 var t1 = new Date().getTime();
                 ret = this[name].apply(this,a);
                 var t2 = new Date().getTime();
                 var time = t2-t1;
+                
+                inx.observable.debug.cmdCountByName[name] = (inx.observable.debug.cmdCountByName[name] || 0) + 1;
                 inx.observable.debug.totalTime[name] = (inx.observable.debug.totalTime[name] || 0) + time;
+                
             } catch(ex) {
                 ex.method = name;
                 this.private_showError(ex);
             }
+        }
             
-        if(inx.debug)
+        if(inx.debug) {
             inx.observable.debug.stack.pop();
+        }
             
         return ret;
             
@@ -79,29 +80,57 @@ inx.observable = Base.extend({
     },
     
     info:function(name) {
-        var a = []; for(var i=1;i<arguments.length;i++)a[i-1]=arguments[i];
+    
+        if(inx.observable.buffer[name]) {
+            if(this.private_infoBuffer[name] !== undefined) {
+                return this.private_infoBuffer[name];
+            }
+        }
+    
+        var a = [];
+        for(var i=1;i<arguments.length;i++) {
+            a[i-1] = arguments[i];
+        }
+        
+        var nn = name;
         name = "info_"+name;
         if(typeof(this[name])=="function")
             try {
+            
                 var t1 = new Date().getTime();
                 var ret = this[name].apply(this,a);
                 var t2 = new Date().getTime();
                 var time = t2-t1;
                 inx.observable.debug.totalTime[name] = (inx.observable.debug.totalTime[name] || 0) + time;
+                this.private_infoBuffer[nn] = ret;
+                //this.task("clearInfoBuffer");
                 return ret;
+                
             } catch(ex) {
                 ex.method = name;
                 this.private_showError(ex);
             }
                
     },    
+    
+    cmd_clearInfoBuffer:function() {
+        this.private_infoBuffer = {};
+        if(this.owner().id()) {
+            this.owner().cmd("clearInfoBuffer");
+        }
+    },
 
     on:function(event,a,b) { inx(this.id()).on(event,a,b); },
     
     call:function(p,s,f,m) { return inx(this.id()).call(p,s,f,m); },
     
-    suspendEvents:function() {this.__eventsDisabled=true},
-    unsuspendEvents:function() {this.__eventsDisabled=false},
+    suspendEvents:function() {
+        this.__eventsDisabled=true
+    },
+    
+    unsuspendEvents:function() {
+        this.__eventsDisabled=false
+    },
 
     fire:function() { 
         var cmp = inx(this.id());
@@ -120,10 +149,19 @@ inx.observable = Base.extend({
 
 });
 
+inx.observable.buffer = {
+    width:true,
+    height:true,
+    innerHeight:true,
+    contentWidth:true,
+    scrollLeft:true
+}
+
 inx.observable.debug = {
     stack:[],
     cmd:0,
     cmds:{},
     cmdCountByID:{},
+    cmdCountByName:{},
     totalTime:{},
 }

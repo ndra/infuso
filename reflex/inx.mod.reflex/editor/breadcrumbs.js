@@ -20,7 +20,7 @@ inx.mod.reflex.editor.breadcrumbs = inx.panel.extend({
         this.base(c);
         this.cmd("setData",this.data);
         this.pathContainer = $("<div>");
-        this.cmd("html",this.pathContainer);
+        //this.cmd("html",this.pathContainer);
         if(this.data)
             this.cmd("setData",this.data);
     },
@@ -66,7 +66,7 @@ inx.mod.reflex.editor.breadcrumbs = inx.panel.extend({
                 e.addClass("gsxma6d4ubdy9sopvh78");
             }
         }
-        this.task("syncLayout");
+        this.cmd("html",this.pathContainer);
     }
     
 });

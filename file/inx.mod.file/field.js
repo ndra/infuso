@@ -3,13 +3,14 @@
 inx.ns("inx.mod.file").field = inx.box.extend({
 
     constructor:function(p) {
+    
         p.labelAlign = "left";
         p.height = 102;
         p.width = 102;
         
         if(!p.style)
             p.style = {};
-        p.style.autoWidth = false;
+        p.style.border = 1;
         
         this.base(p);
         if(p.value)

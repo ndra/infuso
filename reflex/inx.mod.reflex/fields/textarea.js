@@ -3,9 +3,15 @@
 inx.ns("inx.mod.reflex.fields").textarea = inx.tabs.extend({
 
     constructor:function(p) {
+    
         p.selectNew = false;
         p.showHead = false;  
-        p.height = "content";
+        
+        p.style = {
+            height:"content",
+            border:1,
+            borderRadius:5
+        }
              
         p.items = [{
             type:"inx.mod.reflex.fields.textarea.plain",
