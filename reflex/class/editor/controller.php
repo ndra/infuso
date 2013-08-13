@@ -30,10 +30,8 @@ class reflex_editor_controller extends mod_controller {
         inx::add(array(
             "type" => "inx.mod.reflex.editor",
             "menu" => $p["menu"],
-            "tabData" => self::tabData(),
+            "tabData" => $p["menu"]=="hide" ? null : self::tabData(),
         ));
-
-        //util::profiler();
 
         admin::footer();
     }
