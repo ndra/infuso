@@ -1,6 +1,6 @@
 <?
 
-class board_init implements mod_handler {
+class board_handler implements mod_handler {
 
     public function on_mod_init() {
         
@@ -144,6 +144,14 @@ class board_init implements mod_handler {
 		user_operation::create("board/showReportDone","Просмотр отчета по сделанному")
 		    ->appendTo("guest");
         
+    }
+    
+    public function on_user_subscription_beforeMail($params) {
+		if(preg_match("/^board\/project-('\d+)\/taskCompleted\/$/",$parmas["subscriptionKey"]) {
+		    if($params["completedBy"]==$params["userID"]) {
+		        return;
+		    }
+		}
     }
 
 }

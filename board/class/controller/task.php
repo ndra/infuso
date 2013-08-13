@@ -336,8 +336,7 @@ class board_controller_task extends mod_controller {
             switch($currentTaskStatus->id()){
                
                 case board_task_status::STATUS_CHECKOUT:
-                    mod::trace(board_task_log::TYPE_TASK_STATUS_RETURNED);
-                    $taskLogType = board_task_log::TYPE_TASK_STATUS_RETURNED; //ставим статус возвращено  
+                    $taskLogType = board_task_log::TYPE_TASK_STATUS_RETURNED; //ставим статус возвращено
                 break;
                 
                 default:
@@ -345,7 +344,6 @@ class board_controller_task extends mod_controller {
                 break;     
             }    
         }
-        mod::trace($taskLogType);
         $task->logCustom($statusText,$time,$taskLogType,$files);
 
         return true;

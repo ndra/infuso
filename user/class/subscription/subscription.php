@@ -5,6 +5,45 @@
  **/
 class user_subscription extends reflex {
 
+	public function reflexTable() {
+	
+		return array (
+			'name' => 'user_subscription',
+			'fields' => array (
+				array (
+					'name' => 'id',
+					'type' => 'jft7-kef8-ccd6-kg85-iueh',
+					'editable' => '1',
+				), array (
+					'name' => 'userID',
+					'type' => 'pg03-cv07-y16t-kli7-fe6x',
+					'editable' => 1,
+					'id' => 'uixp5bqfu6qylst8g23m1b7casd49b',
+					'label' => 'Пользователь',
+					'indexEnabled' => 1,
+					'class' => 'user',
+				), array (
+					'name' => 'key',
+					'type' => 'v324-89xr-24nk-0z30-r243',
+					'editable' => 1,
+					'label' => 'Ключ',
+					'indexEnabled' => 1,
+				), array (
+					'name' => 'title',
+					'type' => 'v324-89xr-24nk-0z30-r243',
+					'editable' => 1,
+					'label' => 'Название подписки',
+					'indexEnabled' => 1,
+				), array (
+					'name' => 'group',
+					'type' => 'v324-89xr-24nk-0z30-r243',
+					'editable' => 0,
+					'indexEnabled' => 0,
+				),
+			),
+		);
+	}
+
      /**
      * Возвращает коллекцию всех подписок всех пользователей
      **/
@@ -19,7 +58,7 @@ class user_subscription extends reflex {
         return reflex::get(get_class(),$id);
     }
 
-    /**
+	/**
      * @return Возвращает подписку по коду
      **/
     public static function getByKey($key) {
@@ -29,8 +68,14 @@ class user_subscription extends reflex {
     /**
      * отправка письма пользователю
      **/
-    public function mail($params){
+    public function mail($params) {
+    
+        $this->onBeforeMail($params);
         $this->user()->mailer()->params($params)->send();
+    }
+    
+    public function onBeforeMail($params) {
+        mod::fire("user_subscription_beforeMail",$params);
     }
 
     public function reflex_beforeStore(){
@@ -54,6 +99,8 @@ class user_subscription extends reflex {
                 "subject" => $third,
             );
         }
+        
+        $params["subscriptionKey"] = $key;
 
         reflex_task::add(array(
             "class" => "user_subscription",

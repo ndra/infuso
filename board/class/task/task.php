@@ -264,6 +264,7 @@ class board_task extends reflex {
         $params = array(
             "subject" => "{$this->responsibleUser()->title()} / {$this->project()->title()} / {$this->status()->action()} / $taskTextShort",
             "type" => "text/html",
+            "completedBy" => user::active()->id(),
         );
 
         $message = "";
