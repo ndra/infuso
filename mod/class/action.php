@@ -92,9 +92,11 @@ class mod_action extends mod_component {
         if(method_exists($obj,$this->method()))
             return true;
 
-        foreach($obj->behaviours() as $b)
-            if(method_exists($b,$this->method()))
+        foreach($obj->behaviours() as $b) {
+            if(method_exists($b,$this->meth-od())) {
                 return true;
+            }
+        }
 
         return false;
     }
@@ -103,7 +105,10 @@ class mod_action extends mod_component {
      * Возвращает экшн, который выполняется в данное время
      **/
     public static function current() {
-        return self::$currentAction;
+        if($action = self::$currentAction) {
+            return $action;
+        }
+        return self::get(null);
     }
 
     /**
@@ -142,7 +147,6 @@ class mod_action extends mod_component {
                     "action" => $this,
                 ));
             }
-
 
             call_user_func($this->callback(),$this->params());
 

@@ -146,6 +146,15 @@ class board_task_status extends mod_controller {
         return false;
     }
 
+    public function visibleTasks() {
+        $tasks = board_task::visible();
+        $tasks->eq("status",$this->id());
+        if(!$this->showEpicSubtasks()) {
+            $tasks->eq("epicParentTask",0);
+        }
+        return $tasks;
+    }
+
     /**
      * Возвращает id статуса
      **/
@@ -189,7 +198,7 @@ class board_task_status extends mod_controller {
     }
 
     public function showDates() {
-        if(in_array($this->id(),array(self::STATUS_COMPLETED,self::STATUS_CANCELLED))) {
+        if(in_array($this->id(),array(self::STATUS_COMPLETED,self::STATUS_CANCELLED,self::STATUS_CHECKOUT))) {
             return true;
         }
         return false;

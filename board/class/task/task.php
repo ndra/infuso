@@ -499,6 +499,8 @@ class board_task extends reflex {
      **/
     public function stickerData() {
 
+        mod_profiler::beginOperation("board","stickerData",$this->id());
+
         if($this->data("type")==1) {
             return array(
                 "folder" => true,
@@ -521,29 +523,10 @@ class board_task extends reflex {
             }
         }
 
-        // Бонусные задачи
-        if($this->data("bonus")) {
-            $ret["text"].= "<span style='color:white;background:green;font-style:italic;padding:0px 4px;'>б</span> ";
-        }
-
         // Просрочка
         $h = $this->hangDays();
         if($h>3) {
             $ret["text"].= "<span style='color:white;background:red;padding:0px 4px;'>$h</span> ";
-        }
-
-        $score = $this->votes()->avg("score");
-        if($score) {
-
-            $smiles = array(":(:(",":(",":|",":)",":):)");
-            $html = $smiles[round($score)-1]." ";
-
-            if(!$this->votes()->eq("ownerID",user::active()->id())->void()) {
-               $html = "<span style='background:rgba(255,255,0,.5);padding:2px;' >{$html}</span>";
-            }
-
-            $ret["text"].= $html;
-
         }
         
         $ret["text"].= "<b>".$this->project()->title().".</b> ";
@@ -564,6 +547,8 @@ class board_task extends reflex {
         if($this->responsibleUser()->exists()) {
             $ret["bottom"] = "<nobr>".$this->responsibleUser()->title()."</nobr> ";
         }
+
+
 
         if($this->data("deadline")) {
             $ret["bottom"].= $this->pdata("deadlineDate")->left();
@@ -636,13 +621,9 @@ class board_task extends reflex {
                     break;
             }
 
-            if($this->status()->id()!=board_task_status::STATUS_DRAFT) {
-                $ret["tools"][] = "vote";
-            }
-
         }
         
-
+        mod_profiler::endOperation();
 
         return $ret;
     }

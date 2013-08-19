@@ -135,8 +135,9 @@ class reflex_route extends mod_route implements mod_handler {
 			tmp::obj($obj);
 		}
 
-		$action = tmp::obj()->meta("beforeAction");
-		eval($action);
+		if($action = tmp::obj()->meta("beforeAction")) {
+            eval($action);
+        }
 	}
 
 }

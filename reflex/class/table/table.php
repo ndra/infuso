@@ -272,20 +272,12 @@ class reflex_table extends mod_component {
     public function loadConf() {
 
         // Если у таблицы нет id - не загружаем ее
-        if(!$this->id())
+        if(!$this->id()) {
             return;
+        }
 
         $data = file::get($this->confPath())->inc();
-        
-        // Импорт старых таблиц в формате xml
-       /* if(!$data) {
-            $xml = strtr($this->path(),array(".php"=>".xml"));
-            $data = util::loadXMLConf($xml);
-            util::save_for_inclusion($this->path(),$data);
-            file::get($xml)->delete();
-        } */
-
-          return $data;
+        return $data;
     }
     
     /**

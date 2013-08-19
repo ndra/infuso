@@ -12,12 +12,18 @@ abstract class mod_model extends mod_controller {
      * Возвращает коллекцию полей модели
      **/
     public final function fields() {
+
+        mod_profiler::beginOperation("reflex","fields",get_class($this));
     
         if(!$this->fields) {
             $this->fields = new mod_fieldset(array());
         }
         
-        return clone $this->fields;
+        $ret = clone $this->fields;
+
+        mod_profiler::endOperation();
+
+        return $ret;
     }
 
     /**
@@ -44,11 +50,13 @@ abstract class mod_model extends mod_controller {
      **/
     public final function setInitialData($data=array()) {
 
+        mod_profiler::beginOperation("reflex","setInitialData",get_class($this));
+
         if(!$data) {
             $data = array();
 		}
-		
-		$modelFields = $this->modelFields();
+
+	$modelFields = $this->modelFields();
 
         $fields = array();
         foreach($modelFields as $field) {
@@ -59,8 +67,10 @@ abstract class mod_model extends mod_controller {
                 $field->defaultValue() );
             $fields[] = $field;
         }
-        
-        $this->fields = $modelFields->copyBehaviours($fields);
+
+       $this->fields = $modelFields->copyBehaviours($fields);
+
+        mod_profiler::endOperation();
     }
 
     /**

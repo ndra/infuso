@@ -30,10 +30,11 @@ class mod_superadmin extends mod_controller {
             $password = array_key_exists("mod:superadminPasswordHash", $_SESSION) ? trim($_SESSION["mod:superadminPasswordHash"]) : null;
 	        $hash = self::getStoredPassword();
 
-	        if($hash==="0000")
+	        if($hash==="0000") {
 	            self::$checkResult = ($hash===$password);
-	        else
+	        } else {
 	            self::$checkResult = mod_crypt::checkHash($hash,$password);
+            }
 		}
 		
 		return self::$checkResult;

@@ -59,6 +59,8 @@ class reflex_mysql {
         if(self::$connection) {
 			return;
 		}
+
+        mod_profiler::beginoperation("mysql/connect",1,2);
 		
         self::$connection = mysql_connect(
             mod::conf("reflex:mysql_host"),
@@ -77,6 +79,8 @@ class reflex_mysql {
         if(mod::debug()) {
             self::keepVariables();
         }
+
+        mod_profiler::endOperation();
     }
 
     public static function getPrefixedTableName($table) {

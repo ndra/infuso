@@ -11,6 +11,7 @@ class mod_fieldset implements Iterator{
     private $behaviours = array();
 
     public function rewind() { reset($this->fields); }
+
     public function current() {
         $item = current($this->fields);
         if(is_object($item)) {
@@ -21,7 +22,9 @@ class mod_fieldset implements Iterator{
         return $item;
     }
     public function key() { return key($this->fields); }
+
     public function next() { return next($this->fields); }
+
     public function valid() { return $this->current() !== false; }
 
     public function __construct($fields) {

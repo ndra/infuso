@@ -5,7 +5,7 @@
     foreach(board_task_status::all() as $status) {
         <a class='item' href='#task-list/status/{$status->id()}' >
             echo $status->title();
-            $n = board_task::visible()->eq("status",$status->id())->count();
+            $n = $status->visibleTasks()->count();
             <span class='count' >{$n}</span>
         </a>
     }

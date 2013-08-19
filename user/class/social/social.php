@@ -52,8 +52,13 @@ class user_social extends reflex {
     public static function appendToActiveUser() {
 
         $user = user::active();
-        if(!$user->exists())
+        if(!$user->exists()) {
             return;
+        }
+
+        if(!mod::session(self::$sessionKey)) {
+            return;
+        }
 
         self::active()->data("userID",$user->id());
         $_SESSION[self::$sessionKey] = null;

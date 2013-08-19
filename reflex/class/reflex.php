@@ -102,14 +102,17 @@ class reflex extends mod_model {
     **/
     public final function metaObject($lang=null) {
 
-        if(!$lang)
+        if(!$lang) {
             $lang = lang::active()->id();
+        }
 
-        if(get_class($this)=="reflex_meta_item")
+        if(get_class($this)=="reflex_meta_item") {
             return $this;
+        }
 
-        if(!$this->reflex_meta())
+        if(!$this->reflex_meta()) {
             return reflex_meta_item::get(0);
+        }
 
         return reflex_meta_item::get(get_class($this).":".$this->id(),$lang);
     }
@@ -317,7 +320,14 @@ class reflex extends mod_model {
      * Возвращает объект таблицы модели
      **/
     public final function table() {
-        return reflex_table::factoryTableForReflexClass(get_class($this));
+
+        mod_profiler::beginOperation("reflex","table",get_class($this));
+
+        $ret = reflex_table::factoryTableForReflexClass(get_class($this));
+
+        mod_profiler::endOperation();
+
+        return $ret;
     }
 
     /**

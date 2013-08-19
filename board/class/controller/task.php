@@ -10,8 +10,10 @@ class board_controller_task extends mod_controller {
      * Экшн получения списка задач
      **/             
     public static function post_listTasks($p) {
+
+        mod_profiler::beginOperation("board/listTasks",1,2);
     
-        $limit = 100;
+        $limit = 40;
     
         $ret = array();
 
@@ -108,6 +110,8 @@ class board_controller_task extends mod_controller {
             "id" => 0,
             "title" => "<b>Другой</b>",
         );
+
+        mod_profiler::endOperation();
 
         return $ret;
     }

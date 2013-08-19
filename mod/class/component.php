@@ -2,27 +2,27 @@
 
 class mod_component {
 
-	/**
-	 * Параметры компонента
-	 *
-	 * @var array
-	 **/
-	 private $param = array();
-	 private $paramsLoaded = false;
+    /**
+     * Параметры компонента
+     *
+     * @var array
+    **/
+    private $param = array();
+    private $paramsLoaded = false;
 
-	 private $lockedParams = array();
+    private $lockedParams = array();
 
-	 private static $conf = null;
+    private static $conf = null;
 
 
-	private $___behaviours = array();
-	private $nextBehaviourPriority = 0;
-	private $defaultBehavioursAdded = false;
-	private $behavioursSorted = false;
+    private $___behaviours = array();
+    private $nextBehaviourPriority = 0;
+    private $defaultBehavioursAdded = false;
+    private $behavioursSorted = false;
 
-	private $behavioursAdded = array();
+    private $behavioursAdded = array();
 
-	private static $reflections = array();
+    private static $reflections = array();
 
     /**
      * Статический массив для хранения списка отложенных функций
@@ -49,12 +49,10 @@ class mod_component {
         }
 
         // Добавляем поведение только если оно еще не было добавлено
-        if(!in_array($behaviour,$this->behavioursAdded)) {
-
-            $this->behavioursAdded[] = $behaviour;
+        if(!$this->behavioursAdded[$behaviour]) {
+            $this->behavioursAdded[$behaviour] = true;
             array_unshift($this->___behaviours,$behaviour);
             $this->behavioursSorted = false;
-
         }
 
         mod_profiler::endOperation("mod","addbehaviour",$behaviour);
@@ -84,9 +82,11 @@ class mod_component {
         foreach(array_reverse($this->behaviours()) as $b)
             if(method_exists($b,$fn)) {
                 $items = call_user_func_array(array($b,$fn),$args);
-                if(is_array($items))
-                    foreach($items as $item)
+                if(is_array($items)) {
+                    foreach($items as $item) {
                         $ret[] = $item;
+                    }
+                }
             }
         return $ret;
     }
@@ -107,8 +107,9 @@ class mod_component {
 
         // Пытаемся вызвать метод _fn
         $fn3 = "_".$fn;
-        if(method_exists($this,$fn3))
+        if(method_exists($this,$fn3)) {
             return call_user_func_array(array($this,$fn3),$params);
+        }
 
         // Пытаемся вызвать дата-врапперы
         $wrappers = $this->dataWrappers();
@@ -185,8 +186,11 @@ class mod_component {
 
     private final function normalizeBehaviours() {
 
+
         $this->addDefaultBehaviours();
         if(!$this->behavioursSorted) {
+
+            mod_profiler::beginOperation("mod","normalizeBehaviours",get_class($this));
 
             foreach($this->___behaviours as $key=>$behaviour) {
                 if(is_string($behaviour)) {
@@ -198,19 +202,28 @@ class mod_component {
             }
 
             $this->sortBehaviours();
+
+            mod_profiler::endOperation();
         }
+
     }
 
     private final function sortBehaviours() {
+
+        mod_profiler::beginOperation("mod","sortBehaviours",get_class($this));
+
         $this->behavioursSorted = true;
         usort($this->___behaviours,array("self","sortBehavioursCallback"));
+
+        mod_profiler::endOperation();
     }
 
     private static function sortBehavioursCallback($a,$b) {
 
         $d = $b->behaviourPriority() - $a->behaviourPriority();
-        if($d!=0)
+        if($d!=0) {
             return $d;
+        }
 
         $d = $b->behaviourSequenceNumber() - $a->behaviourSequenceNumber();
         return $d;
@@ -228,6 +241,8 @@ class mod_component {
             return;
 		}
 
+        mod_profiler::beginOperation("mod","addDefaultBehaviours",get_class($this));
+
         $this->defaultBehavioursAdded = true;
 
         foreach($this->defaultBehaviours() as $b) {
@@ -241,6 +256,9 @@ class mod_component {
                 $this->addBehaviour($b);
 			}
 		}
+
+        mod_profiler::endOperation("mod","addDefaultBehaviours",get_class($this));
+
     }
     
     /**

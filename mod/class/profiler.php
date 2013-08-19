@@ -3,9 +3,12 @@
 class mod_profiler {
 
     public static $stack = array();
+
     public static $log = array();
 
     private static $variables = array();
+
+    private static $milestones = array();
 
     /**
      * Открывает новую операцию
@@ -73,15 +76,11 @@ class mod_profiler {
 
     }
 
-    private static $milestones = array();
-
     public function addMilestone($name) {
 
-        if(!mod_superadmin::check())
+        if(!mod::debug()) {
             return;
-
-        if(!mod::debug())
-            return;
+        }
 
         self::$milestones[] = array(
             $name,
@@ -119,6 +118,43 @@ class mod_profiler {
             }
         }
         return self::$log;
+    }
+
+    public function hlog() {
+
+        ob_start();
+
+        echo "generated: ".round(microtime(1)-$GLOBALS["infusoStarted"],2)." sec.\n";
+        echo "classload: ".round($GLOBALS["infusoClassTimer"],4)." sec.\n";
+        echo "Page size : ".util::bytesToSize1000(mod_profiler::getVariable("contentSize"))."\n";
+        echo "Peak memory: ".util::bytesToSize1000(memory_get_peak_usage())." / ".ini_get("memory_limit")."\n";
+        echo "\n";
+
+        foreach(self::log() as $group =>$items) {
+            echo $group.":\n";
+
+            foreach($items as  $operation => $params) {
+                echo $operation." | ".$params["time"]." s.\n";
+            }
+
+             echo "\n";
+
+        }
+
+        echo "--------------------------------------";
+
+        foreach(self::getMilestones() as $s) {
+
+            $time = $s[1] - $t;
+            echo $s[0].": ".number_format($time,5);
+
+            $t = $s[1];
+            echo "\n";
+        }
+
+
+        return ob_get_clean();
+
     }
 
 }
