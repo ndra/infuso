@@ -3,7 +3,7 @@
 abstract class mod_route {
 
 	public function priority() {
-		return -1000;
+		return 0;
 	}
 
 	abstract public function forward($url);

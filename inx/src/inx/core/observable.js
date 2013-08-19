@@ -3,6 +3,7 @@
 inx.observable = Base.extend({
 
     constructor:function(p) {
+    
         // Подписываеся на события
         this.listeners = {};        
         for(var i in p.listeners)
@@ -120,9 +121,13 @@ inx.observable = Base.extend({
         }
     },
 
-    on:function(event,a,b) { inx(this.id()).on(event,a,b); },
+    on:function(event,a,b) {
+        inx(this.id()).on(event,a,b);
+    },
     
-    call:function(p,s,f,m) { return inx(this.id()).call(p,s,f,m); },
+    call:function(p,s,f,m) {
+        return inx(this.id()).call(p,s,f,m);
+    },
     
     suspendEvents:function() {
         this.__eventsDisabled=true

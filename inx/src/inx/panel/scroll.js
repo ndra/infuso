@@ -111,11 +111,13 @@ inx.panel = inx.panel.extend({
     
     cmd_scrollLeft:function(scroll,add) {    
     
-        if(add)
+        if(add) {
             this.private_scrollLeft = this.info("scrollLeft") + scroll;
-        else
+        } else {
             this.private_scrollLeft = scroll;
+        }
     
+        this.cmd("clearInfoBuffer");
         this.fire("scroll");
         this.task("updateHScroll");        
     },
