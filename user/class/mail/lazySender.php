@@ -22,10 +22,12 @@ class user_mail_lazySender extends mod_component implements mod_handler {
         // Помечаем их как отправленные и складываем текст в массив
         $message = array();
         foreach($mail->glueMails() as $item) {
+
+            $item->done(true);
+            $item->store();
+
             if($item->mailer()->evalBusinessRules()) {
                 $message[] = $item->message();
-                $item->done(true);
-                $item->store();
             }
         }
         
