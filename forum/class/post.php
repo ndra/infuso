@@ -218,7 +218,17 @@ class forum_post extends reflex {
             }
         }
 
-        $params = array (
+        $post->mailSubscibers();
+
+        // редиректим к сообщению
+        header("Location: " . $post->url());
+        die();
+
+    }
+	
+	public function mailSubscribers() {
+		$post = $this;
+		$params = array (
             "message" => "Новое сообщение на форуме в теме: ".$post->topic()->title(),
             "subject" => "Новое сообщение на форуме в теме: ".$post->topic()->title(),
             "postMessage" => $post->message(),
@@ -243,13 +253,8 @@ class forum_post extends reflex {
         foreach ($post->topic()->group()->parents() as $group) {
             user_subscription::mailByKey("forum:group:".$group->id(), $params);
         }
-
-        // редиректим к сообщению
-        header("Location: " . $post->url());
-        die();
-
-    }
-
+	}
+	
      /**
      * Редактирует имещиесе сообщение
      *
