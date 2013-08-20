@@ -14,6 +14,9 @@ class reflex_sync extends mod_controller {
         tmp::exec("/reflex/admin/sync");
     }
 
+    /**
+     * Контроллер, отдающий данные
+     **/
     public function index_get($p) {
 
         $token = trim($this->param("token"));
@@ -44,12 +47,20 @@ class reflex_sync extends mod_controller {
 
         $n = 0;
         foreach($items as $item) {
-            $data["rows"][] = $item->data();
+
+            $itemData = $item->data();
+            foreach($itemData as $key=>$val) {
+                $itemData[$key] = base64_encode($val);
+            }
+
+            $data["rows"][] = $itemData;
+
             $data["nextID"] = $item->id();
             reflex::freeAll();
             $n++;
         }
 
+        // Если записано 0 строк, мы закончили с этим классом
         if($n==0) {
             $data["completed"] = true;
         }
@@ -81,6 +92,9 @@ class reflex_sync extends mod_controller {
 
     }
 
+    /**
+     * Контроллер, запрашивающий данные
+     **/
     public function post_syncStep($p) {
 
         $class = $p["className"];
@@ -128,6 +142,10 @@ class reflex_sync extends mod_controller {
 
             foreach($row as $key=>$val) {
                 unset($row[$key]);
+
+                // Не забываем разкодировать данные из base64
+                $val = base64_decode($val);
+
                 $row["`".$key."`"] = '"'.mysql_real_escape_string($val).'"';
             }
 

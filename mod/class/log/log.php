@@ -62,25 +62,45 @@ class mod_log {
         }
 
         if(is_object($a)) {
-            if(get_class($a)=="SimpleXMLElement")
+            if(get_class($a)=="SimpleXMLElement") {
                 return strtr(util::prettyPrintXML($a),array("\n"=>" "));
+            }
         }
 
         // Скаляр или прочее
         return $a;
     }
 
+    /**
+     * Заносит запись в лог
+     **/
     public static function trace($trace) {
+
         $trace = self::toString($trace);
         file::mkdir("/mod/trace/");
 
         $message = "";
         $message.= date("h:i:s")." ";
         $debug = debug_backtrace();
-        $message.= $debug[1]["class"]."::".$debug[1]["function"]." ";
-        $message = str_pad($message,100,"-")."\n";
 
-        $message.= $trace."\n";
+        // Добавляем в трэйс метод из которого была сделана запись
+        // Т.к. методы вызывают друг-друга, мы бедем последний по debug_backtrace(),
+        // исключив из него вызовы внутри самого лога
+
+        $skip = array("mod_log::trace","mod::trace"); // это мы пропустим
+
+        foreach($debug as $d) {
+
+            $call = $d["class"].$d["type"].$d["function"];
+
+            if(!in_array($call,$skip)) {
+                $message.= $call;
+                break;
+            }
+
+        }
+
+        $message.= " >> ".$trace."\n";
         $date = date("Y-m-d");
         $path = "/mod/trace/$date.txt";
         $handle = fopen(file::get($path)->native(),'a');

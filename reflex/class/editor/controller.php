@@ -542,17 +542,19 @@ class reflex_editor_controller extends mod_controller {
             return;
         }
 
-        foreach($list as $item)
+        foreach($list as $item) {
             if(!$item->editor()->beforeEdit()) {
                 mod::msg("У вас нет прав для изменения объекта",1);
                 return;
             }
+        }
 
         $itemID = self::get($p["itemID"])->item()->id();
         foreach($list->copy() as $key=>$item) {
             $key*=2;
-            if($item->id()==$itemID)
+            if($item->id()==$itemID) {
                 $key-=$p["side"]==1 ? -3 : 3;
+            }
             $item->data($name,$key);
         }
     }

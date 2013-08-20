@@ -33,7 +33,8 @@ class mod_log_browser extends mod_controller {
 	    $date = date("Y-m-d");
 	    $path = "/mod/trace/$date.txt";
 	    $ret = file::get($path)->data();
-	    echo nl2br(htmlspecialchars($ret));
+        echo nl2br(htmlspecialchars($ret));
+        // ,ENT_SUBSTITUTE
 
 	    echo "</div>";
 	    admin::footer();
