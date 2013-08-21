@@ -86,16 +86,12 @@ class mod_action extends mod_component {
         $class = $this->className();
         $obj = new $class;
 
-        if(!call_user_func($this->testCallback(),$this->params()))
+        if(!call_user_func($this->testCallback(),$this->params())) {
             return false;
+		}
 
-        if(method_exists($obj,$this->method()))
+        if($obj->methodExists($this->method())) {
             return true;
-
-        foreach($obj->behaviours() as $b) {
-            if(method_exists($b,$this->meth-od())) {
-                return true;
-            }
         }
 
         return false;

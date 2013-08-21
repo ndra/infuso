@@ -173,15 +173,19 @@ class mod_component {
      **/
     public final function methodExists($fn) {
 
-        if(method_exists($this,$fn))
+        if(method_exists($this,$fn)) {
             return true;
+		}
 
-        if(method_exists($this,"_".$fn))
+        if(method_exists($this,"_".$fn)) {
             return true;
+		}
 
-        foreach($this->behaviours() as $b)
-            if($b->routeBehaviourMethod($fn))
+        foreach($this->behaviours() as $b) {
+            if($b->routeBehaviourMethod($fn)) {
                 return true;
+			}
+		}
     }
 
     private final function normalizeBehaviours() {
