@@ -259,10 +259,6 @@ class forum_post extends reflex {
             "code" => "forum/newPost",
         );
 
-        // Подписываю автора на этот Topic
-        user::active()->subscribe("forum:topic:".$post->topic()->id(), $params);
-        }
-
         // Рассылаем всем о том что создан ответ в теме
         user_subscription::mailByKey("forum:topic:".$post->topic()->id(), $params);
 
