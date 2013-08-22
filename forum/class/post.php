@@ -248,16 +248,17 @@ class forum_post extends reflex {
         $post = $this;
         if(!$params) {
             $params = array (
-            "message" => "Новое сообщение на форуме в теме: ".$post->topic()->title(),
-            "subject" => "Новое сообщение на форуме в теме: ".$post->topic()->title(),
-            "postMessage" => $post->message(),
-            "groupTitle" => $post->topic()->title(),
-            "postUrl" => $post->url()->absolute()."",
-            "topicUrl" => $post->topic()->url()->absolute()."",
-            "topicTitle" => $post->topic()->title(),
-            "author" => $post->author()->title(),
-            "code" => "forum/newPost",
-        );
+                "message" => "Новое сообщение на форуме в теме: ".$post->topic()->title(),
+                "subject" => "Новое сообщение на форуме в теме: ".$post->topic()->title(),
+                "postMessage" => $post->message(),
+                "groupTitle" => $post->topic()->title(),
+                "postUrl" => $post->url()->absolute()."",
+                "topicUrl" => $post->topic()->url()->absolute()."",
+                "topicTitle" => $post->topic()->title(),
+                "author" => $post->author()->title(),
+                "code" => "forum/newPost",
+            );
+        }
 
         // Рассылаем всем о том что создан ответ в теме
         user_subscription::mailByKey("forum:topic:".$post->topic()->id(), $params);

@@ -9,6 +9,8 @@ class google_translate extends mod_service {
         return "translate";
     }
 
+    private static $instance = null;
+
     /**
      * Возвращает перевод текста
      **/
@@ -109,7 +111,13 @@ class google_translate extends mod_service {
         return $tr["data"]["translations"][0]["translatedText"];
     }
     
-    public function serviceFactory() {
+    public static function serviceFactory() {
+
+        if(!self::$instance) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
     
 	}
 
