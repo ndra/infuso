@@ -21,8 +21,9 @@ class google_translate extends mod_service {
         $original = trim($original);
 
         // Не переводим пустые строки
-        if(!$original)
+        if(!$original) {
             return "";
+		}
 
         // Не переводим числа
         if(is_numeric($original)) {
@@ -44,6 +45,10 @@ class google_translate extends mod_service {
 
            // Если ничего не досталось - делаем запрос в гугл
         if(!$item->exists()) {
+
+            if($this->param("passiveMode")) {
+				return $original;
+            }
 
             mod_profiler::updateOperation("google translate","real",$original);
 
@@ -103,5 +108,9 @@ class google_translate extends mod_service {
 
         return $tr["data"]["translations"][0]["translatedText"];
     }
+    
+    public function serviceFactory() {
+    
+	}
 
 }
