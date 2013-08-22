@@ -217,18 +217,8 @@ class forum_post extends reflex {
 
             }
         }
-
-        $post->mailSubscibers();
-
-        // редиректим к сообщению
-        header("Location: " . $post->url());
-        die();
-
-    }
-	
-	public function mailSubscribers() {
-		$post = $this;
-		$params = array (
+        
+        $params = array (
             "message" => "Новое сообщение на форуме в теме: ".$post->topic()->title(),
             "subject" => "Новое сообщение на форуме в теме: ".$post->topic()->title(),
             "postMessage" => $post->message(),
@@ -242,6 +232,36 @@ class forum_post extends reflex {
 
         // Подписываю автора на этот Topic
         user::active()->subscribe("forum:topic:".$post->topic()->id(), $params);
+        
+        $post->_mailSubscribers($params);
+
+        // редиректим к сообщению
+        header("Location: " . $post->url());
+        die();
+
+    }
+    
+    /**
+    * Раcсылка уведомлений пользователям подписанным на тему
+    **/
+    public function _mailSubscribers($params = null) {
+        $post = $this;
+        if(!$params) {
+            $params = array (
+            "message" => "Новое сообщение на форуме в теме: ".$post->topic()->title(),
+            "subject" => "Новое сообщение на форуме в теме: ".$post->topic()->title(),
+            "postMessage" => $post->message(),
+            "groupTitle" => $post->topic()->title(),
+            "postUrl" => $post->url()->absolute()."",
+            "topicUrl" => $post->topic()->url()->absolute()."",
+            "topicTitle" => $post->topic()->title(),
+            "author" => $post->author()->title(),
+            "code" => "forum/newPost",
+        );
+
+        // Подписываю автора на этот Topic
+        user::active()->subscribe("forum:topic:".$post->topic()->id(), $params);
+        }
 
         // Рассылаем всем о том что создан ответ в теме
         user_subscription::mailByKey("forum:topic:".$post->topic()->id(), $params);
@@ -253,8 +273,8 @@ class forum_post extends reflex {
         foreach ($post->topic()->group()->parents() as $group) {
             user_subscription::mailByKey("forum:group:".$group->id(), $params);
         }
-	}
-	
+    }
+    
      /**
      * Редактирует имещиесе сообщение
      *
