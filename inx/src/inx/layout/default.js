@@ -147,13 +147,14 @@ inx.layout["default"] = {
             
         } else {
     
-            /*if(this.private_htmlContainer) {
+            if(this.private_htmlContainer) {
                 if(this.lastHTMLWidth!=width) {
                     this.private_htmlContainer.width(width);
                     this.lastHTMLWidth = width;                    
                     var c = this.private_htmlContainer;                    
+                    this.cmd("setContentHeight",inx.height(c));
                 }
-            } */
+            }
             
         }        
 
