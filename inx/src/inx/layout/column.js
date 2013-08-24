@@ -35,6 +35,10 @@ inx.layout.column = {
         var yspacing = xspacing;
         var that = this;
         
+        this.items().each(function() {
+            this.data("xij89238v67-height",this.info("height"));
+        }); 
+        
         var completeLine = function() {
         
             if(!line.length) {
@@ -44,7 +48,7 @@ inx.layout.column = {
             // Определяем высоту линии элементов
             var height = 0;
             for(var i in line) {
-                height = Math.max(height,line[i].info("height"));
+                height = Math.max(height,line[i].data("xij89238v67-height"));
             }
 
             // Центруем элементы по вертикали
@@ -53,7 +57,7 @@ inx.layout.column = {
                 var top = baseline;
                 
                 if(that.style("valign")=="center") {
-                    top-= line[i].info("height")/2;
+                    top-= line[i].data("xij89238v67-height")/2;
                     top+= height/2;
                 }
                 
@@ -74,9 +78,9 @@ inx.layout.column = {
             return;
         }
         
-        this.items().each(function() {
+        this.items().cmd("width",clientWidth);
         
-            this.cmd("width",clientWidth);
+        this.items().each(function() {    
         
             if(!this.info("layoutReady")) {
                 return;

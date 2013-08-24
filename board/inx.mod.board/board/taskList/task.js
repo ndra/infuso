@@ -23,7 +23,8 @@ inx.mod.board.board.taskList.task = inx.panel.extend({
     constructor:function(p) {    
         p.style = {
             border:0,
-            width:100
+            width:100,
+            height:135
         }
         this.base(p);
     },

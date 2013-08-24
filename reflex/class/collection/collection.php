@@ -136,11 +136,13 @@ class reflex_collection extends mod_component implements Iterator {
     public function superposition($filter) {
 
         $this->where($filter->where());
-        foreach($filter->eqs() as $key=>$val)
+        foreach($filter->eqs() as $key=>$val) {
             $this->def($key,$val);
+		}
 
-        if($filter->sort)
+        if($filter->sort) {
             $this->sort = $filter->sort;
+		}
     }
 
     /**
@@ -510,7 +512,9 @@ class reflex_collection extends mod_component implements Iterator {
         $type = (is_array($key)?"a":"s").":".(is_array($val)?"a":"s");
 
         // Если оба параметра скаляры и не задана ф-ция
-        if($type=="s:s" && !$fn) $this->eqs[$key] = $val;
+        if($type=="s:s" && !$fn) {
+			$this->eqs[$key] = $val;
+		}
 
         switch($type) {
 

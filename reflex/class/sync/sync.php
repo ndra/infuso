@@ -108,6 +108,8 @@ class reflex_sync extends mod_controller {
         }
 
         $url = "http://$host/reflex_sync/get/class/".$class."/id/{$p[fromID]}/token/{$token}/limit/{$limit}";
+        
+        mod::trace($url);
 
         $data = file::http($url)->data();
 

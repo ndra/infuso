@@ -201,7 +201,17 @@ inx.panel = inx.box.extend({
     }, 
     
     cmd_updateItemsLayout:function() {
+    
+        var t1 = new Date().getTime();
+        var hname = "sync layout: "+this.layout;
+    
         this.private_layoutManager().sync.apply(this);   
+            
+        var t2 = new Date().getTime();
+        var time = t2-t1;
+        inx.observable.debug.cmdCountByName[hname] = (inx.observable.debug.cmdCountByName[hname] || 0) + 1;
+        inx.observable.debug.totalTime[hname] = (inx.observable.debug.totalTime[hname] || 0) + time;
+
     },
 
     // Загружает сохраненный лайаут

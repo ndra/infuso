@@ -22,8 +22,7 @@ inx.layout["default"] = {
             
         // Контейнер панели
         var e = $("<div>").css({
-            position:"absolute",
-            visibility:"hidden"
+            position:"absolute"
         }).appendTo(this.__body);
         cmp.data("layoutContainer",e);
                 
@@ -37,8 +36,7 @@ inx.layout["default"] = {
         
         cmp.cmd("appendTo",e);
         
-        cmp.data("ij89238v67",true);
-        
+        cmp.data("ij89238v67",true);        
     },
     
     remove:function(cmp) {
@@ -62,10 +60,16 @@ inx.layout["default"] = {
             
             var y = 0;
             var spacing = this.style("spacing");                
+            
+            // Выставляем всем 
+            this.items().cmd("width",width); 
+            
+            // Вычисляем заранее высоту каждого компонента
+            this.items().each(function() {
+                this.data("xij89238v67-height",this.info("height"));
+            }); 
     
             this.items().each(function(n) {
-            
-                this.cmd("width",width); 
                             
                 if(!this.info("layoutReady")) {
                     return;
@@ -79,8 +83,6 @@ inx.layout["default"] = {
                     return;
                 }
                 
-                e.css({visibility:"visible"});
-                  
                 var doSpacing = false;
                 
                 var title = this.info("title");
@@ -122,7 +124,7 @@ inx.layout["default"] = {
                         display:"block"
                     });
                    
-                    var h = this.info("height");
+                    var h = this.data("xij89238v67-height");
                     
                     areaHeight +=h ;
                     
@@ -151,9 +153,7 @@ inx.layout["default"] = {
                     this.lastHTMLWidth = width;
                     
                     var c = this.private_htmlContainer;
-                    this.cmd("setContentHeight",function() {
-                        return inx.height(c);
-                    });
+                    this.cmd("setContentHeight",inx.height(c));
                 }
             } 
             

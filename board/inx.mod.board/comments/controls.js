@@ -7,6 +7,7 @@ inx.mod.board.comments.controls = inx.panel.extend({
             p.style = {};
         }
         p.style.padding = 5;
+        p.style.height = 20;
         this.base(p);
     },
     

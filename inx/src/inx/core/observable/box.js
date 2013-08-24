@@ -227,7 +227,6 @@ inx.box = inx.observable.extend({
                 case "border":
                     this.el.css("border",(this.private_style["border"] ? 1 : 0 )+"px solid #cccccc");
                     this.cmd("updateBox");
-                    inx.service("boxManager").watch(this.id());
                     break;
                     
                 case "shadow":
@@ -251,8 +250,10 @@ inx.box = inx.observable.extend({
                     break;                    
                     
                 case "width":
+                    this.cmd("updateBoxWidth");
+                    break;
                 case "height":
-                    this.cmd("updateBox");
+                    this.cmd("updateBoxHeight");
                     break;
                 
                 default:
@@ -288,7 +289,7 @@ inx.box = inx.observable.extend({
         
         if(this.style("width")=="parent") {
             this.cmd("clearInfoBuffer");
-            this.task("updateBox");   
+            this.task("updateBoxWidth");   
         }
     },
     
@@ -305,7 +306,7 @@ inx.box = inx.observable.extend({
         this.cmd("clearInfoBuffer");
     
         this.private_widthContent = width;
-        this.task("updateBox");   
+        this.task("updateBoxWidth");   
     },
     
     /**
@@ -330,31 +331,52 @@ inx.box = inx.observable.extend({
         return width*1;
     },
     
+    cmd_updateBoxWidth:function() {
+    
+        var b = this.private_style.border ? 2 : 0;
+        var width = this.info("width") - b;
+        var hash = width + ":" + b;
+        
+        if(this.private_boxHashX!=hash) {
+        
+            if(this.el) {            
+                this.el.css("width",width);                
+            }
+            
+            inx.service("boxManager").watch(this.id());
+        }
+        
+        this.private_boxHashX = hash;
+    },
+    
+    cmd_updateBoxHeight:function() {
+    
+        var b = this.private_style.border ? 2 : 0;
+        var height = this.info("height") - b;
+        var hash = height + ":" + b;
+        
+        if(this.private_boxHashY!=hash) {
+        
+            if(this.el) {            
+                this.el.css("height",height);                
+            }
+            
+            inx.service("boxManager").watch(this.id());
+        }
+        
+        this.private_boxHashY = hash;
+    },
+    
     /**
      * Перерисовывает прямоугольник компонента: применяет ширину, высоту и бордер
      **/
     cmd_updateBox:function() {
     
-        var b = this.private_style.border ? 2 : 0;
-        var width = this.info("width") - b;
-        var height = this.info("height") - b;
-        
-        var hash = width + ":" + height + ":" + b;
-        
-        if(this.private_boxHash!=hash) {
-        
-            if(this.el) {
-                this.el
-                    .width(width)
-                    .height(height);
-            }
-            inx.service("boxManager").watch(this.id());
-        }
-        
-        this.private_boxHash = hash;
+        this.cmd("updateBoxWidth");
+        this.cmd("updateBoxHeight");
 
     },
-
+    
     info_resizable:function() {
         return !!this.resizable
     },
@@ -371,7 +393,7 @@ inx.box = inx.observable.extend({
         this.cmd("clearInfoBuffer");
       
         this.private_heightParent = height;
-        this.task("updateBox");
+        this.task("updateBoxHeight");
     },
     
     /**
@@ -386,7 +408,7 @@ inx.box = inx.observable.extend({
         this.cmd("clearInfoBuffer");
         
         this.private_heightContent = height;
-        this.task("updateBox");
+        this.task("updateBoxHeigh");
     },
     
     /**

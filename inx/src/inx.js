@@ -211,20 +211,11 @@ inx.height = function(e) {
     var t1 = new Date().getTime();
     var hname = "inx.height";
 
-    if(!inx.ruler) {
-        inx.ruler = $("<div>").addClass("inx-box").appendTo("body").css({
-            position:"absolute",
-            left:-10,
-            top:-10,
-            width:1,
-            height:1,
-            overflow:"hidden"
-        });
-    }
-
-    var h = e.height();
+    var h = e.prop("offsetHeight");
+    
     if(!h) {
-        var e2 = e.clone().appendTo(inx.ruler);
+        var ruler = inx.getRuler();
+        var e2 = e.clone().appendTo(ruler);
         h = e2.height();
         hname = "inx.height(hidden)";
         e2.remove();
@@ -241,11 +232,9 @@ inx.height = function(e) {
 inx.width = function(e) {
 
     var t1 = new Date().getTime();
-
-    var ruler = inx.getRuler();
-
     var w = e.width();
     if(!w) {
+        var ruler = inx.getRuler();
         var e2 = e.clone().appendTo(ruler);
         w = e2.width();
         e2.remove();
