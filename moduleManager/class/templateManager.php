@@ -13,8 +13,9 @@ class moduleManager_templateManager extends mod_controller {
 	 * Возвращает шаблон по его имени
 	 **/
 	public static function get($theme,$name) {
-		if($name=="0")
+		if($name=="0") {
 		    $name = "/";
+		}
 		$theme = tmp_theme::get($theme);
 		$tmp = $theme->template($name);
 		return $tmp;
@@ -33,11 +34,18 @@ class moduleManager_templateManager extends mod_controller {
 		foreach($tmp->children() as $item) {
 		    $text = $item->lastName();
 		    
-		    if(trim($item->file("js")->contents()))
+		    if(trim($item->file("js")->contents())) {
 		        $text.= "<span style='background:DodgerBlue;padding:2px 4px;margin-left:2px;color:white;border-radius:3px;' >js</span>";
+		    }
 		        
-			if(trim($item->file("css")->contents()))
+			if(trim($item->file("css")->contents())) {
 		        $text.= "<span style='background:brown;padding:2px 4px;margin-left:2px;color:white;border-radius:3px;' >css</span>";
+		    }
+		    
+		    $comment = strip_tags($item->firstComment());
+		    if($comment) {
+		    	$text.= " <span style='opacity:.5;font-style:italic;padding-left:5px;' >{$comment}</span>";
+		    }
 
 		    $ret[] = array(
 				"text" => $text,
@@ -73,7 +81,6 @@ class moduleManager_templateManager extends mod_controller {
 		}
 		return array(
 			"code" => $contents,
-			"comments" => $tmp->comments(),
 		);
 	}
 

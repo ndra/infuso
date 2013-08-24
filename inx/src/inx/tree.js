@@ -1,7 +1,7 @@
 // @include inx.panel,inx.textfield
 
 inx.css(
-    ".inx-tree-node {cursor:pointer;}",
+    ".inx-tree-node {cursor:pointer;white-space:nowrap;}",
     ".inx-tree-node .selected{background:#eaeaea}",
     ".inx-tree-node .selected{background:#eaeaea}",
     ".inx-tree-arrow {width:20px,height:16px;position:absolute;margin-top:3px;}",

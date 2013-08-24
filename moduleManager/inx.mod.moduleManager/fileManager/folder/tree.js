@@ -7,13 +7,21 @@ inx.mod.moduleManager.fileManager.folder.tree = inx.tree.extend({
     
         if(!p.path) p.path = "/";
         p.root = {path:"/"};
+        
         p.loader = {
             cmd:"moduleManager:fileManager:listFiles",
             module:p.module
         };
-        p.keepSelectionField = "text";
+        
+        p.keepSelectionField = "name";
         if(!p.listeners) p.listeners = {};
-        p.listeners.beforeload = function(data) {data.path = this.info("path",data.id)};
+        p.editKey = "name";
+        
+        p.listeners.beforeload = function(data) {
+            var node = this.info("node",data.id)
+            data.path = node.path;
+        };
+        
         this.base(p);
         this.on("dblclick",[this.id(),"openItem"]);
         this.on("editComplete","handleRename");
@@ -27,7 +35,12 @@ inx.mod.moduleManager.fileManager.folder.tree = inx.tree.extend({
         path.push(old);
         var oldPath = path.join("/");
         var newPath = this.info("path",id);
-        this.call({cmd:"moduleManager_fileManager:renameFile",module:this.module,old:oldPath,"new":newPath},[this.id(),"handleChanges"]);
+        this.call({
+            cmd:"moduleManager_fileManager:renameFile",
+            module:this.module,
+            old:oldPath,
+            "new":newPath
+        },[this.id(),"handleChanges"]);
     },
     
     cmd_handleChanges:function(data) {
@@ -42,22 +55,30 @@ inx.mod.moduleManager.fileManager.folder.tree = inx.tree.extend({
     },
 
     cmd_openItem:function(id) {
+    
         var item = this.info("node",id);
-        if(!item) return;
+        if(!item) {
+            return;
+        }
         
         // Для того, чтобы корень открывался как папка, а не как файл
-        if(!item.id) item.dir = true;
+        if(!item.id) {
+            item.dir = true;
+        }
         
-        if(item.dir)
+        if(item.dir) {
             this.fire("openFolder",item.path);
-        else
+        } else {
             this.fire("openFile",item.path);
+        }
            
     },
     
     info_currentPath:function() {
         var sel = this.info("selection")[0];
-        if(!sel) return "";
+        if(!sel) {
+            return "";
+        }
         var path = this.info("node",sel).path;        
         return path;
     },
@@ -65,8 +86,9 @@ inx.mod.moduleManager.fileManager.folder.tree = inx.tree.extend({
     info_selectedFiles:function() {
         var sel = this.info("selection");
         var ret = [];
-        for(var i in sel)
+        for(var i in sel) {
             ret.push(this.info("node",sel[i]).path);
+        }
         return ret;
     }
 

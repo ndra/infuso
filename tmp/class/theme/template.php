@@ -58,14 +58,17 @@ class tmp_theme_template extends mod_component {
 	public function children() {
 	    $ret = array();
 	    $root = $this->name();
-	    if($root=="/")
+	    if($root=="/") {
 	        $root = "";
+		}
 	    
 	    foreach($this->theme()->templates() as $tmp) {
 
-	        if(substr($tmp->name(),0,strlen($root)+1)===$root."/")
-	            if($tmp->depth()==$this->depth()+1)
+	        if(substr($tmp->name(),0,strlen($root)+1)===$root."/") {
+	            if($tmp->depth()==$this->depth()+1) {
 	                $ret[] = $tmp;
+				}
+			}
 	    }
 	    
 	    return $ret;
@@ -121,6 +124,7 @@ class tmp_theme_template extends mod_component {
 	}
 
 	public function contents($ext) {
+	
 	    if($this->file($ext)->exists())
 	        return $this->file($ext)->contents();
 
@@ -150,6 +154,7 @@ class tmp_theme_template extends mod_component {
 	}
 
 	public function delete() {
+	
 	    if(!$this->inTheme())
 	        return;
 
@@ -174,18 +179,14 @@ class tmp_theme_template extends mod_component {
 	    $this->theme()->buildMap();
 	}
 
-	/**
-	 * @return Возвращает комментарии к шаблону
-	 **/
-	public function comments() {
-	    return $this->file("txt")->data();
+	public function firstComment() {
+		$code = $this->contents("php");
+		if(preg_match("/(\/\/[^\n]*\n)|(\/\*.*\*\/)/is",$code,$matches)) {
+		    return $matches[0];
+		}
+		
 	}
 
-	/**
-	 * Сохраняет комментарии к шаблону
-	 **/
-	public function setComments($comments) {
-	    return $this->file("txt")->put($comments);
-	}
+
 
 }

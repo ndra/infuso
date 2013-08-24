@@ -14,9 +14,22 @@ class moduleManager_fileManager extends mod_controller {
         $dir = $params["module"]."/".$params["path"];
         $files = file::get($dir)->dir()->sort();
         foreach($files as $item) {
+        
+            $text = $item->name();
+            $code = $item->data();
+			if(preg_match("/(\/\/[^\n]*\n)|(\/\*.*?\*\/)/is",$code,$matches)) {
+			
+			    $comments = $matches[0];
+			    $comments = preg_replace("/^[\*\/\s]*/is","",$comments);
+			    $comments = preg_replace("/[\*\/\s]*$/is","",$comments);
+			    
+			    $text.= " <span style='opacity:.5;font-style:italic;padding-left:5px;' title='{$comments}' >{$comments}</span>";
+			}
+        
             $file = array(
-                "text"=>$item->name(),
-                "folder"=>!!$item->dir()->count(),
+                "text" => $text,
+                "name" => $item->name(),
+                "folder" => !!$item->dir()->count(),
                 "dir" => $item->folder(),
                 "editable" => true,
                 "preview" => $item->preview()->resize()->get(),
@@ -33,6 +46,7 @@ class moduleManager_fileManager extends mod_controller {
             } else {
                 $file["icon"] = "folder";
             }
+            
             $ret[] = $file;
         }
         return $ret;
@@ -118,19 +132,26 @@ class moduleManager_fileManager extends mod_controller {
             mod::msg("Не удалось сохранить файл",1);
     }
 
+	/**
+	 * Создает новый файл
+	 **/
     public static function post_newFile($p) {
         $dir = $p["module"]."/".$p["path"];
         file::mkdir($dir);
         for($i=1;$i<100;$i++) {
             $path = "$dir/new$i.php";
-            if(file::get($path)->exists())
+            if(file::get($path)->exists()) {
                 continue;
+			}
             file::get($path)->put("<"."? ?".">");
             break;
         }
         return $p["path"];
     }
 
+	/**
+	 * Создает новую папку
+	 **/
     public static function post_newFolder($p) {
         $dir = $p["module"]."/".$p["path"];
         @file::mkdir($dir);
@@ -144,12 +165,16 @@ class moduleManager_fileManager extends mod_controller {
         return $p["path"];
     }
 
+	/**
+	 * Удаляет файлы
+	 **/
     public static function post_deleteFiles($p) {
 
         if(!$p["module"]) return;
         foreach($p["files"] as $file) {
-            if(trim($file,"/"))
+            if(trim($file,"/")) {
                 file::get("/$p[module]/$file")->delete(true);
+			}
         }
         return file::get($file)->up()->path();
     }
@@ -183,8 +208,9 @@ class moduleManager_fileManager extends mod_controller {
         file::get($dest)->delete(1);
         file::mkdir($dest);
 
-        foreach($p["files"] as $file)
+        foreach($p["files"] as $file) {
             file::get("$p[module]/$file")->copy("$dest/".file::get($file)->name());
+		}
 
         $id = strtr(util::now()->num(),array(" "=>"---",":"=>"-","."=>"-"));
         $zip = $dest.$id.".zip";

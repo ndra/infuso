@@ -44,22 +44,26 @@ inx.mod.moduleManager.fileManager.folder = inx.panel.extend({
         
         p.tbar = [
             this.viewMode,
+            {icon:"refresh",onclick:[this.id(),"refresh"]},
             "|",
             {icon:"folder",onclick:[this.id(),"createFolder"]},
             {icon:"file",onclick:[this.id(),"createFile"]},
-            {icon:"save",onclick:[this.id(),"pack"]},
+            {icon:"save",onclick:[this.id(),"pack"]},            
             this.uploader,
             "|",
             {icon:"delete",onclick:[this.id(),"deleteFile"]}
         ]
-        
-        //p.side = [this.path];
         
         this.base(p);
         inx.hotkey("f5",[this.id(),"load"]);
         this.cmd("setPath",this.path);
         this.cmd("changeViewMode",p.viewMode);
         this.cmd("setPath",p.path);
+    },
+    
+    cmd_refresh:function() {
+        var path = this.items().info("currentPath");
+        this.items().cmd("loadFolder",path);
     },
     
     cmd_beforeUpload:function(p) {
