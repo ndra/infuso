@@ -88,5 +88,4 @@ inx.box.manager.task = inx({
     cmd_processBuffer:function() {
         inx.box.manager.processBuffer();
     }
-})
-
+});

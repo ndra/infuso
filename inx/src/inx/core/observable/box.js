@@ -408,7 +408,7 @@ inx.box = inx.observable.extend({
         this.cmd("clearInfoBuffer");
         
         this.private_heightContent = height;
-        this.task("updateBoxHeigh");
+        this.task("updateBoxHeight");
     },
     
     /**

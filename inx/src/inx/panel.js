@@ -342,7 +342,9 @@ inx.panel = inx.box.extend({
         return this.private_side;
     },
     
-
+    cmd_calculateContentHeight:function() {
+        
+    },
 
     cmd_updateSidePanels:function() {
     

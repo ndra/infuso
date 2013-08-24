@@ -69,7 +69,7 @@ inx.textarea = inx.textfield.extend({
         if(h>200) {
             h = 200;
         }
-            
+        
         return h;
             
     },
