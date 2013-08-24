@@ -6,7 +6,8 @@ inx.mod.reflex.editor.menu = inx.tree.extend({
     constructor:function(p) {
     
         p.style = {
-            padding: 20
+            padding: 20,
+            vscroll:true
         }
         
         p.showRoot = false;  

@@ -1,5 +1,4 @@
 // @include inx.viewport,inx.tabs,inx.direct
-// @-include inx.profiler
 
 inx.ns("inx.mod.board").main = inx.viewport.extend({
 

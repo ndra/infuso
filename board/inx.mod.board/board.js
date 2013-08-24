@@ -1,5 +1,4 @@
 // @include inx.panel
-// @include inx.profiler
 
 inx.ns("inx.mod.board").board = inx.panel.extend({
 

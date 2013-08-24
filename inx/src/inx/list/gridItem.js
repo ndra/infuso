@@ -11,8 +11,10 @@ inx.list.gridItem = inx.panel.extend({
         p.fullData = p.data;
         p.data = p.data.data;
     
-        if(!p.style)
+        if(!p.style) {
             p.style = {};
+        }
+            
         p.style.border = 0;
         p.style.padding = 0;
         
@@ -20,16 +22,6 @@ inx.list.gridItem = inx.panel.extend({
         this.on("dblclick","extendEvent");
         this.on("click","extendEvent");
         this.base(p);
-    },
-    
-    info_contentHeight:function(){
-        var h = 0;
-        this.tr.children().each(function() {
-            var h2 = inx.height($(this))+8;
-            if(h2 > h)
-                h = h2;
-        });
-        return h;
     },
     
     /**
@@ -112,8 +104,9 @@ inx.list.gridItem = inx.panel.extend({
             }).appendTo(e);    
             
             // Стиль ячейки    
-            if(cellData.css)
+            if(cellData.css) {
                 td.css(cellData.css);
+            }
 
             // Ширина css
             var width = this.head.info("colWidth",name) - 8;
@@ -122,11 +115,12 @@ inx.list.gridItem = inx.panel.extend({
             // Контент ячейки
             if(cellData.text || cellData.text+""==="0") {    
             
-                if(cols[i].type=="image")
+                if(cols[i].type=="image") {
                     $("<img>").css({position:"relative",display:"block",width:16,height:16}).attr("src",inx.img(cellData.text)).appendTo(td);
-                else
+                } else {
                     td.html(cellData.text+"");
-                    
+                }
+                                    
             }
             
             if(cellData.inx) {

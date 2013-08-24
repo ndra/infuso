@@ -72,11 +72,13 @@ inx.tree = inx.panel.extend({
 
         this.base(c);
 
-        for(var i=0;i<this.data.length;i++)
+        for(var i=0;i<this.data.length;i++) {
             this.cmd("addNode",this.data[i]);
+        }
 
-        if(this.loader)
+        if(this.loader) {
             this.cmd("load",0);
+        }
 
         this.__body.addClass("inx-unselectable");
         inx.storage.onready(this,"restoreExpanded");
@@ -92,10 +94,12 @@ inx.tree = inx.panel.extend({
      **/
     cmd_updateNode:function(id,obj) {
         var node = this.info("node",id);
-        if(!node)
+        if(!node) {
             return;
-        for(var i in obj)
+        }
+        for(var i in obj) {
             node[i] = obj[i];
+        }
         this.private_updateNode(id);
     },
 
@@ -105,8 +109,9 @@ inx.tree = inx.panel.extend({
      **/
     info_node:function(id,key) {
         var ret = this.heap[id];
-        if(key && ret)
+        if(key && ret) {
             ret = ret[key];
+        }
         return ret;
     },
 
@@ -116,8 +121,9 @@ inx.tree = inx.panel.extend({
     info_children:function(id) {
         var ret = [];
         var c = this.children[id] || [];
-        for(var i in c)
+        for(var i in c) {
             ret.push(c[i]);
+        }
         return ret;
     },
 
@@ -126,8 +132,9 @@ inx.tree = inx.panel.extend({
      **/
     info_siblings:function(id) {
         var node = this.info("node",id);
-        if(!node)
+        if(!node) {
             return [];
+        }
         var parent = node.parent;
         return this.info("children",parent);
     },
@@ -173,8 +180,9 @@ inx.tree = inx.panel.extend({
      **/
     cmd_handleNodeLoad:function(fullData,meta) {
 
-        if(!fullData)
+        if(!fullData) {
             fullData = [];
+        }
 
         if(!(fullData.data instanceof Object)) {
             fullData.data = fullData;
@@ -182,16 +190,19 @@ inx.tree = inx.panel.extend({
 
         var data = fullData.data;
 
-        if(!data)
+        if(!data) {
             data = [];
+        }
 
         this.loadingNodes--;
 
         var parent = meta.nodeID;
 
         // Не могу понять зачем это, но пусть будет
-        if(!parent)
+        if(!parent) {
             parent = 0;
+        }
+            
 
         // Сохраняем список того, что было выделено
         var keep = this.info("selection");
@@ -268,6 +279,7 @@ inx.tree = inx.panel.extend({
 
             this.private_renderNode(node);
         }
+        
     },
 
     /**

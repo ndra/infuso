@@ -211,7 +211,7 @@ inx.height = function(e) {
     var t1 = new Date().getTime();
     var hname = "inx.height";
 
-    var h = e.prop("offsetHeight");
+    var h = e.height();
     
     if(!h) {
         var ruler = inx.getRuler();

@@ -152,12 +152,10 @@ inx.panel = inx.box.extend({
             } else {
                 this.private_htmlContainer.html(html);
             }
-
-            var cmpid = this.id();
-            var f = function() {
-                inx(cmpid).task("resizeToContents",500);
-            }
-            this.__body.find("img").load(f);
+            
+            this.private_html = html;
+            
+            this.cmd("updateSizeWatch");
             
             if(params.syncLayout) {
                 this.task("syncLayout");
@@ -169,13 +167,17 @@ inx.panel = inx.box.extend({
         
     },
     
-    cmd_resizeToContents:function() {
-        var c = this.private_htmlContainer;
-        this.cmd("setContentHeight",function() {
-            return inx.height(c);
-        });
+    cmd_updateSizeWatch:function() {
+        if((this.style("height")=="content" || this.style("vscroll")) && this.private_html) {
+            inx.sizeObserver.add(this.private_htmlContainer,this.id(),"fff");
+        }
     },
     
+    cmd_fff:function(h) {
+        this.cmd("setContentHeight",h);
+    },
+    
+   
     cmd_syncLayout:function() {
     
         if(!this.info("rendered")) {

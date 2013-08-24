@@ -253,7 +253,7 @@ inx.box = inx.observable.extend({
                     this.cmd("updateBoxWidth");
                     break;
                 case "height":
-                    this.cmd("updateBoxHeight");
+                    this.cmd("updateBoxHeight");                    
                     break;
                 
                 default:
@@ -561,10 +561,11 @@ inx.box = inx.observable.extend({
     },
     
     cmd_toggle:function() {
-        if(this.info("hidden"))
+        if(this.info("hidden")) {
             this.cmd("show");
-        else
+        } else {
             this.cmd("hide");
+        }
     },
     
     // true если компонент скрыт
