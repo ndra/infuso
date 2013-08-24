@@ -92,7 +92,9 @@ inx.layout["default"] = {
                                           
                     t.html(this.info("title"));
                     
-                    t.css({visibility:"visible"});
+                    t.css({
+                        visibility:"visible"
+                    });
                     
                     t.css({
                         top:y,

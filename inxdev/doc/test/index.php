@@ -1,13 +1,21 @@
 <?
 
 $p = array (
-	"type" => "inx.form",
+
+	"type" => "inx.panel",
     width => 400,
+    style => array(
+        border => 1,
+        padding => 10,
+	),
     items => array(
         array(
-            type => "inx.checkbox",
-            label => "Тэст" ,
-            onchange => "this.owner().items().eq('name','panel').cmd(Math.random()<.5==0 ? 'show' : 'hide' )"
+            type => "inx.panel",
+            style => array(
+                border => 1
+			),
+			html => 1212,
+            
         ),
         array(
             name => "panel",

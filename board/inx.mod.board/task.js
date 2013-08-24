@@ -8,12 +8,12 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
         p.clipToOwner = false;
     
         p.title = "Редактирование задачи";
+        p.showTitle = false;
         p.modal = true;
         
         p.style = {
-            border:0,
-            background:"#ededed",
-            padding:5,
+            padding:20,
+            spacing:10,
             width: $(window).width() - 50,
             height: $(window).height() - 70
         }
@@ -48,95 +48,12 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
             return;
         }
         
-        this.currentStatus = data.currentStatus;
-        
         this.items().cmd("destroy");
         
-        this.form = inx({
-            type:"inx.form",
-            style: {
-                border:0,
-                background:"none",
-                padding:0
-            },
-            labelWidth:120
-        });
-        this.cmd("add",this.form);
-    
-        this.cmd("setTitle",data.title);
-    
-        this.data = data;
-    
-        // Описание задачи и время
-        this.form.cmd("add",{
-            type:"inx.panel",            
-            label:"Описание задачи",
-            items:[{
-                type:"inx.textarea",
-                name:"text",
-                style : {
-                    width:"parent",
-                    height:"content"
-                }, value:data.text
-            }], side:[{
-                type:"inx.panel",
-                width:25,
-                region:"right",
-                style:{background:"none"},
-                items:[{
-                    type:"inx.textfield",
-                    name:"timeScheduled",
-                    value:data.timeScheduled,
-                    width:"parent"
-                }]
-            },{
-                width:5,
-                region:"right",
-                style:{background:"none"}
-            }], style : {
-                width:"parent",
-                background:"none",
-                border:0
-            }
-        }).cmd("focus");
-       
-
-        this.form.cmd("add",{
-            type:"inx.mod.board.task.subtasks",
-            taskID:this.taskID
-        });
-        
-        var buttons = this.form.cmd("add",{
-            type:"inx.panel",
-            layout:"inx.layout.column",
-            side:[{
-                width:120,
-                region:"right",
-                layout:"inx.layout.column",
-                style:{
-                    background:"none",
-                    spacing:5
-                }
-            },{
-                type:"inx.mod.board.task.status",
-                taskID:this.taskID,
-                statusText:data.statusText,
-                region:"left",                
-                width:220,
-                style:{
-                    background:"none",
-                    spacing:5
-                }                
-            }],style:{
-                border:0,                
-                spacing:4,
-                background:"none"
-            }
-        });
-        
-        buttons.cmd("add",{
+        this.cmd("addSidePanel",{
             type:"inx.mod.board.taskControls",
             big:true,
+            region:"top",
             tools:data.tools,
             taskID:this.taskID,
             listeners:{
@@ -144,55 +61,55 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
             }
         });
         
-        buttons.axis("side").eq("region","right").cmd("add",{
-            type:"inx.button",
-            icon:"save",
-            text:"Сохранить",
-            onclick:[this.id(),"save"]
+        this.cmd("setTitle",data.title);
+    
+        this.data = data;
+    
+        // Описание задачи и время
+        this.cmd("add",{
+            type:"inx.textarea",
+            name:"text",
+            style : {
+                width:"parent",
+                fontSize:16,
+                height:"content"
+            }, value:data.text
+        }).cmd("focus");
+        
+        this.cmd("add",{
+            type:"inx.mod.board.task.subtasks",
+            taskID:this.taskID
         });
         
-        buttons.axis("side").eq("region","right").cmd("add",{
-            type:"inx.button",
-            icon:"gear",
-            air:true,
-            onclick:[this.id(),"toggleMore"]
+        this.cmd("add",{
+            type:"inx.separator"
         });
-        
-        this.more = this.form.cmd("add",{
-            type:this.type+".more",
+
+        this.cmd("add",{
+            type:"inx.mod.board.attachments",
+            dropArea:this,
+            name:"attachments",
+            taskID:this.taskID,
             region:"bottom",
-            data:data,
-            hidden:!this.showMore,
-            listeners:{
-                changeStatus:[this.id(),"changeStatus"]
+            onload:function(data) {
+                if(data.length) {
+                    this.cmd("show");
+                } else {
+                    this.cmd("hide");
+                }
             }
         });
         
-        if(!inx(this).axis("side").eq("name","attachments").exists()) {
-            this.cmd("addSidePanel",{
-                type:"inx.mod.board.attachments",
-                dropArea:this,
-                name:"attachments",
-                taskID:this.taskID,
-                region:"bottom",
-                onload:function(data) {
-                    if(data.length) {
-                        this.cmd("show");
-                    } else {
-                        this.cmd("hide");
-                    }
-                }
-            })
-        }
+        this.cmd("add",{
+            type:"inx.separator"
+        });
         
-        if(!inx(this).axis("side").eq("name","tags").exists()) {
-            this.cmd("addSidePanel",{
-                type:"inx.mod.board.task.tags",
-                name:"tags",
-                taskID:this.taskID,
-                region:"bottom"
-            })
-        }        
+        this.cmd("add",{
+            type:"inx.mod.board.task.tags",
+            name:"tags",
+            taskID:this.taskID,
+            region:"bottom"
+        });
         
         if(!inx(this).axis("side").eq("name","comments").exists()) {
             this.cmd("addSidePanel",{

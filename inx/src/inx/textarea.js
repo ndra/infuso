@@ -1,7 +1,7 @@
 // @include inx.textfield
 
 inx.css(
-    ".inx-textarea{box-shadow:0 5px 10px rgba(0,0,0,.1) inset;position:relative;resize:none;font-size:12px;font-family:Consolas,Courier New,monospace;border:none;margin:0px;padding:5px;overflow-y:auto;outline:none;}"
+    ".inx-textarea{box-shadow:0 5px 10px rgba(0,0,0,.1) inset;position:relative;resize:none;font-size:12px;font-family:Arial;border:none;margin:0px;padding:5px;overflow-y:auto;outline:none;}"
 );
 
 inx.textarea = inx.textfield.extend({
@@ -17,8 +17,9 @@ inx.textarea = inx.textfield.extend({
         if(!p.value)
             p.value = "";
             
-        if(!p.style.width && !p.width)
-            p.width = "parent";            
+        if(!p.style.width && !p.width) {
+            p.width = "parent";         
+        }   
            
         if(!p.style.height && !p.height) {
             p.style.height = 50;
@@ -33,8 +34,9 @@ inx.textarea = inx.textfield.extend({
     },
     
     cmd_destroy:function() {
-        if(this.rulerInput)
+        if(this.rulerInput) {
             this.rulerInput.remove();
+        }
         this.base();
     },
     
@@ -86,6 +88,24 @@ inx.textarea = inx.textfield.extend({
             this.input.css("height",contentHeight-10,true);
             this.cmd("setContentHeight",contentHeight);
         }
+        
+    },
+    
+    cmd_updateStyle:function() {
+
+        for(var key in this.private_styleChangedKeys) {
+            if(key=="fontSize") {
+                if(this.input) {
+                    this.input.css({
+                        fontSize:this.private_style["fontSize"],                        
+                    });
+                    this.rulerInput = null;
+                }
+            }
+        }
+    
+        this.base();
+    
     },
     
     cmd_keydown:function(e) {
