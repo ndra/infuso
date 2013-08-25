@@ -4,6 +4,11 @@ inx.ns("inx.mod.board").comments = inx.list.extend({
 
     constructor:function(p) {
     
+        if(!p.style) {
+            p.style = {};
+        }
+        p.style.background = "#F5F5EA";
+    
         p.loader = {
             cmd:"board/controller/log/getLog",
             taskID:p.taskID

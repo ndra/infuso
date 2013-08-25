@@ -14,8 +14,7 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
         p.style = {
             padding:20,
             spacing:10,
-            width: $(window).width() - 50,
-            height: $(window).height() - 70
+            width: 1000,
         }
         
         p.destroyOnEscape = true;
@@ -50,21 +49,13 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
         
         this.items().cmd("destroy");
         
-        this.cmd("addSidePanel",{
-            type:"inx.mod.board.taskControls",
-            big:true,
-            region:"top",
-            tools:data.tools,
-            taskID:this.taskID,
-            listeners:{
-                action:[this.id(),"save"]
-            }
+        this.data = data;
+
+        // Описание задачи и время
+        this.cmd("add",{
+            type:this.info("type")+".process"
         });
         
-        this.cmd("setTitle",data.title);
-    
-        this.data = data;
-    
         // Описание задачи и время
         this.cmd("add",{
             type:"inx.textarea",
@@ -75,6 +66,18 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
                 height:"content"
             }, value:data.text
         }).cmd("focus");
+
+        this.cmd("add",{
+            type:"inx.mod.board.taskControls",
+            big:true,
+            region:"top",
+            tools:data.tools,
+            taskID:this.taskID,
+            listeners:{
+                action:[this.id(),"save"]
+            }
+        });
+
         
         this.cmd("add",{
             type:"inx.mod.board.task.subtasks",

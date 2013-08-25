@@ -16,8 +16,6 @@ inx.ns("inx.mod.board").attachments = inx.list.extend({
             p.style = {};
         }
         
-        p.style.maxHeight = 200;
-        
         p.side = [{
             type:"inx.file",
             hidden:true,
@@ -49,12 +47,14 @@ inx.ns("inx.mod.board").attachments = inx.list.extend({
         var preview = $("<div>").css({
             width:100,
             height:100,
+            border:"1px solid #ededed",
             background:"url("+data.preview+") center center no-repeat"
         }).appendTo(e);
         
         var text = $("<div>").css({
             textAlign:"center",
             "text-overflow":"ellipsis",
+            opacity:.5,
             overflow:"hidden",
             fontSize:11,
             width:100

@@ -7,7 +7,7 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
         p.style = {
             spacing:5,
             border:0,
-            padding:20
+            padding:10
         }
     
         p.layout = "inx.layout.column";
@@ -39,15 +39,23 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
             }, done: {
                 icon:"done",
                 onclick:[this.id(),"doneTask"],
-                text:"Выполнено"
+                text:"Выполнено",
+                style:{
+                    color:"white",
+                    background:"green"
+                }
             }, take: {
                 icon:"take",
                 onclick:[this.id(),"takeTask"],
-                text:"Взять"
+                text:"Взять",
+                style:{
+                    color:"white",
+                    background:"green"
+                }
             }, stop: {
                 icon:"stop",
                 onclick:[this.id(),"stopTask"],
-                text:"Положить обратно"
+                text:"Вернуть"
             }, complete: {
                 icon:"complete",
                 onclick:[this.id(),"completeTask"],
@@ -56,34 +64,54 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                 icon:"notready",
                 onclick:[this.id(),"revisionTask"],
                 text:"Не готово"
-            }, vote: {
-                icon:"vote",
-                onclick:[this.id(),"voteTask"],
-                text:"Голосовать"
+            }, cancel: {
+                icon:"close",
+                onclick:[this.id(),"cancelTask"],
+                text:"Отменить"
             }    
         }
         
         for(var i in tools) {
         
-            var button = buttons[tools[i]];
             
-            this.cmd("add",{
-                type:"inx.button",
-                air:true,
-                icon:"/board/res/img/icons16/"+button.icon+".png", 
-                help:button.text,
-                text: this.big ? button.text : null,
-                height:(this.big ? 24 : 16) + 4*2,
-                style:{
+            
+            if(tools[i]=="|") {
+            
+                this.cmd("add",{
+                    width:20
+                })
+                
+            
+            } else {
+            
+                var button = buttons[tools[i]];
+                
+                var style = {
                     iconWidth:(this.big ? 16 : 16),
                     iconAlign:"left",
                     iconHeight:(this.big ? 24 : 16),
                     fontSize:18,
                     padding:10,
-                    shadow:true,
-                    //background:"#ccc"
-                }, onclick:button.onclick
-            });
+                    shadow:true
+                }
+                
+                if(button.style) {
+                    for(var j in button.style) {
+                        style[j] = button.style[j];
+                    }
+                }
+            
+                this.cmd("add",{
+                    type:"inx.button",
+                    air:true,
+                    icon:"/board/res/img/icons16/"+button.icon+".png", 
+                    help:button.text,
+                    text: this.big ? button.text : null,
+                    height:(this.big ? 24 : 16) + 4*2,
+                    style:style,
+                    onclick:button.onclick
+                });
+            }
         }
     
     },

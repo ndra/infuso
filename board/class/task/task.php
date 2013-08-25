@@ -607,8 +607,12 @@ class board_task extends reflex {
                     } else {
                         $ret["tools"][] = "resume";
                     }
+                    $ret["tools"][] = "|";
                     $ret["tools"][] = "done";
                     $ret["tools"][] = "stop";
+                    $ret["tools"][] = "|";
+                    $ret["tools"][] = "cancel";
+                    
                     break;
 
                 case board_task_status::STATUS_NEW:
