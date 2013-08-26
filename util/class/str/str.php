@@ -93,7 +93,6 @@ class util_str extends mod_component {
             }
         }
 
-
         $flag = false;
         $this->str = $ret;
         return $this;
@@ -140,6 +139,9 @@ class util_str extends mod_component {
         return new self($str);
     }
 
+	/**
+	 * Удаляет из строки двойные пробелы
+	 **/
     public function removeDuplicateSpaces() {
         $s = preg_replace("/\s+/"," ",$this."");
         return new self($s);
@@ -179,6 +181,9 @@ class util_str extends mod_component {
 		
     }
     
+    /**
+     * Преобразует строку в транслит
+     **/
     public function translit() {
 	    $tr = array(
 	        "й" => "y",
@@ -222,7 +227,24 @@ class util_str extends mod_component {
 	    }
 	    
 	    return new self(strtr($this,$tr2));
-	    
+    }
+    
+    /**
+     * Находит в тексте ссылки и зменяет их тэгами <a>
+     **/
+    public function makeLinks() {
+    
+		$text = (string)$this;
+
+		$text = preg_replace(
+			"/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/",
+			'<a href="$0" >$0</a> ',
+			$text);
+			
+    	$text = preg_replace('/(\S+@\S+\.\S+)/', '<a href="mailto:$1">$1</a>', $text);
+
+		return new self($text);
+
     }
 
 }
