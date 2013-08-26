@@ -6,8 +6,7 @@ inx.mod.reflex.fields.links.addObject = inx.dialog.extend({
     constructor:function(p) {
     
         p.style = {
-            width:320,
-            maxHeight:300,
+            width:320,            
             border:0
         };
 
@@ -22,6 +21,9 @@ inx.mod.reflex.fields.links.addObject = inx.dialog.extend({
             },
             listeners: {
                 itemdblclick:[this.id(),"addObject"]
+            }, style: {
+                vscroll:true,
+                maxHeight:300
             }
         }) 
         
@@ -49,6 +51,8 @@ inx.mod.reflex.fields.links.addObject = inx.dialog.extend({
         this.list.on("load",[this.id(),"handleLoad"]);
         this.list.on("beforeload",[this.id(),"beforeLoad"]);
         
+        p.destroyOnEscape = true;
+        
         this.base(p);
     },
     
@@ -68,4 +72,4 @@ inx.mod.reflex.fields.links.addObject = inx.dialog.extend({
         this.task("destroy");
     }
     
-})
+});
