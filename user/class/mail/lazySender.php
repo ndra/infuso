@@ -18,7 +18,7 @@ class user_mail_lazySender extends mod_component implements mod_handler {
             return false;
         }
         
-        // Находим ве письма, которые надо склеить с данным
+        // Находим все письма, которые надо склеить с данным
         // Помечаем их как отправленные и складываем текст в массив
         $message = array();
         foreach($mail->glueMails() as $item) {
@@ -31,11 +31,12 @@ class user_mail_lazySender extends mod_component implements mod_handler {
             }
         }
         
-        // Отправляем склейку
+        // Создаем и отправляем склейку
         if(sizeof($message)) {
             $message = implode("<br><br/>",$message);
             $mailer = $mail->mailer();
             $mailer->message($message);
+            $mailer->glue("");
             $mailer->code($mail->mailer()->codeAfterGlue());
             $mailer->send();
         }
