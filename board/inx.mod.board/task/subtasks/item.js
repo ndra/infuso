@@ -1,14 +1,15 @@
 // @link_with_parent
 // @include inx.panel
 
+inx.css(".webqkv2ny td{vertical-align:middle;};");
+
 inx.mod.board.task.subtasks.item = inx.panel.extend({
 
-    constructor:function(p) {    
+    constructor:function(p) {
+    
         p.style = {
             
         }
-        
-        p.html = p.data.text;
         
         this.base(p);
     },
@@ -16,6 +17,19 @@ inx.mod.board.task.subtasks.item = inx.panel.extend({
     cmd_render:function() {
         this.base();
         this.el.mouseenter(inx.cmd(this.id(),"showControls")).mouseleave(inx.cmd(this.id(),"hideControls"));
+        
+        var table = $("<table>").addClass("webqkv2ny").css({
+            minHeight:24
+        });
+        
+        var tr = $("<tr>").appendTo(table);
+        
+        var td = $("<td>").html(this.data.id).appendTo(table);
+        var td = $("<td>").html(this.data.status.title).appendTo(table);
+        var td = $("<td>").html("<img src='"+this.data.responsibleUser.userpick+"' />").appendTo(table);
+        var td = $("<td>").html(this.data.text).appendTo(table);
+        
+        this.cmd("html",table);        
     },
     
     cmd_showControls:function() {
@@ -35,12 +49,14 @@ inx.mod.board.task.subtasks.item = inx.panel.extend({
         }
         
         this.controls.cmd("show");
+        this.style("background","#ededed");
     },
     
     cmd_hideControls:function() {
         if(this.controls) {
             this.controls.cmd("hide");
         }
+        this.style("background","none");
     }
      
 });

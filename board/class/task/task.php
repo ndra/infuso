@@ -232,7 +232,6 @@ class board_task extends reflex {
             foreach($xtasks as $xtask) {
                 $xtask->pause();
             }
-
         }
 
         mod::fire("board/taskChanged",array(
@@ -507,13 +506,36 @@ class board_task extends reflex {
             );
         }
 
-        $ret = array(
-            "backgroundImage" => null,
-        );
+        $ret = array();
+
+		$ret["id"] = $this->id();
 
         // Текст стикера
-        $ret["text"] = "<b>{$this->id()}.</b> ";
+        $ret["text"] = util::str($this->data("text"))->ellipsis(200)->secure()."";
+        
+        // Проект
+        $ret["project"] = array(
+            "id" => $this->project()->id(),
+			"title" => $this->project()->title(),
+		);
+		
+		// Ответственный пользователь
+		$ret["responsibleUser"] = array(
+		    "nick" => $this->responsibleUser()->title(),
+		    "userpick" => (string)$this->responsibleUser()->userpick()->preview(16,16)->crop(),
+		);
 
+		// Своя задача
+        $ret["my"] = $this->responsibleUser()->id() == user::active()->id();
+        
+        $ret["status"] = array(
+            "id" => $this->status()->id(),
+            "title" => $this->status()->title(),
+		);
+		
+        // Цвет стикера
+        $ret["color"] = $this->data("color");
+        
         // Сколько задача висит в этом статусе
         if($this->status()->active()) {
             $d = (util::now()->stamp() - $this->pdata("changed")->stamp())/60/60/24;
@@ -528,35 +550,6 @@ class board_task extends reflex {
         if($h>3) {
             $ret["text"].= "<span style='color:white;background:red;padding:0px 4px;'>$h</span> ";
         }
-        
-        $ret["text"].= "<b>".$this->project()->title().".</b> ";
-        $ret["text"].= util::str($this->data("text"))->ellipsis(200)->secure()."";
-
-        // Статусная часть стикера
-        $ret["info"] = "";
-        $ret["info"].= round($this->timeSpent(),1);
-        if($this->data("status")==board_task_status::STATUS_IN_PROGRESS) {
-            $ret["info"].= "+".round($this->timeSpentProgress()/3600,1);
-        }
-        $ret["info"].= "/".round($this->timeScheduled(),1)."ч. ";
-
-        // Цвет стикера
-        $ret["color"] = $this->data("color");
-
-        // Нижня подпись
-        if($this->responsibleUser()->exists()) {
-            $ret["bottom"] = "<nobr>".$this->responsibleUser()->title()."</nobr> ";
-        }
-
-
-
-        if($this->data("deadline")) {
-            $ret["bottom"].= $this->pdata("deadlineDate")->left();
-        }
-
-        $ret["my"] = $this->responsibleUser()->id() == user::active()->id();
-
-        $ret["id"] = $this->id();
 
         // Установленный дэдлайн
         if($this->data("deadline")) {
@@ -570,24 +563,23 @@ class board_task extends reflex {
             $ret["backgroundImage"] = "/board/res/task-time-fuckup.png";
         }
 
+		// Является ли задача помехой
         if($this->data("hindrance")) {
             $ret["hindrance"] = true;
         }
 
-        $ret["projectID"] = $this->project()->id();
-
+        // Эпик (задача с подзадачами)
         $ret["epic"] = $this->isEpic();
 
         // Наличие прикрепленных файлов
         if($this->data("files")) {
             $ret["attachment"] = true;
         }
+        
+		// Стоит ли задача на паузе
+        $ret["paused"] = $this->data("paused");
 
         $ret["percentCompleted"] = $this->percentCompleted();
-
-        if($this->data("paused")) {
-            $ret["backgroundImage"] = "/board/res/img/icons64/pause.png";
-        }
 
         // Кнопки задачи (видны только если можно изменять задачу)
         $ret["tools"] = array();

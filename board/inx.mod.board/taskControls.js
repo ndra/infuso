@@ -4,10 +4,12 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
 
     constructor:function(p) {   
     
-        p.style = {
-            spacing:5,
-            border:0,
-            padding:10
+        if(this.big) {        
+            p.style = {
+                spacing:5,
+                border:0,
+                padding:10
+            }        
         }
     
         p.layout = "inx.layout.column";
@@ -78,7 +80,7 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
             if(tools[i]=="|") {
             
                 this.cmd("add",{
-                    width:20
+                    width:this.big ? 20 : 5
                 })
                 
             
@@ -91,8 +93,9 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                     iconAlign:"left",
                     iconHeight:(this.big ? 24 : 16),
                     fontSize:18,
-                    padding:10,
-                    shadow:true
+                    padding: this.big ? 10 : 0,
+                    shadow:this.big ? true : false,
+                    height:(this.big ? 24 : 16) + 4*2,
                 }
                 
                 if(button.style) {
@@ -106,8 +109,7 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                     air:true,
                     icon:"/board/res/img/icons16/"+button.icon+".png", 
                     help:button.text,
-                    text: this.big ? button.text : null,
-                    height:(this.big ? 24 : 16) + 4*2,
+                    text: this.big ? button.text : null,                    
                     style:style,
                     onclick:button.onclick
                 });

@@ -31,6 +31,7 @@ inx.mod.board.task.subtasks = inx.list.extend({
         this.base(p);
         
         this.on("sortcomplete",[this.id(),"handleSortComplete"]);
+        this.on("boardChanged",[this.id(),"load"]);
         
     },
     
