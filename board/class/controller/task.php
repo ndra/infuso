@@ -257,21 +257,9 @@ class board_controller_task extends mod_controller {
         $tasks = $task->subtasks()->orderByExpr("`status` != 1")->asc("priority",true);
         $tasks->eq("status",array(board_task_status::STATUS_NEW,board_task_status::STATUS_IN_PROGRESS))->orr()->gt("changed",util::now()->shift(-60));
         foreach($tasks as $subtask) {
-
-            $text = $subtask->data("text");
-
-            if($subtask->status()->id()==board_task_status::STATUS_IN_PROGRESS) {
-                $text.= " <nobr><img style='vertical-align:middle;' src='{$subtask->responsibleUser()->userpick()->preview(16,16)}' /> ";
-                $text.= "{$subtask->responsibleUser()->title()}</nobr>";
-            }
-
-            $ret[] = array(
-                "id" => $subtask->id(),
-                "text" => $text,
-                "timeScheduled" => round($subtask->timeSpent(),1)." / ".round($subtask->data("timeScheduled"),1),
-                "completed" => $subtask->data("status") == 2 || $subtask->data("status") == board_task_status::STATUS_CANCELLED,
-            );
+            $ret[] = $subtask->stickerData();
         }
+        
         return $ret;
 
     }

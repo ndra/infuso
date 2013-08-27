@@ -34,6 +34,13 @@ inx.mod.board.task.subtasks = inx.list.extend({
         
     },
     
+    info_itemConstructor:function(p) {
+        return {
+            type: this.info("type")+".item",
+            itemData:p
+        };
+    },
+    
     cmd_handleItemMouseOver:function(e,data) {
         if(!e.data("bnfgh3-controls")) {
         
