@@ -8,8 +8,9 @@ inx.ns("inx.mod.file").field = inx.box.extend({
         p.height = 102;
         p.width = 102;
         
-        if(!p.style)
+        if(!p.style) {
             p.style = {};
+        }
         p.style.border = 1;
         
         this.base(p);

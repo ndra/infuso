@@ -7,6 +7,7 @@ inx.css(
 inx.ns("inx.mod.file").files = inx.list.extend({
 
     constructor:function(p) {
+    
         p.layout = "inx.layout.column";
         
         p.style = {
@@ -21,13 +22,33 @@ inx.ns("inx.mod.file").files = inx.list.extend({
             "|",
             {text:"Удалить выбранные",icon:"delete","onclick":[this.id(),"deleteFiles"]}
         ];
+        
         p.emptyHTML = "<div style='padding:10px;color:gray;' >Нет файлов</div>";
         p.sortable = true;
+        
+        this.uploader = inx({
+            type:"inx.file",
+            loader:{cmd:"reflex:storage:upload",storage:p.storage},
+            icon:"/file/res/upload.gif",
+            text:"Закачать файл",
+            dropArea:this,
+            listeners:{
+                complete:[this.id(),"handleUpload"]
+            }
+        });
+        
         this.base(p);
-        if(p.value)
+        
+        if(p.value) {
             this.cmd("setValue",p.value);
+        }
+        
         this.on("itemdblclick","showFile");
     },    
+    
+    cmd_handleUpload:function(file) {
+        this.cmd("addPhoto",file);
+    },
     
     cmd_showFile:function(id) {
         var url = this.info("item",id,"photo");
@@ -39,9 +60,11 @@ inx.ns("inx.mod.file").files = inx.list.extend({
         var sel = this.info("selection");
         for(var i in this.data) {
             var del = false;
-            for(var j in sel)
-                if(this.data[i].id==sel[j])
+            for(var j in sel) {
+                if(this.data[i].id==sel[j]) {
                     del = true;
+                }
+            }
             if(!del) photos.push(this.data[i]);
         }
         this.cmd("select",[]);
@@ -51,16 +74,18 @@ inx.ns("inx.mod.file").files = inx.list.extend({
     cmd_updatePreviews:function() {
         inx(this.private_lastCmd).cmd("destroy");
         var files = [];
-        for(var i in this.data)
+        for(var i in this.data) {
             files.push(this.data[i].photo);
+        }
         this.private_lastCmd = this.call(
             {cmd:"reflex:storage:getPreviews",files:files},
             [this.id(),"handlePreviews"]);
     },
     
     cmd_handlePreviews:function(previews) {
-        for(var i in this.data)
+        for(var i in this.data) {
             this.data[i].data.preview = previews[this.data[i].photo];
+        }
         this.cmd("updatePhotos");
     },
     
@@ -73,16 +98,20 @@ inx.ns("inx.mod.file").files = inx.list.extend({
     },
     
     cmd_setValue:function(value) {
+    
         value = inx.json.decode(value);
-        if(!value)
+        if(!value) {
             value = [];
+        }
+        
         var data = [];
-        for(var i in value)
+        for(var i in value) {
             data.push({
                 id:i,
                 photo:value[i].f,
                 text:Math.random()
             });
+        }
             
         this.cmd("setData",data);
         this.cmd("updatePreviews");
@@ -119,12 +148,13 @@ inx.ns("inx.mod.file").files = inx.list.extend({
     
         e.addClass("esomaiq");
         var preview = data.preview;
-        if(preview)
+        if(preview) {
             $("<img>").css({
                 width:100,
                 height:100,
                 display:"block"
             }).attr("src",preview).appendTo(e);
+        }
     }
 
 })
