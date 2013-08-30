@@ -583,9 +583,40 @@ class reflex_collection extends mod_component implements Iterator {
     }
 
     public function neq($key,$val) {
-        $key = $this->normalizeColName($key);
-        $val = reflex_mysql::escape($val);
-        $this->where("$key<>'$val'");
+    
+        $type = (is_array($key)?"a":"s").":".(is_array($val)?"a":"s");
+        
+        switch($type) {
+    
+		    case "s:s":
+		        $key = $this->normalizeColName($key);
+		        $val = reflex_mysql::escape($val);
+		        $this->where("$key<>'$val'");
+		        break;
+		        
+			case "s:a":
+			$r = array();
+                foreach($val as $v) {
+                    $r[] = "'".reflex_mysql::escape($v)."'";
+                }
+                switch(sizeof($r)) {
+
+                    case 0:
+                        break;
+
+                    case 1:
+                        $this->neq($key,end($val));
+                        break;
+
+                    default:
+                        $r = join(",",$r);
+                        $key = $this->normalizeColName($key);
+                        $this->where("$key not in ($r)",$key);
+                        break;
+                }
+                break;
+		}
+        
         return $this;
     }
 
