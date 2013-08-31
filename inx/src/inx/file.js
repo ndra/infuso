@@ -108,7 +108,14 @@ inx.file = inx.button.extend({
     },
     
     cmd_dropFile:function(e) {
+
         e.preventDefault();
+    
+        if(!this.loader) {
+            inx.msg("inx.file loader is undefined",1);
+            return;
+        }
+    
         this.cmd("hideArea");
         this.fire("beforeupload",this.loader);
         var files = e.originalEvent.dataTransfer.files;
@@ -133,13 +140,15 @@ inx.file = inx.button.extend({
         var z = 0;
         area.parents().andSelf().each(function(){
             var nz = parseInt($(this).css("zIndex"));
-            if(nz>z)
+            if(nz>z) {
                 z = nz;
+            }
         });
         
         // Если дропария спрятана, выходим
-        if(area.filter(":hidden").length)
+        if(area.filter(":hidden").length) {
             return;
+        }
         
         var pos = area.offset();
         this.dropZone.css({
@@ -181,56 +190,41 @@ inx.file = inx.button.extend({
 });
 
 inx.file.handleDragOver = function(e) {
-    inx.file.taskUpdateStatus(true);
+    clearInterval(inx.file.dropAreaInterval);
+    inx.file.showArea();
     e.preventDefault();   
 }
 
 inx.file.handleDragLeave = function(e) {
-    inx.file.taskUpdateStatus(false);
+    clearInterval(inx.file.dropAreaInterval);
+    inx.file.dropAreaInterval = setInterval(inx.file.hideArea,50);
     e.preventDefault();    
 }
 
-inx.file.taskUpdateStatus = function(status,now) {
-
-    if(status && inx.file.statusTimer) {
-        clearTimeout(inx.file.statusTimer);
-        inx.file.statusTimer = null;
-    }
-
-    if(status == inx.file.lastDDStatus) {
+/**
+  * Показывает все области перетаскивания
+  **/
+inx.file.showArea = function() {
+    if(inx.file.dropAreasShown) {
         return;
     }
-    
-    if(status || now) {
-    
-        inx.file.lastDDStatus = status;
-        status ? inx.file.showArea() : inx.file.hideArea();
-    
-    } else {
-    
-        if(!inx.file.statusTimer) {
-            inx.file.statusTimer = setTimeout(function() {
-                inx.file.taskUpdateStatus(false,true);
-                inx.file.statusTimer = false;
-            },200)
-        }
-    
-    }
-    
-    inx.file.ddStatus = status;
-
-}
-
-inx.file.showArea = function() {
     for(var i in inx.file.dd) {
         inx(i).cmd("showArea");
     }
+    inx.file.dropAreasShown = true;
 }
 
+/**
+  * Прячет все области перетаскивания
+  **/
 inx.file.hideArea = function() {
+    if(!inx.file.dropAreasShown) {
+        return;
+    }
     for(var i in inx.file.dd) {
         inx(i).cmd("hideArea");
     }
+    inx.file.dropAreasShown = false;
 }
 
 inx.file.dd = [];
