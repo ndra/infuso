@@ -19,6 +19,7 @@ inx.ns("inx.mod.reflex.fields").textarea = inx.tabs.extend({
             name:"plain",
             height:"content",
             value:p.value,
+            index:p.index,
             lazy:true
         },{
             //type:"inx.mod.reflex.fields.textarea.wysiwyg",

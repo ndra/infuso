@@ -46,4 +46,31 @@ class reflex_editor_fieldController_textfield extends mod_controller {
 		return $ret;
 	}
 
+	/**
+	 * Экшн типографа для текстового поля
+	 **/
+	public static function post_downloadExternalFiles($p) {
+
+        $text = $p["text"];
+
+        list($class,$id) = explode(":",$p["index"]);
+        $item = reflex::get($class,$id);
+        $storage = $item->storage();
+
+        $fn = function($matches) use ($storage) {
+            $name = $storage->addNative($matches[0]);
+            return $name;
+
+            //'<a href="$0" >$0</a> ',
+        };
+
+		$text = preg_replace_callback(
+			"/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/",
+            $fn,
+			$text);
+
+        return $text;
+
+	}
+
 }

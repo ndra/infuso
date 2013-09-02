@@ -13,17 +13,20 @@ inx.mod.reflex.fields.textarea.plain = inx.panel.extend({
         });
         p.padding = 0;
         p.bbar = [            
-            {text:"Заголовок",onclick:[this.id(),"h2"]},
-            {text:"<b>Жирный</b>",onclick:[this.id(),"b"]},
-            {text:"<i>Курсив</i>",onclick:[this.id(),"i"]},
+            {text:"Заголовок",onclick:[this.id(),"h2"],air:true},
+            {text:"<b>Жирный</b>",onclick:[this.id(),"b"],air:true},
+            {text:"<i>Курсив</i>",onclick:[this.id(),"i"],air:true},
             "|",
-            {text:"Ссылка",onclick:[this.id(),"href"]},
-            {text:"Фото",onclick:[this.id(),"image"]},
-            {text:"Фaйл",onclick:[this.id(),"file"]},
-            {text:"Виджет",onclick:[this.id(),"widget"]},
+            {text:"Ссылка",onclick:[this.id(),"href"],air:true},
+            {text:"Фото",onclick:[this.id(),"image"],air:true},
+            {text:"Фaйл",onclick:[this.id(),"file"],air:true},
+            {text:"Виджет",onclick:[this.id(),"widget"],air:true},
             "|",
-            {text:"Типографить",onclick:[this.id(),"typografize"]},
-            {text:"Удалить тэги",onclick:[this.id(),"clearHTML"]}
+            {text:"Еще",air:true,icon:"gear",menu:[
+                {text:"Типографить",onclick:[this.id(),"typografize"],air:true},
+                {text:"Удалить тэги",onclick:[this.id(),"clearHTML"],air:true},
+                {text:"Закачать внешние файлы",onclick:[this.id(),"downloadExternalFiles"],air:true}
+            ]}
         ];
         p.items = [this.textarea]
         this.base(p);
@@ -96,17 +99,21 @@ inx.mod.reflex.fields.textarea.plain = inx.panel.extend({
         this.textarea.cmd("setCaret",(a+prefix).length,(a+prefix+b).length);
     },
     
-// --------------------------------------------------------------------------------------------- WYSIWYG
-
     cmd_enableWYSIWYG:function() {
     },
-
-// ---------------------------------------------------------------------------------------------
 
     cmd_typografize:function() {
         this.call({
             cmd:"reflex/editor/fieldController/textfield/typograph",
             text:this.info("value")
+        },[this.id(),"handleData"]);
+    },
+    
+    cmd_downloadExternalFiles:function() {
+        this.call({
+            cmd:"reflex/editor/fieldController/textfield/downloadExternalFiles",
+            text:this.info("value"),
+            index:this.index
         },[this.id(),"handleData"]);
     },
     
