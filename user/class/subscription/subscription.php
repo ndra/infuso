@@ -5,7 +5,7 @@
  **/
 class user_subscription extends reflex {
 
-	public function reflexTable() {
+	public function reflex_table() {
 	
 		return array (
 			'name' => 'user_subscription',
