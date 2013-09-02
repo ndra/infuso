@@ -4,38 +4,36 @@
 inx.mod.moduleManager.fileManager.editor = inx.tabs.extend({
 
     constructor:function(p) {
-        p.title = p.module+":"+p.path;
+        p.title = p.path;
         p.height = parent;
         p.showHead = false;
-        this.call({cmd:"moduleManager_fileManager:getContents",module:p.module,path:p.path},[this.id(),"handleContents"]);
+        this.call({
+            cmd:"moduleManager/fileManager/getContents",
+            path:p.path
+        },[this.id(),"handleContents"]);
         this.base(p);
     },
     
     cmd_handleContents:function(data) {
-        switch(data.type) {
-            case "code":
-                this.editor = inx({
-                    type:"inx.code",
-                    value:data.code,
-                    height:"parent",
-                    lang:data.lang
-                });
-                this.cmd("add",this.editor);
-                inx.hotkey("ctrl+s",[this.id(),"save"]);
-                break;
-            case "folder":
-                this.editor = inx({
-                    type:"inx.mod.moduleManager.fileManager.folder",
-                    path:this.path,
-                    module:this.module
-                });
-                this.cmd("add",this.editor);
-                break;
-        }
+
+        this.editor = inx({
+            type:"inx.code",
+            value:data.code,
+            height:"parent",
+            lang:data.lang
+        });
+        
+        this.cmd("add",this.editor);
+        inx.hotkey("ctrl+s",[this.id(),"save"]);
+
     },
     
     cmd_save:function() {
-        if(!this.editor) return false;
+    
+        if(!this.editor) {
+            return false;
+        }
+        
         this.call({
             cmd:"moduleManager_fileManager:setContents",
             path:this.path,

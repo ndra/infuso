@@ -1,40 +1,24 @@
 // @link_with_parent
 // @include inx.list
 
-inx.css(
-    ".sj49znwg07wa2dca2twu{overflow:hidden;border:1px dotted #ededed;padding:10px;margin:10px;text-align:center;width:100px;vertical-align:top;font-size:10px;}"
-);
-
 inx.mod.moduleManager.fileManager.folder = inx.panel.extend({
 
     constructor:function(p) {
     
-        p.title = "/"+p.module+"/";
+        p.title = "/"+p.basedir+"/";
         p.layout = "inx.layout.fit";
         
-        if(!p.viewMode)
+        if(!p.viewMode) {
             p.viewMode = "preview";
-        if(!p.path)
+        }
+            
+        if(!p.path) {
             p.path = "";
-        
-        this.path = inx({
-            type:"inx.mod.moduleManager.fileManager.folder.path",
-            region:"top"
-        });
-        
-        this.viewMode = inx({
-            type:"inx.select",
-            width:80,
-            onchange:[this.id(),"changeViewMode"],
-            value:p.viewMode,
-            data:[
-                {id:"tree",text:"Дерево"},
-                {id:"preview",text:"Превью"}
-            ]
-        });
+        }
         
         this.uploader = inx({
             type:"inx.file",
+            air:true,
             dropArea:this,
             icon:"upload",
             beforeupload:[this.id(),"beforeUpload"],
@@ -44,23 +28,25 @@ inx.mod.moduleManager.fileManager.folder = inx.panel.extend({
         
         p.tbar = [
             this.viewMode,
-            {icon:"refresh",onclick:[this.id(),"refresh"]},
+            {icon:"refresh",onclick:[this.id(),"refresh"],air:true},
             "|",
-            {icon:"folder",onclick:[this.id(),"createFolder"]},
-            {icon:"file",onclick:[this.id(),"createFile"]},
-            {icon:"save",onclick:[this.id(),"pack"]},            
+            {icon:"folder",onclick:[this.id(),"createFolder"],air:true},
+            {icon:"file",onclick:[this.id(),"createFile"],air:true},
+            {icon:"save",onclick:[this.id(),"pack"],air:true},            
             this.uploader,
             "|",
-            {icon:"delete",onclick:[this.id(),"deleteFile"]}
+            {icon:"delete",onclick:[this.id(),"deleteFile"],air:true}
         ]
         
         this.base(p);
         inx.hotkey("f5",[this.id(),"load"]);
         this.cmd("setPath",this.path);
         this.cmd("changeViewMode",p.viewMode);
-        this.cmd("setPath",p.path);
     },
     
+    /**
+     * Обновляет выделенную папку
+     **/
     cmd_refresh:function() {
         var path = this.items().info("currentPath");
         this.items().cmd("loadFolder",path);
@@ -69,16 +55,16 @@ inx.mod.moduleManager.fileManager.folder = inx.panel.extend({
     cmd_beforeUpload:function(p) {
         var path = this.items().info("currentPath")
         p.path = path;
-        p.module = this.module;
     },
     
     cmd_pack:function() {
         var files = this.items().info("selectedFiles");
-        if(!files.length) return;
+        if(!files.length) {
+            return;
+        }
         this.call({
             cmd:"moduleManager:fileManager:pack",
-            files:files,
-            module:this.module
+            files:files
         },[this.id(),"handlePack"]);
     },
     
@@ -87,12 +73,17 @@ inx.mod.moduleManager.fileManager.folder = inx.panel.extend({
     },
     
     cmd_deleteFile:function() {
-        if(!confirm("Delete files?")) return;
+    
+        if(!confirm("Delete files?")) {
+            return;
+        }
+        
         var files = this.items().info("selectedFiles");
-        this.call(
-            {cmd:"moduleManager_fileManager:deleteFiles",module:this.module,files:files},
-            [this.id(),"handleChanges"]
-        );
+        
+        this.call({
+            cmd:"moduleManager_fileManager:deleteFiles",
+            files:files
+        },[this.id(),"handleChanges"]);
     },
     
     cmd_createFolder:function() {
@@ -103,10 +94,12 @@ inx.mod.moduleManager.fileManager.folder = inx.panel.extend({
         },[this.id(),"handleChanges"]);
     },
     
+    /**
+     * Создает файл в текущей папке
+     **/
     cmd_createFile:function() {
         this.call({
-            cmd:"moduleManager:fileManager:newFile",
-            module:this.module,
+            cmd:"moduleManager/fileManager/newFile",
             path:this.items().info("currentPath")
         },[this.id(),"handleChanges"]);
     },
@@ -116,16 +109,20 @@ inx.mod.moduleManager.fileManager.folder = inx.panel.extend({
     },
     
     cmd_changeViewMode:function(mode) {
+    
         this.cmd("destroyChildren");
+        
         var p = {
-            module:this.module,
+            basedir:this.basedir,
             path:this.path,
             listeners:{
                 openFile:[this.id(),"openFile"],
                 openFolder:[this.id(),"openFolder"]
             }
         };
-        this.viewMode = mode;      
+        
+        this.viewMode = mode; 
+             
         switch(mode) {
             case "list":
                 p.type = "inx.mod.moduleManager.fileManager.folder.list";
@@ -141,19 +138,29 @@ inx.mod.moduleManager.fileManager.folder = inx.panel.extend({
         this.cmd("add",p);
     },
     
+    /**
+     * Открывает редактирование папки
+     **/
     cmd_openFolder:function(path) {
+    
+        return;
+    
         path = path.replace(/\/$/,"");
-        if(this.viewMode=="tree")
+        if(this.viewMode=="tree") {
             this.bubble("openEditor",{
                 type:"inx.mod.moduleManager.fileManager.editor",
                 module:this.module,
                 name:"file:"+this.module+":"+path,
                 path:path
             })
-        else
+        } else {
             this.cmd("setPath",path);
+        }
     },
     
+    /**
+     * Открывает редактирование файла
+     **/
     cmd_openFile:function(path) {
         this.bubble("openEditor",{
             type:"inx.mod.moduleManager.fileManager.editor",

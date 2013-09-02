@@ -21,11 +21,10 @@ inx.mod.moduleManager.templateManager = inx.tree.extend({
         this.on("beforeload",[this.id(),"beforeLoad"]);
         
         this.base(p);
-        this.themeID = this.params.themeID;
     },
     
     cmd_beforeLoad:function(p) {
-        p.themeID = this.params.themeID;
+        p.themeID = this.themeID;
     },
     
     cmd_selectionChange:function() {    
@@ -33,8 +32,8 @@ inx.mod.moduleManager.templateManager = inx.tree.extend({
         this.fire("openEditor",{
             type:"inx.mod.moduleManager.templateManager.editor",
             templateID:sel,
-            themeID:this.params.themeID,
-            name:this.params.themeID+":"+sel,
+            themeID:this.themeID,
+            name:this.themeID+":"+sel,
             closable:true
         });
     },

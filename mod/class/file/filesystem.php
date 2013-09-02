@@ -231,6 +231,10 @@ class mod_file_filesystem extends mod_file {
 		return $ret;
 	}
 
+    /**
+     * Переименовывает файл
+     * $newName - новый путь к файлу от корня сайта
+     **/
 	public function rename($newName) {
 	    $new_name = self::get($newName)->native();
 	    @rename($this->native(),$new_name);

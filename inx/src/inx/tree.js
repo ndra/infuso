@@ -217,9 +217,11 @@ inx.tree = inx.panel.extend({
             this.cmd("addNode",data[i]);
 
             // Раскрываем ноду если она хранится в списке раскрытых
-            if(this.private_expandedFromStorage)
-                if(this.private_expandedFromStorage[data[i].id])
+            if(this.private_expandedFromStorage) {
+                if(this.private_expandedFromStorage[data[i].id]) {
                     this.cmd("expand",data[i].id);
+                }
+            }
         }
 
         // Выделяем то чтоы было выделено до перезагрузки
@@ -331,8 +333,9 @@ inx.tree = inx.panel.extend({
         if(node.selected) node.body.addClass("selected")
         else node.body.removeClass("selected");
 
-        if(node.childrenContainer)
+        if(node.childrenContainer) {
             node.childrenContainer.css({display: node.expanded ? "block" : "none"});
+        }
 
         node.body.html(node.text+"");
 
@@ -681,16 +684,32 @@ inx.tree = inx.panel.extend({
         }
     },
 
-    info_path:function(id,separator) {
-        if(!separator) separator = "/";
+    /**
+     * Возвращает путь к указанной ноде
+     **/
+    info_path:function(id,params) {
+    
+        if(!params) {
+            params = {};
+        }
+    
+        if(!params.separator) {
+            params.separator = "/";
+        }
+        
+        if(!params.key) {
+            params.key = "text";
+        }
+        
         var node = this.info("node",id);
         var path = [];
         while(node) {
-            if(node.id!=0)
-                path.unshift(node.text);
+            if(node.id!=0) {
+                path.unshift(node[params.key]);
+            }
             node = this.info("node",node.parent);
         }
-        return path.join(separator);
+        return path.join(params.separator);
     },
 
     info_debug:function() {

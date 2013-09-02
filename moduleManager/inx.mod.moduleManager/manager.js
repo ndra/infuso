@@ -20,8 +20,16 @@ inx.ns("inx.mod.moduleManager").manager = inx.viewport.extend({
             tbar:[
                 {text:"Build",icon:"ok",onclick:[this.id(),"buildProject"]}
             ]
-        })
-        this.right = inx({type:"inx.tabs",showHead:false,region:"right",width:200,resizable:true})
+        });
+        
+        this.right = inx({
+            type:"inx.tabs",
+            showHead:false,
+            region:"right",
+            width:200,
+            resizable:true
+        });
+        
         p.side = [this.tree,this.right];
         
         p.keepLayout = "fui3wliqkgi389bqp1rx";
@@ -67,18 +75,16 @@ inx.ns("inx.mod.moduleManager").manager = inx.viewport.extend({
     cmd_selectionChange:function(a) {
     
         var node = this.tree.info("node",a[0]);
-        if(!node.className) return;
-        this.right.cmd("add",{
-            type:node.className,
-            module:node.module,
-            params:node.params,
-            name:node.id,
-            listeners:{
-                openEditor:[this.id(),"openEditor"],
-                closeEditor:[this.id(),"closeEditor"],
-                changeParams:[this.id(),"changeParams"]                
-            }
-        });
+        
+        var editor = node.editor;
+        editor.name = node.id;
+        editor.listeners = {
+            openEditor:[this.id(),"openEditor"],
+            closeEditor:[this.id(),"closeEditor"],
+            changeParams:[this.id(),"changeParams"]                
+        };
+        
+        this.right.cmd("add",editor);
     },
     
     cmd_openEditor:function(p) {

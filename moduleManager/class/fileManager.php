@@ -9,22 +9,25 @@ class moduleManager_fileManager extends mod_controller {
     /**
      * Возвращает список файлов
      **/
-    public static function post_listFiles($params) {
+    public static function post_listFiles($p) {
 
-        $dir = $params["module"]."/".$params["path"];
+        $dir = $p["basedir"]."/".$p["path"];
         $files = file::get($dir)->dir()->sort();
         foreach($files as $item) {
         
             $text = $item->name();
             $code = $item->data();
-			if(preg_match("/(\/\/[^\n]*\n)|(\/\*.*?\*\/)/is",$code,$matches)) {
-			
-			    $comments = $matches[0];
-			    $comments = preg_replace("/^[\*\/\s]*/is","",$comments);
-			    $comments = preg_replace("/[\*\/\s]*$/is","",$comments);
-			    
-			    $text.= " <span style='opacity:.5;font-style:italic;padding-left:5px;' title='{$comments}' >{$comments}</span>";
-			}
+
+            if(in_array($item->ext(),array("php","js","css"))) {
+    			if(preg_match("/(\/\/[^\n]*\n)|(\/\*.*?\*\/)/is",$code,$matches)) {
+
+    			    $comments = $matches[0];
+    			    $comments = preg_replace("/^[\*\/\s]*/is","",$comments);
+    			    $comments = preg_replace("/[\*\/\s]*$/is","",$comments);
+
+    			    $text.= " <span style='opacity:.5;font-style:italic;padding-left:5px;' title='{$comments}' >{$comments}</span>";
+    			}
+            }
         
             $file = array(
                 "text" => $text,
@@ -33,7 +36,8 @@ class moduleManager_fileManager extends mod_controller {
                 "dir" => $item->folder(),
                 "editable" => true,
                 "preview" => $item->preview()->resize()->get(),
-                "path" => $item->rel($params["module"])
+                "relpath" => $item->rel($p["basedir"]),
+                "path" => $item->path()
             );
 
             if(!$item->folder()) {
@@ -136,7 +140,8 @@ class moduleManager_fileManager extends mod_controller {
 	 * Создает новый файл
 	 **/
     public static function post_newFile($p) {
-        $dir = $p["module"]."/".$p["path"];
+
+        $dir = $p["path"];
         file::mkdir($dir);
         for($i=1;$i<100;$i++) {
             $path = "$dir/new$i.php";
@@ -146,6 +151,7 @@ class moduleManager_fileManager extends mod_controller {
             file::get($path)->put("<"."? ?".">");
             break;
         }
+
         return $p["path"];
     }
 
@@ -170,26 +176,27 @@ class moduleManager_fileManager extends mod_controller {
 	 **/
     public static function post_deleteFiles($p) {
 
-        if(!$p["module"]) return;
         foreach($p["files"] as $file) {
             if(trim($file,"/")) {
                 file::get("/$p[module]/$file")->delete(true);
 			}
         }
+
         return file::get($file)->up()->path();
     }
 
+    /**
+     * Переименовывает файл
+     **/
     public static function post_renameFile($p) {
 
-        $module = $p["module"];
-        $path = $p["old"];
-        $new_name = $p["new"];
+        $oldName = $p["old"];
+        $newName = $p["new"];
 
-        $old = $module."/".$path;
-        $new = $module."/".$new_name;
-        file::get($old)->rename($new);
+        file::get($oldName)->rename($newName);
 
         mod::msg("Файл переименован");
+
         return file::get($p["old"])->up()->path();
     }
 

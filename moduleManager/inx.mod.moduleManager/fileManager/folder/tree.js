@@ -5,21 +5,28 @@ inx.mod.moduleManager.fileManager.folder.tree = inx.tree.extend({
 
     constructor:function(p) {
     
-        if(!p.path) p.path = "/";
+        if(!p.path) {
+            p.path = "/";
+        }
+        
         p.root = {path:"/"};
         
         p.loader = {
-            cmd:"moduleManager:fileManager:listFiles",
-            module:p.module
+            cmd:"moduleManager/fileManager/listFiles",
+            basedir:p.basedir
         };
         
-        p.keepSelectionField = "name";
-        if(!p.listeners) p.listeners = {};
+        if(!p.listeners) {
+            p.listeners = {};
+        }
+        
         p.editKey = "name";
+        
+        p.loadOnEachExpand = true;
         
         p.listeners.beforeload = function(data) {
             var node = this.info("node",data.id)
-            data.path = node.path;
+            data.path = node.relpath;
         };
         
         this.base(p);
@@ -34,10 +41,11 @@ inx.mod.moduleManager.fileManager.folder.tree = inx.tree.extend({
         path.pop();
         path.push(old);
         var oldPath = path.join("/");
-        var newPath = this.info("path",id);
+        var newPath = this.basedir + "/" + this.info("path",id,{
+            key:"name"
+        });
         this.call({
-            cmd:"moduleManager_fileManager:renameFile",
-            module:this.module,
+            cmd:"moduleManager/fileManager/renameFile",
             old:oldPath,
             "new":newPath
         },[this.id(),"handleChanges"]);
@@ -47,13 +55,20 @@ inx.mod.moduleManager.fileManager.folder.tree = inx.tree.extend({
         this.cmd("loadFolder",data);
     },
     
+    /**
+     * Перезагружает папку с путем path
+     **/
     cmd_loadFolder:function(path) {
         this.cmd("eachNode",function(node) {
-            if(node.path==path)
+            if(node.path==path) {
                 this.cmd("load",node.id);
+            }
         })
     },
 
+    /**
+     * Открывает редактирования сообщения
+     **/
     cmd_openItem:function(id) {
     
         var item = this.info("node",id);

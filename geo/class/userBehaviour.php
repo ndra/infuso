@@ -14,8 +14,15 @@ class geo_userBehaviour extends mod_behaviour {
      * Если пользователь активен - определяем город по его ip
      **/
     public function city() {
-        if($this->isActiveUser())
+        if($this->isActiveUser()) {
             return geo_ip::current()->city()->title();
+        }
+    }
+
+    public function region() {
+        if($this->isActiveUser()) {
+            return geo_ip::current()->city()->region()->title();
+        }
     }
 
     public function addToClass() {

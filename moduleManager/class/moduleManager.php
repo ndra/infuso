@@ -1,66 +1,95 @@
 <?
 
-	class moduleManager extends mod_controller{
+class moduleManager extends mod_controller{
 
-	/******************************************************************************/
-	// Настройки прямого доступа
-
-	public static function indexTest() { return mod_superadmin::check(); }
-	
-	public static function indexTitle() { return "Управление модулями"; }
+	public static function indexTest() {
+        return mod_superadmin::check();
+    }
 	
 	public static function index() {
+
 	    admin::header("Управление модулями");
 
 	    $tree = array();
+
+        // Модуль
+        $module = array(
+            "text" => "/",
+            "id" => "/",
+            "children" => array(),
+        );
+
+        // Файлы
+        $module["children"][] = array(
+            "text" => "Файлы",
+            "icon" => "/moduleManager/icons/files.png",
+            "editor" => array(
+	            "basedir" => "/",
+	            "type" => "inx.mod.moduleManager.fileManager",
+            ),
+        );
+
+        $tree[] = $module;
+
 	    foreach(mod::all() as $m) {
 
 	        // Модуль
 	        $module = array(
 	            "text" => "<span style='font-weight:bold;'>$m<span>",
-	            id=>$m,
+	            "id" => $m,
 	            "children" => array(),
 	        );
 
 	        // Файлы
 	        $module["children"][] = array(
-	            "text"=>"Файлы",
+	            "text" => "Файлы",
 	            "icon" => "/moduleManager/icons/files.png",
-	            "module"=>$m,
-	            "className"=>"inx.mod.moduleManager.fileManager",
+                "editor" => array(
+    	            "basedir" => $m,
+    	            "type" => "inx.mod.moduleManager.fileManager",
+                ),
 	        );
 
 	        // Шаблоны
-	        foreach(tmp_theme::all() as $theme)
-	            if($theme->mod()==$m)
+	        foreach(tmp_theme::all() as $theme) {
+	            if($theme->mod()==$m) {
 		            $module["children"][] = array(
 		                "text" => $theme->name(),
-		                "params"=> array(
-							"themeID" => $theme->id()
+		                "editor" => array(
+							"themeID" => $theme->id(),
+                            "type" => "inx.mod.moduleManager.templateManager",
 						),
-		                "className" => "inx.mod.moduleManager.templateManager",
 		                "icon" => "template"
 		            );
+                }
+            }
 
 	        // Inx
-	        if(mod::info($m,"inx","path"))
+	        if(mod::info($m,"inx","path")) {
 	            $module["children"][] = array(
 	                "text"=>"inx",
 	                "icon" => "/moduleManager/res/inx.gif",
-	                "module"=>$m,
-	                "className"=>"inx.mod.moduleManager.inx.manager"
+                    "editor" => array(
+                        "module" => $m,
+                        "type" => "inx.mod.moduleManager.inx.manager",
+                    ),
 	            );
+            }
 
 	        // Таблицы
 	        if(mod::info($m,"mysql","path"))
 	            $module["children"][] = array(
 	                "text"=>"Таблицы",
 	                "icon" => "/moduleManager/icons/tables.png",
-	                "module"=>$m,
-	                "className"=>"inx.mod.moduleManager.tableManager"
+                    "editor" => array(
+    	                "module" => $m,
+    	                "type" => "inx.mod.moduleManager.tableManager",
+                    )
 	            );
-	        if(sizeof($module[children]))
+
+	        if(sizeof($module[children])) {
 	            $tree[] = $module;
+            }
 
 	    }
 
@@ -80,8 +109,18 @@
 	}
 
 	public static function sort($a,$b) {
-	    if($a["system"]!=$b["system"])
+
+        if($a["text"]=="/") {
+            return -1;
+        }
+
+        if($b["text"]=="/") {
+            return 1;
+        }
+
+	    if($a["system"]!=$b["system"]) {
 	        return $a<$b;
+        }
 	    return strcmp(strtolower($a["text"]),strtolower($b["text"]));
 	}
 
