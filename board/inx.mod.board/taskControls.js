@@ -4,7 +4,7 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
 
     constructor:function(p) {   
     
-        if(this.big) {        
+        if(p.big) {        
             p.style = {
                 spacing:5,
                 border:0,
@@ -107,7 +107,7 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                 this.cmd("add",{
                     type:"inx.button",
                     air:true,
-                    icon:"/board/res/img/icons16/"+button.icon+".png", 
+                    icon:this.big ? null : "/board/res/img/icons16/"+button.icon+".png", 
                     help:button.text,
                     text: this.big ? button.text : null,                    
                     style:style,
