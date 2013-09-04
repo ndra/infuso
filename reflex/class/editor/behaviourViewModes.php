@@ -59,7 +59,7 @@ class reflex_editor_behaviourViewModes extends mod_behaviour {
         return $fields->copyBehaviours($ret);
     }
 
-    public function gridColWIdth() {
+    public function gridColWidth() {
         return array();
     }
 
