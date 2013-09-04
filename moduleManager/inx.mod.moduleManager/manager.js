@@ -17,9 +17,11 @@ inx.ns("inx.mod.moduleManager").manager = inx.viewport.extend({
                 selectionchange:[this.id(),"selectionChange"]
             },
             keepExpanded:"z7f9rtp1hn8ui78v0o4g",
-            tbar:[
-                {text:"Build",icon:"ok",onclick:[this.id(),"buildProject"]}
-            ]
+            tbar:[{
+                text:"Build",
+                icon:"ok",
+                onclick:[this.id(),"buildProject"]
+            }]
         });
         
         this.right = inx({
@@ -46,13 +48,15 @@ inx.ns("inx.mod.moduleManager").manager = inx.viewport.extend({
         inx.hotkey("f1",[this.id(),"toggleNavigation"]);
         inx.hotkey("f5",[this.id(),"doNothing"]);
         
-        $(window).get(0).onbeforeunload = function(){ return false; }
+        $(window).get(0).onbeforeunload = function() { return false; };
         
         this.on("openEditor","openEditor");
     },
     
     cmd_buildProject:function() {
-        this.call({cmd:"moduleManager:build"});
+        this.call({
+            cmd:"moduleManager:build"
+        });
     },
     
     cmd_doNothing:function() {
@@ -78,6 +82,7 @@ inx.ns("inx.mod.moduleManager").manager = inx.viewport.extend({
         
         var editor = node.editor;
         editor.name = node.id;
+        
         editor.listeners = {
             openEditor:[this.id(),"openEditor"],
             closeEditor:[this.id(),"closeEditor"],

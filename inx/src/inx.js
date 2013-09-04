@@ -37,7 +37,7 @@ inx = function(p,type) {
             }
 
             if(p.type) {
-                return inx.cmp.create(p);
+                return inx.cmp.create(inx.deepCopy(p));
             }
             
             break;

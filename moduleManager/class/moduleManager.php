@@ -95,38 +95,41 @@ class moduleManager extends mod_controller{
 
 	    foreach($tree as $key=>$val) {
 	        $tree[$key]["system"] = mod::info($val["id"],"moduleManager","pack");
-	        if($tree[$key]["system"])
+	        if($tree[$key]["system"]) {
 	            $tree[$key]["text"] = "<span style='color:gray;'>$val[id]</span>";
+			}
 	    }
+	    
+	    $sort = function($a,$b) {
 
-	    usort($tree,array("moduleManager","sort"));
+	        if($a["text"]=="/") {
+	            return -1;
+	        }
+
+	        if($b["text"]=="/") {
+	            return 1;
+	        }
+
+		    if($a["system"]!=$b["system"]) {
+		        return $a<$b;
+	        }
+		    return strcmp(strtolower($a["text"]),strtolower($b["text"]));
+		};
+
+	    usort($tree,$sort);
 
 	    inx::add(array(
 	        "type" => "inx.mod.moduleManager.manager",
 	        tree=>$tree
 	    ));
+	    
 	    tmp::exec("admin:footer");
-	}
-
-	public static function sort($a,$b) {
-
-        if($a["text"]=="/") {
-            return -1;
-        }
-
-        if($b["text"]=="/") {
-            return 1;
-        }
-
-	    if($a["system"]!=$b["system"]) {
-	        return $a<$b;
-        }
-	    return strcmp(strtolower($a["text"]),strtolower($b["text"]));
 	}
 
 	public static function indexFailed() { admin::fuckoff(); }
 
 	public static function postTest() { return mod_superadmin::check(); }
+	
 	public static function post_build() {
 	    mod_classmap::buildClassMap();
 	    reflex_init::init();
