@@ -521,22 +521,27 @@ class reflex_collection extends mod_component implements Iterator {
             case "s:s":
                 $key = $this->normalizeColName($key);
                 $val = reflex_mysql::escape($val);
-                if($fn) $key = "$fn($key)";
+                if($fn) {
+					$key = "$fn($key)";
+				}
                 $this->where("$key='$val'",$key);
                 break;
 
             case "a:s":
-                if(func_num_args()==1)
-                    foreach($key as $k=>$v)
+                if(func_num_args()==1) {
+                    foreach($key as $k=>$v) {
                         $this->eq($k,$v);
+					}
+				}
                 break;
 
             // Если второй параметр массив, производится выборка p1 in p2
             case "s:a":
 
                 $r = array();
-                foreach($val as $v)
+                foreach($val as $v) {
                     $r[] = "'".reflex_mysql::escape($v)."'";
+				}
 
                 switch(sizeof($r)) {
 
@@ -591,7 +596,7 @@ class reflex_collection extends mod_component implements Iterator {
 		    case "s:s":
 		        $key = $this->normalizeColName($key);
 		        $val = reflex_mysql::escape($val);
-		        $this->where("$key<>'$val'");
+		        $this->where("$key<>'$val'",$key);
 		        break;
 		        
 			case "s:a":
