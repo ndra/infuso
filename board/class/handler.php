@@ -50,6 +50,9 @@ class board_handler implements mod_handler {
         
         user_operation::create("board/updateTaskParams","Обновление полей задачи")
             ->appendTo("board/editTask");
+
+        user_operation::create("board/changeTaskProject","Изменение проекта задачи")
+            ->appendTo("board/editTask");
         
         user_operation::create("board/getTaskParams","Получение полей задачи")
             ->appendTo("board/viewTask");

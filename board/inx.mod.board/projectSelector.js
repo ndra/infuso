@@ -10,28 +10,36 @@ inx.ns("inx.mod.board").projectSelector = inx.dialog.extend({
             width:400
         }     
         
-        p.tbar = [{
-            type:"inx.textfield",
-            width:"parent",
-            listeners:{
-                render:function()
-                {
-                    this.task("focus");
-                }
-            }
-        }]
-        
         this.list = inx({
             type:"inx.list",
             style:{
                 maxHeight:400
             },
             loader:{
-                cmd:"board/controller/project/listProjects",
+                cmd:"board/controller/project/listProjectsSimple",
                 taskID:this.taskID
+            },
+            listeners:{
+                beforeload:function(loader) {
+                    loader.search = this.owner().axis("tbar").items().eq("name","search").info("value");
+                }, itemclick:function(id) {
+                    this.owner().fire("select",id);
+                    this.owner().task("destroy");
+                }
             }
         });
         
+        p.tbar = [{
+            type:"inx.textfield",
+            width:"parent",
+            name:"search",
+            listeners:{
+                render:function() {
+                    this.task("focus");
+                },change:[this.list.id(),"load"]
+            }
+        }]
+            
         p.items = [this.list];
         
         p.destroyOnEscape = true;

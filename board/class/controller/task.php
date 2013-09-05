@@ -208,6 +208,26 @@ class board_controller_task extends mod_controller {
         return true;
     }
 
+    /**
+     * Переносит задачу в другой проект
+     **/
+    public function post_changeProject($p) {
+
+        $task = board_task::get($p["taskID"]);
+
+        if(!user::active()->checkAccess("board/changeTaskProject", array (
+            "task" => $task,
+        ))) {
+            mod::msg(user::active()->errorText(),1);
+            return;
+        }
+
+        $task->data("projectID",$p["projectID"]);
+
+        mod::msg("Проект изменен");
+
+    }
+
     public function post_newTask($p) {
 
         if(!user::active()->checkAccess("board/newTask")) {
@@ -219,6 +239,7 @@ class board_controller_task extends mod_controller {
             "status" => board_task_status::STATUS_DRAFT,
             "projectID" => $p["projectID"],
         ));
+
         return $task->id();
     }
     

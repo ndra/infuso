@@ -53,7 +53,9 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
 
         // Описание задачи и время
         this.cmd("add",{
-            type:this.info("type")+".process"
+            type:this.info("type")+".project",
+            taskID:this.taskID,
+            data:data
         });
         
         // Описание задачи и время
