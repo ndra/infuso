@@ -528,6 +528,7 @@ class board_task extends reflex {
 		// Своя задача
         $ret["my"] = $this->responsibleUser()->id() == user::active()->id();
         
+        // Статус
         $ret["status"] = array(
             "id" => $this->status()->id(),
             "title" => $this->status()->title(),
@@ -535,38 +536,17 @@ class board_task extends reflex {
 		
         // Цвет стикера
         $ret["color"] = $this->data("color");
-        
-        // Сколько задача висит в этом статусе
-        if($this->status()->active()) {
-            $d = (util::now()->stamp() - $this->pdata("changed")->stamp())/60/60/24;
-            $d = round($d);
-            if($d>=3) {
-                $data["text"].= "<span style='background:red;color:white;display:inline-block;padding:0px 4px;' >$d</span> ";
-            }
-        }
 
-        // Просрочка
-        $h = $this->hangDays();
-        if($h>3) {
-            $ret["text"].= "<span style='color:white;background:red;padding:0px 4px;'>$h</span> ";
-        }
+        // Хапланированное и потраченное время
+        $ret["timeSpent"] = round($this->timeSpent(),2);
+        $ret["timeScheduled"] = round($this->timeScheduled(),2);
 
         // Установленный дэдлайн
-        if($this->data("deadline")) {
-            $ret["backgroundImage"] = "/board/res/task-time.png";
-        }
         $ret["deadlineDate"] = $this->data("deadlineDate");
 
         // Пропущенный дэдлайн
         $d = util::now()->stamp() - $this->pdata("deadlineDate")->stamp();
-        if($this->data("deadline") && $d>0) {
-            $ret["backgroundImage"] = "/board/res/task-time-fuckup.png";
-        }
-
-		// Является ли задача помехой
-        if($this->data("hindrance")) {
-            $ret["hindrance"] = true;
-        }
+        // @todo сделать
 
         // Эпик (задача с подзадачами)
         $ret["epic"] = $this->isEpic();

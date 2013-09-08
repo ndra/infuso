@@ -6,16 +6,16 @@
 inx.css(".qm5btw9-task{font-size:11px;}");
 inx.css(".qm5btw9{overflow:hidden;position:relative;cursor:pointer;height:100%;background:white;border:1px solid #cccccc;box-shadow:0px 0px 5px rgba(0, 0, 0, 0.1);}");
 inx.css(".qm5btw9:hover{border:1px solid gray;}");
-inx.css(".qm5btw9-status{position:absolute;bottom:0;left:0;width:100%;background:rgba(0,0,0,.2);color:white;padding:2px 1px 1px 2px;fontWeight:bold}");
+inx.css(".qm5btw9-status{position:absolute;bottom:0;left:0;width:100%;color:black;padding:2px 1px 1px 2px;white-space:nowrap;}");
 inx.css(".qm5btw9-hover-group .qm5btw9-background{background:rgba(255,255,0,.2);}");
-inx.css(".qm5btw9-my {outline:2px solid blue;}")
+inx.css(".qm5btw9-my {border:1px solid blue;}")
 
 inx.mod.board.board.taskList.task = inx.panel.extend({
 
     constructor:function(p) {    
         p.style = {
             border:0,
-            height:120,
+            height:110,
             width:100
         }
         this.base(p);
@@ -87,11 +87,29 @@ inx.mod.board.board.taskList.task = inx.panel.extend({
             var e = $("<div>").css({height:100}).addClass("qm5btw9-background").appendTo(e);
                 
             e.click(inx.cmd(this,"editTask",{taskID:task.id}));
-            $("<div>").css({height:77,padding:4,overflow:"hidden"}).html(task.text+"").appendTo(e);
+            
+            // Текст
+            var text = $("<div>")
+                .css({
+                    height:77,
+                    padding:4,
+                    overflow:"hidden"
+                }).appendTo(e);
+                
+            $("<img>")
+                .attr("src","http://vernoe.com/favicon.ico")
+                .appendTo(text);
+                
+            $("<span>")
+                .html("<b>" + task.id + ". " + task.project.title + "</b> " + task.text)
+                .appendTo(text);
     
             // Статус листика
+            var status = "";
+            status += task.timeSpent + " из " + task.timeScheduled + "ч."; 
+    
             var bottom = $("<div>")
-                .html("ололо!")
+                .html(status)
                 .appendTo(e)
                 .addClass("qm5btw9-status");  
             
@@ -103,21 +121,11 @@ inx.mod.board.board.taskList.task = inx.panel.extend({
                         top:0
                     }).appendTo(bottom);
             }
-            
-            /*var cmp = this;
-            var controls = $("<div>")
-                .addClass("controls")
-                .css({
-                    background:"#666",
-                    position:"relative",
-                    padding:10,
-                    zIndex:1
-                }).appendTo(taskContainer); */
                 
-            taskContainer.mouseenter(function() {
+            this.el.mouseenter(function() {
                 cmp.cmd("showControls");
             });
-             taskContainer.mouseleave(function() {
+            this.el.mouseleave(function() {
                 cmp.cmd("hideControls");
             });
                 
@@ -169,8 +177,9 @@ inx.mod.board.board.taskList.task = inx.panel.extend({
             items:[this.controls],
             style:{
                 width:200,
-                height:100,
-                background:"#666",
+                height:40,
+                border:1,
+                background:"#ededed",
                 padding:10,
                 color:"white"
             }
@@ -196,7 +205,7 @@ inx.mod.board.board.taskList.task = inx.panel.extend({
         if(!this.controlsDlg) {
             return;
         }
-        //this.controlsDlg.items().cmd("remove");
+        this.controlsDlg.cmd("remove",this.controls);
         this.controlsDlg.cmd("destroy");
         this.controlsDlg = null;
     }

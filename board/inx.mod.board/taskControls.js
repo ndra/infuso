@@ -11,9 +11,7 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                 padding:10
             }        
         } else {
-            p.style = {
-                border:1
-            }
+            p.style = {}
         }
     
         p.layout = "inx.layout.column";
