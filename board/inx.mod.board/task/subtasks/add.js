@@ -4,6 +4,8 @@
 inx.mod.board.task.subtasks.add = inx.panel.extend({
 
     constructor:function(p) {
+    
+        p.layout = "inx.layout.column";
         
         p.style = {
             background:"none",
@@ -12,8 +14,10 @@ inx.mod.board.task.subtasks.add = inx.panel.extend({
         }
         
         p.items = [{
-            html:"<a href='#' onclick='return false;' style='display:block;' >Добавить подзадачу</a>",
-            width:200,
+            type:"inx.button",
+            text:"Взять подзадачу",
+            icon:"plus",
+            air:true,
             listeners:{
                 click:[this.id(),"openDialog"]
             },
@@ -21,6 +25,27 @@ inx.mod.board.task.subtasks.add = inx.panel.extend({
                 background:0,
                 border:0
             }
+        },{
+            type:"inx.button",
+            text:"Добавить",
+            icon:"plus",
+            air:true,
+            listeners:{
+                click:[this.id(),"openDialog"]
+            },
+            style:{
+                background:0,
+                border:0
+            }
+        }, {
+            width:20
+        },{
+            type:"inx.panel",
+            html:"<b>Активные (5)</b> Выполненные (124)",
+            width:220
+        }, {
+            type:"inx.pager",
+            total:5
         }]
         
         this.base(p);

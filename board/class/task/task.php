@@ -587,6 +587,13 @@ class board_task extends reflex {
             "task" => $this,
         ))) {
 
+            if(!$this->paused()) {
+                $ret["tools"][] = "pause";
+            } else {
+                $ret["tools"][] = "resume";
+            }
+            $ret["tools"][] = "|";
+
             switch($this->status()->id()) {
 
                 case board_task_status::STATUS_DRAFT:
@@ -594,21 +601,23 @@ class board_task extends reflex {
                     break;
 
                 case board_task_status::STATUS_IN_PROGRESS:
-                    if(!$this->paused()) {
-                        $ret["tools"][] = "pause";
-                    } else {
-                        $ret["tools"][] = "resume";
-                    }
-                    $ret["tools"][] = "|";
+
                     $ret["tools"][] = "done";
-                    $ret["tools"][] = "stop";
                     $ret["tools"][] = "|";
+                    $ret["tools"][] = "stop";
                     $ret["tools"][] = "cancel";
+                    $ret["tools"][] = "problems";
                     
                     break;
 
                 case board_task_status::STATUS_NEW:
-                    $ret["tools"][] = "take";
+
+                    if(!$this->isEpic()) {
+                        $ret["tools"][] = "take";
+                        $ret["tools"][] = "|";
+                    }
+                    $ret["tools"][] = "cancel";
+                    $ret["tools"][] = "problems";
                     break;
 
                 case board_task_status::STATUS_CHECKOUT:

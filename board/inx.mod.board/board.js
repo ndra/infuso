@@ -3,16 +3,14 @@
 inx.ns("inx.mod.board").board = inx.panel.extend({
 
     constructor:function(p) {
-   
-        p.layout = "inx.layout.fit";
+    
+        p.style = {
+            vscroll:true
+        }
     
         this.taskList = inx({
             type:"inx.mod.board.board.taskList",
-            status:p.status,
-            style:{
-                border:0,
-                height:"parent"
-            }
+            status:p.status
         });
         
         p.tbar = [{
@@ -31,9 +29,13 @@ inx.ns("inx.mod.board").board = inx.panel.extend({
             name:"pager",
             onchange:[this.id(),"load"],
             hidden:true
-        }]
+        }];
         
-        p.items = [this.taskList];
+        this.create = inx({
+            type:p.type+".taskList.create"
+        });
+        
+        p.items = [this.create,this.taskList];
         
         this.taskList.on("beforeload",[this.id(),"handleBeforeLoad"]);
         this.taskList.on("load",[this.id(),"handleLoad"]);

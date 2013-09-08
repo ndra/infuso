@@ -10,6 +10,10 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                 border:0,
                 padding:10
             }        
+        } else {
+            p.style = {
+                border:1
+            }
         }
     
         p.layout = "inx.layout.column";
@@ -27,92 +31,129 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
         
         var buttons = {
             add:{
-                icon:"add",
-                onclick:[this.id(),"addTask"],
-                text:"К исполнению"
+                general: {
+                    icon:"/board/res/img/icons16/add.png",
+                    onclick:[this.id(),"addTask"],
+                    help:"К исполнению"
+                }
             }, pause:{
-                icon:"pause",
-                onclick:[this.id(),"pauseTask"],
-                text:"Пауза"
+                general: {
+                }, large: {
+                    type:this.info("type")+".pause"
+                }
             }, resume: {
-                icon:"resume",
-                onclick:[this.id(),"pauseTask"],
-                text:"Продолжить"
+                general: {
+                    help:"Продолжить",
+                    onclick:[this.id(),"pauseTask"],
+                }, small: {
+                    air:true,
+                    icon:"/board/res/img/icons16/resume.png",
+                }, large :{
+                    icon:"/board/res/img/icons24/resume.png",
+                }
+                
             }, done: {
-                icon:"done",
-                onclick:[this.id(),"doneTask"],
-                text:"Выполнено",
-                style:{
-                    color:"white",
-                    background:"green"
+                general: {
+                    icon:"/board/res/img/icons16/done.png",
+                    onclick:[this.id(),"doneTask"]
+                }, small:{
+                    air:true
+                }, large:{
+                    text:"Выполнено",
+                    style:{
+                        color:"white",
+                        background:"green"
+                    }
+                }             
+            }, problems: {
+                general: {
+                    icon:"/board/res/img/icons24/problems.png"
                 }
             }, take: {
-                icon:"take",
-                onclick:[this.id(),"takeTask"],
-                text:"Взять",
-                style:{
-                    color:"white",
-                    background:"green"
+                general: {
+                    icon:"/board/res/img/icons16/take.png",
+                    onclick:[this.id(),"takeTask"],
+                    help:"Взять",
+                    style:{
+                        color:"white",
+                        background:"green"
+                    }
                 }
             }, stop: {
-                icon:"stop",
-                onclick:[this.id(),"stopTask"],
-                text:"Вернуть"
+                general: {
+                    icon:"/board/res/img/icons24/stop.png",
+                    onclick:[this.id(),"stopTask"],
+                    help:"Вернуть"
+                }
             }, complete: {
-                icon:"complete",
-                onclick:[this.id(),"completeTask"],
-                text:"Завершить"
+                general: {
+                    icon:"complete",
+                    onclick:[this.id(),"completeTask"],
+                    text:"Завершить"
+                }
             }, revision: {
-                icon:"notready",
-                onclick:[this.id(),"revisionTask"],
-                text:"Не готово"
+                general: {
+                    icon:"notready",
+                    onclick:[this.id(),"revisionTask"],
+                    help:"Не готово"                    
+                }
             }, cancel: {
-                icon:"close",
-                onclick:[this.id(),"cancelTask"],
-                text:"Отменить"
+                general: {                    
+                    onclick:[this.id(),"cancelTask"],
+                    help:"Отменить"
+                }, large: {
+                    icon:"/board/res/img/icons24/cancel.png",
+                }, small: {
+                    icon:"/board/res/img/icons16/cancel.png",
+                    air:true
+                }
             }    
         }
         
         for(var i in tools) {
-        
-            
             
             if(tools[i]=="|") {
             
-                this.cmd("add",{
-                    width:this.big ? 20 : 5
-                })
-                
+                if(this.big) {
+                    this.cmd("add",{
+                        width:this.big ? 20 : 5
+                    });
+                }
             
             } else {
             
-                var button = buttons[tools[i]];
-                
-                var style = {
-                    iconWidth:(this.big ? 16 : 16),
-                    iconAlign:"left",
-                    iconHeight:(this.big ? 24 : 16),
-                    fontSize:18,
-                    padding: this.big ? 10 : 0,
-                    shadow:this.big ? true : false,
-                    height:(this.big ? 24 : 16) + 4*2,
+                var button = inx.deepCopy(buttons[tools[i]]).general;
+                                
+                if(!button.type) {
+                    button.type = "inx.button";
                 }
                 
-                if(button.style) {
-                    for(var j in button.style) {
-                        style[j] = button.style[j];
-                    }
+                var style = this.big ? {
+                    iconWidth: 24,
+                    iconHeight: 24,
+                    fontSize: 18,
+                    padding: 10,
+                    shadow: true,
+                    height: 28 + 4*2,
+                } : {
+                    
+                };
+                
+                // Добавляем стили по умолчанию
+                if(!button.style) {
+                    button.style = {};
+                }
+                for(var i in style) {
+                    button.style[i] = style[i];
+                }
+                
+                // Добавляем стили для большой / маленькой кнопки                
+                var extra = inx.deepCopy(buttons[tools[i]])[this.big ? "large" : "small"];
+                for(var i in extra) {
+                    button[i] = extra[i];
                 }
             
-                this.cmd("add",{
-                    type:"inx.button",
-                    air:true,
-                    icon:this.big ? null : "/board/res/img/icons16/"+button.icon+".png", 
-                    help:button.text,
-                    text: this.big ? button.text : null,                    
-                    style:style,
-                    onclick:button.onclick
-                });
+                this.cmd("add",button);
             }
         }
     

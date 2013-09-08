@@ -107,10 +107,11 @@ inx.dialog = inx.panel.extend({
         
         if(this.centred) this.cmd("center");
         
-        if(!this.info("hidden"))
+        if(!this.info("hidden")) {
             this.cmd("startPositionWatch");
-            
-        this.private_wnd.css({opacity:0}).animate({opacity:1});
+        }
+        
+        //this.private_wnd.css({opacity:0}).animate({opacity:1});
         
         inx.dialog.manager.register(this);
         
@@ -175,10 +176,20 @@ inx.dialog = inx.panel.extend({
         var o = 10;
         var mx = $(window).width() - $(this.private_wnd).outerWidth()-o;
         var my = $(window).height() - $(this.private_wnd).outerHeight()-o;
-        if(this.x>mx) this.x = mx;
-        if(this.y>my) this.y = my;
-        if(this.x<o) this.x=o;
-        if(this.y<o) this.y=o;
+        
+        // Проверяем выход за границы экрана
+        if(this.x > mx) {
+            this.x = mx;
+        }
+        if(this.y > my) {
+            this.y = my;
+        }
+        if(this.x < o) {
+            this.x=o;
+        }
+        if(this.y < o) {
+            this.y=o;
+        }
         
         this.cmd("setPosition",this.x,this.y);
     },    
@@ -186,6 +197,7 @@ inx.dialog = inx.panel.extend({
     // При синхронизации окна, обновляем его позицию    
     cmd_syncLayout:function() {
         this.base();
+        this.cmd("updatePosition");
     },
     
     // Выставляем окно по прищепке
@@ -217,18 +229,24 @@ inx.dialog = inx.panel.extend({
     
     cmd_handleDlgManagerEsc:function() {
     
-        if(this.autoDestroy || this.destroyOnEscape)
+        if(this.autoDestroy || this.destroyOnEscape) {
             this.task("destroy");
-        if(this.autoHide)
+        }
+        if(this.autoHide) {
             this.task("hide");
+        }
     
     },
     
     // Обработчик перетаскивания
     cmd_drag:function(p) {
 
-        if(p.phase=="start") this.cmd("stopPositionWatch");
-        if(p.phase=="stop") this.cmd("startPositionWatch");
+        if(p.phase=="start") {
+            this.cmd("stopPositionWatch");
+        }
+        if(p.phase=="stop") {
+            this.cmd("startPositionWatch");
+        }
         this.centred = false;
 
         this.x+=p.dx;

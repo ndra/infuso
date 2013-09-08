@@ -14,23 +14,31 @@ inx.mod.board.task.subtasks.add.dlg = inx.dialog.extend({
         p.destroyOnEscape = true;
         
         p.style = {
-            width:390,
-            border:0,
+            width:430,
+            border:1,
+            padding:10,
+            spacing:2,
             background:"#ededed"
         }
         
         p.items = [{
             type:"inx.textfield",
             name:"text",
-            width:300
+            style:{
+                height:32,
+                width:300
+            }
         },{
             type:"inx.textfield",
-            width:20,
+            style:{
+                width:40,
+                height:32
+            },
             name:"timeScheduled"
         },{
             type:"inx.button",
             air:true,
-            icon:"/board/res/img/icons16/resume.png",
+            icon:"/board/res/img/icons24/resume.png",
             onclick:[this.id(),"doSubtask"]
         },{
             type:"inx.button",
