@@ -47,6 +47,7 @@ abstract class mod_model extends mod_controller {
     /**
      * Устанавливает начальные данные модели
      * Вызывается при создании модели
+     * @todo рефакторинг скорости
      **/
     public final function setInitialData($data=array()) {
 
@@ -56,7 +57,7 @@ abstract class mod_model extends mod_controller {
             $data = array();
 		}
 
-	$modelFields = $this->modelFields();
+        $modelFields = $this->modelFields();
 
         $fields = array();
         foreach($modelFields as $field) {
@@ -68,7 +69,7 @@ abstract class mod_model extends mod_controller {
             $fields[] = $field;
         }
 
-       $this->fields = $modelFields->copyBehaviours($fields);
+        $this->fields = $modelFields->copyBehaviours($fields);
 
         mod_profiler::endOperation();
     }

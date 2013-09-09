@@ -1,4 +1,4 @@
-<?
+а<?
 
 class tmp implements mod_handler {
 
@@ -170,13 +170,16 @@ class tmp implements mod_handler {
         $head.= "<title>$title</title>\n";
 
         // Добавляем noindex
-        if($obj->meta("noindex") || tmp::param("meta:noindex"))
+        if($obj->meta("noindex") || tmp::param("meta:noindex")) {
             $head.= "<meta name='ROBOTS' content='NOINDEX,NOFOLLOW' >\n";
+        }
 
         // Добавляем меты
-        foreach(array("keywords","description") as $name)
-            if($val = trim($obj->meta($name)))
+        foreach(array("keywords","description") as $name) {
+            if($val = trim($obj->meta($name))) {
                 $head.= "<meta name='$name' content='$val' />\n";
+            }
+        }
 
         $head.= tmp::conveyor()->exec();
 
