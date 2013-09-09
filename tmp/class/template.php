@@ -4,7 +4,9 @@ class tmp_template extends tmp_generic {
 
     private static $exists = array();
     private static $current = null;
-
+    
+    public $cachedTeamplates = null;
+    
     public $cache = null;
     
     public $recache = null;
@@ -17,12 +19,15 @@ class tmp_template extends tmp_generic {
             $this->lockParam("*template");
         }
 
+        $this->loadCachedTeamplates();
+
+        
         if($cache = $this->componentConf("cache")) {
-            if(in_array($name,$cache)) {
-                $this->cache();
+            if(array_key_exists($name,$this->cachedTeamplates)) {
+                $this->cache($this->cachedTeamplates[$name]);
             }
         }
-
+        
         if($delayed = $this->componentConf("delayed")) {
             if(in_array($name,$delayed)) {
                 $this->param("*delayed",true);
@@ -30,7 +35,22 @@ class tmp_template extends tmp_generic {
         }
 
     }
-
+    
+    /**
+     * Загружает(если надо) и возвращает массив("имя шаблона"=>"ttl") шаблонов для кэша
+     **/
+    public function loadCachedTeamplates() {
+        if(!$this->cachedTeamplates){
+            $cache = $this->componentConf("cache");
+            foreach($cache as $item){
+                list($name, $ttl) = explode(":", $item);
+                $this->cachedTeamplates[$name] = $ttl;
+            }                    
+        }
+        
+        return  $this->cachedTeamplates;
+    }
+     
     /**
      * Возвращает/меняет шаблон базовый шаблон
      **/
@@ -134,21 +154,19 @@ class tmp_template extends tmp_generic {
             $this->delayed();
             return;
         }
-
+        
         $p = $this->params();
 
         tmp::css($this->fileCSS()."",1);
         tmp::js($this->fileJS()."",1);
-
         // Если включен режим кэширования
         if($this->cache) {
-
             // расчитываем хэш для сохранения в кэш :)
             $hash = $this->template().":".$this->cache.":".serialize($p);
 
             // Пробуем достать данные их кэша
             $cached = mod_cache::get($hash);
-
+            
             // Если в кэше еще нет шаблона
             if(!$cached || $this->recache) {
 
@@ -159,10 +177,11 @@ class tmp_template extends tmp_generic {
                 $this->aexec($p);
                 $cached = ob_get_flush();
                 $conveyor = tmp::mergeConveyorDown();
-
+                $ttl = $this->cachedTeamplates[self::handleName($this->template())];
+                
                 if(!$conveyor->preventCaching()) {
-                    mod_cache::set($hash,$cached);
-                    mod_cache::set($hash.":conveyor",$conveyor->serialize());
+                    mod_cache::set($hash,$cached, $ttl);
+                    mod_cache::set($hash.":conveyor",$conveyor->serialize(), $ttl);
                 }
 
                 mod_profiler::endOperation();
