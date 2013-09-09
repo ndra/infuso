@@ -1,4 +1,4 @@
-а<?
+<?
 
 class tmp implements mod_handler {
 
