@@ -22,9 +22,9 @@ class tmp_template extends tmp_generic {
         $this->loadCachedTeamplates();
 
         
-        if($cache = $this->componentConf("cache")) {
+        if($cache = $this->loadCachedTeamplates()) {
             if(array_key_exists($name,$this->cachedTeamplates)) {
-                $this->cache($this->cachedTeamplates[$name]);
+                $this->cache(-1 - $this->cachedTeamplates[$name]); //магия
             }
         }
         
