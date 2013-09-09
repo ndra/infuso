@@ -11,7 +11,8 @@
         <div class='$class' >
             echo $msg->text();
             
-            if($n = $msg->count()>1) {
+            $n = $msg->count();
+            if($n > 1) {
                 <span> ({$n})</span>
             }
             

@@ -10,6 +10,19 @@ class mod_fieldset implements Iterator{
 
     private $behaviours = array();
 
+    public function __construct($fields) {
+
+        if(is_array($fields)) {
+            $fields = array_values($fields);
+        }
+
+        if(is_object($fields) && get_class($fields)=="mod_fieldset") {
+            $fields = $fields->fields;
+        }
+
+        $this->fields = $fields;
+    }
+
     public function rewind() { reset($this->fields); }
 
     public function current() {
@@ -26,10 +39,6 @@ class mod_fieldset implements Iterator{
     public function next() { return next($this->fields); }
 
     public function valid() { return $this->current() !== false; }
-
-    public function __construct($fields) {
-        $this->fields = $fields;
-    }
 
     public static function zero() {
         return mod_field::getNonExistent();

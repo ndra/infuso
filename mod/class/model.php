@@ -5,8 +5,15 @@
  **/
 abstract class mod_model extends mod_controller {
 
+    private $initialData = array();
     private $fields = null;
-    private $cfields = null;
+    protected $cfields = array();
+
+    /**
+     * Статический кэш для полей модели
+     * Поля кэшируются для каждого класса
+     **/
+    private static $modelFields = array();
 
     /**
      * Возвращает коллекцию полей модели
@@ -14,9 +21,17 @@ abstract class mod_model extends mod_controller {
     public final function fields() {
 
         mod_profiler::beginOperation("reflex","fields",get_class($this));
-    
+
         if(!$this->fields) {
-            $this->fields = new mod_fieldset(array());
+
+            $modelFields = $this->modelFieldBuffered();
+            foreach($modelFields as $name => $field) {
+                $this->field($name);
+            }
+
+            $fields = new mod_fieldset($this->cfields);
+            $this->fields = $fields;
+            $this->fields = $this->modelFields()->copyBehaviours($this->fields);
         }
         
         $ret = clone $this->fields;
@@ -26,13 +41,40 @@ abstract class mod_model extends mod_controller {
         return $ret;
     }
 
+    private function modelFieldBuffered() {
+
+        $class = get_class($this);
+
+        if(!self::$modelFields[$class]) {
+            foreach($this->modelFields() as $field) {
+                self::$modelFields[$class][$field->name()] = $field;
+            }
+        }
+
+        return self::$modelFields[$class];
+    }
+
     /**
      * @return Возвращает поле по id
      **/
     public final function field($name) {
-    
+
+        $modelFields = $this->modelFields();
+
         if(!$this->cfields[$name]) {
-            $this->cfields[$name] = $this->fields()->name($name);
+
+            $fields = $this->modelFieldBuffered($class);
+            $field = $fields[$name];
+
+            $field = clone $field;
+            $field->setModel($this);
+            $initialValue = array_key_exists($field->name(),$this->initialData) ?
+                $this->initialData[$field->name()] :
+                $field->defaultValue();
+
+            $field->initialValue($initialValue);
+            $this->cfields[$name] = $field;
+
         }
         
         return $this->cfields[$name];
@@ -49,29 +91,14 @@ abstract class mod_model extends mod_controller {
      * Вызывается при создании модели
      * @todo рефакторинг скорости
      **/
-    public final function setInitialData($data=array()) {
+    public final function setInitialData($initialData=array()) {
 
-        mod_profiler::beginOperation("reflex","setInitialData",get_class($this));
-
-        if(!$data) {
-            $data = array();
-		}
-
-        $modelFields = $this->modelFields();
-
-        $fields = array();
-        foreach($modelFields as $field) {
-            $field = clone $field;
-            $field->setModel($this);
-            $field->initialValue(array_key_exists($field->name(),$data) ?
-                $data[$field->name()] :
-                $field->defaultValue() );
-            $fields[] = $field;
+        if(!is_array($initialData)) {
+            $initialData = array();
         }
 
-        $this->fields = $modelFields->copyBehaviours($fields);
+        $this->initialData = $initialData;
 
-        mod_profiler::endOperation();
     }
 
     /**
@@ -82,8 +109,9 @@ abstract class mod_model extends mod_controller {
         // Если параметров 0 - возвращаем массив с данными
         if(func_num_args()==0) {
             $ret = array();
-            foreach($this->fields() as $field)
+            foreach($this->fields() as $field) {
                 $ret[$field->name()] = $field->value();
+            }
             return $ret;
         }
 

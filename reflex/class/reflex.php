@@ -96,25 +96,32 @@ class reflex extends mod_model {
         return $ret;
     }
 
+    private $metaObject = null;
+
     /**
      * Возвращает объект метаданных данного объекта.
      * На практике рекомендуется пользоваться ф-цией reflex::meta()
     **/
     public final function metaObject($lang=null) {
 
-        if(!$lang) {
-            $lang = lang::active()->id();
+        if(!$this->metaObject) {
+
+            if(!$lang) {
+                $lang = lang::active()->id();
+            }
+
+            if(get_class($this)=="reflex_meta_item") {
+                return $this;
+            }
+
+            if(!$this->reflex_meta()) {
+                return reflex::virtual("reflex_meta_item");
+            }
+
+            $this->metaObject = reflex_meta_item::get(get_class($this).":".$this->id(),$lang);
         }
 
-        if(get_class($this)=="reflex_meta_item") {
-            return $this;
-        }
-
-        if(!$this->reflex_meta()) {
-            return reflex_meta_item::get(0);
-        }
-
-        return reflex_meta_item::get(get_class($this).":".$this->id(),$lang);
+        return $this->metaObject;
     }
 
     /**
@@ -123,11 +130,20 @@ class reflex extends mod_model {
      * При вызове с двумя параметрами - изменит.
      **/
     public final function meta($key,$val=null) {
+
         if(func_num_args()==1) {
+
+            //if(get_class($this)=="reflex_none") {
+             //   util::backtrace();
+          //  }
+
+            //mod::msg(get_class($this)."-".$this->id());
+
             $ret = $this->metaObject()->data($key);
             return $ret;
-        }
-        if(func_num_args()==2) {
+
+        } elseif (func_num_args()==2) {
+
             $obj = $this->metaObject();
             if(!$obj->exists()) {
                 $hash = get_class($this).":".$this->id();

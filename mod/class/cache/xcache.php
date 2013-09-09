@@ -26,10 +26,7 @@ class mod_cache_xcache extends mod_cache_driver {
     /**
      * Устанавливает значение переменной
      **/
-    public function set($key,$val, $ttl = null) {
-        if(mod_superadmin::check()){
-                    mod::trace($ttl);
-                }
+    public function set($key, $val, $ttl = null) {
         xcache_set(self::prefix().$key,$val,$ttl);
     }
 

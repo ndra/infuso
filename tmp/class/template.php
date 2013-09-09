@@ -5,7 +5,7 @@ class tmp_template extends tmp_generic {
     private static $exists = array();
     private static $current = null;
     
-    public $cachedTeamplates = null;
+    private static $cachedTemplates = null;
     
     public $cache = null;
     
@@ -20,9 +20,9 @@ class tmp_template extends tmp_generic {
         }
 
        
-        if($cache = $this->loadCachedTeamplates()) {
-            if(array_key_exists($name,$this->cachedTeamplates)) {
-                $this->cache(-1 - $this->cachedTeamplates[$name]); //магия
+        if($cache = $this->loadCachedTemplates()) {
+            if(array_key_exists($name,$cache)) {
+                $this->cache(-1 - $cache[$name]); //магия
             }
         }
         
@@ -37,16 +37,21 @@ class tmp_template extends tmp_generic {
     /**
      * Загружает(если надо) и возвращает массив("имя шаблона"=>"ttl") шаблонов для кэша
      **/
-    public function loadCachedTeamplates() {
-        if(!$this->cachedTeamplates){
+    public function loadCachedTemplates() {
+        if(!self::$cachedTemplates) {
+
+            self::$cachedTemplates = array();
+
             $cache = $this->componentConf("cache");
-            foreach($cache as $item){
-                list($name, $ttl) = explode(":", $item);
-                $this->cachedTeamplates[$name] = $ttl;
-            }                    
+            if(is_array($cache)) {
+                foreach($cache as $item){
+                    list($name, $ttl) = explode(":", $item);
+                    self::$cachedTemplates[$name] = $ttl;
+                }
+            }
         }
         
-        return  $this->cachedTeamplates;
+        return self::$cachedTemplates;
     }
      
     /**
@@ -175,7 +180,7 @@ class tmp_template extends tmp_generic {
                 $this->aexec($p);
                 $cached = ob_get_flush();
                 $conveyor = tmp::mergeConveyorDown();
-                $ttl = $this->cachedTeamplates[self::handleName($this->template())];
+                $ttl = self::$cachedTemplates[self::handleName($this->template())];
                 
                 if(!$conveyor->preventCaching()) {
                     mod_cache::set($hash,$cached, $ttl);

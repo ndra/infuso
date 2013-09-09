@@ -7,12 +7,13 @@ class mod_log {
      **/
     public function msg($message,$error=false,$extra=null) {
     
-        if(is_array($message))
-            $message = var_export($message,1);
+        $message = self::toString($message);
+
         @session_start();
         
-        if(!$_SESSION["log:messages"])
+        if(!$_SESSION["log:messages"]) {
             $_SESSION["log:messages"] = array();
+        }
             
         $key = sizeof($_SESSION["log:messages"])-1;
         

@@ -177,7 +177,7 @@ class tmp implements mod_handler {
         // Добавляем меты
         foreach(array("keywords","description") as $name) {
             if($val = trim($obj->meta($name))) {
-                $head.= "<meta name='$name' content='$val' />\n";
+                $head.= "<meta name='{$name}' content='{$val}' />\n";
             }
         }
 
@@ -268,11 +268,13 @@ class tmp implements mod_handler {
         // Если метод tmp::obj() вызван без параметра - возвращаем текущий объект
         // Если объект еще не установлен, то возвращаем объект, соответствующий активному статическому разделу
         if(func_num_args()==0) {
-            if(!self::$obj)
+
+            if(!self::$obj) {
                 self::obj(reflex::get("reflex_none",0));
+            }
             return self::$obj;
-        }
-        if(func_num_args()==1) {
+
+        } elseif(func_num_args()==1) {
             self::$obj = $obj;
         }
     }
@@ -282,8 +284,9 @@ class tmp implements mod_handler {
      **/
     public static function h1() {
         $ret = tmp::obj()->meta("pageTitle");
-        if(!$ret)
+        if(!$ret) {
             $ret = tmp::obj()->title();
+        }
         return $ret;
     }
 

@@ -116,8 +116,9 @@ class eshop_order extends reflex implements mod_handler {
     
         $user = user::active();
         
-        if(!$user->exists())
+        if(!$user->exists()) {
             return;
+        }
             
         $s = util::splitAndTrim($_COOKIE[self::$cookieMyOrders],",");
         

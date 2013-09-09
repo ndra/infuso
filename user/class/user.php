@@ -6,7 +6,9 @@
 class user extends reflex {
 
     private static $activeUser = null;
+
     private $thisIsActiveUser = false;
+
     private $errorText = "";
 
     /**
@@ -223,7 +225,7 @@ class user extends reflex {
             $user = $auth->user();
 
             if(!$user->verified()) {
-                $user = user::get(0);
+                $user = user::virtual();
             }
 
             if(!$user->exists()) {
