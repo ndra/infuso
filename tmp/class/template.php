@@ -19,9 +19,7 @@ class tmp_template extends tmp_generic {
             $this->lockParam("*template");
         }
 
-        $this->loadCachedTeamplates();
-
-        
+       
         if($cache = $this->loadCachedTeamplates()) {
             if(array_key_exists($name,$this->cachedTeamplates)) {
                 $this->cache(-1 - $this->cachedTeamplates[$name]); //магия
