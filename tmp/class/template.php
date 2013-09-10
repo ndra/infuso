@@ -9,6 +9,8 @@ class tmp_template extends tmp_generic {
     
     public $cache = null;
     
+    public $ttl = null;
+    
     public $recache = null;
 
     public function __construct($name=null) {
@@ -20,9 +22,9 @@ class tmp_template extends tmp_generic {
         }
 
        
-        if($cache = $this->loadCachedTemplates()) {
+        if($cache = self::loadCachedTemplates()) {
             if(array_key_exists($name,$cache)) {
-                $this->cache(-1 - $cache[$name]); //магия
+                $this->cache($cache[$name]);
             }
         }
         
@@ -163,13 +165,15 @@ class tmp_template extends tmp_generic {
         tmp::css($this->fileCSS()."",1);
         tmp::js($this->fileJS()."",1);
         // Если включен режим кэширования
+
         if($this->cache) {
             // расчитываем хэш для сохранения в кэш :)
             $hash = $this->template().":".$this->cache.":".serialize($p);
 
+            
             // Пробуем достать данные их кэша
             $cached = mod_cache::get($hash);
-            
+
             // Если в кэше еще нет шаблона
             if(!$cached || $this->recache) {
 
@@ -180,11 +184,11 @@ class tmp_template extends tmp_generic {
                 $this->aexec($p);
                 $cached = ob_get_flush();
                 $conveyor = tmp::mergeConveyorDown();
-                $ttl = self::$cachedTemplates[self::handleName($this->template())];
+                
                 
                 if(!$conveyor->preventCaching()) {
-                    mod_cache::set($hash,$cached, $ttl);
-                    mod_cache::set($hash.":conveyor",$conveyor->serialize(), $ttl);
+                    mod_cache::set($hash,$cached, $this->ttl);
+                    mod_cache::set($hash.":conveyor",$conveyor->serialize(), $this->ttl);
                 }
 
                 mod_profiler::endOperation();
@@ -275,7 +279,8 @@ class tmp_template extends tmp_generic {
     /**
      * Включает кэширование этого шаблона
      **/
-    public function cache($hash=-1) {
+    public function cache($ttl = null, $hash=-1) {
+        $this->ttl = $ttl;
         $this->cache = $hash;
         return $this;
     }
