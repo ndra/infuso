@@ -66,14 +66,23 @@ abstract class mod_model extends mod_controller {
             $fields = $this->modelFieldBuffered($class);
             $field = $fields[$name];
 
-            $field = clone $field;
-            $field->setModel($this);
-            $initialValue = array_key_exists($field->name(),$this->initialData) ?
-                $this->initialData[$field->name()] :
-                $field->defaultValue();
+			if($field) {
+			
+	            $field = clone $field;
+	            $field->setModel($this);
 
-            $field->initialValue($initialValue);
-            $this->cfields[$name] = $field;
+	            $initialValue = array_key_exists($field->name(),$this->initialData) ?
+	                $this->initialData[$field->name()] :
+	                $field->defaultValue();
+
+	            $field->initialValue($initialValue);
+	            $this->cfields[$name] = $field;
+	            
+            } else {
+            
+                return mod_field::getNonExistent();
+            
+            }
 
         }
         
