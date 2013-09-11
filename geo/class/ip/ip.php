@@ -5,6 +5,8 @@
  **/
 class geo_ip extends mod_component {
 
+	private $data = null;
+    private $ip = null;
 
     public function dataWrappers() {
         return array(
@@ -23,7 +25,6 @@ class geo_ip extends mod_component {
         return new self($_SERVER["REMOTE_ADDR"]);
     }
 
-    private $ip = null;
     public function __construct($ip) {
         $this->ip = $ip;
     }
@@ -35,8 +36,7 @@ class geo_ip extends mod_component {
     public function ip() {
         return $this->ip;
     }
-
-    private $data = null;
+    
     public function data() {
 
         if(!$this->data) {
@@ -65,8 +65,9 @@ class geo_ip extends mod_component {
             $string = file_get_contents($url, false, $context);
             
             //Не получили данных от ipgeobase.ru
-            if ($string === false)
+            if ($string === false) {
                 return false;
+            }
             
             $xml = simplexml_load_string($string);
             

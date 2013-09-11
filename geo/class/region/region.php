@@ -24,6 +24,10 @@ class geo_region extends reflex {
 	public function reflex_parent() {
 		return $this->country();
 	}
+	
+	public function byName($title) {
+		return self::all()->eq("title",$title)->one();
+	}
 
 	public function cities() {
 		return geo_city::all()->eq("regionID",$this->id());

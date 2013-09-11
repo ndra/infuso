@@ -36,6 +36,14 @@ class geo_userBehaviour extends mod_behaviour {
         $city = geo_city::byName($this->component()->city());
         return $city;
     }
+    
+    /**
+     * Возвращает объект города, для этого пользователя
+     **/
+    public function regionObject() {
+        $city = geo_region::byName($this->component()->region());
+        return $city;
+    }
 
     /**
      * Возвращает "Домашние координаты" для пользователя
