@@ -264,15 +264,29 @@ class tmp_template extends tmp_generic {
 
     /**
      * Возвращает контент шаблона для отправки через ajax
-     * В этом случае все скрипты и стили будут добавлены к html-коду, возаращаемому шаблоном
-     * Также будет выполнена обработка отложенных функций
+	 * в зависимости от переданых параметров будут выполнены отложенные Ф-ции и добавлены css со жс-cкриптами
      **/
-    public function getContentForAjax() {
+    public function getContentForAjax($params = null) {
+        
+        if(!is_array($params)) {
+            $params = array(
+                "delayed" => true, 
+                "includes" => true
+            );    
+        }
+        
         tmp::pushConveyor();
         $html = $this->rexec();
         $conveyor = tmp::popConveyor();
-        $html = $conveyor->processDelayed($html);
-        $html.= $conveyor->getContentForAjax();
+        
+        if($params["delayed"]) {
+            $html = $conveyor->processDelayed($html);
+        }
+        
+        if($params["includes"]) {
+            $html.= $conveyor->getContentForAjax();
+        }
+        
         return $html;
     }
 
