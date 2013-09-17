@@ -21,8 +21,8 @@ class tmp_lib {
      **/
     public function jqui() {
         self::jq();
-        tmp::js("http://yandex.st/jquery-ui/1.9.0/jquery-ui.min.js");
-        tmp::css("http://yandex.st/jquery-ui/1.9.0/themes/base/jquery-ui.min.css");
+        tmp::js("http://yandex.st/jquery-ui/1.10.3/jquery-ui.min.js");
+        tmp::css("http://yandex.st/jquery-ui/1.10.3/themes/base/jquery-ui.min.css");
     }
     
     public function jqcolor() {
