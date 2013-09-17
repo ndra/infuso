@@ -40,7 +40,12 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                 general: {
                     text:"Пауза",
                 }, large: {
-                    type:this.info("type")+".pause"
+                    type:this.info("type")+".time"
+                }
+            }, time:{
+                general: {
+                    type:this.info("type")+".time",
+                    data:this.data
                 }
             }, resume: {
                 general: {
@@ -61,6 +66,7 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                     air:true
                 }, large:{
                     text:"Выполнено",
+                    icon:"/board/res/img/icons24/done.png",
                     style:{
                         color:"white",
                         background:"green"
@@ -88,13 +94,22 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                 general: {
                     icon:"complete",
                     onclick:[this.id(),"completeTask"],
-                    text:"Завершить"
+                }, large: {
+                    icon:"/board/res/img/icons24/complete.png",
+                    text:"Завершить",
+                    style:{
+                        color:"white",
+                        background:"green"
+                    }
                 }
             }, revision: {
                 general: {
                     icon:"notready",
                     onclick:[this.id(),"revisionTask"],
                     help:"Не готово"                    
+                }, large: {
+                    icon:"/board/res/img/icons24/revision.png",
+                    text:"Не готово"
                 }
             }, cancel: {
                 general: {                    
@@ -148,10 +163,7 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                 
                 // Добавляем стили для большой / маленькой кнопки                
                 var extra = inx.deepCopy(buttons[tools[i]])[this.big ? "large" : "small"];
-                
-                for(var j in extra) {
-                    button[j] = extra[j];
-                }
+                button = $.extend(true,button,extra);
             
                 this.cmd("add",button);
             }
@@ -222,11 +234,14 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
     
         this.fire("action");
     
-        this.call({
-            cmd:"board/controller/task/changeTaskStatus",
+        inx({
+            type:"inx.mod.board.timeInput",
             taskID:this.taskID,
-            status:0
-        });
+            taskStatus:0,
+            listeners:{
+                save:[this.id(),"handleTimeInput"]
+            }
+        }).cmd("render");
     },    
     
     /**

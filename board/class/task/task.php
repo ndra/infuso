@@ -594,6 +594,9 @@ class board_task extends reflex {
 
                 case board_task_status::STATUS_NEW:
 
+                    $ret["tools"][] = "time";
+                    $ret["tools"][] = "|";
+
                     if(!$this->isEpic()) {
                         $ret["tools"][] = "take";
                         $ret["tools"][] = "|";
@@ -603,9 +606,21 @@ class board_task extends reflex {
                     break;
 
                 case board_task_status::STATUS_CHECKOUT:
+
+                    $ret["tools"][] = "time";
+                    $ret["tools"][] = "|";
+
                     $ret["tools"][] = "complete";
                     $ret["tools"][] = "revision";
                     break;
+
+                case board_task_status::STATUS_COMPLETED:
+
+                    $ret["tools"][] = "time";
+                    $ret["tools"][] = "|";
+                    $ret["tools"][] = "revision";
+                    break;
+
             }
 
         }

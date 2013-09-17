@@ -16,7 +16,7 @@ inx.mod.board.task.project = inx.panel.extend({
     cmd_handleData:function(data) {
     
         var e = $("<div>").attr("title","Изменить проект").addClass("u2qp12x4");
-        e.html(data.projectTitle);
+        e.html(this.taskID + " / " + data.projectTitle);
         this.eProjectTitle = e;
         
         this.cmd("html",e);

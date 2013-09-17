@@ -136,7 +136,7 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
     
     cmd_save:function() {
     
-        var data = this.form.info("data");
+        var data = this.info("data");
     
         this.call({
             cmd:"board:controller:task:saveTask",

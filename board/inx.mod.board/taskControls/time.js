@@ -1,15 +1,17 @@
 // @link_with_parent
 
-inx.mod.board.taskControls.pause = inx.panel.extend({
+inx.mod.board.taskControls.time = inx.panel.extend({
 
     constructor:function(p) {  
     
         p.style = {
             width:240,
-            height:32
+            height:36
         }
         this.base(p);
-        this.on("render","handleData");
+        this.cmd("handleData",p.data);
+        
+        console.log(p.data);
         
     },
     
