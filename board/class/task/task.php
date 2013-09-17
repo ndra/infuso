@@ -517,6 +517,7 @@ class board_task extends reflex {
         $ret["project"] = array(
             "id" => $this->project()->id(),
 			"title" => $this->project()->title(),
+            "icon" => $this->project()->icon()->preview(16,16),
 		);
 		
 		// Ответственный пользователь
@@ -567,20 +568,21 @@ class board_task extends reflex {
             "task" => $this,
         ))) {
 
-            if(!$this->paused()) {
-                $ret["tools"][] = "pause";
-            } else {
-                $ret["tools"][] = "resume";
-            }
-            $ret["tools"][] = "|";
-
             switch($this->status()->id()) {
 
                 case board_task_status::STATUS_DRAFT:
                     $ret["tools"][] = "add";
+                    $ret["tools"][] = "take";
                     break;
 
                 case board_task_status::STATUS_IN_PROGRESS:
+
+                    if(!$this->paused()) {
+                        $ret["tools"][] = "pause";
+                    } else {
+                        $ret["tools"][] = "resume";
+                    }
+                    $ret["tools"][] = "|";
 
                     $ret["tools"][] = "done";
                     $ret["tools"][] = "|";

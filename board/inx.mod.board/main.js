@@ -124,6 +124,13 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
                 }).cmd("setParams",params.params);
                 break;
                 
+            case "conf-projects":
+                this.tabs.cmd("add",{
+                    type:"inx.mod.board.projects",
+                    name:"rojects"
+                }).cmd("setParams",params.params);
+                break;
+                
             case "task":
                 this.cmd("editTask",{taskID:params.params.id});
                 history.back();

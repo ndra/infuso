@@ -10,21 +10,34 @@ inx.ns("inx.mod.board").projects = inx.list.extend({
             air:true,
             onclick:[this.id(),"newProject"]
         },"|",{
+            icon:"refresh",
+            air:true,
+            onclick:[this.id(),"load"]
+        },"|",{
             icon:"delete",
             air:true,
-            onclick:[this.id(),"deleteProject"]
+            onclick:[this.id(),"deleteSelectedProjects"]
         }]
     
         p.loader = {
             cmd:"board/controller/project/listProjects"
         }
+        
+        this.on("itemdblclick","handleDblClick");
+        
         this.base(p); 
+    },
+    
+    cmd_handleDblClick:function(id) {
+        this.cmd("editProject",{
+            projectID:id
+        });        
     },
     
     cmd_newProject:function() {
         this.cmd("editProject",{
             projectID:"new"
-        })
+        });
     },
     
     cmd_editProject:function(p) {
@@ -37,7 +50,18 @@ inx.ns("inx.mod.board").projects = inx.list.extend({
         }).cmd("render")
     },
     
-    cmd_deleteProject:function(idList) {
+    cmd_deleteSelectedProjects:function() {
+    
+        var idList = this.info("selection");
+        
+        if(!idList.length) {
+            inx.msg("Проекты не выбраны",1);
+            return;
+        }
+        
+        if(!confirm("Удалить выбранные проекты (" + idList.length + ")")) {
+            return;
+        }
     
         this.call({
             cmd:"board/controller/project/deleteProjects",

@@ -2,6 +2,41 @@
 
 class board_project extends reflex {
 
+    public function reflex_table() {
+
+        return array (
+            'name' => get_class(),
+            'fields' => array (
+                array (
+                    'name' => 'id',
+                    'type' => 'jft7-kef8-ccd6-kg85-iueh',
+                ),array (
+                    'name' => 'title',
+                    'type' => 'v324-89xr-24nk-0z30-r243',
+                    'editable' => '1',
+                    'label' => '',
+                    'default' => '',
+                ), array (
+                    'name' => 'priority',
+                    'type' => 'gklv-0ijh-uh7g-7fhu-4jtg',
+                    'editable' => '1',
+                    'label' => 'Приоритет',
+                ), array (
+                    'name' => 'icon',
+                    'type' => 'file',
+                    'editable' => '1',
+                    'label' => 'Иконка',
+                ), array (
+                    'name' => 'url',
+                    'type' => 'string',
+                    'editable' => '1',
+                    'label' => 'Адрес сайта',
+                ),
+            ),
+        );
+
+    }
+
 	/**
 	 * Возвращает список всех проектов
 	 **/
@@ -39,46 +74,8 @@ class board_project extends reflex {
 		return board_task::all()->eq("projectID",$this->id());
 	}
 
-	/**
-	 * Возвращает количество потраченного на проект времени
-	 **/	 
-	public function timeSpent($status=null) {
-		$tasks = board_task_log::all()->joinByField("taskID")->eq("board_task.projectID",$this->id());
-		if($status!==null)
-			$tasks->eq("board_task.status",$status);
-		return $tasks->sum("timeSpent");
-	}
-
-	// Возвращает количество отведенного на проект времени
-	public function timeScheduled($status=null) {
-		$tasks = $this->tasks();
-		if($status!==null)
-			$tasks->eq("board_task.status",$status);
-		return $tasks->sum("timeScheduled");
-	}
-
 	public function customer() {
 		return $this->pdata("customerUserID");
-	}
-
-	public function info($status) {
-		$info = "";
-	    if($this->customer()->exists())
-	    	$info.= "доступ:".$this->customer()->data("email")."<br/> ";
-
-		switch($status) {
-
-			case 10:
-			    $count = $this->tasks()->eq(status,$status)->count();
-			    if($count)
-					$info.= "Ожидает запуска $count задач на ".$this->timeScheduled($status)." ч.";
-				break;
-
-			default:
-				$info.= "потрачено ".$this->timeSpent($status)." / ".$this->timeScheduled($status)." ч.";
-				break;
-		}
-		return $info;
 	}
 
 	public static function reflex_root() {
@@ -90,5 +87,26 @@ class board_project extends reflex {
 	        $this->tasks()->title("Задачи"),
 	    );
 	}
+
+    public function icon() {
+        return $this->pdata("icon");
+    }
+
+    public function loadFavicon() {
+
+        if(!$url = trim($this->data("url"))) {
+            return;
+        }
+
+        $img = imagecreatefrompng("http://www.google.com/s2/favicons?domain={$url}");
+        imagesavealpha($img,true);
+
+        $tmp = file::tmp()."favicon.png";
+        imagepng($img,file::get($tmp)->native());
+
+        $icon = $this->storage()->add($tmp,"favicon.png");
+        $this->data("icon",$icon);
+
+    }
 	
 }

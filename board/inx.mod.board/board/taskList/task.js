@@ -97,7 +97,7 @@ inx.mod.board.board.taskList.task = inx.panel.extend({
                 }).appendTo(e);
                 
             $("<img>")
-                .attr("src","http://vernoe.com/favicon.ico")
+                .attr("src",task.project.icon)
                 .appendTo(text);
                 
             $("<span>")

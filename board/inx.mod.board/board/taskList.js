@@ -140,19 +140,6 @@ inx.mod.board.board.taskList = inx.list.extend({
         window.location.hash = "task/id/"+taskID;
     },
     
-    cmd_handleCreateNewTask:function(id) {
-        this.cmd("editTask",id,{showMore:true});
-    },
-    
-    /**
-     * Создает новую помеху
-     **/
-    cmd_newDrawback:function() {
-        this.call({
-            cmd:"board/controller/task/newDrawback"
-        },[this.id(),"editTask"]);
-    },
-    
     cmd_handleSortBegin:function(itemID) {
     
         if(!this.sortEnabled) {

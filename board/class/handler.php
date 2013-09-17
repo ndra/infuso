@@ -19,6 +19,9 @@ class board_handler implements mod_handler {
         user_operation::create("board/createProject","Создание проекта в доске")
             ->appendTo("boardUser");
 
+        user_operation::create("board/updateProject","Редактирование проекта в доске")
+            ->appendTo("boardUser");
+
         user_operation::create("board/viewAllProjects","Создание проекта в доске")
             ->appendTo("boardUser");
 

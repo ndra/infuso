@@ -22,6 +22,7 @@ class board_controller_project extends mod_controller {
             $ret[] = array(
                 "id" => $project->id(),
                 "text" => $project->title(),
+                "icon" => $project->icon()->preview(16,16)->transparent(),
             );
         }
 
@@ -52,17 +53,23 @@ class board_controller_project extends mod_controller {
         return $ret;
 
     }
+
+    public function post_deleteProjects($p) {
+        foreach($p["idList"] as $projectID) {
+            $project = board_project::get($projectID);
+            $project->delete();
+        }
+    }
     
-    /*public static function post_getProject($p) {
+    public static function post_getProject($p) {
         $project = board_project::get($p["projectID"]);
         return array(
             "title" => $project->data("title"),
-            "priority" => $project->data("priority"),
-            "customerEmail" => $project->pdata("customerUserID")->data("email"),
+            "url" => $project->data("url"),
         );
-    }  */
+    }
 
-   /* public static function post_saveProject($p) {
+   public static function post_saveProject($p) {
 
         // Название проекта
         $data = array();
@@ -73,22 +80,11 @@ class board_controller_project extends mod_controller {
             return;
         }
 
-        // Приоритет
-        $data["priority"] = $p["data"]["priority"];
-
-        $data["customerUserID"] = 0;
-        if($u = trim($p["data"]["customerEmail"])) {
-            $user = user::byEmail($u);
-            if(!$user->exists()) {
-                mod::msg("Пользователь с электронной почтой $u не существует",1);
-                return;
-            }
-            $data["customerUserID"] = $user->id();
-        }
+        $data["url"] = $p["data"]["url"];
 
         if($p["projectID"]=="new") {
 
-            if(!user::active()->checkAccess("board:createProject")) {
+            if(!user::active()->checkAccess("board/createProject")) {
                 mod::msg(user::active()->errorText(),1);
                 return;
             }
@@ -99,7 +95,7 @@ class board_controller_project extends mod_controller {
 
             $project = board_project::get($p["projectID"]);
 
-            if(!user::active()->checkAccess("board:updateProject")) {
+            if(!user::active()->checkAccess("board/updateProject")) {
                 mod::msg(user::active()->errorText(),1);
                 return;
             }
@@ -109,31 +105,9 @@ class board_controller_project extends mod_controller {
             $project->data($key,$val);
         }
 
-        return true;
-    }  */
+        $project->loadFavicon();
 
-    /**
-     * Экшн удаления проекта
-     **/
-   /* public static function post_deleteProject($p) {
-    
-        mod::msg($p);
-        return;
-
-        if(!user::active()->check("board:access")) 
-            return;
-
-        $project = board_project::get($p["projectID"]);
-        $project->delete();
         return true;
     }
-
-    private static function sortProjects($a,$b) {
-        if(!sizeof($b["tasks"]))
-            return -1;
-        if(!sizeof($a["tasks"]))
-            return 1;
-        return board_project::get($b["id"])->data("priority") - board_project::get($a["id"])->data("priority");
-    }  */
 
 }

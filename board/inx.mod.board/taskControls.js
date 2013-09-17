@@ -7,8 +7,7 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
         if(p.big) {        
             p.style = {
                 spacing:5,
-                border:0,
-                padding:10
+                border:0
             }        
         } else {
             p.style = {}
@@ -32,10 +31,14 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                 general: {
                     icon:"/board/res/img/icons16/add.png",
                     onclick:[this.id(),"addTask"],
-                    help:"К исполнению"
+                    help:"К исполнению",
+                }, large: {
+                    icon:"/board/res/img/icons24/add.png",
+                    text:"Добавить"
                 }
             }, pause:{
                 general: {
+                    text:"Пауза",
                 }, large: {
                     type:this.info("type")+".pause"
                 }
@@ -69,13 +72,11 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                 }
             }, take: {
                 general: {
-                    icon:"/board/res/img/icons16/take.png",
                     onclick:[this.id(),"takeTask"],
-                    help:"Взять",
-                    style:{
-                        color:"white",
-                        background:"green"
-                    }
+                    help:"Взять"
+                }, large: {
+                    icon:"/board/res/img/icons24/take.png",
+                    text:"Взять"
                 }
             }, stop: {
                 general: {
@@ -141,14 +142,15 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                 if(!button.style) {
                     button.style = {};
                 }
-                for(var i in style) {
-                    button.style[i] = style[i];
+                for(var j in style) {
+                    button.style[j] = style[j];
                 }
                 
                 // Добавляем стили для большой / маленькой кнопки                
                 var extra = inx.deepCopy(buttons[tools[i]])[this.big ? "large" : "small"];
-                for(var i in extra) {
-                    button[i] = extra[i];
+                
+                for(var j in extra) {
+                    button[j] = extra[j];
                 }
             
                 this.cmd("add",button);
@@ -241,6 +243,20 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
         });
     },
     
+    /**
+     * Переводит задачу в статус к исполнению
+     **/
+    cmd_cancelTask:function() {
+    
+        this.fire("action");
+    
+        this.call({
+            cmd:"board/controller/task/changeTaskStatus",
+            taskID:this.taskID,
+            status:100
+        });
+    },
+    
     cmd_revisionTask:function() {    
     
         this.fire("action");
@@ -250,10 +266,6 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
             taskID:this.taskID,
             status:0,
         }).cmd('render');    
-    },
-    
-    cmd_voteTask:function() {
-        window.location.href = "#vote/id/"+this.taskID;
     }
          
 });

@@ -3,7 +3,9 @@
 
 inx.mod.board.projects.editor = inx.dialog.extend({
 
-    constructor:function(p) {    
+    constructor:function(p) {  
+    
+        p.title = "Редактирование проекта";
 
         p.layout = "inx.layout.form";
         
@@ -13,8 +15,24 @@ inx.mod.board.projects.editor = inx.dialog.extend({
             spacing:10      
         }
 
+        p.autoDestroy = true;
+
         this.base(p); 
-        this.cmd("handleData");
+        
+        if(this.projectID=="new") {
+            this.cmd("handleData");
+        } else {
+            this.cmd("requestData");
+        }
+    },
+    
+    cmd_requestData:function() {
+    
+        this.call({
+            cmd:"board/controller/project/getProject",
+            projectID:this.projectID,
+        },[this.id(),"handleData"]);
+    
     },
     
     cmd_handleData:function(data) {
@@ -23,7 +41,16 @@ inx.mod.board.projects.editor = inx.dialog.extend({
             type:"inx.textfield",
             label:"Название проекта",
             name:"title",
-            width:"parent"
+            width:"parent",
+            value:data.title
+        });
+        
+        this.cmd("add",{
+            type:"inx.textfield",
+            label:"Адрес сайта",
+            name:"url",
+            width:"parent",
+            value:data.url
         });
         
         this.cmd("add",{
