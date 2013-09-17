@@ -48,12 +48,33 @@ class tmp_template extends tmp_generic {
             if(is_array($cache)) {
                 foreach($cache as $item){
                     list($name, $ttl) = explode(":", $item);
-                    self::$cachedTemplates[$name] = $ttl;
+                    self::$cachedTemplates[$name] = self::prepareTTL($ttl);
                 }
             }
         }
         
         return self::$cachedTemplates;
+    }
+    
+    /**
+    * Проверяем и подготавливаем значение ttl
+    **/
+    public function prepareTTL($ttl) {
+        if($ttl == null) {
+            return $ttl;
+        }
+        if(!is_numeric($ttl)){
+            throw new Exception("TTL не явлется числом");
+        }
+        
+        $ttl = floor($ttl);
+        
+        if($ttl < 0){
+            throw new Exception("TTL не явлется положительным числом");
+        }
+      
+       
+        return $ttl;
     }
      
     /**
@@ -264,7 +285,8 @@ class tmp_template extends tmp_generic {
 
     /**
      * Возвращает контент шаблона для отправки через ajax
-	 * в зависимости от переданых параметров будут выполнены отложенные Ф-ции и добавлены css со жс-cкриптами
+     * В этом случае все скрипты и стили будут добавлены к html-коду, возаращаемому шаблоном
+     * Также будет выполнена обработка отложенных функций
      **/
     public function getContentForAjax($params = null) {
         
@@ -294,7 +316,7 @@ class tmp_template extends tmp_generic {
      * Включает кэширование этого шаблона
      **/
     public function cache($ttl = null, $hash=-1) {
-        $this->ttl = $ttl;
+        $this->ttl = self::prepareTTL($ttl);
         $this->cache = $hash;
         return $this;
     }
