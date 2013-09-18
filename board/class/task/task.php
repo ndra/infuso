@@ -568,6 +568,8 @@ class board_task extends reflex {
             "task" => $this,
         ))) {
 
+            $ret["tools"][] = "edit";
+
             switch($this->status()->id()) {
 
                 case board_task_status::STATUS_DRAFT:
@@ -603,6 +605,7 @@ class board_task extends reflex {
                     }
                     $ret["tools"][] = "cancel";
                     $ret["tools"][] = "problems";
+
                     break;
 
                 case board_task_status::STATUS_CHECKOUT:

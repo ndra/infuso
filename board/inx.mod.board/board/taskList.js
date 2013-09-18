@@ -17,7 +17,7 @@ inx.mod.board.board.taskList = inx.list.extend({
         }
         
         if(p.style.spacing===undefined) {
-            p.style.spacing = 15;
+            p.style.spacing = 0;
         }
         
         if(p.style.padding===undefined) {
@@ -78,19 +78,6 @@ inx.mod.board.board.taskList = inx.list.extend({
     cmd_handleLoad:function(data) {
     
         this.sortEnabled = data.sortable;
-        
-        if (data.showCreateButton) {
-                
-            data.data.unshift({
-                id:"drawback"
-            });
-            
-            data.data.unshift({
-                id:"new",
-                recentProjects:data.recentProjects
-            });
-
-        }
         
         this.task("load",1000*60*2)
         

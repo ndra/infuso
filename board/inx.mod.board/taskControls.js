@@ -27,7 +27,17 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
         this.items().cmd("destroy");
         
         var buttons = {
-            add:{
+            edit:{
+                general: {
+                    icon:"/board/res/img/icons16inverse/edit.png",
+                    onclick:[this.id(),"editTask"],
+                    text:"Редактировать",
+                    air:true,
+                    style:{
+                        color:"white"
+                    }
+                }, large: null
+            }, add:{
                 general: {
                     icon:"/board/res/img/icons16/add.png",
                     onclick:[this.id(),"addTask"],
@@ -46,21 +56,21 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                 general: {
                     type:this.info("type")+".time",
                     data:this.data
-                }
+                }, small: false
             }, resume: {
                 general: {
                     help:"Продолжить",
                     onclick:[this.id(),"pauseTask"],
                 }, small: {
                     air:true,
-                    icon:"/board/res/img/icons16/resume.png",
+                    icon:"/board/res/img/icons16inverse/resume.png",
                 }, large :{
                     icon:"/board/res/img/icons24/resume.png",
                 }
                 
             }, done: {
                 general: {
-                    icon:"/board/res/img/icons16/done.png",
+                    icon:"/board/res/img/icons16inverse/done.png",
                     onclick:[this.id(),"doneTask"]
                 }, small:{
                     air:true
@@ -75,6 +85,9 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
             }, problems: {
                 general: {
                     icon:"/board/res/img/icons24/problems.png"
+                }, small: {
+                    icon:"/board/res/img/icons16inverse/problems.png",
+                    air:true
                 }
             }, take: {
                 general: {
@@ -89,6 +102,9 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                     icon:"/board/res/img/icons24/stop.png",
                     onclick:[this.id(),"stopTask"],
                     help:"Вернуть"
+                }, small: {
+                    icon:"/board/res/img/icons16inverse/stop.png",
+                    air:true
                 }
             }, complete: {
                 general: {
@@ -110,6 +126,9 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                 }, large: {
                     icon:"/board/res/img/icons24/revision.png",
                     text:"Не готово"
+                }, small: {
+                    icon:"/board/res/img/icons16inverse/revision.png",
+                    air:true
                 }
             }, cancel: {
                 general: {                    
@@ -118,7 +137,7 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                 }, large: {
                     icon:"/board/res/img/icons24/cancel.png",
                 }, small: {
-                    icon:"/board/res/img/icons16/cancel.png",
+                    icon:"/board/res/img/icons16inverse/cancel.png",
                     air:true
                 }
             }    
@@ -163,9 +182,10 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                 
                 // Добавляем стили для большой / маленькой кнопки                
                 var extra = inx.deepCopy(buttons[tools[i]])[this.big ? "large" : "small"];
-                button = $.extend(true,button,extra);
-            
-                this.cmd("add",button);
+                if(extra!==false) {
+                    button = $.extend(true,button,extra);
+                    this.cmd("add",button);
+                }
             }
         }
     

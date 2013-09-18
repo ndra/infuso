@@ -88,6 +88,5 @@ class util_str_ru extends mod_behaviour {
         return $ret;
 
     }
-    
 
 }

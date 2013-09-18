@@ -78,13 +78,6 @@ inx.ns("inx.mod.board").timeInput = inx.dialog.extend({
         
         this.on("submit",[this.id(),"save"]);
         
-        this.cmd("add",{
-            type:"inx.mod.board.vote",
-            taskID:this.taskID,
-            width:"parent",
-            y:130
-        });
-        
         this.cmd("addSidePanel",{
             type:"inx.mod.board.attachments",
             region:"bottom",
