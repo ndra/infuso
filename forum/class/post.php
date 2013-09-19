@@ -33,6 +33,12 @@ class forum_post extends reflex {
         ));    
     }
     
+    public function initialParams() {
+        return array(
+            "autoMailSubscribers" => true,
+        );
+    }
+    
     /**
      * Возвращает текущею коллекцию
      *
@@ -233,8 +239,10 @@ class forum_post extends reflex {
         // Подписываю автора на этот Topic
         user::active()->subscribe("forum:topic:".$post->topic()->id(), $params);
         
-        $post->_mailSubscribers($params);
-
+        if($post->param("autoMailSubscribers")){
+            $post->_mailSubscribers($params);
+        }
+        
         // редиректим к сообщению
         header("Location: " . $post->url());
         die();

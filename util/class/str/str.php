@@ -139,9 +139,9 @@ class util_str extends mod_component {
         return new self($str);
     }
 
-	/**
-	 * Удаляет из строки двойные пробелы
-	 **/
+    /**
+     * Удаляет из строки двойные пробелы
+     **/
     public function removeDuplicateSpaces() {
         $s = preg_replace("/\s+/"," ",$this."");
         return new self($s);
@@ -171,62 +171,63 @@ class util_str extends mod_component {
     
     public function removeBom() {
     
-		$bom = pack("CCC", 0xef, 0xbb, 0xbf);
-		$str = $this."";
-		if (0 == strncmp($str, $bom, 3)) {
-			$str = substr($str, 3);
-		}
-		
-		return new self($str);
-		
+        $bom = pack("CCC", 0xef, 0xbb, 0xbf);
+        $str = $this."";
+        if (0 == strncmp($str, $bom, 3)) {
+            $str = substr($str, 3);
+        }
+        
+        return new self($str);
+        
     }
     
     /**
      * Преобразует строку в транслит
      **/
     public function translit() {
-	    $tr = array(
-	        "й" => "y",
-	        "ц" => "ts",
-	        "у" => "u",
-	        "к" => "k",
-	        "е" => "e",
-	        "н" => "n",
-	        "г" => "g",
-	        "ш" => "sh",
-	        "щ" => "sh",
-	        "з" => "z",
-	        "х" => "h",
-	        "ъ" => "",
-	        "ф" => "f",
-	        "ы" => "i",
-	        "в" => "v",
-	        "а" => "a",
-	        "п" => "p",
-	        "р" => "r",
-	        "о" => "o",
-	        "л" => "l",
-	        "д" => "d",
-	        "ж" => "zh",
-	        "э" => "e",
-	        "я" => "ya",
-	        "ч" => "ch",
-	        "с" => "s",
-	        "м" => "m",
-	        "и" => "i",
-	        "т" => "t",
-	        "ь" => "",
-	        "б" => "b",
-	        "ю" => "yu",
-	    );
-	    
-	    $tr2 = array();
-	    foreach($tr as $key=>$val) {
-			$tr2[$key] = $val;
-			$tr2[util::str($key)->upper().""] = util::str($val)->upper()."";
-	    }
-	    
-	    return new self(strtr($this,$tr2));
+        $tr = array(
+            "й" => "y",
+            "ц" => "ts",
+            "у" => "u",
+            "к" => "k",
+            "е" => "e",
+            "ё" => "e",
+            "н" => "n",
+            "г" => "g",
+            "ш" => "sh",
+            "щ" => "sh",
+            "з" => "z",
+            "х" => "h",
+            "ъ" => "",
+            "ф" => "f",
+            "ы" => "i",
+            "в" => "v",
+            "а" => "a",
+            "п" => "p",
+            "р" => "r",
+            "о" => "o",
+            "л" => "l",
+            "д" => "d",
+            "ж" => "zh",
+            "э" => "e",
+            "я" => "ya",
+            "ч" => "ch",
+            "с" => "s",
+            "м" => "m",
+            "и" => "i",
+            "т" => "t",
+            "ь" => "",
+            "б" => "b",
+            "ю" => "yu",
+        );
+        
+        $tr2 = array();
+        foreach($tr as $key=>$val) {
+            $tr2[$key] = $val;
+            $tr2[util::str($key)->upper().""] = util::str($val)->upper()."";
+        }
+        
+        return new self(strtr($this,$tr2));
     }
     
     /**
@@ -234,16 +235,16 @@ class util_str extends mod_component {
      **/
     public function makeLinks() {
     
-		$text = (string)$this;
+        $text = (string)$this;
 
-		$text = preg_replace(
-			"/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/",
-			'<a href="$0" >$0</a> ',
-			$text);
-			
-    	$text = preg_replace('/(\S+@\S+\.\S+)/', '<a href="mailto:$1">$1</a>', $text);
+        $text = preg_replace(
+            "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/",
+            '<a href="$0" >$0</a> ',
+            $text);
+            
+        $text = preg_replace('/(\S+@\S+\.\S+)/', '<a href="mailto:$1">$1</a>', $text);
 
-		return new self($text);
+        return new self($text);
 
     }
 
