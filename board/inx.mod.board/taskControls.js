@@ -93,6 +93,8 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                 general: {
                     onclick:[this.id(),"takeTask"],
                     help:"Взять"
+                }, small: {
+                    icon:"/board/res/img/icons16inverse/take.png",
                 }, large: {
                     icon:"/board/res/img/icons24/take.png",
                     text:"Взять"

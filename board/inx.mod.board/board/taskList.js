@@ -17,7 +17,7 @@ inx.mod.board.board.taskList = inx.list.extend({
         }
         
         if(p.style.spacing===undefined) {
-            p.style.spacing = 0;
+            p.style.spacing = 15;
         }
         
         if(p.style.padding===undefined) {

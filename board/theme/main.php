@@ -3,7 +3,10 @@
 tmp::header();
 tmp::reset();
 
-tmp::exec("menu");
+//tmp::exec("menu");
 
-inx::add("inx.mod.board.main");
+//inx::add("inx.mod.board.main");
+
+util::profiler();
+
 tmp::footer();

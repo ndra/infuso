@@ -27,8 +27,9 @@ class mod_event extends mod_component {
     public function handlers() {
         $handlers = mod::classmap("handlers");
         $handlers = $handlers[$this->name()];
-        if(!$handlers)
+        if(!$handlers) {
             $handlers = array();
+        }
         return $handlers;
     }
 

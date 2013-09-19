@@ -200,27 +200,6 @@ class mod_action extends mod_component {
         return $map;
     }
 
-    public static final function forwardTest($url) {
-
-        mod_profiler::beginOperation("url","forward",$url);
-
-        if(is_string($url)) {
-            $url = mod_url::get($url);
-        }
-
-        if($url->path()=="/mod") {
-            mod_profiler::endOperation();
-            return self::get("mod");
-        }
-
-        foreach(self::all() as $router) {
-            if($callback = call_user_func(array($router,"forward"),$url)) {
-                mod_profiler::endOperation();
-                return $callback;
-            }
-        }
-    }
-
     /**
      * @return Возвращает url экшна
      * url Кэшируется на сутки

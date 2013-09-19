@@ -252,7 +252,10 @@ class mod_url {
      * Взвращает экшн для данного урл
      **/
     public function action() {
-        return mod_action::forwardTest($this);
+
+        return mod::service("route")->urlToAction($this);
+
+
     }
 
 }

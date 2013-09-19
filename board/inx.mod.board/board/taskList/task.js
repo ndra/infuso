@@ -4,7 +4,7 @@
 // Стикер задачи
 
 inx.css(".qm5btw9-task{font-family:verdana;}");
-inx.css(".qm5btw9{overflow:hidden;position:relative;cursor:pointer;background:white;border:1px solid #ccc;box-shadow:0px 0px 5px rgba(0, 0, 0, 0.1);}");
+inx.css(".qm5btw9{overflow:hidden;position:relative;cursor:pointer;background:white;box-shadow:0px 0px 5px rgba(0, 0, 0, 0.1);}");
 inx.css(".qm5btw9:hover{border:1px solid gray;}");
 inx.css(".qm5btw9-status{position:absolute;bottom:0;left:0;width:100%;color:black;padding:2px 1px 1px 2px;white-space:nowrap;}");
 inx.css(".qm5btw9-hover-group .qm5btw9-background{background:rgba(255,255,0,.2);}");

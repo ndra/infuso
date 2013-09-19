@@ -5,7 +5,7 @@ inx.ns("inx.mod.board").board = inx.panel.extend({
     constructor:function(p) {
     
         p.style = {
-            vscroll:true
+            vscroll:true,
         }
     
         this.taskList = inx({
