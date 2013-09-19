@@ -229,24 +229,37 @@ inx.height = function(e) {
     return h;
 }
 
-inx.width = function(e) {
+inx.width = function(e,type) {
 
-    var t1 = new Date().getTime();
-    var w = e.width();
+    switch(type) {
+        default:
+            fn = function(e) {
+                return e.width();
+            }
+            break;
+        case "client":
+            fn = function(e) {
+                return e.get(0).clientWidth;
+            }
+            break;
+    }
+
+    var w = fn(e);
+    
     if(!w) {
         var ruler = inx.getRuler();
+    
         var e2 = e.clone().appendTo(ruler);
-        w = e2.width();
-        e2.remove();
+        w = fn(e2);
+  
     }
-    
-    var t2 = new Date().getTime();
-    var time = t2-t1;
-    inx.observable.debug.cmdCountByName["inx.width"] = (inx.observable.debug.cmdCountByName["inx.width"] || 0) + 1;
-    inx.observable.debug.totalTime["inx.width"] = (inx.observable.debug.totalTime["inx.width"] || 0) + time;
-    
+        
     return w;
 }
+
+setInterval(function() {
+     inx.getRulerruler().html("");
+},5000)
 
 inx.getRuler = function() {
     if(!inx.ruler) {

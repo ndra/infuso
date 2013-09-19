@@ -46,8 +46,7 @@ inx.button = inx.box.extend({
 
     cmd_render:function(c) {
         this.base(c);
-        this.private_input = $("<div class='vbjm1zdmgr-button' >").appendTo(this.el);
-       // this.el.addClass("inx-unselectable");        
+        this.private_input = $("<div class='vbjm1zdmgr-button' >").appendTo(this.el);     
         this.el.mouseover(inx.cmd(this,"private_handleMouseover"));
         this.cmd("updateHTML");
     },
@@ -88,7 +87,7 @@ inx.button = inx.box.extend({
     },
     
     cmd_syncLayout:function() {
-    
+     
         var h = this.info("height") - 2;
         var fontSize = this.style("fontSize");
         var paddingTop = Math.round((h-fontSize)/2);
@@ -96,7 +95,7 @@ inx.button = inx.box.extend({
         
         var iconWidth = this.style("iconWidth");
         var iconHeight = this.style("iconHeight");
-        var paddingLeft = padding;        
+        var paddingLeft = padding;      
         
         if(this.icon) {
         
@@ -161,11 +160,8 @@ inx.button = inx.box.extend({
     },
 
     cmd_resizeToContents:function() {
-        var a = $("<div/>").addClass("inx-box").appendTo("body");
-        var inp = this.private_input.clone().appendTo(a);
-        this.cmd("widthContent",inp.get(0).clientWidth,"ya23f9bokv23");
-        a.remove();
-        this.air || this.task("showFrame");
+        var width = inx.width(this.private_input,"client");
+        this.cmd("widthContent",width);
     },
 
     cmd_showMenu:function() {

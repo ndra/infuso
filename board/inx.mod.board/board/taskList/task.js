@@ -3,9 +3,9 @@
 
 // Стикер задачи
 
-inx.css(".qm5btw9-task{font-family:verdana;}");
+inx.css(".qm5btw9-task{font-family:verdana;font-size:11px;}");
 inx.css(".qm5btw9{overflow:hidden;position:relative;cursor:pointer;background:white;box-shadow:0px 0px 5px rgba(0, 0, 0, 0.1);}");
-inx.css(".qm5btw9:hover{border:1px solid gray;}");
+
 inx.css(".qm5btw9-status{position:absolute;bottom:0;left:0;width:100%;color:black;padding:2px 1px 1px 2px;white-space:nowrap;}");
 inx.css(".qm5btw9-hover-group .qm5btw9-background{background:rgba(255,255,0,.2);}");
 inx.css(".qm5btw9-my {border:1px solid blue;}")
@@ -38,6 +38,8 @@ inx.mod.board.board.taskList.task = inx.panel.extend({
             this.style("break",true).style("width","parent").style("height",10);
                 
         } else {
+        
+            this.el.css({overflow:"visible"});
     
             // При наведении на задачу, подсвечиваем все задачи из того же проекта
             var taskContainer = $("<div>")
@@ -46,9 +48,19 @@ inx.mod.board.board.taskList.task = inx.panel.extend({
           
             var e = $("<div>")
                 .addClass("qm5btw9")
-                .css({height:height})
+                .css({
+                    height:height - 12,
+                    padding:6
+                })
                 .appendTo(taskContainer)
                 .addClass("qm5btw9-"+task.projectID);
+                
+            if(!task.color || task.color=="#ffffff") {
+                e.css({
+                    padding:5,
+                    border:"1px solid #ccc"
+                });
+            }
             
             // Подсвечиваем свои задачи    
             if(task.my) {
@@ -74,25 +86,31 @@ inx.mod.board.board.taskList.task = inx.panel.extend({
                 }).appendTo(e);
             }
             
+            // Иконка, id задачи и проект 
+            var head = $("<div>")
+                .css({
+                    background:"url(" + task.project.icon + ") left center no-repeat",
+                    padding:"3px 0 3px 20px",
+                    fontFamily:"georgia",
+                    fontStyle:"italic",
+                    fontWeight:"bold"
+                }).appendTo(e);
+                
+            $("<span>")
+                .css({
+                    whiteSpace:"nowrap"
+                }).html(task.project.title)
+                .appendTo(head);
+            
             // Контейнер текста
             var text = $("<div>")
+                .html(task.text)
                 .css({
                     height:height-23,
-                    padding:6,
                     overflow:"hidden",
                     position:"relative"
                 }).appendTo(e);
-            
-            // Иконка, id задачи и проект 
-                
-            $("<img>")
-                .attr("src",task.project.icon)
-                .appendTo(text);
-                
-            $("<span>")
-                .html("<b>" + task.id + ". " + task.project.title + "</b> " + task.text)
-                .appendTo(text);
-    
+
             // Статус листика
             
             var status = "";
@@ -168,7 +186,6 @@ inx.mod.board.board.taskList.task = inx.panel.extend({
             this.controls
                 .cmd("render")
                 .cmd("appendTo",this.toolsContainer);
-                
         }
         
     },

@@ -26,7 +26,7 @@ class mod_route_service extends mod_service {
 
         if($url->path()=="/mod") {
             mod_profiler::endOperation();
-            return self::get("mod");
+            return mod::action("mod");
         }
 
         $routers = mod::classmap("routes");

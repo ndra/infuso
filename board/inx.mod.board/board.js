@@ -6,6 +6,7 @@ inx.ns("inx.mod.board").board = inx.panel.extend({
     
         p.style = {
             vscroll:true,
+            background:"#ccc"
         }
     
         this.taskList = inx({

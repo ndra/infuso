@@ -303,6 +303,10 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
             taskID:this.taskID,
             status:0,
         }).cmd('render');    
+    },
+    
+    cmd_editTask:function() {    
+        window.location.href = "#task/id/"+this.taskID;
     }
          
 });
