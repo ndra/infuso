@@ -113,8 +113,9 @@ inx.dd = {
     hideHelper:function() {
     
         if(inx.dd.helper) {
-            for(var i=0;i<4;i++)
+            for(var i=0;i<4;i++) {
                 inx.dd.helper[i].css({display:"none"})
+            }
         }
     },
     
@@ -226,6 +227,10 @@ inx.dd = {
             inx.dd.current = {};
         }
         
+    },
+    
+    enabled:function() {
+        return !!inx.dd.current.active;
     },
     
     fireEvent:function(params) {

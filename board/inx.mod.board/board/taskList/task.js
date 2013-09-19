@@ -171,6 +171,10 @@ inx.mod.board.board.taskList.task = inx.panel.extend({
     
     cmd_showControls:function() {
     
+        if(inx.dd.enabled()) {
+            return;
+        }
+    
         this.toolsContainer.stop(true,true).fadeIn(300);
         
         if(!this.controls) {
@@ -191,6 +195,11 @@ inx.mod.board.board.taskList.task = inx.panel.extend({
     },
     
     cmd_hideControls:function() {
+    
+        if(inx.dd.enabled()) {
+            return;
+        }
+    
         this.toolsContainer.stop(true,true).fadeOut(300);
     },
     
