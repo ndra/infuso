@@ -23,7 +23,7 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
         this.informer = inx({
             type:"inx.mod.board.main.informer",
             region:"right",
-            width:300,
+            width:400,
             resizable:true
         });
         

@@ -9,7 +9,7 @@ inx.mod.board.main.informer = inx.panel.extend({
             padding:15,
             spacing:10,
             vscroll:true,
-            background:"#F5F5EA"
+            background:"#ededed"
         }
    
         p.items = [{

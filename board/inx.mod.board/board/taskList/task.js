@@ -3,157 +3,93 @@
 
 // Стикер задачи
 
-inx.css(".qm5btw9-task{font-family:verdana;font-size:11px;}");
-inx.css(".qm5btw9{overflow:hidden;position:relative;cursor:pointer;background:white;box-shadow:0px 0px 5px rgba(0, 0, 0, 0.1);}");
-
-inx.css(".qm5btw9-status{position:absolute;bottom:0;left:0;width:100%;color:black;padding:2px 1px 1px 2px;white-space:nowrap;}");
-inx.css(".qm5btw9-hover-group .qm5btw9-background{background:rgba(255,255,0,.2);}");
-inx.css(".qm5btw9-my {border:1px solid blue;}")
-
 inx.mod.board.board.taskList.task = inx.panel.extend({
 
     constructor:function(p) {    
         p.style = {
             border:0,
-            height:130,
             width:130
         }
         this.base(p);
     },
     
-    cmd_render:function() {
+    renderBody:function(taskData) {
     
-        var width = this.info("width");
-        var height = this.info("height");
+        var size = this.info("width");
     
-        this.base();
-
-        var task = this.data.data;
-  
-        // Отметка даты
-        if (this.data.dateMark) {
-            $("<div class='qm5btw9-date-mark' >")
-                .appendTo(this.el)
-                .html(this.data.dateMark);
-            this.style("break",true).style("width","parent").style("height",10);
-                
-        } else {
+        var body = $("<div>").css({
+            width:size-2,
+            height:size-2,
+            border:"1px solid #ccc",
+            position:"relative",
+            boxShadow:"0 0 5px rgba(0,0,0,.3)",
+            background:"white"
+        });
         
-            this.el.css({overflow:"visible"});
-    
-            // При наведении на задачу, подсвечиваем все задачи из того же проекта
-            var taskContainer = $("<div>")
-                .addClass("qm5btw9-task")
-                .data("taskID",task.id);
-          
-            var e = $("<div>")
-                .addClass("qm5btw9")
-                .css({
-                    height:height - 12,
-                    padding:6
-                })
-                .appendTo(taskContainer)
-                .addClass("qm5btw9-"+task.projectID);
-                
-            if(!task.color || task.color=="#ffffff") {
-                e.css({
-                    padding:5,
-                    border:"1px solid #ccc"
-                });
-            }
-            
-            // Подсвечиваем свои задачи    
-            if(task.my) {
-                e.addClass("qm5btw9-my");
-            }    
-            
-            // Цвет листика
-            if(task.color) {
-                e.css({
-                    background:task.color
-                });
-            }
-            
-            if(!task.paused) {
-                $("<div>").css({
-                    width:width,
-                    height:height,
-                    position:"absolute",
-                    left:0,
-                    top:0,
-                    opacity:.3,
-                    background:"url(/board/res/img/icons64/resume.png) center center no-repeat"
-                }).appendTo(e);
-            }
-            
-            // Иконка, id задачи и проект 
-            var head = $("<div>")
-                .css({
-                    background:"url(" + task.project.icon + ") left center no-repeat",
-                    padding:"3px 0 3px 20px",
-                    fontFamily:"georgia",
-                    fontStyle:"italic",
-                    fontWeight:"bold"
-                }).appendTo(e);
-                
-            $("<span>")
-                .css({
-                    whiteSpace:"nowrap"
-                }).html(task.project.title)
-                .appendTo(head);
-            
-            // Контейнер текста
-            var text = $("<div>")
-                .html(task.text)
-                .css({
-                    height:height-23,
-                    overflow:"hidden",
-                    position:"relative"
-                }).appendTo(e);
+        var padding = 10;
+        var photosHeight = taskData.images.length ? 30 : 0;
+        var textHeight = size-photosHeight;
 
-            // Статус листика
+        $("<div>").css({
+            width:size - 2 - padding * 2,
+            height:textHeight - 2 - padding * 2,
+            overflow:"hidden",
+            padding:padding
+        }).html(taskData.text+"")
+        .appendTo(body);
+
+        if(taskData.images) {
+            var imageContainer = $("<div>").css({
+                height:photosHeight,
+                background:"#ccc",
+                overflow:"hidden"
+            }).appendTo(body);
             
-            var status = "";
-            status += task.timeSpent + " из " + task.timeScheduled + "ч."; 
-    
-            var bottom = $("<div>")
-                .html(status)
-                .appendTo(e)
-                .addClass("qm5btw9-status");  
-            
-            if(task.attachment) {
-                $("<img src='/board/res/img/icons16/attachment.png' />")
-                    .css({
-                        position:"absolute",
-                        right:4,
-                        top:0
-                    }).appendTo(bottom);
+            for(var i in taskData.images) {
+                $("<img>")
+                    .attr("src",taskData.images[i].x30)
+                    .appendTo(imageContainer)
             }
-                
-            // Вешаем обработчики на наведение / уход мыши со стикера
-            
-            this.el.mouseenter(function() {
-                cmp.cmd("showControls");
-            }).mouseleave(function() {
-                cmp.cmd("hideControls");
-            });
-            
-            this.toolsContainer = $("<div>").css({
-                width:width-20,
-                height:height-20,
-                padding:10,
-                position:"absolute",
-                left:0,
-                top:0,
-                background:"rgba(0,0,0,.85)",
-                display:"none"
-            }).appendTo(e);
-                
-            this.cmd("html",taskContainer);
-        
         }
         
+        return body;
+        
+    },
+    
+    renderFooter:function() {
+        this.footer = $("<div>").css({
+            height:30,
+            background:"rgba(0,150,255,.2)",
+            borderRadius:"0 0 3px 3px"
+        });
+        
+        this.controlsContainer = $("<div>").css({
+            padding:4
+        }).appendTo(this.footer);
+        
+        return this.footer;
+    },
+    
+    cmd_render:function() {
+    
+        this.base();
+        
+        this.el.css({
+            overflow:"visible"
+        });
+
+        var e = $("<div>");
+        
+        var taskData = this.data.data;
+        
+        this.renderBody(taskData).appendTo(e);
+        this.renderFooter(taskData).appendTo(e);
+        this.cmd("html",e);
+        
         var cmp = this;
+        
+        this.el.mouseenter(inx.cmd(this,"showControls"))
+        this.el.mouseleave(inx.cmd(this,"hideControls"))
         
         // Влючаем перетаскивание файлов в задачу
         inx({
@@ -175,8 +111,6 @@ inx.mod.board.board.taskList.task = inx.panel.extend({
             return;
         }
     
-        this.toolsContainer.stop(true,true).fadeIn(300);
-        
         if(!this.controls) {
     
             this.controls = inx({
@@ -189,8 +123,10 @@ inx.mod.board.board.taskList.task = inx.panel.extend({
             
             this.controls
                 .cmd("render")
-                .cmd("appendTo",this.toolsContainer);
+                .cmd("appendTo",this.controlsContainer);
         }
+        
+        this.controlsContainer.show();
         
     },
     
@@ -199,8 +135,9 @@ inx.mod.board.board.taskList.task = inx.panel.extend({
         if(inx.dd.enabled()) {
             return;
         }
+        
+        this.controlsContainer.hide();
     
-        this.toolsContainer.stop(true,true).fadeOut(300);
     },
     
 

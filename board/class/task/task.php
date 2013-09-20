@@ -561,14 +561,19 @@ class board_task extends reflex {
         $ret["paused"] = $this->data("paused");
 
         $ret["percentCompleted"] = $this->percentCompleted();
+        
+        $ret["images"] = array();
+		foreach($this->storage()->files() as $file) {
+            $ret["images"][] = array(
+                "x30" => $file->preview(30,30),
+			);
+        }
 
         // Кнопки задачи (видны только если можно изменять задачу)
         $ret["tools"] = array();
         if(user::active()->checkAccess("board/updateTaskParams",array(
             "task" => $this,
         ))) {
-
-            $ret["tools"][] = "edit";
 
             switch($this->status()->id()) {
 
