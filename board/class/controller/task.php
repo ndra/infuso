@@ -39,10 +39,6 @@ class board_controller_task extends mod_controller {
         if(($tag = trim($p["tag"])) && $tag!="*") {
             $tasks->useTag($tag);
         }
-        
-        if(!$status->showEpicSubtasks()) {
-            $tasks->eq("epicParentTask",0);
-        }
 
         $tasks->page($p["page"]);
 
@@ -51,21 +47,6 @@ class board_controller_task extends mod_controller {
         $stickerParams["showProject"] = true;
 
         $lastChange = null;
-
-        $idList = array();
-        foreach($p["idList"] as $item) {
-            if(is_numeric($item)) {
-                $idList[] = $item;
-            }
-        }
-
-        $idList = implode(":",$idList);
-        $idList2 = implode(":",$tasks->idList());
-
-        if($idList == $idList2) {
-            return false;
-        }
-
         
         foreach($tasks as $task) {
 
@@ -402,7 +383,10 @@ class board_controller_task extends mod_controller {
 
         foreach($p["idList"] as $n=>$id) {
             $task = board_task::get($id);
+            $task->suspendTaskEvents();
             $task->data("priority",$n);
+            $task->store();
+            $task->unsuspendTaskEvents();
         }
 
         mod::msg("Сортировка сохранена");

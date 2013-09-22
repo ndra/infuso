@@ -135,23 +135,10 @@ class board_task_status extends mod_controller {
         }
         return false;
     }
-    
-	/**
-	 * Показывать ли подзадачи эпика в этом статусе
-	 **/
-    public function showEpicSubtasks() {
-        if(in_array($this->id(),array(self::STATUS_IN_PROGRESS))) {
-            return true;
-        }
-        return false;
-    }
 
     public function visibleTasks() {
         $tasks = board_task::visible();
         $tasks->eq("status",$this->id());
-        if(!$this->showEpicSubtasks()) {
-            $tasks->eq("epicParentTask",0);
-        }
         return $tasks;
     }
 

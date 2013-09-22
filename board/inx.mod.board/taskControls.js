@@ -39,15 +39,13 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                 }
             }, pause:{
                 general: {
-                    text:"Пауза",
+                    help:"Пауза",
+                }, small: {
+                    icon:"/board/res/img/icons16/pause.png",
                 }, large: {
+                    text:"Пауза",
                     type:this.info("type")+".time"
                 }
-            }, time:{
-                general: {
-                    type:this.info("type")+".time",
-                    data:this.data
-                }, small: false
             }, resume: {
                 general: {
                     help:"Продолжить",
@@ -191,6 +189,29 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
         this.cmd("handleData",p.sticker.tools);
     },
     
+    cmd_execCommand:function(cmd) {
+        switch(cmd) {
+            case "pause":
+                this.cmd("pauseTask");
+                break;
+            case "resume":
+                this.cmd("pauseTask");
+                break;
+            case "done":
+                this.cmd("doneTask");
+                break;
+            case "take":
+                this.cmd("takeTask");
+                break;
+            case "add":
+                this.cmd("addSubtask");
+                break;
+            case "edit":
+                this.cmd("editTask");
+                break;
+        }
+    },
+    
     cmd_pauseTask:function() {
     
         this.fire("action");
@@ -276,7 +297,9 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
      **/
     cmd_cancelTask:function() {
     
-        this.fire("action");
+        if(!window.confirm("Отменить задачу?")) {
+            return;
+        }
     
         this.call({
             cmd:"board/controller/task/changeTaskStatus",
@@ -298,6 +321,14 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
     
     cmd_editTask:function() {    
         window.location.href = "#task/id/"+this.taskID;
+    },
+    
+    cmd_addSubtask:function() {
+        inx({
+            taskID:this.taskID,
+            type:"inx.mod.board.addSubtask",
+            clipToOwner:true
+        }).cmd("render").setOwner(this.owner());
     }
          
 });

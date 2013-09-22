@@ -258,7 +258,7 @@ inx.width = function(e,type) {
 }
 
 setInterval(function() {
-     inx.getRulerruler().html("");
+     inx.getRuler().html("");
 },5000)
 
 inx.getRuler = function() {

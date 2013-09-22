@@ -32,7 +32,6 @@ inx.mod.board.board.taskList = inx.list.extend({
     
         this.base(p);
         
-        this.on("itemclick",[this.id(),"handleItemClick"]);
         this.on("load",[this.id(),"handleLoad"]);
         this.on("beforeload",[this.id(),"beforeLoad"]);
         this.on("boardChanged",[this.id(),"load"]);
@@ -50,7 +49,7 @@ inx.mod.board.board.taskList = inx.list.extend({
         
     },
     
-    cmd_handleTaskChanged:function(params) {        
+    cmd_handleTaskChanged:function(params) {  
     
         if(!this.info("visibleRecursive")) {
             return;
@@ -61,17 +60,6 @@ inx.mod.board.board.taskList = inx.list.extend({
         if(params.changed.indexOf("status") != -1) {
             this.cmd("load");
         }
-        
-    },
-    
-    cmd_beforeLoad:function(loader) {
-    
-        var idList = [];
-        for(var i in this.data) {
-            idList.push(this.data[i].id);
-        }
-        
-        loader.idList = idList;
         
     },
     
@@ -89,8 +77,8 @@ inx.mod.board.board.taskList = inx.list.extend({
     },
     
     info_itemType:function(data) {
-        if(data.id=="new") {
-            return "inx.mod.board.board.taskList.new";
+        if(data.dateMark) {
+            return "inx.mod.board.board.taskList.dateMark";
         }
         return "inx.mod.board.board.taskList.task";
     },
@@ -103,7 +91,7 @@ inx.mod.board.board.taskList = inx.list.extend({
             return;
         }
     
-        this.cmd("editTask",id);
+       // this.cmd("editTask",id);
     },
     
     /**

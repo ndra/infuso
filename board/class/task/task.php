@@ -11,6 +11,9 @@ class board_task extends reflex {
                     'name' => 'id',
                     'type' => 'jft7-kef8-ccd6-kg85-iueh',
                 ),array (
+                    'name' => 'dataHash',
+                    'type' => 'string',
+                ), array (
                     'name' => 'text',
                     'type' => 'kbd4-xo34-tnb3-4nxl-cmhu',
                     'editable' => '1',
@@ -181,7 +184,23 @@ class board_task extends reflex {
         $this->log("Создано");
     }
 
+    public $taskEventsSuspended = false;
+
+    public function suspendTaskEvents() {
+        $this->taskEventsSuspended = true;
+    }
+
+    public function unsuspendTaskEvents() {
+        $this->taskEventsSuspended = false;
+    }
+
+    public function isTaskEventsSuspended() {
+        return $this->taskEventsSuspended;
+    }
+
     public function reflex_beforeStore() {
+
+        $this->data("dataHash",util::id());
 
         // Устанавливаем новую дату изменения только если задача активна
         // Иначе мы можем влезть в статистику по прошлому периоду
@@ -234,13 +253,16 @@ class board_task extends reflex {
             }
         }
 
-        mod::fire("board/taskChanged",array(
-            "deliverToClient" => true,
-            "taskID" => $this->id(),
-            "sticker" => $this->stickerData(),
-            "statusText" => $this->statusText(),
-            "changed" => $changed,
-        ));
+        if(!$this->isTaskEventsSuspended()) {
+
+            mod::fire("board/taskChanged",array(
+                "deliverToClient" => true,
+                "taskID" => $this->id(),
+                "sticker" => $this->stickerData(),
+                "statusText" => $this->statusText(),
+                "changed" => $changed,
+            ));
+        }
 
     }
     
@@ -483,6 +505,11 @@ class board_task extends reflex {
      * Фозвращает флаг того что задача стоит на паузе
      **/
     public function paused() {
+
+        if($this->status()->id() != board_task_status::STATUS_IN_PROGRESS) {
+            return false;
+        }
+
         return (bool)$this->data("paused");
     }
 
@@ -493,10 +520,28 @@ class board_task extends reflex {
         return board_task_vote::all()->eq("taskID",$this->id());
     }
 
+    public function stickerData() {
+
+        $key = "board/stickerData/".$this->id()."/".$this->data("dataHash")."/".user::active()->id();
+        $cached = mod_cache::get($key);
+        if($cached) {
+            $cached = json_decode($cached,1);
+            return $cached;
+        }
+
+        $data = $this->stickerDataNoCache();
+        $loader = new mod_confLoader_json();
+        $cached = $loader->write($data);
+        mod_cache::set($key,$cached,600);
+
+        return $data;
+
+    }
+
     /**
      * Возвращает данные для стикера
      **/
-    public function stickerData() {
+    public function stickerDataNoCache() {
 
         mod_profiler::beginOperation("board","stickerData",$this->id());
 
@@ -523,7 +568,7 @@ class board_task extends reflex {
 		// Ответственный пользователь
 		$ret["responsibleUser"] = array(
 		    "nick" => $this->responsibleUser()->title(),
-		    "userpick" => (string)$this->responsibleUser()->userpick()->preview(16,16)->crop(),
+		    "userpic" => (string)$this->responsibleUser()->userpick()->preview(16,16)->crop(),
 		);
 
 		// Своя задача
@@ -558,7 +603,7 @@ class board_task extends reflex {
         }
         
 		// Стоит ли задача на паузе
-        $ret["paused"] = $this->data("paused");
+        $ret["paused"] = $this->paused();
 
         $ret["percentCompleted"] = $this->percentCompleted();
         
@@ -570,7 +615,10 @@ class board_task extends reflex {
         }
 
         // Кнопки задачи (видны только если можно изменять задачу)
+
         $ret["tools"] = array();
+        $ret["mainTools"] = array();
+
         if(user::active()->checkAccess("board/updateTaskParams",array(
             "task" => $this,
         ))) {
@@ -585,47 +633,41 @@ class board_task extends reflex {
                 case board_task_status::STATUS_IN_PROGRESS:
 
                     if(!$this->paused()) {
-                        $ret["tools"][] = "pause";
+                        $ret["mainTools"][] = "pause";
                     } else {
-                        $ret["tools"][] = "resume";
+                        $ret["mainTools"][] = "resume";
                     }
-                    $ret["tools"][] = "|";
+                    $ret["mainTools"][] = "done";
 
-                    $ret["tools"][] = "done";
-                    $ret["tools"][] = "|";
                     $ret["tools"][] = "stop";
-                    $ret["tools"][] = "cancel";
                     $ret["tools"][] = "problems";
+                    $ret["tools"][] = "cancel";
                     
                     break;
 
                 case board_task_status::STATUS_NEW:
 
-                    $ret["tools"][] = "time";
-                    $ret["tools"][] = "|";
-
                     if(!$this->isEpic()) {
-                        $ret["tools"][] = "take";
-                        $ret["tools"][] = "|";
+                        $ret["mainTools"][] = "take";
+                    } else {
+                        $ret["mainTools"][] = "add";
                     }
-                    $ret["tools"][] = "cancel";
+
                     $ret["tools"][] = "problems";
+                    $ret["tools"][] = "cancel";
 
                     break;
 
                 case board_task_status::STATUS_CHECKOUT:
 
-                    $ret["tools"][] = "time";
-                    $ret["tools"][] = "|";
-
-                    $ret["tools"][] = "complete";
-                    $ret["tools"][] = "revision";
+                    $ret["mainTools"][] = "complete";
+                    $ret["mainTools"][] = "revision";
+                    $ret["tools"][] = "problems";
+                    $ret["tools"][] = "cancel";
                     break;
 
                 case board_task_status::STATUS_COMPLETED:
 
-                    $ret["tools"][] = "time";
-                    $ret["tools"][] = "|";
                     $ret["tools"][] = "revision";
                     break;
 

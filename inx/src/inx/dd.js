@@ -126,19 +126,9 @@ inx.dd = {
         
         // Передаем управление обработчику событий мыши    
         inx.dd.handleMouseEvent(event);   
-        return;     
         
-        var element = params.element;
-    
-        // Если пользователь кликнул на скроллбар не начинаем перетаскивание,
-        // т.к. в этом случае нельзя отследить отпускание мышки                  
-        var o = $(params.element.target).css("overflow");
-        if(o=="auto" || o=="scroll") {
-            if(event.offsetX >= event.target.clientWidth) return false;
-            if(event.offsetY >= event.target.clientHeight) return false;  
-        }
-        
-         
+        //inx.dd.enabledFlag = true;
+
     },
     
     handleMouseEvent:function(event) { 
@@ -183,7 +173,12 @@ inx.dd = {
             case "mouseup":
             
                 inx.dd.current.phase = "stop";                
-                inx.dd.hideHelper();                
+                inx.dd.hideHelper();      
+                
+                setTimeout(function() {
+                    inx.dd.enabledFlag = false;
+                });
+                          
                 break;
             
         }        
@@ -212,6 +207,7 @@ inx.dd = {
                 var params = inx.deepCopy(inx.dd.current);
                 params.phase = "start";
                 inx.dd.fireEvent(params);   
+                inx.dd.enabledFlag = true;
             }
             
             inx.dd.current.thresold = true;       
@@ -230,7 +226,7 @@ inx.dd = {
     },
     
     enabled:function() {
-        return !!inx.dd.current.active;
+        return !!inx.dd.enabledFlag;
     },
     
     fireEvent:function(params) {
