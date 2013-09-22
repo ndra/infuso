@@ -121,9 +121,9 @@ inx.mod.board.board.taskList.task = inx.panel.extend({
         var size = this.info("width");
     
         var body = $("<div>").css({
-            width:size-2,
-            height:size-2,
-            border:"1px solid rgba(0,0,0,.3)",
+            width:size - (taskData.my ? 6 : 2),
+            height:size - (taskData.my ? 6 : 2),
+            border: taskData.my ? "3px solid rgb(0,0,100)" : "1px solid rgba(0,0,0,.3)",
             position:"relative",
             boxShadow:"0 0 5px rgba(0,0,0,.3)",
             background:taskData.color || "white"
