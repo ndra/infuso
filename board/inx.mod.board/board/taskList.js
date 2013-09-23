@@ -44,8 +44,7 @@ inx.mod.board.board.taskList = inx.list.extend({
             }
         })
         
-        inx.on("board/taskChanged",[this.id(),"handleTaskChanged"]);
-        
+        inx.on("board/taskChanged",[this.id(),"handleTaskChanged"]);        
         
     },
     

@@ -1,7 +1,13 @@
 // @link_with_parent
 // @include inx.panel
 
-inx.css(".webqkv2ny td{vertical-align:middle;};");
+inx.css(".webqkv2ny {table-layout:fixed;width:100%;}");
+inx.css(".webqkv2ny td{vertical-align:middle;}");
+inx.css(".webqkv2ny td.a{width:30px;background:red;}");
+inx.css(".webqkv2ny td.b{width:100px;}");
+inx.css(".webqkv2ny td.c{width:100px;}");
+inx.css(".webqkv2ny td.d{width:100px;}");
+inx.css(".webqkv2ny td.e{width:100px;height:40px;}");
 
 inx.mod.board.task.subtasks.item = inx.panel.extend({
 
@@ -22,12 +28,17 @@ inx.mod.board.task.subtasks.item = inx.panel.extend({
             minHeight:24
         });
         
+        if(this.data.my) {
+            table.css("border","1px solid rgb(0,0,100)");
+        }
+        
         var tr = $("<tr>").appendTo(table);
         
-        var td = $("<td>").html(this.data.id).appendTo(table);
-        var td = $("<td>").html(this.data.status.title).appendTo(table);
-        var td = $("<td>").html("<img src='"+this.data.responsibleUser.userpick+"' />").appendTo(table);
-        var td = $("<td>").html(this.data.text).appendTo(table);
+        var td = $("<td>").addClass("a").html(this.data.id).appendTo(table);
+        var td = $("<td>").addClass("b").html(this.data.status.title).appendTo(table);
+        var td = $("<td>").addClass("c").html("<img src='"+this.data.responsibleUser.userpic+"' />").appendTo(table);
+        var td = $("<td>").addClass("d").html(this.data.text).appendTo(table);
+        this.toolsContainer = $("<td>").addClass("e").appendTo(table);
         
         this.cmd("html",table);        
     },
@@ -45,7 +56,9 @@ inx.mod.board.task.subtasks.item = inx.panel.extend({
             });            
             
             this.controls = cmp;
-            this.cmd("addSidePanel",this.controls);
+            this.controls.cmd("render");
+            this.controls.cmd("appendTo",this.toolsContainer);
+            
         }
         
         this.controls.cmd("show");

@@ -11,8 +11,9 @@ class geo_coder_yandex {
 		
 		// Пытаемся достать точку из сессии
 		$point = mod_cache::get($key);
-		if($point)
+		if($point) {
 		    return mod::field("point")->value($point);
+		}
 		    
 		$url = "http://geocode-maps.yandex.ru/1.x/";
 		$url.= "?".http_build_query(array(

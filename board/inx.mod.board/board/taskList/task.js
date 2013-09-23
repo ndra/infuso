@@ -148,11 +148,11 @@ inx.mod.board.board.taskList.task = inx.panel.extend({
 
         var params = {
             width:size,
-            height: size - photosHeight - headerHeight
+            height: size - photosHeight - headerHeight - (taskData.my ? 4 : 0)
         };
         this.renderText(taskData,params).appendTo(body);
 
-        if(taskData.images) {
+        if(taskData.images.length) {
             var imageContainer = $("<div>").css({
                 height:photosHeight,
                 overflow:"hidden",

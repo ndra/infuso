@@ -1,5 +1,7 @@
 // @link_with_parent
 
+inx.css(".waz3yvrjpurq { cursor:pointer; }");
+inx.css(".waz3yvrjpurq:hover { text-decoration:underline; }");
 
 inx.mod.board.board.taskList.create = inx.panel.extend({
 
@@ -46,6 +48,7 @@ inx.mod.board.board.taskList.create = inx.panel.extend({
         
         for(var i in data) {
             $("<div>")
+                .addClass("waz3yvrjpurq")
                 .css({
                     display:"inline-block",
                     fontSize:16,

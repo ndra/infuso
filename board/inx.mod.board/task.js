@@ -89,6 +89,15 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
         this.cmd("add",{
             type:"inx.separator"
         });
+        
+        this.cmd("add",{
+            type:"inx.mod.board.task.extra",
+            taskID:this.taskID
+        });
+        
+        this.cmd("add",{
+            type:"inx.separator"
+        });
 
         this.cmd("add",{
             type:"inx.mod.board.attachments",
@@ -141,8 +150,7 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
         this.call({
             cmd:"board:controller:task:saveTask",
             data:data,
-            taskID:this.taskID,
-            status:this.status
+            taskID:this.taskID
         });
     },
     

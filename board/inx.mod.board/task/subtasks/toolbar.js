@@ -1,7 +1,7 @@
 // @link_with_parent
 // @include inx.list
 
-inx.mod.board.task.subtasks.add = inx.panel.extend({
+inx.mod.board.task.subtasks.toolbar = inx.panel.extend({
 
     constructor:function(p) {
     
@@ -16,19 +16,7 @@ inx.mod.board.task.subtasks.add = inx.panel.extend({
         p.items = [{
             type:"inx.button",
             text:"Взять подзадачу",
-            icon:"plus",
-            air:true,
-            listeners:{
-                click:[this.id(),"openDialog"]
-            },
-            style:{
-                background:0,
-                border:0
-            }
-        },{
-            type:"inx.button",
-            text:"Добавить",
-            icon:"plus",
+            icon:"/board/res/img/icons16/add.png",
             air:true,
             listeners:{
                 click:[this.id(),"openDialog"]
@@ -41,7 +29,7 @@ inx.mod.board.task.subtasks.add = inx.panel.extend({
             width:20
         },{
             type:"inx.panel",
-            html:"<b>Активные (5)</b> Выполненные (124)",
+            html:"<span style='padding:4px;background:#ccc;display:inline-block;border-radius:5px;' >Активные (5)</span> Выполненные (124)",
             width:220
         }, {
             type:"inx.pager",
@@ -57,7 +45,7 @@ inx.mod.board.task.subtasks.add = inx.panel.extend({
         var cmp = this;
     
         inx({
-            type:"inx.mod.board.task.subtasks.add.dlg",
+            type:"inx.mod.board.addSubtask",
             clipTo:e.target,
             taskID:this.taskID,
             listeners:{

@@ -1,22 +1,39 @@
-// @include inx.dialog
+// @link_with_parent
+// @include inx.panel
 
-inx.ns("inx.mod.board").tagEditor = inx.dialog.extend({
+inx.mod.board.task.extra = inx.panel.extend({
 
-    constructor:function(p) {    
-        p.width = 320;        
-        this.base(p); 
-        this.on("render","requestData");       
+    constructor:function(p) {
+    
+        p.layout = "inx.layout.column";
+    
+        p.style = {
+            background:"none",
+            spacing:5,
+            padding:5
+        };
+       
+        this.base(p);        
+        this.cmd("requestData");
     },
     
     cmd_requestData:function() {
+    
         this.call({
-            cmd:"board/controller/tag/getTaskTags",
+            cmd:"board_controller_tag/getTaskTags",
             taskID:this.taskID
         },[this.id(),"handleData"]);
+    
     },
     
     cmd_handleData:function(data) {
     
+        this.cmd("add",{
+            type:"inx.panel",
+            width:16,
+            html:"<img src='/board/res/img/icons16/tag.png' />",
+        });
+        
         for(var i=0;i<data.tags.length;i++) {
         
             this.cmd("add",{
@@ -35,6 +52,7 @@ inx.ns("inx.mod.board").tagEditor = inx.dialog.extend({
                 }
             });
         }
+    
     }
-         
+     
 });
