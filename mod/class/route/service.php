@@ -48,7 +48,11 @@ class mod_route_service extends mod_service {
 
             $action = $this->forwardTest($url);
             if($action) {
-                $serializedAction = json_encode(array($action->className(),$action->action(),$action->params()));
+                $serializedAction = json_encode(array(
+					$action->className(),
+					$action->action(),
+					$action->params()
+				));
                 mod_cache::set($key,$serializedAction);
             }
             return $action;
