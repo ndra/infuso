@@ -117,7 +117,11 @@ class tmp_conveyor extends mod_component {
 
         }
         
-        $str = preg_replace_callback(array_keys(self::$delayedFunctionResult), array(self, "replaceDelayedFn"), $str, -1, $count);
+        // Обрабатываем текст, заменяе маркеры отложенных функций на результат их выполнения.
+        $count = 0;
+        do {
+            $str = preg_replace_callback(array_keys(self::$delayedFunctionResult), array(self, "replaceDelayedFn"), $str, -1, $count);
+        } while ($count > 0);
 
         mod_profiler::endOperation();
         return $str;

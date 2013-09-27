@@ -79,10 +79,13 @@ class reflex extends mod_model {
 
     public static function classes() {
         $ret = array();
-        foreach(mod::classes("reflex") as $class)
-            if(get_class(reflex::virtual($class))==$class)
-                if($class!="reflex_none")
+        foreach(mod::classes("reflex") as $class) {
+            if(get_class(reflex::virtual($class))==$class) {
+                if($class!="reflex_none") {
                     $ret[] = $class;
+                }
+            }
+        }
         return $ret;
     }
 
@@ -91,8 +94,9 @@ class reflex extends mod_model {
      **/
     public final function domain() {
         $ret = $this->reflex_domain();
-        if(!is_object($ret))
+        if(!is_object($ret)) {
             $ret = reflex_domain::get($ret);
+        }
         return $ret;
     }
 
@@ -133,12 +137,6 @@ class reflex extends mod_model {
 
         if(func_num_args()==1) {
 
-            //if(get_class($this)=="reflex_none") {
-             //   util::backtrace();
-          //  }
-
-            //mod::msg(get_class($this)."-".$this->id());
-
             $ret = $this->metaObject()->data($key);
             return $ret;
 
@@ -147,7 +145,10 @@ class reflex extends mod_model {
             $obj = $this->metaObject();
             if(!$obj->exists()) {
                 $hash = get_class($this).":".$this->id();
-                $obj = reflex::create("reflex_meta_item",array("hash"=>$hash));
+                $obj = reflex::create("reflex_meta_item",array(
+					"hash" => $hash,
+				));
+				$this->metaObject = $obj;
             }
             $obj->data($key,$val);
         }
@@ -157,13 +158,20 @@ class reflex extends mod_model {
      * Изменяет url-адрес объекта
      **/
     public final function setUrl($url) {
-        if(!$this->reflex_route())
+    
+        if(!$this->reflex_route()) {
             return;
+        }
+        
         $hash = get_class($this).":".$this->id();
         $route = reflex_route_item::get($hash);
+        
         if(!$route->exists()) {
-            $route = reflex::create("reflex_route_item",array("hash"=>$hash));
+            $route = reflex::create("reflex_route_item",array(
+				"hash" => $hash,
+			));
         }
+        
         $route->data("url",$url);
 
         // Сохраняем мету. Это вызовет исправление url (русский в транслит, проблемы в тире и т.п.)
@@ -172,8 +180,9 @@ class reflex extends mod_model {
 
     public final function reflex_updateSearch() {
 
-        if(!$this->reflex_meta())
+        if(!$this->reflex_meta()) {
             return;
+		}
 
         $search = $this->reflex_search();
 

@@ -41,19 +41,10 @@ class reflex_meta_item extends reflex {
 	    $links = util::splitAndTrim($links,",");
 	    $this->data("links",",".implode(",",$links).",");
 
-	    // Этот фрагмент кода остался со старых времен, когда метаданные по всем языкам хранились в одном поле
-		foreach($this->data() as $key=>$val) {
-			if(substr($val,0,1)=="{") {
-			    $val = json_decode($val,1);
-			    if($val)
-			    	$val = array_shift($val);
-			}
-			$this->data($key,$val);
-		}
-
 	    // Ставим язык, если он не был установлен
-		if(!$this->data("lang"))
+		if(!$this->data("lang")) {
 		    $this->data("lang",lang::all()->one()->id());
+		}
 
 		// Удаляем избыточные меты
 	    $this->unnecessary()->delete();
@@ -76,8 +67,9 @@ class reflex_meta_item extends reflex {
 	 **/
 	public function reflex_cleanup() {
 	    // Убираем оторванные меты
-	    if(!$this->item()->exists())
+	    if(!$this->item()->exists()) {
 	        return true;
+	    }
 	}
 
 }

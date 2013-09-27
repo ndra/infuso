@@ -259,7 +259,7 @@ inx.width = function(e,type) {
 
 setInterval(function() {
      inx.getRuler().html("");
-},5000)
+},5000);
 
 inx.getRuler = function() {
     if(!inx.ruler) {
