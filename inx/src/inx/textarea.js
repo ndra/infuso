@@ -50,8 +50,6 @@ inx.textarea = inx.textfield.extend({
         // Если текстовое поле растягивается вручную
         if(!$(this.rulerInput).filter(":visible").length) {
         
-            inx.msg(1);
-        
             this.rulerInput = this.input.clone();
             this.rulerInput.css({
                 height:10,
