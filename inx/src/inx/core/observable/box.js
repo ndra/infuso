@@ -107,8 +107,9 @@ inx.box = inx.observable.extend({
     },
     
     cmd_setTitle:function(title) {
-        if(this.title==title)
+        if(this.title==title) {
             return;
+        }
         this.title = title+"";
         this.fire("titleChanged",this.title);
     },
@@ -153,7 +154,7 @@ inx.box = inx.observable.extend({
         this.fire("render");
         this.cmd("updateStyle");
         this.private_layoutReady = true;
-        inx.service("boxManager").watch(this.id());
+        inx.service("boxManager").outerSizeChanged(this.id());
     },
     
     info_layoutReady:function() {
@@ -198,14 +199,16 @@ inx.box = inx.observable.extend({
             this.private_styleChangedKeys[key] = true;
             this.cmd("clearInfoBuffer");
             this.task("updateStyle");
+            inx.service("boxManager").innerSizeChanged(this.id());
         }        
         return this;
     },
     
     cmd_updateStyle:function() {
     
-        if(!this.info("rendered"))
+        if(!this.info("rendered")) {
             return;
+        }
     
         for(var key in this.private_styleChangedKeys) {
         
@@ -252,6 +255,7 @@ inx.box = inx.observable.extend({
                 case "width":
                     this.cmd("updateBoxWidth");
                     break;
+                    
                 case "height":
                     this.cmd("updateBoxHeight");                    
                     break;
@@ -290,6 +294,7 @@ inx.box = inx.observable.extend({
         if(this.style("width")=="parent") {
             this.cmd("clearInfoBuffer");
             this.task("updateBoxWidth");   
+            inx.service("boxManager").outerSizeChanged(this.id());
         }
     },
     
@@ -307,6 +312,7 @@ inx.box = inx.observable.extend({
     
         this.private_widthContent = width;
         this.task("updateBoxWidth");   
+        inx.service("boxManager").outerSizeChanged(this.id());
     },
     
     /**
@@ -338,12 +344,9 @@ inx.box = inx.observable.extend({
         var hash = width + ":" + b;
         
         if(this.private_boxHashX!=hash) {
-        
             if(this.el) {            
                 this.el.css("width",width);                
             }
-            
-            inx.service("boxManager").watch(this.id());
         }
         
         this.private_boxHashX = hash;
@@ -355,13 +358,10 @@ inx.box = inx.observable.extend({
         var height = this.info("height") - b;
         var hash = height + ":" + b;
         
-        if(this.private_boxHashY!=hash) {
-        
+        if(this.private_boxHashY!=hash) {        
             if(this.el) {            
                 this.el.css("height",height);                
-            }
-            
-            inx.service("boxManager").watch(this.id());
+            }            
         }
         
         this.private_boxHashY = hash;
@@ -370,11 +370,9 @@ inx.box = inx.observable.extend({
     /**
      * Перерисовывает прямоугольник компонента: применяет ширину, высоту и бордер
      **/
-    cmd_updateBox:function() {
-    
+    cmd_updateBox:function() {    
         this.cmd("updateBoxWidth");
         this.cmd("updateBoxHeight");
-
     },
     
     info_resizable:function() {
@@ -394,6 +392,7 @@ inx.box = inx.observable.extend({
       
         this.private_heightParent = height;
         this.task("updateBoxHeight");
+        inx.service("boxManager").outerSizeChanged(this.id());
     },
     
     /**
@@ -409,6 +408,7 @@ inx.box = inx.observable.extend({
         
         this.private_heightContent = height;
         this.task("updateBoxHeight");
+        inx.service("boxManager").outerSizeChanged(this.id());
     },
     
     /**
@@ -541,9 +541,9 @@ inx.box = inx.observable.extend({
             
         this.fire("show");
 
-        inx.service("boxManager").watch(this.id());
         this.private_hidden = false;
         this.task("updateBox");
+        inx.service("boxManager").outerSizeChanged(this.id());
         
     },
     
@@ -555,8 +555,8 @@ inx.box = inx.observable.extend({
         
         this.cmd("clearInfoBuffer");
         this.fire("hide");
-        inx.service("boxManager").watch(this.id());
         this.private_hidden = true;
+        inx.service("boxManager").outerSizeChanged(this.id());
         
     },
     
@@ -582,8 +582,9 @@ inx.box = inx.observable.extend({
     info_visibleRecursive:function() {
     
         // Если сам объект спрятан, возвращаем false
-        if(this.info("hidden"))
+        if(this.info("hidden")) {
             return false;
+        }
             
         visible = true;    
         inx(this).owners().each(function() {
@@ -593,35 +594,6 @@ inx.box = inx.observable.extend({
         return visible;
     },
     
-    info_layoutHash:function() {
-    
-        if(this.private_hidden) {
-            return false;
-        }
-    
-        var hash = this.private_z74gi3f1in+":"; // Был ли рендер
-        hash += this.private_hidden+":";
-        hash += this.info("width")+":";
-        hash += this.info("height")+":";
-        hash += this.private_style.border+":";
-        hash += this.__bodyWidth+":";
-        hash += this.__bodyHeight+":";
-        return hash;
-    },
-    
-    info_layoutOuterHash:function() {
-    
-        if(this.private_hidden) {
-            return false;
-        }
-    
-        var hash = this.private_z74gi3f1in+":"; // Был ли рендер
-        hash += this.private_hidden+":";
-        hash += this.info("width")+":";
-        hash += this.info("height");
-        return hash;
-    },
-
     info_param:function(key) {
         return this[key];
     },

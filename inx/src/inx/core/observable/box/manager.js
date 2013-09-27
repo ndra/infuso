@@ -11,12 +11,19 @@ inx.box.manager = new function() {
     var that = this;
     this.__buffer = {};    
    
-    /**
-     * Создает задачу проверить компонент с заданым id
-     **/   
-    this.watch = function(id) {
-        this.__buffer[id] = true;
-        inx.box.manager.task.cmd("createTask");
+    this.innerSizeChanged = function(id) {
+        if(!this.__buffer[id]) {
+            this.__buffer[id] = {};
+        }
+        this.__buffer[id].inner = true;
+    }
+    
+    this.outerSizeChanged = function(id) {
+        if(!this.__buffer[id]) {
+            this.__buffer[id] = {};
+        }
+        this.__buffer[id].outer = true;
+        this.__buffer[id].inner = true;
     }
     
     /**
@@ -29,43 +36,16 @@ inx.box.manager = new function() {
         var buffer = inx.deepCopy(m.__buffer);
         m.__buffer = {};
         
-        for(var i in buffer) {
-            m.checkItem(i);
+        for(var id in buffer) {
+            var c = inx(id);
+            if(this.buffer[i].inner) {
+                c.task("syncLayout");
+            }
+            if(this.buffer[i].outer) {
+                c.owner().task("syncLayout");
+            }
         }
 
-    }
-    
-    // Проверяет элемент на изменение размера один объект
-    this.checkItem = function(id) {  
-      
-        var c = inx(id);
-        
-        // Хэш размера и содержимого
-        // Изменение его заставит перерисовать внутренность компонента
-        var hash = c.info("layoutHash");                
-        var last = c.data("lastHash");
-        
-        // Хэш внешнего размера
-        // Изменение его вызовет перерисовку родительского объекта
-        var ohash = c.info("layoutOuterHash");
-        var olast = c.data("lastOuterHash");
-        
-        var ret = false;
-        
-        if(hash!=last) {
-            c.data("lastHash",hash);
-            c.task("syncLayout");
-            ret = true;
-        }
-        
-        if(ohash!=olast) {            
-            c.data("lastOuterHash",ohash);
-            c.owner().task("syncLayout");
-            ret = true;
-        }
-
-        
-        return ret;
     }
     
     this.debug = function() {
