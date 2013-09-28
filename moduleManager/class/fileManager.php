@@ -141,6 +141,8 @@ class moduleManager_fileManager extends mod_controller {
 	 **/
     public static function post_newFile($p) {
 
+        mod::msg($p);
+
         $dir = $p["path"];
         file::mkdir($dir);
         for($i=1;$i<100;$i++) {

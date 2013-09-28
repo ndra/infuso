@@ -5,11 +5,13 @@ inx.mod.moduleManager.fileManager.folder.tree = inx.tree.extend({
 
     constructor:function(p) {
     
-        if(!p.path) {
-            p.path = "/";
+        if(!p.basedir) {
+            p.basedir = "/";
         }
         
-        p.root = {path:"/"};
+        p.root = {
+            path: p.basedir
+        };
         
         p.loader = {
             cmd:"moduleManager/fileManager/listFiles",
@@ -60,7 +62,11 @@ inx.mod.moduleManager.fileManager.folder.tree = inx.tree.extend({
      **/
     cmd_loadFolder:function(path) {
         this.cmd("eachNode",function(node) {
-            if(node.path==path) {
+        
+            var path1 = node.path.replace(/^\//, "").replace(/\/$/, "");
+            var path2 = path.replace(/^\//, "").replace(/\/$/, "");
+        
+            if(path1 == path2) {
                 this.cmd("load",node.id);
             }
         })
