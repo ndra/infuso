@@ -16,6 +16,7 @@ inx.box.manager = new function() {
             this.__buffer[id] = {};
         }
         this.__buffer[id].inner = true;
+        inx.box.manager.task.cmd("createTask");
     }
     
     this.outerSizeChanged = function(id) {
@@ -24,6 +25,7 @@ inx.box.manager = new function() {
         }
         this.__buffer[id].outer = true;
         this.__buffer[id].inner = true;
+        inx.box.manager.task.cmd("createTask");
     }
     
     /**
@@ -38,11 +40,15 @@ inx.box.manager = new function() {
         
         for(var id in buffer) {
             var c = inx(id);
-            if(this.buffer[i].inner) {
-                c.task("syncLayout");
+            if(buffer[id].inner) {
+                if(c.info("rendered") && c.info("visible")) {
+                    c.task("syncLayout");
+                }
             }
-            if(this.buffer[i].outer) {
-                c.owner().task("syncLayout");
+            if(buffer[id].outer) {
+                if(c.owner().info("rendered") && c.owner().info("visible")) {
+                    c.owner().task("syncLayout");
+                }
             }
         }
 
