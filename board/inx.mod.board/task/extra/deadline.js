@@ -1,7 +1,7 @@
 // @link_with_parent
 // @include inx.checkbox
 
-inx.mod.board.task.more.deadline = inx.panel.extend({
+inx.mod.board.task.extra.deadline = inx.panel.extend({
 
     constructor:function(p) {
     

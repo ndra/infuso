@@ -1,13 +1,8 @@
 // @link_with_parent
 // @include inx.panel
 
-inx.css(".webqkv2ny {table-layout:fixed;width:100%;}");
-inx.css(".webqkv2ny td{vertical-align:middle;}");
-inx.css(".webqkv2ny td.a{width:30px;background:red;}");
-inx.css(".webqkv2ny td.b{width:100px;}");
-inx.css(".webqkv2ny td.c{width:100px;}");
-inx.css(".webqkv2ny td.d{width:100px;}");
-inx.css(".webqkv2ny td.e{width:100px;height:40px;}");
+inx.css(".webqkv2ny {table-layout:fixed;width:100%;border-collapse:collapse;}");
+inx.css(".webqkv2ny td{vertical-align:middle;height:22px;padding:2;}");
 
 inx.mod.board.task.subtasks.item = inx.panel.extend({
 
@@ -24,21 +19,25 @@ inx.mod.board.task.subtasks.item = inx.panel.extend({
         this.base();
         this.el.mouseenter(inx.cmd(this.id(),"showControls")).mouseleave(inx.cmd(this.id(),"hideControls"));
         
-        var table = $("<table>").addClass("webqkv2ny").css({
-            minHeight:24
-        });
+        var table = $("<table>").addClass("webqkv2ny");
         
         if(this.data.my) {
-            table.css("border","1px solid rgb(0,0,100)");
+            table.css("border","2px solid rgb(0,0,100)");
         }
+        
+        $("<col>").attr("width",40).appendTo(table);
+        $("<col>").attr("width",20).appendTo(table);
+        $("<col>").attr("width",100).appendTo(table);
+        $("<col>").attr("width","100%").appendTo(table);
+        $("<col>").attr("width",100).appendTo(table);
         
         var tr = $("<tr>").appendTo(table);
         
-        var td = $("<td>").addClass("a").html(this.data.id).appendTo(table);
-        var td = $("<td>").addClass("b").html(this.data.status.title).appendTo(table);
-        var td = $("<td>").addClass("c").html("<img src='"+this.data.responsibleUser.userpic+"' />").appendTo(table);
-        var td = $("<td>").addClass("d").html(this.data.text).appendTo(table);
-        this.toolsContainer = $("<td>").addClass("e").appendTo(table);
+        var td = $("<td>").html(this.data.id).appendTo(tr);
+        var td = $("<td>").html("<img src='"+this.data.responsibleUser.userpic+"' />").appendTo(tr);
+        var td = $("<td>").html(this.data.status.title).appendTo(tr);        
+        var td = $("<td>").html(this.data.text).appendTo(tr);
+        this.toolsContainer = $("<td>").appendTo(tr);
         
         this.cmd("html",table);        
     },

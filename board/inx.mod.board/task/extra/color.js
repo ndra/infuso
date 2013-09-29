@@ -1,13 +1,12 @@
 // @link_with_parent
 
-inx.mod.board.task.more.color = inx.list.extend({
+inx.mod.board.task.extra.color = inx.list.extend({
 
     constructor:function(p) {
     
         p.style = {
             padding:0,
-            background:"none",
-            border:0
+            background:"none"
         }
        
         p.layout = "inx.layout.column";
@@ -49,13 +48,17 @@ inx.mod.board.task.more.color = inx.list.extend({
     
     info_itemConstructor:function(data) {
     
+        var html = $("<div>").css({
+                width:18,
+                height:18,
+                background:data.color,
+                border:"1px solid #ccc"
+            }).addClass("color");
+    
         var ret = {
             type:"inx.panel",
-            html:$("<div>").css({
-                width:20,
-                height:20,
-                background:data.color
-            }).addClass("color"), style:{
+            html:html,
+            style:{
                 width:20,
                 height:20,
                 border:0

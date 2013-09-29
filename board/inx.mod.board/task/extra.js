@@ -1,58 +1,89 @@
 // @link_with_parent
-// @include inx.panel
 
 inx.mod.board.task.extra = inx.panel.extend({
 
     constructor:function(p) {
-    
-        p.layout = "inx.layout.column";
-    
+        
+        p.layout = "inx.layout.column";      
         p.style = {
-            background:"none",
-            spacing:5,
-            padding:5
-        };
-       
-        this.base(p);        
-        this.cmd("requestData");
+            valign:"top",
+            border:0,
+            spacing:10,
+        }  
+        p.labelWidth = 100;
+        
+        this.base(p);
+        this.cmd("createForm",p.data);
+        
     },
     
-    cmd_requestData:function() {
+    cmd_createForm:function(data) {
     
-        this.call({
-            cmd:"board_controller_tag/getTaskTags",
-            taskID:this.taskID
-        },[this.id(),"handleData"]);
-    
-    },
-    
-    cmd_handleData:function(data) {
-    
-        this.cmd("add",{
-            type:"inx.panel",
-            width:16,
-            html:"<img src='/board/res/img/icons16/tag.png' />",
+        var column1 = this.cmd("add",{
+            type:"inx.form",
+            labelWidth:40,
+            style:{
+                padding:0,
+                background:"none",
+                border:0
+            },
+            width:150
         });
         
-        for(var i=0;i<data.tags.length;i++) {
+        var column2 = this.cmd("add",{
+            type:"inx.form",
+            labelWidth:100,
+            style:{
+                padding:0,
+                background:"none",
+                border:0
+            },
+            width:200
+        });
         
-            this.cmd("add",{
-                type:"inx.checkbox",
-                label:data.tags[i].tagTitle,
-                tagID:data.tags[i].tagID,
-                taskID:this.taskID,
-                value:data.tags[i].value,
-                onchange:function() {
-                    this.call({
-                        cmd:"board_controller_tag/updateTag",
-                        taskID:this.taskID,
-                        tagID:this.tagID,
-                        value:this.info("value")
-                    });
-                }
-            });
-        }
+        var column3 = this.cmd("add",{
+            type:"inx.form",
+            labelWidth:100,
+            style:{
+                padding:0,
+                background:"none",
+                border:0
+            },
+            width:235
+        });
     
+        column1.cmd("add",{
+            label:"Цвет",
+            value:data.color,
+            labelAlign:"left",
+            name:"color",
+            type:this.info("type")+".color"
+        });
+        
+        column2.cmd("add",{
+            data:data,
+            type:this.info("type")+".deadline"
+        });
+        
+        column3.cmd("add",{
+            data:data,
+            type:"inx.button",
+            text:"Сохранить",
+            icon:"save",
+            style:{
+                color:"white",
+                background:"red",
+                fontSize:16
+            },onclick:function() {
+                this.owner().owner().owner().cmd("save");
+            }
+        });
+        
+    },
+    
+    cmd_changeStatus:function(status) {
+        this.fire("changeStatus",status);
     }
+    
      
 });
