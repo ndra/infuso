@@ -3,6 +3,17 @@
 inx.sizeObserver = new function() {
 
     var buffer = [];
+    
+    var checkElement = function(e) {
+        
+        var height = inx.height(e);
+        if(height != e.data("lastHeight")) {                
+            e.data("lastHeight",height);
+            var id = e.data("height-id");
+            var fn = e.data("height-fn");
+            inx(id).cmd(fn,height);
+        }
+    }
 
     this.add = function(e,id,fn) {
     
@@ -16,25 +27,15 @@ inx.sizeObserver = new function() {
         e.data("height-fn",fn);
         e.addClass("x4lsncvi7");
         buffer.push(e);
+        checkElement(e);
     
     }
     
     var checkBuffer = function() {
     
-        var n = 0;
-    
         $(".x4lsncvi7:visible").each(function() {
-        
             var e = $(this);
-            var height = inx.height(e);
-            if(height != e.data("lastHeight")) {                
-                e.data("lastHeight",height);
-                var id = e.data("height-id");
-                var fn = e.data("height-fn");
-                inx(id).cmd(fn,height);
-            }
-            n++;
-            
+            checkElement(e);
         });
         
     }

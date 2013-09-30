@@ -22,7 +22,16 @@ class board_controller_task extends mod_controller {
 
         // Полный список задач
         $tasks = board_task::visible()->orderByExpr($status->order())->limit($limit);
-        $tasks->eq("status",$p["status"]);
+
+        if($p["parentTaskID"]) {
+
+            $tasks = $tasks->eq("epicParentTask",$p["parentTaskID"])->orderByExpr("`status` != 1")->asc("priority",true);
+            $tasks->eq("status",array(board_task_status::STATUS_NEW,board_task_status::STATUS_IN_PROGRESS))
+                ->orr()->gt("changed",util::now()->shift(-60));
+
+        } else {
+            $tasks->eq("status",$p["status"]);
+        }
 
         // Учитываем поиск
         if($search = trim($p["search"])) {
@@ -42,10 +51,6 @@ class board_controller_task extends mod_controller {
 
         $tasks->page($p["page"]);
 
-        // Задачи по цветам
-        $stickerParams = $status->stickerParams();
-        $stickerParams["showProject"] = true;
-
         $lastChange = null;
         
         foreach($tasks as $task) {
@@ -62,7 +67,7 @@ class board_controller_task extends mod_controller {
                 }
             }
 
-            $ret["data"][] = $task->stickerData($stickerParams);
+            $ret["data"][] = $task->stickerData();
 
         }
 
@@ -71,7 +76,7 @@ class board_controller_task extends mod_controller {
         $ret["showCreateButton"] = $status->showCreateButton();
         
         // Список проектов для быстрого добавления
-        $ret["recentProjects"] = array();
+       /* $ret["recentProjects"] = array();
         $n = 0;
         $projects = board_task::all()
             ->eq("creator",user::active()->id())
@@ -90,7 +95,7 @@ class board_controller_task extends mod_controller {
         $ret["recentProjects"][] = array(
             "id" => 0,
             "title" => "<b>Другой</b>",
-        );
+        );              c*/
 
         mod_profiler::endOperation();
 

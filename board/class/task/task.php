@@ -577,7 +577,7 @@ class board_task extends reflex {
         // Статус
         $ret["status"] = array(
             "id" => $this->status()->id(),
-            "title" => $this->status()->title(),
+            "title" => $this->statusText(),
 		);
 		
         // Цвет стикера
@@ -616,68 +616,77 @@ class board_task extends reflex {
 
         // Кнопки задачи (видны только если можно изменять задачу)
 
-        $ret["tools"] = array();
-        $ret["mainTools"] = array();
-
-        if(user::active()->checkAccess("board/updateTaskParams",array(
-            "task" => $this,
-        ))) {
-
-            switch($this->status()->id()) {
-
-                case board_task_status::STATUS_DRAFT:
-                    $ret["tools"][] = "add";
-                    $ret["tools"][] = "take";
-                    break;
-
-                case board_task_status::STATUS_IN_PROGRESS:
-
-                    if(!$this->paused()) {
-                        $ret["mainTools"][] = "pause";
-                    } else {
-                        $ret["mainTools"][] = "resume";
-                    }
-                    $ret["mainTools"][] = "done";
-
-                    $ret["tools"][] = "stop";
-                    $ret["tools"][] = "problems";
-                    $ret["tools"][] = "cancel";
-                    
-                    break;
-
-                case board_task_status::STATUS_NEW:
-
-                    if(!$this->isEpic()) {
-                        $ret["mainTools"][] = "take";
-                    } else {
-                        $ret["mainTools"][] = "add";
-                    }
-
-                    $ret["tools"][] = "problems";
-                    $ret["tools"][] = "cancel";
-
-                    break;
-
-                case board_task_status::STATUS_CHECKOUT:
-
-                    $ret["mainTools"][] = "complete";
-                    $ret["mainTools"][] = "revision";
-                    $ret["tools"][] = "problems";
-                    $ret["tools"][] = "cancel";
-                    break;
-
-                case board_task_status::STATUS_COMPLETED:
-
-                    $ret["tools"][] = "revision";
-                    break;
-
-            }
-
-        }
+        $ret["tools"] = $this->tools();
         
         mod_profiler::endOperation();
 
         return $ret;
+    }
+
+    /**
+     * Возвращает массив допустимых операций с задачей
+     **/
+    public function tools() {
+
+        if(!user::active()->checkAccess("board/updateTaskParams",array(
+            "task" => $this,
+        ))) {
+            return array();
+        }
+
+        $tools = array();
+
+        switch($this->status()->id()) {
+
+            case board_task_status::STATUS_DRAFT:
+                $tools["main"][] = "add";
+                $tools["main"][] = "take";
+                break;
+
+            case board_task_status::STATUS_IN_PROGRESS:
+
+                if(!$this->paused()) {
+                    $tools["main"][] = "pause";
+                } else {
+                    $tools["main"][] = "resume";
+                }
+                $tools["main"][] = "done";
+
+                $tools["additional"][] = "stop";
+                $tools["additional"][] = "problems";
+                $tools["additional"][] = "cancel";
+
+                break;
+
+            case board_task_status::STATUS_NEW:
+
+                if(!$this->isEpic()) {
+                    $tools["main"][] = "take";
+                } else {
+                    $tools["main"][] = "add";
+                }
+
+                $tools["additional"][] = "problems";
+                $tools["additional"][] = "cancel";
+
+                break;
+
+            case board_task_status::STATUS_CHECKOUT:
+
+                $tools["main"][] = "complete";
+                $tools["main"][] = "revision";
+                $tools["additional"][] = "problems";
+                $tools["additional"][] = "cancel";
+                break;
+
+            case board_task_status::STATUS_COMPLETED:
+
+                $tools["additional"][] = "revision";
+                break;
+
+        }
+
+        return $tools;
     }
     
     /**

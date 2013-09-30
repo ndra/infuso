@@ -540,17 +540,9 @@ inx.list = inx.panel.extend({
                 
                 var cmp = this.privateGetItemComponent(this.data[i]);
                 this.cmd("replace",this.info("itemComponent",id),cmp);
-                
-                /**
-                 this.private_updateItem(id);
-                 Сделать без долгого setData
-                 **/
             }    
         }
-        
-        
-        
-        //this.cmd("setData",this.data);
+
     },
     
     /**

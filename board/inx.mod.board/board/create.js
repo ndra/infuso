@@ -3,7 +3,7 @@
 inx.css(".waz3yvrjpurq { cursor:pointer; }");
 inx.css(".waz3yvrjpurq:hover { text-decoration:underline; }");
 
-inx.mod.board.board.taskList.create = inx.panel.extend({
+inx.mod.board.board.create = inx.panel.extend({
 
     constructor:function(p) {    
         p.style = {

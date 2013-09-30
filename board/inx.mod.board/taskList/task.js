@@ -3,7 +3,7 @@
 
 // Стикер задачи
 
-inx.mod.board.board.taskList.task = inx.panel.extend({
+inx.mod.board.taskList.task = inx.panel.extend({
 
     constructor:function(p) {    
         p.style = {
@@ -31,12 +31,12 @@ inx.mod.board.board.taskList.task = inx.panel.extend({
     
         var e = $("<div>");
         
-        var count = taskData.mainTools.length
+        var count = taskData.tools.main.length
         var itemWidth = params.width / count;
             
-        for(var i in taskData.mainTools) {
+        for(var i in taskData.tools.main) {
         
-            var action = taskData.mainTools[i];
+            var action = taskData.tools.main[i];
         
             var item = $("<div>")
                 .attr("title",action)
@@ -121,9 +121,9 @@ inx.mod.board.board.taskList.task = inx.panel.extend({
         var size = this.info("width");
     
         var body = $("<div>").css({
-            width:size - (taskData.my ? 6 : 2),
-            height:size - (taskData.my ? 6 : 2),
-            border: taskData.my ? "3px solid rgb(0,0,100)" : "1px solid rgba(0,0,0,.3)",
+            width:size - 2,
+            height:size - 2,
+            border: "1px solid rgba(0,0,0,.3)",
             position:"relative",
             boxShadow:"0 0 5px rgba(0,0,0,.3)",
             background:taskData.color || "white"
@@ -148,7 +148,7 @@ inx.mod.board.board.taskList.task = inx.panel.extend({
 
         var params = {
             width:size,
-            height: size - photosHeight - headerHeight - (taskData.my ? 4 : 0)
+            height: size - photosHeight - headerHeight
         };
         this.renderText(taskData,params).appendTo(body);
 

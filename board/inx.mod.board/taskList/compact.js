@@ -2,9 +2,9 @@
 // @include inx.panel
 
 inx.css(".webqkv2ny {table-layout:fixed;width:100%;border-collapse:collapse;}");
-inx.css(".webqkv2ny td{vertical-align:middle;height:22px;padding:2;}");
+inx.css(".webqkv2ny td{vertical-align:middle;height:22px;padding:2;text-align:left;}");
 
-inx.mod.board.task.subtasks.item = inx.panel.extend({
+inx.mod.board.taskList.compact = inx.panel.extend({
 
     constructor:function(p) {
     
@@ -21,21 +21,21 @@ inx.mod.board.task.subtasks.item = inx.panel.extend({
         
         var table = $("<table>").addClass("webqkv2ny");
         
-        if(this.data.my) {
+        /*if(this.data.my) {
             table.css("border","2px solid rgb(0,0,100)");
-        }
+        } */
         
         $("<col>").attr("width",40).appendTo(table);
         $("<col>").attr("width",20).appendTo(table);
         $("<col>").attr("width",100).appendTo(table);
         $("<col>").attr("width","100%").appendTo(table);
-        $("<col>").attr("width",100).appendTo(table);
+        $("<col>").attr("width",130).appendTo(table);
         
         var tr = $("<tr>").appendTo(table);
         
         var td = $("<td>").html(this.data.id).appendTo(tr);
         var td = $("<td>").html("<img src='"+this.data.responsibleUser.userpic+"' />").appendTo(tr);
-        var td = $("<td>").html(this.data.status.title).appendTo(tr);        
+        var td = $("<td>").html(this.data.paused+":"+this.data.status.title).appendTo(tr);        
         var td = $("<td>").html(this.data.text).appendTo(tr);
         this.toolsContainer = $("<td>").appendTo(tr);
         
@@ -47,7 +47,7 @@ inx.mod.board.task.subtasks.item = inx.panel.extend({
         if(!this.controls) {
     
             var cmp = inx({
-                width:100,
+                width:130,
                 tools:this.data.data.tools,
                 type:"inx.mod.board.taskControls",
                 taskID:this.data.id,

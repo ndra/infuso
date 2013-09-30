@@ -1,12 +1,12 @@
 // @include inx.list
-// @link_with_parent
 
-inx.mod.board.board.taskList = inx.list.extend({
+inx.ns("inx.mod.board").taskList = inx.list.extend({
 
     constructor:function(p) {    
 
         p.loader = {
             cmd:"board_controller_task::listTasks",
+            parentTaskID:p.parentTaskID,
             status:p.status
         };
         
@@ -14,10 +14,6 @@ inx.mod.board.board.taskList = inx.list.extend({
         
         if(!p.style) {
             p.style = {};
-        }
-        
-        if(p.style.spacing===undefined) {
-            p.style.spacing = 20;
         }
         
         if(p.style.padding===undefined) {
@@ -32,28 +28,37 @@ inx.mod.board.board.taskList = inx.list.extend({
     
         this.base(p);
         
+        this.cmd("setViewMode",p.viewMode);
+        
         this.on("load",[this.id(),"handleLoad"]);
         this.on("beforeload",[this.id(),"beforeLoad"]);
         this.on("boardChanged",[this.id(),"load"]);
         
         inx.hotkey("f5",[this.id(),"handleF5"]);
         
-        this.extend({
-            getMainComponent:function() {
-                return inx(this).axis("parents").eq("type","inx.mod.board.main");
-            }
-        })
-        
         inx.on("board/taskChanged",[this.id(),"handleTaskChanged"]);        
         
     },
     
-    cmd_handleTaskChanged:function(params) {  
+    cmd_setViewMode:function(viewMode) {
+        switch(viewMode) {
+            default:
+                this.itemType = "inx.mod.board.taskList.task";
+                this.style("spacing",10);
+                break;
+            case "compact":
+                this.itemType = "inx.mod.board.taskList.compact";
+                this.style("spacing",0);
+                break;
+        }
+    },
+    
+    cmd_handleTaskChanged:function(params) {      
     
         if(!this.info("visibleRecursive")) {
             return;
         }
-     
+        
         this.cmd("set",params.taskID,params.sticker);
         
         if(params.changed.indexOf("status") != -1) {
@@ -76,10 +81,12 @@ inx.mod.board.board.taskList = inx.list.extend({
     },
     
     info_itemType:function(data) {
+    
         if(data.dateMark) {
-            return "inx.mod.board.board.taskList.dateMark";
+            return "inx.mod.board.taskList.dateMark";
         }
-        return "inx.mod.board.board.taskList.task";
+        
+        return this.itemType;
     },
     
     cmd_handleItemClick:function(id,event) {

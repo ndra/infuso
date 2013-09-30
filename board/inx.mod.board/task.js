@@ -15,7 +15,10 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
             padding:20,
             spacing:10,
             width: 1000,
+            vscroll:true
         }
+        
+        p.style.maxHeight = $(window).height()-50;
         
         p.destroyOnEscape = true;
         
@@ -83,7 +86,7 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
         
         this.cmd("add",{
             type:"inx.mod.board.task.subtasks",
-            taskID:this.taskID
+            parentTaskID:this.taskID
         });
                
         this.cmd("add",{

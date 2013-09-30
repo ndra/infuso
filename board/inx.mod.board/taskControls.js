@@ -134,15 +134,20 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
             }    
         }
         
+        if(!this.tools.main) {
+            return;
+        }
+        var tools = this.tools.main.concat(["|"],this.tools.additional);
+        
         for(var i in tools) {
             
             if(tools[i]=="|") {
             
-                if(this.big) {
+                //if(this.big) {
                     this.cmd("add",{
-                        width:this.big ? 20 : 5
+                        width:this.big ? 20 : 10
                     });
-                }
+               // }
             
             } else {
             

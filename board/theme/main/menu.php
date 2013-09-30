@@ -39,6 +39,8 @@
             <a class='item' href='#conf-access' >Доступ</a>
         }
         
+        <a class='item' href='#conf-profile' >Профиль</a>
+        
     </div>
 </div>
 

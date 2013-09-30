@@ -19,7 +19,7 @@ inx.mod.board.main.informer = inx.panel.extend({
                 height:20
             }
         },{
-            type:"inx.mod.board.board.taskList",
+            type:"inx.mod.board.taskList",
             status:1,
             style:{
                 border:0,

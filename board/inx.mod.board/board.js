@@ -9,7 +9,7 @@ inx.ns("inx.mod.board").board = inx.panel.extend({
         }
     
         this.taskList = inx({
-            type:"inx.mod.board.board.taskList",
+            type:"inx.mod.board.taskList",
             status:p.status
         });
         
@@ -32,7 +32,7 @@ inx.ns("inx.mod.board").board = inx.panel.extend({
         }];
         
         this.create = inx({
-            type:p.type+".taskList.create"
+            type:p.type+".create"
         });
         
         p.items = [this.create,this.taskList];

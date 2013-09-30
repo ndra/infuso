@@ -127,7 +127,14 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
             case "conf-projects":
                 this.tabs.cmd("add",{
                     type:"inx.mod.board.projects",
-                    name:"rojects"
+                    name:"projects"
+                }).cmd("setParams",params.params);
+                break;
+                
+            case "conf-profile":
+                this.tabs.cmd("add",{
+                    type:"inx.mod.board.profile",
+                    name:"profile"
                 }).cmd("setParams",params.params);
                 break;
                 
