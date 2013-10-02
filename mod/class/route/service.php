@@ -39,10 +39,13 @@ class mod_route_service extends mod_service {
         }
     }
 
+	/**
+	 * @todo Включить буфферизацию
+	 **/
     public function urlToAction($url) {
 
         $key = "action-to-url/".$url;
-        $serializedAction = mod_cache::get($key);
+       // $serializedAction = mod_cache::get($key);
 
         if(!$serializedAction) {
 
