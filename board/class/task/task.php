@@ -377,7 +377,7 @@ class board_task extends reflex {
         return board_task_log::all()->eq("taskID",$this->id());
     }
 
-    public function logCustom($text,$time=0,$type,$files) {
+    public function logCustom($text,$time=0,$type,$files=null) {
         $this->getLogCustom()->create(array(
             "taskID" => $this->id(),
             "type" => $type,
@@ -589,6 +589,7 @@ class board_task extends reflex {
 
         // Установленный дэдлайн
         $ret["deadlineDate"] = $this->data("deadlineDate");
+        $ret["deadline"] = $this->data("deadline");
 
         // Пропущенный дэдлайн
         $d = util::now()->stamp() - $this->pdata("deadlineDate")->stamp();
@@ -634,7 +635,10 @@ class board_task extends reflex {
             return array();
         }
 
-        $tools = array();
+        $tools = array(
+            "main" => array(),
+            "additional" => array(),
+        );
 
         switch($this->status()->id()) {
 

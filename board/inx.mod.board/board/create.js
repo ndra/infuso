@@ -23,12 +23,27 @@ inx.mod.board.board.create = inx.panel.extend({
                 type:"inx.textfield",
                 name:"search",
                 onchange:[this.id(),"requestData"],
-                width:110
+                width:110,
+                buttons:[{
+                    icon:"delete",
+                    onclick:function() { this.owner().cmd("setValue",""); }
+                }]
             }]
         }];
         
         this.base(p);
         this.cmd("requestData");
+        setInterval(inx.cmd(this.id(),"requestDataInterval"),1000 * 60 * 5);
+    },
+    
+    cmd_requestDataInterval:function() {
+    
+        if(!this.info("visibleRecursive")) {
+            return;
+        }
+        
+        this.cmd("requestData");
+    
     },
     
     cmd_requestData:function() {

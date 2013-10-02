@@ -50,6 +50,12 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
             return;
         }
         
+        if(!data.color) {
+            data.color = "white";
+        }
+        
+        this.style("background",data.color);
+        
         this.items().cmd("destroy");
         
         this.data = data;

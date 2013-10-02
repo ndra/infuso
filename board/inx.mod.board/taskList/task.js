@@ -228,8 +228,19 @@ inx.mod.board.taskList.task = inx.panel.extend({
         
         var cmp = this;
         
-        this.el.mouseenter(inx.cmd(this,"showControls"))
-        this.el.mouseleave(inx.cmd(this,"hideControls"))
+        this.el.mouseenter(inx.cmd(this,"showControls"));
+        this.el.mouseleave(inx.cmd(this,"hideControls"));
+        
+        if(taskData.deadline) {
+            $("<div>").css({
+                position:"absolute",
+                top:-10,
+                right:-10,
+                width:20,
+                height:20,
+                background:"url(/board/res/img/icons16/deadline.gif) center center no-repeat"
+            }).attr("title",taskData.deadlineDate).appendTo(e);
+        }
         
         // Влючаем перетаскивание файлов в задачу
         inx({

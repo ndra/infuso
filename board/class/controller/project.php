@@ -64,6 +64,14 @@ class board_controller_project extends mod_controller {
         }
         
         usort($ret,function($a,$b) {
+
+            if($a["priority"] === null) {
+                return 1;
+            }
+            if($b["priority"] === null) {
+                return -1;
+            }
+
             return $a["priority"] - $b["priority"];
 		});
 

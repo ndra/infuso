@@ -16,8 +16,11 @@ inx.mod.board.task.project = inx.panel.extend({
     cmd_handleData:function(data) {
     
         var e = $("<div>").attr("title","Изменить проект").addClass("u2qp12x4");
-        e.html(this.taskID + " / " + data.projectTitle);
-        this.eProjectTitle = e;
+        $("<span>").html(this.taskID).appendTo(e);
+        $("<span>").html(" / ").appendTo(e);
+        this.eProjectTitle = $("<span>").html(data.projectTitle).appendTo(e);
+        $("<span>").html(" — ").appendTo(e);
+        this.eStatus = $("<span>").html(data.statusText).appendTo(e);
         
         this.cmd("html",e);
     
@@ -45,6 +48,9 @@ inx.mod.board.task.project = inx.panel.extend({
         if(p.taskID==this.taskID) {
             if(this.eProjectTitle) {
                 this.eProjectTitle.html(p.sticker.project.title);
+            }
+            if(this.eStatus) {
+                this.eStatus.html(p.sticker.status.title);
             }
         }
     }

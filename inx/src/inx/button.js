@@ -49,6 +49,9 @@ inx.button = inx.box.extend({
         this.private_input = $("<div class='vbjm1zdmgr-button' >").appendTo(this.el);     
         this.el.mouseover(inx.cmd(this,"private_handleMouseover"));
         this.cmd("updateHTML");
+        if(!this.air) {
+            this.cmd("showFrame");
+        }
     },
 
     cmd_updateHTML:function() {

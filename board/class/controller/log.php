@@ -39,7 +39,7 @@ class board_controller_log extends mod_controller {
                 "userpick" => $item->user()->userpick()->preview(16,16),
                 "user" => $item->user()->title(),
                 "text" => $item->data("text"),
-                "time" => $item->pdata("created")->left(),
+                "time" => $item->pdata("created")->text(),
                 "files" => $files,
             );
 

@@ -22,7 +22,7 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
         
     },
     
-    cmd_handleData:function(tools) {
+    cmd_handleData:function(xtools) {
     
         this.items().cmd("destroy");
         
@@ -35,16 +35,15 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                     help:"К исполнению",
                 }, large: {
                     icon:"/board/res/img/icons24/add.png",
-                    text:"Добавить"
                 }
             }, pause:{
                 general: {
                     help:"Пауза",
+                    onclick:[this.id(),"pauseTask"],
                 }, small: {
                     icon:"/board/res/img/icons16/pause.png",
                 }, large: {
-                    text:"Пауза",
-                    type:this.info("type")+".time"
+                    icon:"/board/res/img/icons24/pause.png",
                 }
             }, resume: {
                 general: {
@@ -64,12 +63,7 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                 }, small:{
                     air:true
                 }, large:{
-                    text:"Выполнено",
-                    icon:"/board/res/img/icons24/done.png",
-                    style:{
-                        color:"white",
-                        background:"green"
-                    }
+                    icon:"/board/res/img/icons24/done.png"
                 }             
             }, problems: {
                 general: {
@@ -86,7 +80,6 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                     icon:"/board/res/img/icons16/take.png",
                 }, large: {
                     icon:"/board/res/img/icons24/take.png",
-                    text:"Взять"
                 }
             }, stop: {
                 general: {
@@ -95,7 +88,6 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                     help:"Вернуть"
                 }, small: {
                     icon:"/board/res/img/icons16/stop.png",
-                    air:true
                 }
             }, complete: {
                 general: {
@@ -103,11 +95,6 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                     onclick:[this.id(),"completeTask"],
                 }, large: {
                     icon:"/board/res/img/icons24/complete.png",
-                    text:"Завершить",
-                    style:{
-                        color:"white",
-                        background:"green"
-                    }
                 }
             }, revision: {
                 general: {
@@ -116,7 +103,6 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                     help:"Не готово"                    
                 }, large: {
                     icon:"/board/res/img/icons24/revision.png",
-                    text:"Не готово"
                 }, small: {
                     icon:"/board/res/img/icons16/revision.png",
                     air:true
@@ -134,18 +120,14 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
             }    
         }
         
-        if(!this.tools.main) {
-            return;
-        }
-        
         var tools = [];
         
         if(this.showMain) {
-            tools = tools.concat(this.tools.main);
+            tools = tools.concat(xtools.main);
         }
         
         if(this.showAdditional) {        
-            tools = tools.concat(this.tools.additional);
+            tools = tools.concat(xtools.additional);
         }
         
         for(var i in tools) {
