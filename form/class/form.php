@@ -152,12 +152,13 @@ class form extends tmp_helper {
 	    // Сохраняем форму в базу
 	    $s = $this->serializeValidation();
 	    $validate = form_validate::get($this->hash());
-	    if(!$validate->exists())
+	    if(!$validate->exists()) {
 	        $validate = reflex::create("form_validate",array(
 	            "hash" => $this->hash(),
 	            "formData" => $s,
 	            "code" => $this->code(),
 	        ));
+		}
 	}
 
 	/**
@@ -165,11 +166,13 @@ class form extends tmp_helper {
 	 **/
 	public function code($code=null) {
 
-		if(func_num_args()==0)
+		if(func_num_args()==0) {
 		    return $this->param("code");
+		}
 
-		if(func_num_args()==1)
+		if(func_num_args()==1) {
 		    return $this->param("code",$code);
+		}
 
 	}
 
@@ -232,15 +235,18 @@ class form extends tmp_helper {
 	}
 
 	public function setData($data) {
-		foreach($this->fields() as $field)
+		foreach($this->fields() as $field) {
 			$field->value($data[$field->name()]);
+		}
 		return $this;
 	}
 
 	public function setFilledData($data) {
-		foreach($this->fields() as $field)
-		    if($val = trim($data[$field->name()]))
+		foreach($this->fields() as $field) {
+		    if($val = trim($data[$field->name()])) {
 				$field->value($val);
+			}
+		}
 		return $this;
 	}
 
@@ -249,8 +255,9 @@ class form extends tmp_helper {
 	 **/
 	public function text() {
 		$ret = "";
-		foreach($this->fields() as $field)
+		foreach($this->fields() as $field) {
 		    $ret.= $field->name().": ".$field->rvalue()."\n";
+		}
 		return $ret;
 	}
 
