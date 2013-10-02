@@ -44,7 +44,7 @@ inx.ns("inx.mod.board").taskList = inx.list.extend({
         switch(viewMode) {
             default:
                 this.itemType = "inx.mod.board.taskList.task";
-                this.style("spacing",10);
+                this.style("spacing",30);
                 break;
             case "compact":
                 this.itemType = "inx.mod.board.taskList.compact";

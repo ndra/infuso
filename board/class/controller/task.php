@@ -30,7 +30,13 @@ class board_controller_task extends mod_controller {
                 ->orr()->gt("changed",util::now()->shift(-60));
 
         } else {
+        
             $tasks->eq("status",$p["status"]);
+            
+            if($p["status"] != board_task_status::STATUS_IN_PROGRESS) {
+                $tasks->eq("epicParentTask",0);
+            }
+            
         }
 
         // Учитываем поиск
@@ -75,28 +81,6 @@ class board_controller_task extends mod_controller {
         $ret["sortable"] = $status->sortable();
         $ret["showCreateButton"] = $status->showCreateButton();
         
-        // Список проектов для быстрого добавления
-       /* $ret["recentProjects"] = array();
-        $n = 0;
-        $projects = board_task::all()
-            ->eq("creator",user::active()->id())
-            ->groupBy("projectID")
-            ->orderByExpr("max(created) desc");
-        foreach($projects as $project) {
-            $ret["recentProjects"][] = array(
-                "id" => $project->project()->id(),
-                "title" => $project->project()->title(),
-            );
-            $n++;
-            if($n>5) {
-                break;
-            }
-        }
-        $ret["recentProjects"][] = array(
-            "id" => 0,
-            "title" => "<b>Другой</b>",
-        );              c*/
-
         mod_profiler::endOperation();
 
         return $ret;

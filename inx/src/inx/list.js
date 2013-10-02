@@ -11,19 +11,29 @@ inx.list = inx.panel.extend({
         this.private_selection = [];
         
         // Быстрое назначение триггеров
-        if(p.onselect)
+        if(p.onselect) {
             this.on("select",p.onselect);
-        if(p.onitemclick)
-            this.on("itemclick",p.onitemclick);
-        if(p.onitemdblclick)
-            this.on("itemdblclick",p.onitemdblclick);
-        if(p.onload)
-            this.on("load",p.onload);
+        }
         
-        if(p.moreFieldName===undefined)
+        if(p.onitemclick) {
+            this.on("itemclick",p.onitemclick);
+        }
+        
+        if(p.onitemdblclick) {
+            this.on("itemdblclick",p.onitemdblclick);
+        }
+        
+        if(p.onload) {
+            this.on("load",p.onload);
+        }
+        
+        if(p.moreFieldName===undefined) {
             p.moreFieldName = "text";
-        if(!p.emptyHTML)
+        }    
+          
+        if(!p.emptyHTML) {
             p.emptyHTML = "...";    
+        }
         
         // Шапка таблицы
         this.head = inx({
@@ -33,28 +43,33 @@ inx.list = inx.panel.extend({
         });
         
         // Стили о умолчанию
-        if(!p.style)
+        if(!p.style) {
             p.style = {}        
+        }
                 
         if(p.style.vscroll===undefined) {
             p.style.vscroll = true;
         }
+        
         p.style.hscroll = true;
         
         if(p.style.padding === undefined) {
             p.style.padding = 10;
         }
         
-        if(!p.side)
+        if(!p.side) {
             p.side = [];
+        }
             
         p.side.push(this.head);
         
-        if(p.data && !p.data.data)
+        if(p.data && !p.data.data) {
             p.data.data = inx.deepCopy(p.data);            
+        }
         
-        if(!p.data)
+        if(!p.data) {
             this.data = [];
+        }
             
         this.base(p);
     },
@@ -65,8 +80,9 @@ inx.list = inx.panel.extend({
     info_itemComponent:function(id) {
         var cmp = 0;
         this.items().each(function() {
-            if(this.data("itemID")==id)
+            if(this.data("itemID")==id) {
                 cmp = this;
+            }
         });
         return cmp || inx(0);
     },
@@ -81,7 +97,7 @@ inx.list = inx.panel.extend({
         // Убираем старые элементы
         this.items().each(function() {
             that.cmd("remove",this.id());
-        })
+        });
         
         for(var i in this.data) {
         
@@ -106,7 +122,16 @@ inx.list = inx.panel.extend({
     
     },
     
+    privateNormalizeData:function(data) {
+        if(!data.data) {
+            data.data = inx.deepCopy(data);
+        }
+        return data;
+    },
+    
     privateGetItemComponent:function(data) {
+    
+        data = this.privateNormalizeData(data);
     
         var that = this;
     
@@ -138,9 +163,11 @@ inx.list = inx.panel.extend({
             }
                 
             if(this.sortable) {
+            
                 if(!item.listeners) {
                     item.listeners = {};
                 }
+                
                 item.listeners.render = function() {
                     inx.dd.enable(this.el,that,"handleDragItem",{
                         itemID:this.id(),
@@ -177,8 +204,9 @@ inx.list = inx.panel.extend({
        
         if(params.phase=="start") {
             this.dragItemID =  inx(params.itemID).data("itemID");
-            if(this.fire("sortbegin",this.dragItemID)===false)
+            if(this.fire("sortbegin",this.dragItemID) === false) {
                 return false;
+            }
         }
     
         var position = 0;
@@ -203,7 +231,7 @@ inx.list = inx.panel.extend({
         this.cmd("moveItem",this.dragItemID,position);
         
         if(params.phase=="stop") {
-            this.fire("sortcomplete")
+            this.fire("sortcomplete");
         }
         
     },
@@ -212,10 +240,11 @@ inx.list = inx.panel.extend({
      * @return ширина контента для скроллинга
      **/
     info_contentWidth:function() {
-        if(this.info("gridMode"))
+        if(this.info("gridMode")) {
             return this.items().info("rowWidth");
-        else
+        } else {
             return this.base();
+        }
     },
 
     /**
@@ -223,15 +252,17 @@ inx.list = inx.panel.extend({
      **/    
     renderer:function(e,data) { 
     
-        if(!data)
+        if(!data) {
             data = {};
+        }
     
-        if(data.separator) {
-            html = "<hr>";
+        if(data.separator) {        
+            html = "<hr>";            
         } else {
             var html = data.text;
-            if(data.icon)
+            if(data.icon) {
                 html = "<img src='"+inx.img(data.icon)+"' align='absmiddle' style='margin-right:8px;' />" + data.text;
+            }
         }
         
         e.html(html);
@@ -272,10 +303,12 @@ inx.list = inx.panel.extend({
      **/
     cmd_updateHeadVisibility:function() {
         var f = false;
-        if(this.private_gridMode)
+        if(this.private_gridMode) {
             f = true;
-        if(this.data && !this.data.length)
+        }
+        if(this.data && !this.data.length) {
             f = false;
+        }
         inx(this).axis("head").cmd(f ? "show" : "hide");
     },
     
@@ -283,15 +316,18 @@ inx.list = inx.panel.extend({
      * Рендер компонента
      **/
     cmd_render:function() {
+    
         this.base();
-        if(this.loader)
+        if(this.loader) {
             this.cmd("load");
+        }
             
         this.cmd("setCols",this.cols);
         this.cmd("setData",this.data);        
         
-        if(!this.enableTextSelection)
+        if(!this.enableTextSelection) {
             this.__body.addClass("inx-unselectable");            
+        }
         this.on("scroll",[this.id(),"updateTabsScroll"]);
     },
     
@@ -343,6 +379,7 @@ inx.list = inx.panel.extend({
         
         // Уничтожаем предыдущий вызов
         inx(this.privateLoadCommand).cmd("destroy");
+        
         // Делаем новый вызов
         this.privateLoadCommand = this.call(loader,[this.id(),"handleLoadNative"] );
     },
@@ -407,6 +444,7 @@ inx.list = inx.panel.extend({
     },
     
     cmd_updateSelection:function() {
+    
         var list = this;
         this.items().each(function() {
             if(list.private_selection[this.data("itemID")]) {
@@ -431,8 +469,9 @@ inx.list = inx.panel.extend({
      * Выделяет все элементы
      **/
     cmd_selectAll:function() {
-        for(var i in this.data)
+        for(var i in this.data) {
             this.cmd("select",this.data[i].id,"add")
+        }
     },
     
     /**
@@ -440,15 +479,18 @@ inx.list = inx.panel.extend({
      * Вызывается после загрузки данных
      **/
     cmd_removeOldSelection:function() {
-        for(var i in this.private_selection)
-            if(!this.info("item",i))
+        for(var i in this.private_selection) {
+            if(!this.info("item",i)) {
                 delete this.private_selection[i];
+            }
+        }
     },
     
     info_selection:function() {
         var ret = [];
-        for(var id in this.private_selection)
+        for(var id in this.private_selection) {
             ret.push(id);
+        }
         return ret;
     },
 
@@ -456,10 +498,8 @@ inx.list = inx.panel.extend({
      * Передвигает выделение на одну строку вниз
      * mode пробрасывается в метод select
      **/    
-    cmd_selectUp:function(pos,mode) {
-    
-        var id = this.info("selection")[0];
-    
+    cmd_selectUp:function(pos,mode) {    
+        var id = this.info("selection")[0];    
         var pos = this.info("position",id)-1;
         this.cmd("setPosition",pos,mode);
     },
@@ -468,10 +508,8 @@ inx.list = inx.panel.extend({
      * Передвигает выделение на одну строку вниз
      * mode пробрасывается в метод select
      **/
-    cmd_selectDown:function(pos,mode) {
-    
-        var id = this.info("selection").slice(-1)[0];
-    
+    cmd_selectDown:function(pos,mode) {    
+        var id = this.info("selection").slice(-1)[0];    
         var pos = this.info("position",id)+1;
         this.cmd("setPosition",pos,mode);
     },
@@ -481,13 +519,16 @@ inx.list = inx.panel.extend({
      **/
     cmd_setPosition:function(pos,mode) {
     
-        if(pos<0)
+        if(pos<0) {
             pos=0;
+        }
                        
         var item = this.data[pos];
         
-        if(!item)
+        if(!item) {
             return;
+        }
+        
         this.cmd("select",item.id,mode); 
     },
     
@@ -510,12 +551,18 @@ inx.list = inx.panel.extend({
      * Если передавн второй параметр - возвращает элемент массива
      **/
     info_item:function(id,key) {
+    
         var ret;
-        for(var i in this.data)
-            if(this.data[i].id==id)
+        for(var i in this.data) {
+            if(this.data[i].id==id) {
                 ret = this.data[i];
-        if(ret && key)
+            }
+        }
+        
+        if(ret && key) {
             ret = ret[key];
+        }
+        
         return ret;
     },
     
@@ -557,8 +604,9 @@ inx.list = inx.panel.extend({
      **/
     info_col:function(col,key) {
         var col =  this.head.info("col",col);
-        if(!col)
+        if(!col) {
             return null;
+        }
         return col[key];
     },
     
@@ -617,10 +665,12 @@ inx.list = inx.panel.extend({
     
         this.data = [];
         for(var i=0;i<data.length;i++) {
+        
             row = data[i];
             
-            if(!row.data)
+            if(!row.data) {
                 row.data = inx.deepCopy(row);
+            }
                 
             this.data.push(row);
         }
@@ -651,7 +701,9 @@ inx.list = inx.panel.extend({
         return !!this.private_gridMode;
     },
     
-    // Реакция на нажатие клавиш
+    /**
+     * Реакция на нажатие клавиш
+     **/
     cmd_keydown:function(e) {
     
         switch(e.keyCode) {
@@ -693,6 +745,9 @@ inx.list = inx.panel.extend({
         this.cmd("setData",this.data);
     },
     
+    /**
+     * Опускает выбранный элемент на одну позицию ниже
+     **/        
     cmd_moveSelectedItemDown:function() {
         var sel = this.info("selection");
         for(var i=this.data.length-1;i>0;i--) {
@@ -736,10 +791,14 @@ inx.list = inx.panel.extend({
         var sel = this.info("selection");
         for(var i in this.data) {
             var keep = true;
-            for(var j in sel)
-                if(this.data[i].id==sel[j])
+            for(var j in sel) {
+                if(this.data[i].id==sel[j]) {
                     keep = false;
-            if(keep) data.push(this.data[i]);
+                }
+            }
+            if(keep) {
+                data.push(this.data[i]);
+            }
         }
         this.cmd("setData",data);
     },
@@ -749,8 +808,9 @@ inx.list = inx.panel.extend({
     },
     
     cmd_destroy:function() {
-        for(var i in this.bufferz)
+        for(var i in this.bufferz) {
             inx(this.bufferz[i]).cmd("destroy");
+        }
     }
     
 });

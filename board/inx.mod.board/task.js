@@ -77,6 +77,8 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
             big:true,
             region:"top",
             tools:data.tools,
+            showMain:true,
+            showAdditional:true,
             taskID:this.taskID,
             listeners:{
                 action:[this.id(),"save"]

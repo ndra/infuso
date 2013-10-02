@@ -25,7 +25,7 @@ inx.mod.board.task.subtasks.toolbar = inx.panel.extend({
                 background:0,
                 border:0
             }
-        }, {
+        }/*, {
             width:20
         },{
             type:"inx.panel",
@@ -34,7 +34,7 @@ inx.mod.board.task.subtasks.toolbar = inx.panel.extend({
         }, {
             type:"inx.pager",
             total:5
-        }]
+        } */]
         
         this.base(p);
 

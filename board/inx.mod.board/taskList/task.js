@@ -257,6 +257,7 @@ inx.mod.board.taskList.task = inx.panel.extend({
                 width:this.info("width") - 20,
                 height:this.info("height") - 20,
                 tools:this.data.data.tools,
+                showAdditional:true,
                 type:"inx.mod.board.taskControls",
                 taskID:this.data.id
             });

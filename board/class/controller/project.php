@@ -36,7 +36,19 @@ class board_controller_project extends mod_controller {
     public static function post_listProjectsSimple($p) {
 
         $ret = array();
-
+        
+		$priority = board_task::all()
+            ->eq("creator",user::active()->id())
+            ->groupBy("projectID")
+            ->orderByExpr("max(created) desc")
+			->select("projectID");
+			
+		$priority = array_map(function($e) {
+		    return $e["projectID"];
+		},$priority);
+		
+		$priority = array_flip($priority);
+			
         $projects = board_project::visible()->limit(0);
         if($search = trim($p["search"])) {
             $projects->like("title",$search)
@@ -47,8 +59,13 @@ class board_controller_project extends mod_controller {
             $ret[] = array(
                 "id" => $project->id(),
                 "text" => $project->title(),
+                "priority" => $priority[$project->id()],
             );
         }
+        
+        usort($ret,function($a,$b) {
+            return $a["priority"] - $b["priority"];
+		});
 
         return $ret;
 

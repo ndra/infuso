@@ -19,7 +19,7 @@ class board extends mod_controller {
         tmp::header();
         inx::add(array(
             "type" => "inx.mod.board.task",
-            "taskID" => 2681,
+            "taskID" => board_task::all()->eq("status",board_task_status::STATUS_NEW)->one()->id(),
         ));
         tmp::footer();
         

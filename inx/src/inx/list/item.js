@@ -3,8 +3,11 @@
 inx.list.item = inx.panel.extend({
 
     constructor:function(p) {
-        if(!p.style)
+    
+        if(!p.style) {
             p.style = {};
+        }
+        
         p.style.border = 0;
         p.style.padding = 4;
         
@@ -32,15 +35,18 @@ inx.list.item = inx.panel.extend({
         
     },
     
-    cmd_render:function() {        
+    cmd_render:function() {
+    
         this.base();        
         var e = $("<div>");
         var obj = this.list;
         obj.renderer(e,this.data.data);
         this.cmd("html",e);
         
-        if(this.data.css)
+        if(this.data.css) {
             e.css(this.data.css);
+        }
+        
     }
 
 });

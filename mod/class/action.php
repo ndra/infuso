@@ -50,8 +50,9 @@ class mod_action extends mod_component {
         $ret = "";
         $ret.= $this->className();
         $ret.= "/".$this->action();
-        foreach($this->params() as $key=>$val)
+        foreach($this->params() as $key => $val) {
             $ret.= "/$key/$val";
+        }
         return $ret;
     }
 

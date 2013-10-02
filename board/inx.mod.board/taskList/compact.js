@@ -34,9 +34,9 @@ inx.mod.board.taskList.compact = inx.panel.extend({
         var tr = $("<tr>").appendTo(table);
         
         var td = $("<td>").html(this.data.id).appendTo(tr);
-        var td = $("<td>").html("<img src='"+this.data.responsibleUser.userpic+"' />").appendTo(tr);
-        var td = $("<td>").html(this.data.paused+":"+this.data.status.title).appendTo(tr);        
-        var td = $("<td>").html(this.data.text).appendTo(tr);
+        var td = $("<td>").html("<img src='"+this.data.data.responsibleUser.userpic+"' />").appendTo(tr);
+        var td = $("<td>").html(this.data.data.status.title).appendTo(tr);        
+        var td = $("<td>").html(this.data.data.text).appendTo(tr);
         this.toolsContainer = $("<td>").appendTo(tr);
         
         this.cmd("html",table);        
@@ -49,6 +49,8 @@ inx.mod.board.taskList.compact = inx.panel.extend({
             var cmp = inx({
                 width:130,
                 tools:this.data.data.tools,
+                showMain:true,
+                showAdditional:true,
                 type:"inx.mod.board.taskControls",
                 taskID:this.data.id,
                 region:"right"

@@ -137,17 +137,24 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
         if(!this.tools.main) {
             return;
         }
-        var tools = this.tools.main.concat(["|"],this.tools.additional);
+        
+        var tools = [];
+        
+        if(this.showMain) {
+            tools = tools.concat(this.tools.main);
+        }
+        
+        if(this.showAdditional) {        
+            tools = tools.concat(this.tools.additional);
+        }
         
         for(var i in tools) {
             
             if(tools[i]=="|") {
             
-                //if(this.big) {
-                    this.cmd("add",{
-                        width:this.big ? 20 : 10
-                    });
-               // }
+                this.cmd("add",{
+                    width:this.big ? 20 : 10
+                });
             
             } else {
             
@@ -162,7 +169,6 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                     iconHeight: 24,
                     fontSize: 18,
                     padding: 10,
-                    shadow: true,
                     height: 28 + 4*2,
                 } : {
                     
