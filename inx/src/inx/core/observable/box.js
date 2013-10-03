@@ -357,10 +357,15 @@ inx.box = inx.observable.extend({
         var b = this.private_style.border ? 2 : 0;
         var height = this.info("height") - b;
         var hash = height + ":" + b;
-        
         if(this.private_boxHashY!=hash) {        
             if(this.el) {            
-                this.el.css("height",height);                
+                this.el.css("height",height);  
+                
+                // Важно! размер бокса может измениться даже без изменения параметров компонента
+                // К примеру, если доабвить панель в растягивающуюся панель, ее размер умеличится,
+                // хотя никакой команды на смену размера не было
+                // Поэтому нужна доп. проверка при изменении реальных размеров компонента              
+                inx.service("boxManager").outerSizeChanged(this.id());
             }            
         }
         

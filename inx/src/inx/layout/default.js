@@ -144,7 +144,7 @@ inx.layout["default"] = {
     
             })            
             
-            y-= spacing;
+            y-= spacing;            
             this.cmd("setContentHeight",y);
             
         }     

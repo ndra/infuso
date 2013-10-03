@@ -189,7 +189,7 @@ inx.panel = inx.box.extend({
         this.cmd("updateItemsLayout");
         
         this.cmd("updateBox");
-            
+        
         // Обновляем скролл
         if(this.style("vscroll")) {
             this.cmd("updateVScroll");
@@ -363,7 +363,7 @@ inx.panel = inx.box.extend({
             if(e) {
                 e.css({display:"none"});
             }
-        })
+        });
         
         if(!panels.length()) {
             this.private_bodyContainerLeft = 0;
@@ -479,7 +479,6 @@ inx.panel = inx.box.extend({
                 }            
             }
         }); 
-        
 
     },
     
