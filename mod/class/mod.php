@@ -390,6 +390,10 @@ class mod extends mod_controller {
             }
         }
         return $ret;
-    } 	
+    }
+
+	public function app() {
+	    return mod_app::current();
+	}
 
 }

@@ -12,12 +12,15 @@ class mod_post {
 
 		$status = false;
 
-	    if(!$cmd = trim($p["cmd"])) return;
+	    if(!$cmd = trim($p["cmd"])) {
+			return;
+	    }
 
 	    $d = strtr($cmd,array(
 			"::"=>":",
 			"/"=>":"
 		));
+		
 	    $d = explode(":",$d);
 	    $method = array_pop($d);
 	    $class = join("_",$d);

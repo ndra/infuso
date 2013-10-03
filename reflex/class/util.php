@@ -25,11 +25,13 @@ class reflex_util {
 	
 	    $action = mod_action::forwardTest(mod_url::get($url));
 
-	    if(!$action)
+	    if(!$action) {
 	        return reflex::get("reflex_none",0);
+	    }
 
-	    if($action->action()!="item")
+	    if($action->action()!="item") {
 	        return reflex::get("reflex_none",0);
+	    }
 
 
 	    $params = $action->params();

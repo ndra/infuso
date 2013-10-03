@@ -101,7 +101,7 @@ class reflex_route_item extends reflex {
 	        return;
         }
 
-	    if($action!=$controller->action()) {
+	    if($action != $controller->action()) {
 	        return;
         }
 

@@ -39,6 +39,7 @@ function __autoload($class) {
         "mod_cmd" => "/mod/class/cmd.php",
         "mod_behaviour" => "/mod/class/behaviour.php",
         "mod_controller_behaviour" => "/mod/class/controller/behaviour.php",
+        "mod_app" => "/mod/class/app.php",
 	);
 	
 	if($path = $quickMap[$class]) {

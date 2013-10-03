@@ -56,9 +56,7 @@ class mod_url {
      * Создает новый объект на основе текущего урл
      **/
     public function current() {
-        $p = $_SERVER["REQUEST_URI"];
-        $server = $_SERVER["SERVER_NAME"];
-        return new self("http://$server$p");
+        return mod::app()->url();
     }
 
     /**

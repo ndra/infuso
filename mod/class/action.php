@@ -3,14 +3,13 @@
 class mod_action extends mod_component {
 
     private $className = "";
-
     private $action = "";
-
-    private static $currentAction = null;
+    private $ar = "";
 
     private function __construct($className,$action,$params = array()) {
-        if(!trim($action))
+        if(!trim($action)) {
             $action = "index";
+        }
         $this->action = $action;
         $this->className = $className;
         $this->params($params);
@@ -55,6 +54,19 @@ class mod_action extends mod_component {
         }
         return $ret;
     }
+    
+    /**
+     * Возвращает информацию о маршруте
+     **/
+    public function ar($ar = null) {
+    
+        if(func_num_args()==0) {
+        	return $this->ar;
+        } elseif(func_num_args()==1) {
+            $this->ar = $ar;
+            return $ar;
+        }
+    }
 
     /**
      * Возвращает хэш экшна, состоящий из класса, метода и параметров
@@ -64,12 +76,15 @@ class mod_action extends mod_component {
 
         $controller = $this;
         $seek = $controller->className();
-        if($a = $controller->action())
+        if($a = $controller->action()) {
             $seek.= "/".$controller->action();
+        }
+            
         $params = $controller->params();
 
-        foreach($params as $key=>$val)
+        foreach($params as $key=>$val) {
             $params[$key] = $val."";
+        }
 
         sort($params);
         $seek.= serialize($params);
@@ -81,8 +96,9 @@ class mod_action extends mod_component {
      **/
     public function test() {
 
-        if(!mod::testClass($this->className(),"mod_controller"))
+        if(!mod::testClass($this->className(),"mod_controller")) {
             return false;
+		}
 
         $class = $this->className();
         $obj = new $class;
@@ -102,10 +118,7 @@ class mod_action extends mod_component {
      * Возвращает экшн, который выполняется в данное время
      **/
     public static function current() {
-        if($action = self::$currentAction) {
-            return $action;
-        }
-        return self::get(null);
+		return mod::app()->action();
     }
 
     /**
@@ -116,9 +129,6 @@ class mod_action extends mod_component {
 
         mod_component::callDeferedFunctions();
 
-        // Запоминаем текущий экшщн
-        self::$currentAction = $this;
-        
         // Если экшн начинается с mod - блокируем события
         // Это делается для того, чтобы случайно не сломать консоль кривым событием
         $suspendEvent = false;
