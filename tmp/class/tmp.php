@@ -264,19 +264,14 @@ class tmp implements mod_handler {
      * Возвращает / устанавливает "текущий" объект reflex
      **/
     public function obj($obj=null) {
-
-        // Если метод tmp::obj() вызван без параметра - возвращаем текущий объект
-        // Если объект еще не установлен, то возвращаем объект, соответствующий активному статическому разделу
-        if(func_num_args()==0) {
-
-            if(!self::$obj) {
-                self::obj(reflex::get("reflex_none",0));
-            }
-            return self::$obj;
-
-        } elseif(func_num_args()==1) {
-            self::$obj = $obj;
+    
+        $action = mod::app()->action();
+        if(!$action) {
+            return reflex::get("reflex_none",0);
         }
+    
+		list($class,$id) = explode("/",$action->ar());
+		return reflex::get($class,$id);
     }
 
     /**

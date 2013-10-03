@@ -36,15 +36,16 @@ class reflex_route extends mod_route implements mod_handler {
 	 * @todo вынести отсюда tmp::obj
 	 **/
 	public function forward($url) {
-
+	
         // Пытаемся найти роут прямым запросом в базу
 	    $route = self::routesForActiveDomain()->eq("url",$url->path())->one();
 	    if($route->exists()) {
 	        $params = $url->query();
 	        $params = array_merge($params,$route->pdata("params"));
 	        list($class,$action) = explode("/",$route->data("controller"));
-	        tmp::obj($route);
-	        return mod_action::get($class,$action,$params);
+	        $action = mod_action::get($class,$action,$params);
+	        $action->ar(get_class($route)."/".$route->id());
+	        return $action;
 	    }
 
 	    foreach(self::allRoutes() as $route) {
@@ -77,8 +78,9 @@ class reflex_route extends mod_route implements mod_handler {
 	            $params = array_merge($url->query(),$params);
 	            $params = array_merge($params,$route->pdata("params"));
 	            list($class,$action) = explode("/",$route->data("controller"));
-	            tmp::obj($route);
-	            return mod_action::get($class,$action,$params);
+	            $action = mod_action::get($class,$action,$params);
+	            $action->ar(get_class($route)."/".$route->id());
+	            return $action;
 	        }
 	    }
 	}
@@ -124,7 +126,7 @@ class reflex_route extends mod_route implements mod_handler {
 	 * то устанавливам текущий объект tmp::obj
 	 **/
 	public static function on_mod_beforeAction($p) {
-	
+
 		$action = $p->param("action");
 	    if($action->action()=="item") {
 			$id = $action->param("id");
@@ -132,12 +134,10 @@ class reflex_route extends mod_route implements mod_handler {
 			if(!$obj->published()) {
 				mod_cmd::error(404);
 			}
-			tmp::obj($obj);
+			$action->ar(get_class($obj)."/".$obj->id());
 		}
 
-		if($action = tmp::obj()->meta("beforeAction")) {
-            eval($action);
-        }
+		
 	}
 
 }
