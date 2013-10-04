@@ -195,7 +195,7 @@ ndra.carousel.instance = function(e,p) {
 
         // Подсвечиваем навигацию
         navigation.children().removeClass(p.navigationActive);
-        navigation.children().eq(n).addClass(p.navigationActive);
+        navigation.children().eq(current).addClass(p.navigationActive);
 
         if(!immediately)
             lastChangeTime = new Date().getTime();
