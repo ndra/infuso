@@ -27,7 +27,18 @@ inx.mod.board.task.extra = inx.panel.extend({
                 background:"none",
                 border:0
             },
-            width:150
+            width:130
+        });
+
+        var column3 = this.cmd("add",{
+            type:"inx.form",
+            labelWidth:100,
+            style:{
+                padding:0,
+                background:"none",
+                border:0
+            },
+            width:140
         });
         
         var column2 = this.cmd("add",{
@@ -38,10 +49,10 @@ inx.mod.board.task.extra = inx.panel.extend({
                 background:"none",
                 border:0
             },
-            width:200
+            width:180
         });
         
-        var column3 = this.cmd("add",{
+        var column4 = this.cmd("add",{
             type:"inx.form",
             labelWidth:100,
             style:{
@@ -49,7 +60,7 @@ inx.mod.board.task.extra = inx.panel.extend({
                 background:"none",
                 border:0
             },
-            width:235
+            width:110
         });
     
         column1.cmd("add",{
@@ -66,6 +77,14 @@ inx.mod.board.task.extra = inx.panel.extend({
         });
         
         column3.cmd("add",{
+            type:"inx.textfield",
+            label:"Планирую (ч)",
+            width:"parent",
+            value:data.timeScheduled,
+            name:"timeScheduled"
+        });
+        
+        column4.cmd("add",{
             data:data,
             type:"inx.button",
             text:"Сохранить",

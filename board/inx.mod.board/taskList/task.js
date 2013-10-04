@@ -181,8 +181,16 @@ inx.mod.board.taskList.task = inx.panel.extend({
             .attr("align","absmiddle")
             .appendTo(e);
         
+        var text = "";
+        text += taskData.timeSpent;
+        if(taskData.timeSpentProgress) {
+            text += "+" + taskData.timeSpentProgress;
+        }
+        text += " / ";
+        text += taskData.timeScheduled;
+        
         $("<span>").css({
-            }).html(taskData.timeSpent + " / " + taskData.timeScheduled)
+            }).html(text)
             .appendTo(e);
         
         return e;
@@ -192,7 +200,6 @@ inx.mod.board.taskList.task = inx.panel.extend({
     
         this.footer = $("<div>").css({
             height:30,
-            background:"rgba(0,150,255,.2)",
             borderRadius:"0 0 3px 3px"
         });
         
@@ -221,6 +228,17 @@ inx.mod.board.taskList.task = inx.panel.extend({
         var e = $("<div>");
         
         var taskData = this.data.data;
+        
+        if(taskData.epic) {
+            $("<img>")
+                .attr("src","/board/res/img/epic-bg.png")
+                .css({
+                    position:"absolute",
+                    left:2,
+                    top:2,
+                    opacity:.2
+                }).appendTo(e);
+        }
         
         this.renderBody(taskData).appendTo(e);
         this.renderFooter(taskData).appendTo(e);

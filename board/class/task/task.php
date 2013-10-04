@@ -340,16 +340,6 @@ class board_task extends reflex {
         }
     }
 
-    /**
-     * Временный метод для исправления структуры
-     **/
-    public function reindex() {
-        // Если это подзадача, ставим проект как у эпика
-        if($this->data("epicParentTask")) {
-            $this->data("projectID",$this->pdata("epicParentTask")->data("projectID"));
-        }
-    }
-
     public function updateTimeSpent() {
         $this->data("timeSpent",$this->getLogCustom()->sum("timeSpent"));
     }
@@ -357,16 +347,20 @@ class board_task extends reflex {
     /**
      * Возвращает потраченное но еще неучтенное времия
      * Если вы делавете задачу два часа, но еще не сделалт, timeSpent() вернет 0
-     *
+     * Время возвращается в секундах
      **/
     public function timeSpentProgress() {
+    
+        if($this->status()->id() != board_task_status::STATUS_IN_PROGRESS) {
+            return 0;
+        }
 
         $date = $this->pdata("changed");
         $d = util::now()->stamp() - $date->stamp();
         $d -= $this->data("pauseTime");
 
-        if($this->data("paused")) {
-            $d-= util::now()->stamp() - $this->pdata("paused")->stamp();
+        if($this->paused()) {
+			$d-= util::now()->stamp() - $this->pdata("paused")->stamp();
         }
 
         return $d;
@@ -585,6 +579,7 @@ class board_task extends reflex {
 
         // Хапланированное и потраченное время
         $ret["timeSpent"] = round($this->timeSpent(),2);
+        $ret["timeSpentProgress"] = round($this->timeSpentProgress()/3600,2);
         $ret["timeScheduled"] = round($this->timeScheduled(),2);
 
         // Установленный дэдлайн
@@ -664,10 +659,11 @@ class board_task extends reflex {
 
             case board_task_status::STATUS_NEW:
 
-                if(!$this->isEpic()) {
-                    $tools["main"][] = "take";
+                if($this->isEpic()) {
+                    $tools["main"][] = "subtask";
+                    $tools["additional"][] = "done";
                 } else {
-                    $tools["main"][] = "add";
+                    $tools["main"][] = "take";
                 }
 
                 $tools["additional"][] = "problems";

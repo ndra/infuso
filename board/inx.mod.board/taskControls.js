@@ -36,6 +36,14 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                 }, large: {
                     icon:"/board/res/img/icons24/add.png",
                 }
+            }, subtask:{
+                general: {
+                    icon:"/board/res/img/icons16/subtask.png",
+                    onclick:[this.id(),"addSubtask"],
+                    help:"Подзадача",
+                }, large: {
+                    icon:"/board/res/img/icons24/subtask.png",
+                }
             }, pause:{
                 general: {
                     help:"Пауза",
@@ -196,7 +204,7 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
             case "take":
                 this.cmd("takeTask");
                 break;
-            case "add":
+            case "subtask":
                 this.cmd("addSubtask");
                 break;
             case "edit":

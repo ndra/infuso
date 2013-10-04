@@ -32,7 +32,9 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
             getMainComponent:function() {
                 return inx(this).axis("parents").eq("type","inx.mod.board.main");
             }
-        })
+        });
+        
+        inx.hotkey("ctrl+s",[this.id(),"save"]);
         
     },
     
@@ -71,12 +73,18 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
         this.cmd("add",{
             type:"inx.textarea",
             name:"text",
-            style : {
+            style: {
                 width:"parent",
                 fontSize:16,
                 height:"content"
             }, value:data.text
         }).cmd("focus");
+
+        this.cmd("add",{
+            type:"inx.mod.board.task.extra",
+            data:data,
+            taskID:this.taskID
+        });
 
         this.cmd("add",{
             type:"inx.mod.board.taskControls",
@@ -91,18 +99,11 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
             }
         });
 
-        
         this.cmd("add",{
             type:"inx.mod.board.task.subtasks",
             parentTaskID:this.taskID
         });
                
-        this.cmd("add",{
-            type:"inx.mod.board.task.extra",
-            data:data,
-            taskID:this.taskID
-        });
-        
         this.cmd("add",{
             type:"inx.mod.board.task.tags",
             name:"tags",
@@ -152,6 +153,9 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
             data:data,
             taskID:this.taskID
         });
+        
+        return false;
+        
     },
     
     cmd_handleTimeInput:function() {
