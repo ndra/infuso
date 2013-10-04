@@ -144,8 +144,13 @@ ndra.carousel.instance = function(e,p) {
     
         current = n;
         var visible = that.visible();
-        if(current+visible>total) current = total-visible;
-        if(current<0) current = 0;
+        if(p.cycle) {
+            if(current+visible>total) current = total-visible;
+            if(current<0) current = 0;
+        }else{
+            if(current+visible>total) current = 0;
+            if(current<0) current = total-visible;    
+        }
 
         // Обновляем кнопки туда-сюда
         // Еслик включено зацикливание, кнопки не обновляются
@@ -195,7 +200,7 @@ ndra.carousel.instance = function(e,p) {
 
         // Подсвечиваем навигацию
         navigation.children().removeClass(p.navigationActive);
-        navigation.children().eq(n).addClass(p.navigationActive);
+        navigation.children().eq(current).addClass(p.navigationActive);
 
         if(!immediately)
             lastChangeTime = new Date().getTime();
