@@ -149,7 +149,7 @@ ndra.carousel.instance = function(e,p) {
             if(current<0) current = 0;
         }else{
             if(current+visible>total) current = 0;
-            if(current<0) current = total-1;    
+            if(current<0) current = total-visible;    
         }
 
         // Обновляем кнопки туда-сюда
