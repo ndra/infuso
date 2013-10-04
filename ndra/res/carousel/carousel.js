@@ -144,8 +144,13 @@ ndra.carousel.instance = function(e,p) {
     
         current = n;
         var visible = that.visible();
-        if(current+visible>total) current = total-visible;
-        if(current<0) current = 0;
+        if(p.cycle) {
+            if(current+visible>total) current = total-visible;
+            if(current<0) current = 0;
+        }else{
+            if(current+visible>total) current = 0;
+            if(current<0) current = total-1;    
+        }
 
         // Обновляем кнопки туда-сюда
         // Еслик включено зацикливание, кнопки не обновляются
