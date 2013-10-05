@@ -1,9 +1,22 @@
 // @include inx.form
 
-inx.ns("inx.mod.board").profile = inx.form.extend({
+inx.ns("inx.mod.board").profile = inx.panel.extend({
 
     constructor:function(p) {    
         this.base(p); 
+        
+        this.form = this.cmd("add",{
+            type:"inx.form"
+        });
+        
+        this.cmd("add",{
+            type:"inx.separator"
+        });
+        
+        this.cmd("add",{
+            type:this.type+".userpick"
+        });
+        
         this.cmd("requestData");
     },
     
@@ -13,13 +26,28 @@ inx.ns("inx.mod.board").profile = inx.form.extend({
         },[this.id(),"handleData"]);
     },
     
-    cmd_handleData:function() {
+    cmd_handleData:function(data) {
     
-        this.cmd("add",{
+        this.form.cmd("add",{
             type:"inx.textfield",
-            label:"Ник"
+            label:"Ник",
+            name:"nickName",
+            value:data.nickName
+        });
+        
+        this.form.cmd("add",{
+            type:"inx.button",
+            text:"Сохранить",
+            onclick:[this.id(),"save"]
         });
     
+    },
+    
+    cmd_save:function() {
+        this.call({
+            cmd:"board/controller/profile/saveProfile",
+            data:this.info("data")
+        });
     }
          
 });

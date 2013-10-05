@@ -25,7 +25,7 @@ class board_controller_messages extends mod_controller {
             if($d>0) {
                 $text = "";
                 $text.= "Просрочено ";
-                $text.= $task->responsibleUser()->title().": ";
+                $text.= $task->responsibleUser()->nickname().": ";
                 $text.= "<a href='{$task->url()}' >";
                 $text.= util::str($task->text())->ellipsis(100);
                 $text.= "</a>";

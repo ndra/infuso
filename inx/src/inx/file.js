@@ -19,10 +19,13 @@ inx.file = inx.button.extend({
         if(this.beforeupload) this.on("beforeupload",this.beforeupload);
         
         // Устанавливаем область перетаскивания файлов
-        if(p.dropArea===undefined)        
+        if(p.dropArea===undefined) {        
             p.dropArea = this;
-        if(p.dropArea)
+        }
+        
+        if(p.dropArea) {
             this.cmd("setArea",p.dropArea);
+        }
         
     },
     
@@ -175,6 +178,10 @@ inx.file = inx.button.extend({
         if(e) {
             return e;
         }
+    },
+    
+    cmd_setDropArea:function(e) {
+        this.dropArea = e;
     },
     
     cmd_setArea:function(area) {

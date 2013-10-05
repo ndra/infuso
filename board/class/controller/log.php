@@ -37,7 +37,7 @@ class board_controller_log extends mod_controller {
             $row = array(
                 "type" => $item->data("type"),
                 "userpick" => $item->user()->userpick()->preview(16,16),
-                "user" => $item->user()->title(),
+                "user" => $item->user()->nickname(),
                 "text" => $item->data("text"),
                 "time" => $item->pdata("created")->text(),
                 "files" => $files,
