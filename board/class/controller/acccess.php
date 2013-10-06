@@ -73,6 +73,8 @@ class board_controller_access extends mod_controller {
             "projectText" => $access->project()->title(),
             "showComments" => $access->data("showComments"),
             "showSpentTime" => $access->data("showSpentTime"),
+            "editTasks" => $access->data("editTasks"),
+            "editTags" => $access->data("editTags"),
         );
 
 
@@ -92,6 +94,8 @@ class board_controller_access extends mod_controller {
             "projectID" => $p["data"]["projectID"],
             "showComments" => $p["data"]["showComments"],
             "showSpentTime" => $p["data"]["showSpentTime"],
+            "editTasks" => $p["data"]["editTasks"],
+            "editTags" => $p["data"]["editTags"],
         ));
 
         return true;

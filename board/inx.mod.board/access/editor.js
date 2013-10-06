@@ -70,6 +70,27 @@ inx.mod.board.access.editor = inx.dialog.extend({
         });
         
         this.cmd("add",{
+            type:"inx.checkbox",
+            label:"Редактирование задач",
+            value:data.editTasks,
+            name:"editTasks"
+        });
+        
+        this.cmd("add",{
+            type:"inx.checkbox",
+            label:"Редактирование задач",
+            value:data.editTasks,
+            name:"editTasks"
+        });
+        
+        this.cmd("add",{
+            type:"inx.checkbox",
+            label:"Редактирование тэгов и заметок",
+            value:data.editTags,
+            name:"editTags"
+        });
+        
+        this.cmd("add",{
             type:"inx.button",
             style:{
                 fontSize:18,

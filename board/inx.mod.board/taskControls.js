@@ -210,6 +210,12 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
             case "edit":
                 this.cmd("editTask");
                 break;
+            case "revision":
+                this.cmd("revisionTask");
+                break;
+            case "complete":
+                this.cmd("completeTask");
+                break;
         }
     },
     

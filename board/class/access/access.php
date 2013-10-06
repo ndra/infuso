@@ -24,6 +24,14 @@ class board_access extends reflex {
                 ), array (
                     'name' => 'showSpentTime',
                     'type' => 'checkbox',
+                ), array (
+                    'name' => 'editTasks',
+                    'type' => 'checkbox',
+                    "label" => "Редактирование задач"
+                ), array (
+                    'name' => 'editTags',
+                    'type' => 'checkbox',
+                    "label" => "Редактирование тэгов и заметок"
                 ),
             ),
         );

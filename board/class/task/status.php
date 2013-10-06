@@ -136,12 +136,6 @@ class board_task_status extends mod_controller {
         return false;
     }
 
-    public function visibleTasks() {
-        $tasks = board_task::visible();
-        $tasks->eq("status",$this->id());
-        return $tasks;
-    }
-
     /**
      * Возвращает id статуса
      **/
@@ -189,6 +183,15 @@ class board_task_status extends mod_controller {
             return true;
         }
         return false;
+    }
+
+    public function visibleTasks() {
+        $tasks = board_task::visible();
+        $tasks->eq("status",$this->id());
+        if($this->id() != self::STATUS_IN_PROGRESS) {
+            $tasks->eq("epicParentTask",0);
+        }
+        return $tasks;
     }
 
 }

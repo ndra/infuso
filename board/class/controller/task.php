@@ -102,20 +102,6 @@ class board_controller_task extends mod_controller {
     }
 
     /**
-     * Возвращает список статусов для селекта
-     **/
-    public function post_enumStatuses() {
-        $ret = array();
-        foreach(board_task_status::all() as $status) {
-            $ret[] = array(
-                "id" => $status->id(),
-                "text" => $status->title(),
-            );
-        }
-        return $ret;
-    }
-
-    /**
      * Возвращает параметры одной задачи
      **/     
     public static function post_getTask($p) {
@@ -198,16 +184,23 @@ class board_controller_task extends mod_controller {
 
     }
 
+    /**
+     * Создает новую задачу
+     **/
     public function post_newTask($p) {
 
-        if(!user::active()->checkAccess("board/newTask")) {
+        $project = board_project::get($p["projectID"]);
+
+        if(!user::active()->checkAccess("board/newTask",array(
+            "project" => $project,
+        ))) {
             mod::msg(user::active()->errorText(),1);
             return;
         }
 
         $task = reflex::create("board_task",array(
             "status" => board_task_status::STATUS_DRAFT,
-            "projectID" => $p["projectID"],
+            "projectID" => $project->id(),
         ));
 
         return $task->id();
@@ -364,18 +357,21 @@ class board_controller_task extends mod_controller {
      **/
     public function post_saveSort($p) {
 
-        // Параметры задачи
-        if(!user::active()->checkAccess("board/sortTasks")) {
-            mod::msg(user::active()->errorText(),1);
-            return;
-        }
-
         foreach($p["idList"] as $n=>$id) {
             $task = board_task::get($id);
-            $task->suspendTaskEvents();
-            $task->data("priority",$n);
-            $task->store();
-            $task->unsuspendTaskEvents();
+            // Параметры задачи
+            if(user::active()->checkAccess("board/sortTask",array(
+                "task" => $task,
+            ))) {
+                $task->suspendTaskEvents();
+                $task->data("priority",$n);
+                $task->store();
+                $task->unsuspendTaskEvents();
+            } else {
+                mod::msg(user::active()->errorText(),1);
+                continue;
+            }
+
         }
 
         mod::msg("Сортировка сохранена");

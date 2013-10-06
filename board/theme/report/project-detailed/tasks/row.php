@@ -9,6 +9,7 @@ if($task->data("epicParentTask")) {
 $h->begin();
 
     <td class='id' >{$task->id()}</td>
+    <td class='id' >{$task->pdata(changed)->num()}</td>
     $userpick = $task->responsibleUser()->userpick()->preview(16,16)->crop();      
         
     <td style='background-image: url({$userpick});' class='text' >                    

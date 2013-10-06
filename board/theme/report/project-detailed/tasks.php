@@ -5,6 +5,7 @@
     <thead>
         <tr>
             <td>id</td>
+            <td>Дата</td>
             <td>Задача</td>
             <td>План</td>
             <td>Потрачено</td>

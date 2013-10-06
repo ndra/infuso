@@ -35,12 +35,20 @@ class board_handler implements mod_handler {
         
         // Операции с задачами
 
-        user_operation::create("board/editTask","Редактирование задачи")
+        user_operation::create("board/editGrantedTask","Редактирование задачи (когда предоставлен доступ к проекту)")
+            ->addBusinessRule('return board_access::all()->eq("userID",$user->id())->eq("editTasks",1)->eq("projectID",$task->project()->id())->one()->exists();')
+			->appendTo('guest');
+
+        user_operation::create("board/editAnyTask","Редактирование задачи")
             ->addBusinessRule('if(!$task->exists()) $this->error("Задача не существует"); ')
             ->addBusinessRule('return true;')
 			->appendTo('boardUser');
 
-        user_operation::create("board/viewAllTasks","Просмотр всех задач")
+        user_operation::create("board/editTask","Редактирование задачи")
+			->appendTo('board/editAnyTask')
+            ->appendTo('board/editGrantedTask');
+
+        user_operation::create("board/viewAllTasks","Просмотр задач без ограничений")
 			->appendTo('boardUser');
 
         user_operation::create("board/viewGrantedTask","Просмотр задачи (когда предоставлен доступ к проекту) ")
@@ -55,7 +63,7 @@ class board_handler implements mod_handler {
             ->appendTo("board/editTask");
 
         user_operation::create("board/changeTaskProject","Изменение проекта задачи")
-            ->appendTo("board/editTask");
+            ->appendTo("boardUser");
         
         user_operation::create("board/getTaskParams","Получение полей задачи")
             ->appendTo("board/viewTask");
@@ -64,7 +72,7 @@ class board_handler implements mod_handler {
             ->appendTo("board/editTask");
 
         user_operation::create("board/getEpicSubtasks","Получение списка подзадач эпика")
-            ->appendTo("board/editTask");
+            ->appendTo("board/viewTask");
 
         user_operation::create("board/addEpicSubtask","Добавление подзадачи эпика")
             ->appendTo("board/editTask");
@@ -74,14 +82,22 @@ class board_handler implements mod_handler {
             ->addBusinessRule("return true;")
             ->appendTo("board/editTask");
 
-        user_operation::create("board/newTask","Создание задачи")
+       user_operation::create("board/newTaskInAnyProject","Создание задачи в любом проекте")
             ->appendTo("boardUser");
+
+       user_operation::create("board/newTaskInGrantedProject","Создание задачи в проекте, к которому предоставлен доступ")
+            ->addBusinessRule('return board_access::all()->eq("userID",$user->id())->eq("editTasks",1)->eq("projectID",$project->id())->one()->exists();')
+            ->appendTo("guest");
+
+        user_operation::create("board/newTask","Создание задачи")
+            ->appendTo("board/newTaskInAnyProject")
+            ->appendTo("board/newTaskInGrantedProject");
             
         user_operation::create("board/newHindrance","Создание помехи")
             ->appendTo("boardUser");
 
-        user_operation::create("board/sortTasks","Сортировка задач")
-            ->appendTo("boardUser");
+        user_operation::create("board/sortTask","Сохранение сортировки задач")
+            ->appendTo("board/editTask");
 
        user_operation::create("board/viewAllTasks","Просмотр всех задач")
             ->appendTo("boardUser");
@@ -98,10 +114,10 @@ class board_handler implements mod_handler {
             ->appendTo("board/editTask");
 
        user_operation::create("board/updateTaskNotice","Изменение заметки")
-            ->appendTo("board/editTask");
+            ->appendTo("boardUser"); // только для менеджеров
 
-       user_operation::create("board/updateTaskTag","Изменение заметки")
-            ->appendTo("board/editTask");
+       user_operation::create("board/updateTaskTag","Изменение тэга")
+            ->appendTo("boardUser");
 
         // Доступ
 
