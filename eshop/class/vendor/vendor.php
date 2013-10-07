@@ -53,10 +53,14 @@ class eshop_vendor extends reflex {
 	 **/
 	public function groups() {
 	    $items = eshop_group::all();
-	    $items->join("eshop_item","`eshop_group`.`id`=`eshop_item`.`parent` and `eshop_item`.`vendor` = {$this->id()} and `eshop_item`.`active`");
-	    $items->groupBy("eshop_group.id");
-	    $items->orderByExpr("count(*) desc");
-	    $items->limit(20);
+	    if($this->exists()) {
+		    $items->join("eshop_item","`eshop_group`.`id`=`eshop_item`.`parent` and `eshop_item`.`vendor` = {$this->id()} and `eshop_item`.`active`");
+		    $items->groupBy("eshop_group.id");
+		    $items->orderByExpr("count(*) desc");
+		    $items->limit(20);
+	    } else {
+	        $items->eq("id",-1);
+	    }
 	    return $items;
 	}
 
