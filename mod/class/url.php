@@ -5,6 +5,7 @@ class mod_url {
     private $scheme = null;
     private $host = null;
     private $path = null;
+    private $port = null;
     private $query = array();
     private $hash = null;
 
@@ -28,10 +29,11 @@ class mod_url {
         
         $r = "!($scheme$login$host)?$port$path$query$hash$!u";
 
-        preg_match ( $r, $url, $matches);
+        preg_match ($r, $url, $matches);
 
         $this->scheme = $matches["scheme"];
         $this->host = $matches["host"];
+        $this->port = $matches["port"];
         $this->path = urldecode($matches["path"]);
         parse_str($matches["query"],$query);
         $this->query = $query;
@@ -92,6 +94,23 @@ class mod_url {
 
         if(func_num_args()==1) {
             $this->host = $host;
+            return $this;
+        }
+
+    }
+    
+    /**
+     * Без параметров - возвращает порт
+     * С одним параметром - меняет порт
+     **/
+    public function port($host=null) {
+
+        if(func_num_args()==0) {
+            return $this->port;
+        }
+
+        if(func_num_args()==1) {
+            $this->port = $port;
             return $this;
         }
 
@@ -199,6 +218,10 @@ class mod_url {
 
         if($this->host()) {
             $ret.= $this->host();
+        }
+        
+        if($this->port()) {
+            $ret.= ":".$this->port();
         }
 
         if($this->path()) {
