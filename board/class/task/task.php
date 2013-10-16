@@ -218,6 +218,12 @@ class board_task extends reflex {
 				&& in_array($this->data("status"),array(board_task_status::STATUS_COMPLETED, board_task_status::STATUS_CHECKOUT))) {
             	$this->defer("handleCompleted");
 			}
+			
+			// Отправляем рассылку про возвращанные на доработку сообщения
+			if($this->field("status")->initialValue() == board_task_status::STATUS_CHECKOUT
+				&& in_array($this->data("status"),array(board_task_status::STATUS_NEW))) {
+            	$this->defer("handleRevision");
+			}
 
 			// При переходи задачи в статус к исполнению она ставится на первое место
 			if($this->data("status") == board_task_status::STATUS_NEW) {
@@ -319,6 +325,18 @@ class board_task extends reflex {
         // Рассылка подписанным на конкретный проект
         user_subscription::mailByKey("board/project-{$this->project()->id()}/taskCompleted",$params);
 
+    }
+    
+    public function handleRevision() {
+        
+        $user = $this->responsibleUser();
+        $taskText = util::str($this->text())->ellipsis(100);
+        $reason = $this->getLogCustom()->one()->text();
+        $url = $this->url();
+        $user->mailer()
+            ->subject("Задача {$this->id()} <a href='{$url}' >«{$taskText}»</a> отправлена да доработку. Причина: {$reason}")
+			->send();
+        
     }
 
     public function fireChangedEvent() {
@@ -607,6 +625,7 @@ class board_task extends reflex {
 		foreach($this->storage()->files() as $file) {
             $ret["images"][] = array(
                 "x30" => $file->preview(30,30),
+                "original" => $file,
 			);
         }
 

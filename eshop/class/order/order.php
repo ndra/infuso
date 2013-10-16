@@ -122,8 +122,10 @@ class eshop_order extends reflex implements mod_handler {
             
         $s = util::splitAndTrim($_COOKIE[self::$cookieMyOrders],",");
         
-        foreach($s as $id)
+        foreach($s as $id) {
             reflex::get(get_class())->eq("security",$id)->eq("userID",0)->one()->data("userID",$user->id());
+		}
+		
         setcookie(self::$cookieMyOrders,false,-1,"/");
     }
 

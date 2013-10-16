@@ -301,7 +301,7 @@ class board_controller_task extends mod_controller {
         $statusText = $task->status()->action();
 
         if($p["comment"]) {
-            $statusText = $p["comment"]." ".$statusText;
+            $statusText = $p["comment"];
         }
 
         $n = $task->storage()->setPath("/log/".$p["sessionHash"])->files()->count();
@@ -313,11 +313,11 @@ class board_controller_task extends mod_controller {
                
                 case board_task_status::STATUS_CHECKOUT:
                     $taskLogType = board_task_log::TYPE_TASK_STATUS_RETURNED; //ставим статус возвращено
-                break;
+                	break;
                 
                 default:
                     $taskLogType = board_task_log::TYPE_TASK_STATUS_CHANGED;    
-                break;     
+                	reak;
             }    
         }
         $task->logCustom($statusText,$time,$taskLogType,$files);

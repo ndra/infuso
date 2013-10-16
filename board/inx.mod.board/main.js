@@ -138,9 +138,16 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
                 }).cmd("setParams",params.params);
                 break;
                 
+            case "messages":
+                this.tabs.cmd("add",{
+                    type:"inx.mod.board.messages",
+                    name:"messages"
+                }).cmd("setParams",params.params);
+                break;
+                
             case "task":
                 this.cmd("editTask",{taskID:params.params.id});
-                history.back();
+                //history.back();
                 break;
                 
             case "vote":

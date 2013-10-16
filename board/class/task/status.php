@@ -18,7 +18,7 @@ class board_task_status extends mod_controller {
     		),
     	),
         self::STATUS_NEW => array(
-    		"title" => "К исполнению",
+    		"title" => "Бэклог",
     		"action" => "К исполнению",
     		"next" => 1,
     		"active" => true,
@@ -37,7 +37,7 @@ class board_task_status extends mod_controller {
     		),
     	),
         self::STATUS_CHECKOUT => array(
-    		"title" => "На проверке",
+    		"title" => "Проверить",
     		"action" => "Я все сделал, проверьте",
     		"next" => 3,
     		"active" => true,
@@ -47,7 +47,7 @@ class board_task_status extends mod_controller {
     		),
     	),
         self::STATUS_COMPLETED => array(
-    		"title" => "Выполнено",
+    		"title" => "Проверено",
     		"action" => "Закрываю задачу",
     		"order" => "changed desc",
     	),

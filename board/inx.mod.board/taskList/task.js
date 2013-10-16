@@ -21,8 +21,16 @@ inx.mod.board.taskList.task = inx.panel.extend({
             whiteSpace:"nowrap",
             overflow:"hidden",
             textOverflow:"ellipsis",
-            height:12
-        }).html(taskData.id + ". " + taskData.project.title);
+            height:12,
+            cursor:"pointer"
+        }).html(taskData.id + ". " + taskData.project.title)
+        .mouseenter(function() {
+            $(this).css("text-decoration","underline")
+        }).mouseleave(function() {
+            $(this).css("text-decoration","none")
+        });
+        
+        e.click(inx.cmd(this,"execCommand","edit"));
         
         return e;
     },
@@ -118,41 +126,34 @@ inx.mod.board.taskList.task = inx.panel.extend({
     
     renderBody:function(taskData) {
     
-        var size = this.info("width");
+        var width = this.info("width");
+        var height = this.info("width");
+        
+        if(taskData.paused) {
+            height-= 70;
+        }
     
         var body = $("<div>").css({
-            width:size - 2,
-            height:size - 2,
+            width:width - 2,
+            height:height - 2,
             border: "1px solid rgba(0,0,0,.3)",
             position:"relative",
             boxShadow:"0 0 5px rgba(0,0,0,.3)",
             background:taskData.color || "white"
         });
         
-        if(taskData.paused) {
-            $("<div>").css({
-                width:size,
-                height:size,
-                background:"url(/board/res/img/icons64/pause.png) center center no-repeat",
-                position:"absolute",
-                left:0,
-                top:0,
-                opacity:.4
-            }).appendTo(body);
-        }
-        
         this.renderHeader(taskData).appendTo(body);
         
         headerHeight = 20;
-        var photosHeight = taskData.images.length ? 31 : 0;
+        var photosHeight = (taskData.images.length  && !taskData.paused ) ? 31 : 0;
 
         var params = {
-            width:size,
-            height: size - photosHeight - headerHeight
+            width:width,
+            height: height - photosHeight - headerHeight
         };
         this.renderText(taskData,params).appendTo(body);
 
-        if(taskData.images.length) {
+        if(taskData.images.length && !taskData.paused) {
             var imageContainer = $("<div>").css({
                 height:photosHeight,
                 overflow:"hidden",
@@ -163,6 +164,13 @@ inx.mod.board.taskList.task = inx.panel.extend({
                 $("<img>")
                     .attr("src",taskData.images[i].x30)
                     .appendTo(imageContainer)
+                    .data("href",taskData.images[i].original)
+                    .css({
+                        cursor:"pointer"
+                    })
+                    .click(function() {
+                        window.open($(this).data("href"));
+                    })
             }
         }
         

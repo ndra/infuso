@@ -1,38 +1,40 @@
-.sr3yrzht3j {
+.x55qv4lhb8m {
 
-    color:white;
-    padding:5px;
-    background:#333;
-    
     a {
         color:white;
         text-decoration:none;
+        display:inline-block;
     }
     
     .item {
-        margin-right:5px;
+        margin-right:5px;        
+        padding:15px 3px;
+        
+        &:first-child {
+            padding-left:20px;
+        }
     }
     
     .count {
         font-size:11px;
         opacity:.5;
         position:relative;
-        top:-5px;
+        top:-15px;
     }
     
     .active {
-        background:#666;
-        padding:5px;
+        background:#666;        
     }
 }
 
-.sr3yrzht3j-submenu {
+.x55qv4lhb8m-submenu {
 
     .submenu {
     
         padding:10px;
         background:#ccc;
         box-shadow:0px 10px 20px rgba(0,0,0,.1);
+        margin-top:-10px;
         
         a {
             text-decoration:none;

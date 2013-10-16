@@ -1,7 +1,7 @@
 <?
 
-// Меню
-<div class='sr3yrzht3j' >
+<div class='x55qv4lhb8m' >
+
     foreach(board_task_status::all() as $status) {
         <a class='item' href='#task-list/status/{$status->id()}' >
             echo $status->title();
@@ -9,12 +9,14 @@
             <span class='count' >{$n}</span>
         </a>
     }
-    <a href='#' menu:id='reports' class='item' >Отчеты</a>
-    <a href='#' menu:id='conf' class='item' >Настройки</a>
+    <i>
+        <a href='#' menu:id='reports' class='item' >Отчеты</a>
+        <a href='#' menu:id='conf' class='item' >Настройки</a>
+    </i>
 </div>
-
+    
 // Субменю
-<div class='sr3yrzht3j-submenu' style='position:absolute;z-index:100' >  
+<div class='x55qv4lhb8m-submenu' style='position:absolute;z-index:100' >  
     <div class='submenu' menu:id='reports' >
         <a class='item' href='#report-done' >Сделано сегодня</a>
         <a class='item' href='#report-projects' >Проекты</a>
@@ -44,4 +46,4 @@
     </div>
 </div>
 
-ndra_menu::create(".sr3yrzht3j .item",".sr3yrzht3j-submenu .submenu")->exec();
+ndra_menu::create(".x55qv4lhb8m .item",".x55qv4lhb8m-submenu .submenu")->exec();

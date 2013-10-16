@@ -96,6 +96,7 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                     help:"Вернуть"
                 }, small: {
                     icon:"/board/res/img/icons16/stop.png",
+                    air:true
                 }
             }, complete: {
                 general: {

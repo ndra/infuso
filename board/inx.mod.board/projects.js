@@ -24,6 +24,7 @@ inx.ns("inx.mod.board").projects = inx.list.extend({
         }
         
         this.on("itemdblclick","handleDblClick");
+        this.on("itemСlick","handleItemClick");
         
         this.base(p); 
     },
@@ -32,6 +33,16 @@ inx.ns("inx.mod.board").projects = inx.list.extend({
         this.cmd("editProject",{
             projectID:id
         });        
+    },
+    
+    cmd_handleItemClick:function(id,e) {
+        col = e.col;        
+        if(col == "subscribe") {
+            this.call({
+                cmd:"board/controller/project/subscribeProject",
+                projectID:id
+            },[this.id(),"load"]);
+        }
     },
     
     cmd_newProject:function() {

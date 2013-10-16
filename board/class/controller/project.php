@@ -19,12 +19,27 @@ class board_controller_project extends mod_controller {
         $projects = board_project::visible()->limit(0);
 
         foreach($projects as $project) {
-            $ret[] = array(
+            $ret["data"][] = array(
                 "id" => $project->id(),
-                "text" => $project->title(),
+                "title" => $project->title(),
                 "icon" => $project->icon()->preview(16,16)->transparent(),
+                "subscribe" => $project->isActiveUserHaveSubscription() ? "mail" : "/board/res/img/icons16/message-void.png",
             );
         }
+        
+        $ret["cols"] = array(
+			array(
+		       "name" => "icon",
+		       "type" => "image",
+			), array(
+		       "name" => "title",
+		       "title" => "Проект",
+		       "width" => 200,
+			), array(
+		       "name" => "subscribe",
+		       "type" => "image",
+		    )
+		);
 
         return $ret;
 
@@ -77,6 +92,20 @@ class board_controller_project extends mod_controller {
 
         return $ret;
 
+    }
+    
+    public function post_subscribeProject($p) {
+    
+        $project = board_project::get($p["projectID"]);
+	    $subscriptionKey = "board/project-{$project->id()}/taskCompleted";
+	    $subscriptions = user::active()->subscriptions()->eq("key",$subscriptionKey);
+	    
+	    if($subscriptions->void()) {
+	        $subscriptions->create();
+	    } else {
+	        $subscriptions->one()->delete();
+	    }
+    
     }
 
     public function post_deleteProjects($p) {

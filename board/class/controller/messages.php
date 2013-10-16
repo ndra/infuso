@@ -7,58 +7,37 @@ class board_controller_messages extends mod_controller {
     }
 
     /**
-     * Экшн получения списка задач
+     * Экшн получения списка сообщение
      **/             
-    public static function post_getMessages($p) {
+    public static function post_list($p) {
 
-        $ret = array();
-
-        $tasks = board_task::all()
-            ->eq("status",board_task_status::STATUS_IN_PROGRESS)
-            ->limit(0);
-
-        foreach($tasks as $task) {
-
-            $d = $task->timeSpent() + $task->timeSpentProgress() - $task->timeScheduled()*3600;
-            $d = round($d/3600,1);
-
-            if($d>0) {
-                $text = "";
-                $text.= "Просрочено ";
-                $text.= $task->responsibleUser()->nickname().": ";
-                $text.= "<a href='{$task->url()}' >";
-                $text.= util::str($task->text())->ellipsis(100);
-                $text.= "</a>";
-                $text.= " &mdash; ".$d." ч.";
-
-                $hash = md5("overcooking/{$task->id()}/{$task->data(changed)}");
-
-                $ret[] = array (
-                    "text" => $text,
-                    "hash" => $hash,
-                );
-            }
-
-        }
-
-        $ret2 = array();
-        foreach($ret as $item) {
-            if(!self::messageHidden($item["hash"])) {
-                $ret2[] = $item;
-            }
-        }
-
-        return $ret2;
+		$ret = array();
+		$user = user::active();
+		$emails = user_mail::all()->eq("userID",$user->id());
+		
+		foreach($emails as $email) {
+		    $ret["data"][] = array(
+				"text" => $email->subject(),
+			);
+		}
+		
+		$user->extra("board/messagesRead",util::now());
+		
+		$emails->eq("read",0)->data("read",1);
+		
+		return $ret;
+       
     }
+    
+    public static function post_getUnreadMessagesNumber() {
 
-    public function messageHidden($hash) {
-        return mod_session::session()->hiddenMessages->valueExists($hash);
+		$ret = array();
+		$user = user::active();
+		$emails = user_mail::all()
+			->eq("userID",$user->id())
+			->eq("read",0);
+		return $emails->count();
+
     }
-
-    public static function post_hideMessage($p) {
-        $hash = $p["hash"];
-        mod_session::session()->hiddenMessages->push($p["hash"]);
-    }
-
 
 }

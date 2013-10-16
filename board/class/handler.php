@@ -169,6 +169,8 @@ class board_handler implements mod_handler {
     }
     
     public function on_user_subscription_beforeMail($params) {
+    
+        // Предотвращаем отправку писем о выполненных задачах самому себе
 		if(preg_match("/^board\/project-('\d+)\/taskCompleted\/$/",$parmas["subscriptionKey"])) {
 		    if($params["completedBy"]==$params["userID"]) {
 		        return;

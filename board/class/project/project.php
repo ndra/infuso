@@ -36,6 +36,14 @@ class board_project extends reflex {
         );
 
     }
+    
+    /**
+     * Возвращает флаг наличия у активного пользователя подписки на этот проект
+     **/
+	public function isActiveUserHaveSubscription() {
+	    $subscriptionKey = "board/project-{$this->id()}/taskCompleted";
+	    return !user::active()->subscriptions()->eq("key",$subscriptionKey)->void();
+	}
 
 	/**
 	 * Возвращает список всех проектов
