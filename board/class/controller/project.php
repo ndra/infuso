@@ -24,6 +24,7 @@ class board_controller_project extends mod_controller {
                 "title" => $project->title(),
                 "icon" => $project->icon()->preview(16,16)->transparent(),
                 "subscribe" => $project->isActiveUserHaveSubscription() ? "mail" : "/board/res/img/icons16/message-void.png",
+                "completeAfter" => $project->data("completeAfter"),
             );
         }
         
@@ -38,6 +39,9 @@ class board_controller_project extends mod_controller {
 			), array(
 		       "name" => "subscribe",
 		       "type" => "image",
+		    ), array(
+		       "name" => "completeAfter",
+		       "width" => 30,
 		    )
 		);
 
@@ -120,6 +124,7 @@ class board_controller_project extends mod_controller {
         return array(
             "title" => $project->data("title"),
             "url" => $project->data("url"),
+            "completeAfter" => $project->data("completeAfter"),
         );
     }
 
@@ -135,6 +140,7 @@ class board_controller_project extends mod_controller {
         }
 
         $data["url"] = $p["data"]["url"];
+        $data["completeAfter"] = $p["data"]["completeAfter"];
 
         if($p["projectID"]=="new") {
 

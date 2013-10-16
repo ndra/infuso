@@ -54,6 +54,14 @@ inx.mod.board.projects.editor = inx.dialog.extend({
         });
         
         this.cmd("add",{
+            type:"inx.textfield",
+            label:"Закрывать задачи через данное количество дней",
+            name:"completeAfter",
+            width:"parent",
+            value:data.completeAfter
+        });
+        
+        this.cmd("add",{
             type:"inx.button",
             text:"Сохранить",
             onclick:[this.id(),"saveProject"]

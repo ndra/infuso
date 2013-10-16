@@ -773,4 +773,19 @@ class board_task extends reflex {
 	    }
 	}
 
+	public function tryAutocomplete() {
+	
+	    $days = $this->project()->data("completeAfter");
+	    if(!$days) {
+	        return;
+	    }
+	    
+	    $taskDays = (util::now()->date()->stamp() - $this->pdata("changed")->date()->stamp()) / 3600 / 24;
+	    if($taskDays >= $days) {
+	        $task->data("status",board_task_status::STATUS_COMPLETE);
+	        $task->logCustom("Закрыто автоматически");
+	    }
+	
+	}
+
 }

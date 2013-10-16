@@ -31,6 +31,11 @@ class board_project extends reflex {
                     'type' => 'string',
                     'editable' => '1',
                     'label' => 'Адрес сайта',
+                ), array (
+                    'name' => 'completeAfter',
+                    'type' => 'bigint',
+                    'editable' => '1',
+                    'label' => 'Закрывать задачи после (дней)',
                 ),
             ),
         );
