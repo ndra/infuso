@@ -70,12 +70,18 @@ class user_subscription extends reflex {
      **/
     public function mail($params) {
     
-        $this->onBeforeMail($params);
-        $this->user()->mailer()->params($params)->send();
+        $mailer = $this->user()->mailer()->params($params);
+    
+        if($this->onBeforeMail($mailer->params())) {
+        	$mailer->send();
+        } else {
+            mod::msg("mail stopped");
+        }
     }
     
     public function onBeforeMail($params) {
-        mod::fire("user_subscription_beforeMail",$params);
+        $event = mod::fire("user_subscription_beforeMail",$params);
+        return !$event->stopped();
     }
 
     public function reflex_beforeStore(){
@@ -123,6 +129,10 @@ class user_subscription extends reflex {
     public function reflex_parent() {
         return $this->user();
     }
+
+	public function reflex_title() {
+		return $this->user()->title()." / ".$this->data("key");
+	}
 
     /**
      * Разделы для каталога

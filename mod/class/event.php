@@ -82,6 +82,14 @@ class mod_event extends mod_component {
 
         return false;
     }
+    
+    public function stop() {
+        $this->param("*stopped",true);
+    }
+    
+    public function stopped() {
+        return !!$this->param("*stopped");
+    }
 
     /**
      * Возвращает все события, вызванные в текущем запуске скрипта

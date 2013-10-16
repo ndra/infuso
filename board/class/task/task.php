@@ -320,8 +320,6 @@ class board_task extends reflex {
         $message.= "</div>";
         $params["message"] = $message;
 
-        // Рассылка по всем
-        user_subscription::mailByKey("board/taskCompleted",$params);
         // Рассылка подписанным на конкретный проект
         user_subscription::mailByKey("board/project-{$this->project()->id()}/taskCompleted",$params);
 
