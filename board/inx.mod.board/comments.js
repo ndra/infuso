@@ -50,7 +50,8 @@ inx.ns("inx.mod.board").comments = inx.list.extend({
                 .appendTo(e)
                 .css({
                     opacity:.5,
-                    fontStyle:"italic"
+                    fontStyle:"italic",
+                    paddingLeft:10
                 });
             return;
         }

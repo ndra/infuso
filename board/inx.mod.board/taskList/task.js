@@ -258,7 +258,7 @@ inx.mod.board.taskList.task = inx.panel.extend({
         this.el.mouseleave(inx.cmd(this,"hideControls"));
         
         if(taskData.deadline) {
-            $("<div>").css({
+            var clock = $("<div>").css({
                 position:"absolute",
                 top:-10,
                 right:-10,
@@ -266,6 +266,11 @@ inx.mod.board.taskList.task = inx.panel.extend({
                 height:20,
                 background:"url(/board/res/img/icons16/deadline.gif) center center no-repeat"
             }).attr("title",taskData.deadlineDate).appendTo(e);
+            
+            if(taskData.deadlineMissed) {
+                // Делаем что-нибудь если дедлайн просрочен
+            }
+            
         }
         
         // Влючаем перетаскивание файлов в задачу

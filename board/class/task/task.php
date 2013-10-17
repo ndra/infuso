@@ -601,6 +601,10 @@ class board_task extends reflex {
         // Установленный дэдлайн
         $ret["deadlineDate"] = $this->data("deadlineDate");
         $ret["deadline"] = $this->data("deadline");
+        
+        if($this->data("deadline")) {
+        	$ret["deadlineMissed"] = util::now()->stamp() > $this->pdata("deadlineDate")->stamp();
+        }
 
         // Пропущенный дэдлайн
         $d = util::now()->stamp() - $this->pdata("deadlineDate")->stamp();
@@ -774,13 +778,21 @@ class board_task extends reflex {
 	}
 
 	public function tryAutocomplete() {
+
+		// Если задача не на проверке - выходим
+	    if($this->data("status") != board_task_status::STATUS_CHECKOUT) {
+	        return;
+	    }
 	
-	    $days = $this->project()->data("completeAfter");
-	    if(!$days) {
+	    // Закрываем задачи у которых есть родители
+	    if($this->data("epicParentTask")) {
+	        $this->data("status",board_task_status::STATUS_COMPLETED);
+	        $this->logCustom("Закрыто автоматически");
 	        return;
 	    }
 	    
-	    if($this->data("status") != board_task_status::STATUS_CHECKOUT) {
+	    $days = $this->project()->data("completeAfter");
+	    if(!$days) {
 	        return;
 	    }
 	    

@@ -13,12 +13,6 @@ inx.mod.board.main.informer = inx.panel.extend({
         }
    
         p.items = [{
-            html:"<b>Я делаю</b>",
-            style:{
-                border:0,
-                height:20
-            }
-        },{
             type:"inx.mod.board.taskList",
             status:1,
             style:{
