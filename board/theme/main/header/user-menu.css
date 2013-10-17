@@ -1,12 +1,25 @@
 .jmi8th58od {
 
-padding:15px;
+    padding:5px;
 
     .messages {
         display:inline-block;
         padding-left:20px;
         color:white;
         background:url(/board/res/img/icons16inverse/mail.png) left center no-repeat;
+        vertical-align:middle;
+        margin-top:4px;
+        margin-left:10px;
+        text-decoration:none;
+    }
+    
+    .profile {
+        display:inline-block;
+        vertical-align:middle;
+        padding-top:4px;
+        img {
+            display:block;
+        }
     }
 
 }

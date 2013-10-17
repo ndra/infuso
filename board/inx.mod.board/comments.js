@@ -7,6 +7,8 @@ inx.ns("inx.mod.board").comments = inx.list.extend({
         if(!p.style) {
             p.style = {};
         }
+        
+        p.style.spacing = 10;
     
         p.loader = {
             cmd:"board/controller/log/getLog",
@@ -42,8 +44,33 @@ inx.ns("inx.mod.board").comments = inx.list.extend({
     
     renderer:function(e,data) {
     
+        if(data.date) {
+            $("<div>")
+                .html(data.date)
+                .appendTo(e)
+                .css({
+                    opacity:.5,
+                    fontStyle:"italic"
+                });
+            return;
+        }
+        
+        e.css({
+            paddingLeft:35
+        })
+        
+        $("<span>").html(data.time)
+            .css({
+                position:"absolute",
+                left:0,
+                top:3,
+                fontSize:11,
+                opacity:.5
+            })
+            .appendTo(e);
+    
         // Пользователь
-        var user = $("<div>").appendTo(e).css({
+        var user = $("<span>").appendTo(e).css({
             position:"relative"
         });
         
@@ -56,22 +83,17 @@ inx.ns("inx.mod.board").comments = inx.list.extend({
             
         $("<span>").html(data.user)
             .css({
-                fontSize:11
+                marginRight:5,
+                fontWeight:"bold"
             }).appendTo(user);
             
-        $("<div>").html(data.time)
-            .css({
-                position:"absolute",
-                right:0,
-                top:0,
-                fontSize:11
-            })
-            .appendTo(user);
-        
         // Текст
-        var textContainer = $("<div>").appendTo(e);
-        if(data.type == 5){
-            textContainer.css({color: "#FFF", background: "red"});    
+        var textContainer = $("<span>").appendTo(e);
+        if(data.type == 5) {
+            textContainer.css({
+                color: "#FFF",
+                background: "red"
+            });
         }
         $("<span>").html(data.text+" ").appendTo(textContainer);
         

@@ -780,10 +780,14 @@ class board_task extends reflex {
 	        return;
 	    }
 	    
+	    if($this->data("status") != board_task_status::STATUS_CHECKOUT) {
+	        return;
+	    }
+	    
 	    $taskDays = (util::now()->date()->stamp() - $this->pdata("changed")->date()->stamp()) / 3600 / 24;
 	    if($taskDays >= $days) {
-	        $task->data("status",board_task_status::STATUS_COMPLETE);
-	        $task->logCustom("Закрыто автоматически");
+	        $this->data("status",board_task_status::STATUS_COMPLETED);
+	        $this->logCustom("Закрыто автоматически");
 	    }
 	
 	}

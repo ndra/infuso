@@ -24,8 +24,17 @@ class board_controller_log extends mod_controller {
             $log->eq("type",array(board_task_log::TYPE_COMMENT,board_task_log::TYPE_TASK_STATUS_CHANGED, board_task_log::TYPE_TASK_STATUS_RETURNED));
         }
 
+		$lastDate = null;
         foreach($log as $item) {
-
+        
+            $date = $item->pdata("created")->date()->txt();
+            if($lastDate != $date) {
+	            $ret[] = array(
+	                "date" => $date,
+				);
+                $lastDate = $date;
+            }
+            
             $files = array();
             foreach($item->files() as $file) {
                 $files[] = array(
@@ -39,7 +48,7 @@ class board_controller_log extends mod_controller {
                 "userpick" => $item->user()->userpick()->preview(16,16)->crop(),
                 "user" => $item->user()->nickname(),
                 "text" => $item->data("text"),
-                "time" => $item->pdata("created")->text(),
+                "time" => date("H:i",$item->pdata("created")->stamp()),
                 "files" => $files,
             );
 
