@@ -205,6 +205,19 @@ class mod_url {
     public function queryString() {
         return http_build_query($this->query());
     }
+    
+    public function trailingBackslash() {
+    
+        if(preg_match("/\.[0-9a-z]+$/",$this->path())) {
+            return false;
+        }
+        
+        if(!trim($this->path(),"/")) {
+			return false;
+        }
+        
+        return true;
+    }
 
     /**
      * Возвращает полный url
@@ -227,6 +240,12 @@ class mod_url {
         if($this->path()) {
             $ret.= $this->path();
         }
+        
+        $ret = rtrim($ret,"/");
+        
+		if($this->trailingBackslash()) {
+		    $ret .= "/";
+		}
 
         if($this->queryString()) {
             $ret.= "?".$this->queryString();

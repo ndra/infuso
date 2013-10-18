@@ -4,18 +4,30 @@
 
 inx.direct = {
 
+    first:true,
+
     /**
      * Приватный метод. Вызывается по таймеру и проверяет изменения хэша
      **/
     check:function() {
+    
         var h = (window.location.hash+"").substr(1).split("/");
         var hash = [];
-        for(var i in h) if(h[i]) hash.push(h[i])
+        
+        for(var i in h) {
+            if(h[i]) {
+                hash.push(h[i]);
+            }
+        }
+        
         hash = hash.join("/");
         if(inx.direct.last!=hash) {
             inx.direct.handleChange(hash);
             inx.direct.last = hash;
         }
+        
+        inx.direct.first = false;
+        
     },
     
     /**
@@ -38,6 +50,7 @@ inx.direct = {
         if(inx.direct.id) {
             inx(inx.direct.id).cmd(inx.direct.fn,{
                 action:action,
+                first:inx.direct.first,
                 params:params,
                 segments:segments,
                 hash:h
@@ -102,4 +115,5 @@ inx.direct = {
         inx.direct.fn = fn;
     }
 }
+
 setInterval(inx.direct.check,100);

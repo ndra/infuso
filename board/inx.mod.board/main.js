@@ -147,7 +147,9 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
                 
             case "task":
                 this.cmd("editTask",{taskID:params.params.id});
-                //history.back();
+                if(!params.first) {
+                    history.back();
+                }
                 break;
                 
             case "vote":
