@@ -2,6 +2,7 @@
 
 class board_task_status extends mod_controller {
 
+    const STATUS_DEMAND = 200;
     const STATUS_NEW = 0;
     const STATUS_IN_PROGRESS = 1;
     const STATUS_CHECKOUT = 2;
@@ -10,14 +11,16 @@ class board_task_status extends mod_controller {
     const STATUS_CANCELLED = 100;
 
     private static $all = array(
-        -1 => array(
-    		"title" => "-",
+
+        self::STATUS_DEMAND => array(
+    		"title" => "Заявки",
+    		"action" => "Заявка",
+    		"active" => true,
     		"stickerParams" => array(
-    		    "sort" => false,
-    		    "showVoidProjects" => false,
+    		    "sort" => true,
+    		    "showHang" => true,
     		),
-    	),
-        self::STATUS_NEW => array(
+    	), self::STATUS_NEW => array(
     		"title" => "Бэклог",
     		"action" => "К исполнению",
     		"next" => 1,

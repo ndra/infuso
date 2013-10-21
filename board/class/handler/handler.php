@@ -77,9 +77,15 @@ class board_handler implements mod_handler {
         user_operation::create("board/addEpicSubtask","Добавление подзадачи эпика")
             ->appendTo("board/editTask");
 
-        user_operation::create("board/changeTaskStatus","Изменение статуса задачи")
+        /*user_operation::create("board/changeTaskStatus","Изменение статуса задачи")
             ->addBusinessRule("if(\$status == board_task_status::STATUS_IN_PROGRESS && !\$task->subtasks()->void()) \$this->error('Нельзя взять эпик. Возьмите подзадачу.'); ")
             ->addBusinessRule("return true;")
+            ->appendTo("board/editTask"); */
+
+        user_operation::create("board/changeTaskStatus/1","Изменение статуса задачи - выполняется")
+            ->appendTo("boardUser");
+
+        user_operation::create("board/changeTaskStatus/2","Изменение статуса задачи - проверить")
             ->appendTo("board/editTask");
 
        user_operation::create("board/newTaskInAnyProject","Создание задачи в любом проекте")

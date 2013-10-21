@@ -156,6 +156,8 @@ class board_controller_task extends mod_controller {
             $task->data($key,$val);
         }
 
+        //$task->data("status",board_task_status::STATUS_DEMAND);
+
         if ($task->fields()->changed()->count() > 0) {
             $task->logCustom("Изменение данных",0,board_task_log::TYPE_TASK_MODIFIED);
             mod::msg("Задача сохранена");
@@ -283,11 +285,13 @@ class board_controller_task extends mod_controller {
         
         
         $taskLogType = board_task_log::TYPE_TASK_STATUS_CHANGED; // по умлчанию тип таск лога у нас "Статус задачи изменен"
+
+        $status = $p["status"];
         
         // Параметры задачи
-        if(!user::active()->checkAccess("board/changeTaskStatus",array(
+        if(!user::active()->checkAccess("board/changeTaskStatus/$status",array(
             "task" => $task,
-            "status" => $p["status"],
+            "status" => $status,
         ))) {
             mod::msg(user::active()->errorText(),1);
             return;
