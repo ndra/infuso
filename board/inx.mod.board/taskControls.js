@@ -235,9 +235,8 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
         this.fire("action");
     
         this.call({
-            cmd:"board/controller/task/changeTaskStatus",
-            taskID:this.taskID,
-            status:1
+            cmd:"board/controller/task/takeTask",
+            taskID:this.taskID
         });
     },
     
@@ -279,7 +278,7 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
         inx({
             type:"inx.mod.board.timeInput",
             taskID:this.taskID,
-            taskStatus:0,
+            loader:"board/controller/task/stopTask",
             listeners:{
                 save:[this.id(),"handleTimeInput"]
             }

@@ -94,9 +94,8 @@ inx.ns("inx.mod.board").timeInput = inx.dialog.extend({
         var h = data.hours*1 + data.minutes/60;
     
         this.call({
-            cmd:"board/controller/task/changeTaskStatus",
+            cmd:this.loader,
             taskID:this.taskID,
-            status:this.taskStatus,
             sessionHash:this.sessionHash,
             comment:data.comment,
             time:h

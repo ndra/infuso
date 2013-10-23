@@ -387,13 +387,13 @@ class board_task extends reflex {
         return board_task_log::all()->eq("taskID",$this->id());
     }
 
-    public function logCustom($text,$time=0,$type,$files=null) {
+    public function logCustom($params) {
         $this->getLogCustom()->create(array(
             "taskID" => $this->id(),
-            "type" => $type,
-            "text" => $text,
-            "timeSpent" => $time,
-            "files" => $files,
+            "type" => $params["type"],
+            "text" => $params["text"],
+            "timeSpent" => $params["time"],
+            "files" => $params["files"],
         ));
     }
 

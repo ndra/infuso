@@ -4,6 +4,7 @@ class board_task_status extends mod_controller {
 
     const STATUS_DEMAND = 200;
     const STATUS_NEW = 0;
+    const STATUS_BACKLOG = 0;
     const STATUS_IN_PROGRESS = 1;
     const STATUS_CHECKOUT = 2;
     const STATUS_COMPLETED = 3;

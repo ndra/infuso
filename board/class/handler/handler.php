@@ -82,11 +82,11 @@ class board_handler implements mod_handler {
             ->addBusinessRule("return true;")
             ->appendTo("board/editTask"); */
 
-        user_operation::create("board/changeTaskStatus/1","Изменение статуса задачи - выполняется")
+        user_operation::create("board/takeTask","Взять задачу")
             ->appendTo("boardUser");
 
-        user_operation::create("board/changeTaskStatus/2","Изменение статуса задачи - проверить")
-            ->appendTo("board/editTask");
+        user_operation::create("board/stopTask","Приостановить задачу")
+            ->appendTo("boardUser");
 
        user_operation::create("board/newTaskInAnyProject","Создание задачи в любом проекте")
             ->appendTo("boardUser");

@@ -207,21 +207,6 @@ class board_controller_task extends mod_controller {
 
         return $task->id();
     }
-    
-    public function post_newDrawback() {
-
-        // Параметры задачи
-        if(!user::active()->checkAccess("board/newHindrance")) {
-            mod::msg(user::active()->errorText(),1);
-            return;
-        }
-
-        $task = reflex::create("board_task",array(
-            "status" => board_task_status::STATUS_DRAFT,
-            "hindrance" => true,
-        ));
-        return $task->id();
-    }
 
     /**
      * Возвращает задачи эпика
@@ -277,7 +262,7 @@ class board_controller_task extends mod_controller {
     /**
      * Меняет статус задачи
      **/
-    public static function post_changeTaskStatus($p) {
+    /*public static function post_changeTaskStatus($p) {
 
         $task = board_task::get($p["taskID"]);
         
@@ -327,6 +312,78 @@ class board_controller_task extends mod_controller {
         $task->logCustom($statusText,$time,$taskLogType,$files);
 
         return true;
+    }*/
+
+    /**
+     * Взять задачу
+     **/
+    public function post_takeTask($p) {
+
+        $task = board_task::get($p["taskID"]);
+
+        if(!user::active()->checkAccess("board/takeTask",array(
+            "task" => $task,
+        ))) {
+            mod::msg(user::active()->errorText(),1);
+            return;
+        }
+
+        $task->data("status",board_task_status::STATUS_IN_PROGRESS);
+        $task->logCustom(array(
+            "text" => $p["text"],
+        ));
+    }
+
+    /**
+     * Положить задачу обратно
+     **/
+    public function post_stopTask($p) {
+
+        $task = board_task::get($p["taskID"]);
+
+        if(!user::active()->checkAccess("board/stopTask",array(
+            "task" => $task,
+        ))) {
+            mod::msg(user::active()->errorText(),1);
+            return;
+        }
+
+        $task->data("status",board_task_status::STATUS_BACKLOG);
+        $task->logCustom(array(
+            "text" => $p["text"],
+        ));
+
+        return true;
+    }
+
+    /**
+     * Отправляет задачу на доработку
+     * Если это делает менеджер, задача попадает в бэклог
+     * Если клиент — в «Заявки»
+     **/
+    public function post_revisionTask() {
+
+    }
+
+    /**
+     * Помечает задачу как сделанную
+     **/
+    public function post_doneTask() {
+
+    }
+
+    /**
+     * Закрывает задачу (проверено)
+     **/
+    public function post_completeTask() {
+
+    }
+
+    /**
+     * Отменяет задачу
+     **/
+    public function post_cancelTask() {
+
     }
 
     /**
