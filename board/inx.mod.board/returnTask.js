@@ -18,7 +18,7 @@ inx.ns("inx.mod.board").returnTask = inx.dialog.extend({
         
         p.destroyOnEscape = true;
 
-        p.title = "Сколько времени потрачено?";
+        p.title = "Вернуть задачу";
         
         p.items = [{
             type:"inx.textarea",
@@ -28,10 +28,6 @@ inx.ns("inx.mod.board").returnTask = inx.dialog.extend({
             style:{
                 width: "parent"
             },
-        },{
-            type:"inx.mod.board.vote",
-            taskID:this.taskID,
-            width:"parent"    
         },{
             type:"inx.button",
             text:"Вернуть",
@@ -48,18 +44,14 @@ inx.ns("inx.mod.board").returnTask = inx.dialog.extend({
 
         inx.hotkey("esc",[this.id(),"handleEsc"]);
         
-        
-        
-        
     },
     
     cmd_save:function() {
     
         var data = this.info("data");
         this.call({
-            cmd:"board/controller/task/changeTaskStatus",
+            cmd:"board/controller/task/revisionTask",
             taskID:this.taskID,
-            status:this.status,
             comment:data.comment
         },[this.id(),"handleSave"])
        

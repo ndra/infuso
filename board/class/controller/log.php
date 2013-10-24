@@ -21,7 +21,13 @@ class board_controller_log extends mod_controller {
 
         // Только важные записи
         if($p["mode"]==0) {
-            $log->eq("type",array(board_task_log::TYPE_COMMENT,board_task_log::TYPE_TASK_STATUS_CHANGED, board_task_log::TYPE_TASK_STATUS_RETURNED));
+            $log->eq("type",array(
+                board_task_log::TYPE_COMMENT,
+                board_task_log::TYPE_TASK_DONE,
+                board_task_log::TYPE_TASK_COMPLETED,
+                board_task_log::TYPE_TASK_REVISED,
+                board_task_log::TYPE_TASK_CANCELLED,
+            ));
         }
 
 		$lastDate = null;
@@ -43,11 +49,38 @@ class board_controller_log extends mod_controller {
                 );
             }
 
+            switch($item->data("type")) {
+                default:
+                    $action = "";
+                    break;
+
+                case board_task_log::TYPE_TASK_TAKEN:
+                    $action = "(Взято) ";
+                    break;
+
+                case board_task_log::TYPE_TASK_DONE:
+                    $action = "(Выполнено) ";
+                    break;
+
+                case board_task_log::TYPE_TASK_COMPLETED:
+                    $action = "(Завершено) ";
+                    break;
+
+                case board_task_log::TYPE_TASK_REVISED:
+                    $action = "(Возвращено) ";
+                    break;
+
+                case board_task_log::TYPE_TASK_CANCELLED:
+                    $action = "(Отменено) ";
+                    break;
+
+            }
+
             $row = array(
                 "type" => $item->data("type"),
                 "userpick" => $item->user()->userpick()->preview(16,16)->crop(),
                 "user" => $item->user()->nickname(),
-                "text" => $item->data("text"),
+                "text" => $action.$item->data("text"),
                 "time" => date("H:i",$item->pdata("created")->stamp()),
                 "files" => $files,
             );

@@ -330,7 +330,7 @@ class board_controller_task extends mod_controller {
 
         $task->data("status",board_task_status::STATUS_IN_PROGRESS);
         $task->logCustom(array(
-            "text" => $p["text"],
+            "type" => board_task_log::TYPE_TASK_TAKEN,
         ));
     }
 
@@ -350,7 +350,8 @@ class board_controller_task extends mod_controller {
 
         $task->data("status",board_task_status::STATUS_BACKLOG);
         $task->logCustom(array(
-            "text" => $p["text"],
+            "text" => $p["comment"],
+            "type" => board_task_log::TYPE_TASK_STOPPED,
         ));
 
         return true;
@@ -361,29 +362,99 @@ class board_controller_task extends mod_controller {
      * Если это делает менеджер, задача попадает в бэклог
      * Если клиент — в «Заявки»
      **/
-    public function post_revisionTask() {
+    public function post_revisionTask($p) {
 
+        $task = board_task::get($p["taskID"]);
+
+        $newStatus = board_task_status::STATUS_BACKLOG;
+
+        if(!user::active()->checkAccess("board/revisionTaskToBacklog",array(
+            "task" => $task,
+        ))) {
+            $newStatus = board_task_status::STATUS_DEMAND;
+            if(!user::active()->checkAccess("board/revisionTaskToDemand",array(
+                "task" => $task,
+            ))) {
+                mod::msg(user::active()->errorText(),1);
+                return;
+            }
+        }
+
+        $task->data("status",$newStatus);
+        $task->logCustom(array(
+            "text" => $p["comment"],
+            "type" => board_task_log::TYPE_TASK_REVISED,
+        ));
+
+        return true;
     }
 
     /**
      * Помечает задачу как сделанную
      **/
-    public function post_doneTask() {
+    public function post_doneTask($p) {
 
+        $task = board_task::get($p["taskID"]);
+
+        if(!user::active()->checkAccess("board/doneTask",array(
+            "task" => $task,
+        ))) {
+            mod::msg(user::active()->errorText(),1);
+            return;
+        }
+
+        $task->data("status",board_task_status::STATUS_CHECKOUT);
+        $task->logCustom(array(
+            "text" => $p["comment"],
+            "type" => board_task_log::TYPE_TASK_DONE,
+        ));
+
+        return true;
     }
 
     /**
      * Закрывает задачу (проверено)
      **/
-    public function post_completeTask() {
+    public function post_completeTask($p) {
 
+        $task = board_task::get($p["taskID"]);
+
+        if(!user::active()->checkAccess("board/completeTask",array(
+            "task" => $task,
+        ))) {
+            mod::msg(user::active()->errorText(),1);
+            return;
+        }
+
+        $task->data("status",board_task_status::STATUS_COMPLETED);
+        $task->logCustom(array(
+            "text" => $p["comment"],
+            "type" => board_task_log::TYPE_TASK_COMPLETED,
+        ));
+
+        return true;
     }
 
     /**
      * Отменяет задачу
      **/
-    public function post_cancelTask() {
+    public function post_cancelTask($p) {
 
+        $task = board_task::get($p["taskID"]);
+
+        if(!user::active()->checkAccess("board/cancelTask",array(
+            "task" => $task,
+        ))) {
+            mod::msg(user::active()->errorText(),1);
+            return;
+        }
+
+        $task->data("status",board_task_status::STATUS_CANCELLED);
+        $task->logCustom(array(
+            "type" => board_task_log::TYPE_TASK_CANCELLED,
+        ));
+
+        return true;
     }
 
     /**

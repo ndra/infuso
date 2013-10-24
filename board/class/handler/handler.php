@@ -35,18 +35,20 @@ class board_handler implements mod_handler {
         
         // Операции с задачами
 
-        user_operation::create("board/editGrantedTask","Редактирование задачи (когда предоставлен доступ к проекту)")
+        user_operation::create("board/task/fullAccess","Редактирование задачи (когда предоставлен доступ к проекту)")
             ->addBusinessRule('return board_access::all()->eq("userID",$user->id())->eq("editTasks",1)->eq("projectID",$task->project()->id())->one()->exists();')
 			->appendTo('guest');
 
-        user_operation::create("board/editAnyTask","Редактирование задачи")
-            ->addBusinessRule('if(!$task->exists()) $this->error("Задача не существует"); ')
-            ->addBusinessRule('return true;')
+        user_operation::create("board/task/limitedAccess","Редактирование задачи (ограниченый доступ к проекту)")
+            ->addBusinessRule('return false;')
+			->appendTo('guest');
+
+        user_operation::create("board/editAnyTask","Редактирование любой задачи")
 			->appendTo('boardUser');
 
         user_operation::create("board/editTask","Редактирование задачи")
 			->appendTo('board/editAnyTask')
-            ->appendTo('board/editGrantedTask');
+            ->appendTo('board/task/fullAccess');
 
         user_operation::create("board/viewAllTasks","Просмотр задач без ограничений")
 			->appendTo('boardUser');
@@ -82,11 +84,28 @@ class board_handler implements mod_handler {
             ->addBusinessRule("return true;")
             ->appendTo("board/editTask"); */
 
-        user_operation::create("board/takeTask","Взять задачу")
+        user_operation::create("board/takeTask", "Взять задачу")
             ->appendTo("boardUser");
 
-        user_operation::create("board/stopTask","Приостановить задачу")
+        user_operation::create("board/stopTask", "Приостановить задачу")
             ->appendTo("boardUser");
+
+        user_operation::create("board/doneTask", "Выполнить задачу")
+            ->appendTo("boardUser");
+
+        user_operation::create("board/completeTask", "Проверить задачу")
+            ->appendTo("boardUser")
+            ->appendTo("board/task/fullAccess");
+
+        user_operation::create("board/revisionTaskToBacklog", "Вернуть задачу в бэклог")
+            ->appendTo("boardUser");
+
+        user_operation::create("board/revisionTaskToDemand", "Вернуть задачу в заявки")
+            ->appendTo("board/task/fullAccess");
+
+        user_operation::create("board/cancelTask", "Отменить задачу")
+            ->appendTo("boardUser")
+            ->appendTo("board/task/fullAccess");
 
        user_operation::create("board/newTaskInAnyProject","Создание задачи в любом проекте")
             ->appendTo("boardUser");

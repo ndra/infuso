@@ -247,7 +247,7 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
         inx({
             type:"inx.mod.board.timeInput",
             taskID:this.taskID,
-            taskStatus:2,
+            loader:"board/controller/task/doneTask",
             listeners:{
                 save:[this.id(),"handleTimeInput"]
             }
@@ -262,9 +262,8 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
         this.fire("action");
     
         this.call({
-            cmd:"board/controller/task/changeTaskStatus",
-            taskID:this.taskID,
-            status:3
+            cmd:"board/controller/task/completeTask",
+            taskID:this.taskID
         });
     },
     
@@ -309,9 +308,8 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
         }
     
         this.call({
-            cmd:"board/controller/task/changeTaskStatus",
-            taskID:this.taskID,
-            status:100
+            cmd:"board/controller/task/cancelTask",
+            taskID:this.taskID
         });
     },
     
@@ -322,7 +320,7 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
         inx({
             type: 'inx.mod.board.returnTask', 
             taskID:this.taskID,
-            status:0,
+            cmd:"board/controller/task/revisionTask"
         }).cmd('render');    
     },
     
