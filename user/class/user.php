@@ -409,6 +409,23 @@ class user extends reflex {
         return $this->roles;
     }
 
+     /**
+     * Проверяет есть ли роль у юзера по коду
+     **/
+    public function hasRole($roleCode) {
+        if(!is_string($roleCode)) {
+            throw new Exception("user::hasRole() first argument must be a string");
+        }
+        $roles = $this->roles();
+        foreach($roles as $role) {
+          if($roleCode == $role->code()){
+              return true;
+          }  
+        }       
+        
+        return false;      
+    }
+
     /**
      * Удаляет роль у пользователя
      **/
