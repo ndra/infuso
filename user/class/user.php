@@ -435,6 +435,7 @@ class user extends reflex {
             if($role->code()!=$roleToDelete)
                 $roles[] = $role->code();
         $this->data("roles",implode(" ",$roles));
+        $this->roles = null;
     }
 
     /**
@@ -447,6 +448,7 @@ class user extends reflex {
         }
         $roles = array_unique($roles);
         $this->data("roles",implode(" ",$roles));
+        $this->roles = null;
     }
 
     /**
