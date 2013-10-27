@@ -23,6 +23,10 @@ class board_task_time extends reflex {
                     'editable' => 1,
                     'label' => 'Конец',
                 ), array (
+                    'name' => 'charged',
+                    'type' => 'checkbox',
+                    'label' => 'Учтено',
+                ), array (
                     'name' => 'userID',
                     'type' => 'pg03-cv07-y16t-kli7-fe6x',
                     'editable' => '2',

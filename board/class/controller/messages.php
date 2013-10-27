@@ -7,17 +7,31 @@ class board_controller_messages extends mod_controller {
     }
 
     /**
-     * Экшн получения списка сообщение
+     * Экшн получения списка сообщений
      **/             
     public static function post_list($p) {
 
 		$ret = array();
 		$user = user::active();
 		$emails = user_mail::all()->eq("userID",$user->id());
+
+        $lastDate = null;
 		
 		foreach($emails as $email) {
+
+            $date = $email->pdata("sent")->text();
+            if($date!=$lastDate) {
+
+                $ret["data"][] = array(
+                    "date" => $date,
+                );
+                $lastDate = $date;
+            }
+
 		    $ret["data"][] = array(
 				"text" => $email->subject(),
+                "time" => date("H:i",$email->pdata("sent")->stamp()),
+                "taskID" => $email->mailer()->param("taskID"),
 			);
 		}
 		

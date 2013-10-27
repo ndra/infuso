@@ -479,10 +479,10 @@ class board_controller_task extends mod_controller {
             return;
         }
 
-        $d = $task->timeSpentProgress();
+        $d = $task->timeSpentProgress() + 59;
 
         $hours = floor($d/60/60);
-        $minutes = ceil($d/60)%60;
+        $minutes = floor($d/60)%60;
 
         return array(
             "hours" => $hours,

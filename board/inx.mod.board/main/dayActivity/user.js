@@ -100,7 +100,7 @@ inx.mod.board.main.dayActivity.user = inx.panel.extend({
             var te = $("<div>").css({
                 position:"absolute",
                 height:20,
-                background:"rgba(0,0,0,.5)",
+                background:i%2 ? "rgba(0,0,0,.5)" : "rgba(0,0,0,.7)",
                 width:task.duration * k,
                 left:task.start * k
             }).attr("title",task.title)

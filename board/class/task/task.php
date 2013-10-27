@@ -209,7 +209,6 @@ class board_task extends reflex {
             }
             
             $this->data("paused",false);
-            $this->data("pauseTime",0);
 
 			// Отправляем рассылку про выполненные сообщения
 			if($this->field("status")->initialValue() == board_task_status::STATUS_IN_PROGRESS
@@ -229,14 +228,15 @@ class board_task extends reflex {
 			    $this->data("priority",$min - 1);
 			}
 
-			// Если взяли задачу - создаем таймлог
+			// Если взяли задачу - запускаем таймер
 			if($this->data("status") == board_task_status::STATUS_IN_PROGRESS) {
                 $this->startTimer();
 			}
 
-			// Если взяли задачу - создаем таймлог
+			// Если задача перестала выполняться - останавливаем таймер
 			if($this->field("status")->initialValue() == board_task_status::STATUS_IN_PROGRESS) {
                 $this->stopTimer();
+                $this->timeLog()->data("charged",1);
 			}
 
         }
@@ -370,7 +370,7 @@ class board_task extends reflex {
 
     /**
      * Возвращает потраченное но еще неучтенное времия
-     * Если вы делавете задачу два часа, но еще не сделалт, timeSpent() вернет 0
+     * Если вы делавете задачу уже два часа, но еще не сделали, timeSpent() вернет 2 * 3600
      * Время возвращается в секундах
      **/
     public function timeSpentProgress() {
@@ -379,6 +379,15 @@ class board_task extends reflex {
             return 0;
         }
 
+        // Предыдущие интервалы
+        $a = $this->timeLog()->eq("charged",0)->notnull("end")->select("SUM(TIMESTAMPDIFF(SECOND,`begin`,`end`))");
+        $a = end(end($a))*1;
+
+        // Текущий интервал
+        $b = $this->timeLog()->eq("charged",0)->isnull("end")->select("SUM(TIMESTAMPDIFF(SECOND,`begin`,now()))");
+        $b = end(end($b))*1;
+
+        // Учитываем время в старом стиле
         $date = $this->pdata("changed");
         $d = util::now()->stamp() - $date->stamp();
         $d -= $this->data("pauseTime");
@@ -387,7 +396,7 @@ class board_task extends reflex {
 			$d-= util::now()->stamp() - $this->pdata("paused")->stamp();
         }
 
-        return $d;
+        return $a + $b + $d;
 
     }
 
@@ -510,9 +519,6 @@ class board_task extends reflex {
             $xtask->pause();
         }
 
-        $time = util::now()->stamp() - $this->pdata("paused")->stamp();
-        $time+= $this->data("pauseTime");
-        $this->data("pauseTime",$time);
         $this->data("paused",null);
         $this->startTimer();
     }
@@ -718,6 +724,7 @@ class board_task extends reflex {
             case board_task_status::STATUS_DEMAND:
 
                 $tools["main"][] = "add";
+                $tools["main"][] = "take";
 
                 $tools["additional"][] = "problems";
                 $tools["additional"][] = "cancel";
