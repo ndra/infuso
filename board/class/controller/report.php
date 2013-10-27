@@ -117,42 +117,20 @@ class board_controller_report extends mod_controller {
             )
         );
 
-        $tasks = board_task_log::all()
+        $tasks = board_task_time::all()
             ->eq("userID",$user->id())
-            ->gt("timeSpent",0)
-            ->desc("created")
             ->limit(0)
-            ->eq("date(created)",util::now()->date());
+            ->eq("date(begin)",util::now()->date());
 
         foreach($tasks as $log) {
-            $time = $log->pdata("created");
-            $duration = $log->data("timeSpent") * 3600;
-            $start = $time->stamp() - $duration;
+            $start = $log->pdata("begin")->stamp();
+            $end = $log->data("end") ? $log->pdata("end")->stamp() : util::now()->stamp();
+            $duration = $end - $start;
             $ret["tasks"][] = array(
                 "start" => $start - util::now()->date()->stamp(),
                 "duration" => $duration,
                 "title" => $log->task()->title(),
                 "taskID" => $log->task()->id(),
-            );
-        }
-
-        // Выполняющиеся задания
-        $tasks = board_task::all()
-            ->eq("responsibleUser",$user->id())
-            ->eq("status",board_task_status::STATUS_IN_PROGRESS)
-            ->isNull("paused")
-            ->limit(0);
-
-        foreach($tasks as $task) {
-            $time = util::now();
-            $duration = $task->timeSpentProgress();
-            $start = $time->stamp() - $duration;
-            $ret["tasks"][] = array(
-                "start" => $start - util::now()->date()->stamp(),
-                "duration" => $duration,
-                "title" => $task->title(),
-                "taskID" => $task->id(),
-                "inprogress" => true,
             );
         }
 

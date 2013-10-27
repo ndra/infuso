@@ -126,10 +126,8 @@ class board_task extends reflex {
      * Возвращает список видимых задач для активного пользователя
      **/
     public static function visible() {
-
         $projects = board_project::visible();
         return self::all()->joinByField("projectID",$projects);
-
     }
 
     /**
@@ -229,6 +227,16 @@ class board_task extends reflex {
 			if($this->data("status") == board_task_status::STATUS_NEW) {
 			    $min = board_task::all()->eq("status",board_task_status::STATUS_IN_PROGRESS)->min("priority");
 			    $this->data("priority",$min - 1);
+			}
+
+			// Если взяли задачу - создаем таймлог
+			if($this->data("status") == board_task_status::STATUS_IN_PROGRESS) {
+                $this->startTimer();
+			}
+
+			// Если взяли задачу - создаем таймлог
+			if($this->field("status")->initialValue() == board_task_status::STATUS_IN_PROGRESS) {
+                $this->stopTimer();
 			}
 
         }
@@ -397,6 +405,18 @@ class board_task extends reflex {
         ));
     }
 
+    public function timeLog() {
+        return board_task_time::all()->eq("taskID",$this->id());
+    }
+
+    public function startTimer() {
+        $this->timeLog()->create(array());
+    }
+
+    public function stopTimer() {
+        $this->timeLog()->one()->data("end",util::now());
+    }
+
     /**
      * Возвращает время, потраченное на задачу
      * Суммируются время, потраченное на задачу и на субзадачи
@@ -468,6 +488,7 @@ class board_task extends reflex {
         }
 
         $this->data("paused",util::now());
+        $this->stopTimer();
 
     }
 
@@ -493,6 +514,7 @@ class board_task extends reflex {
         $time+= $this->data("pauseTime");
         $this->data("pauseTime",$time);
         $this->data("paused",null);
+        $this->startTimer();
     }
 
     /**
@@ -530,6 +552,10 @@ class board_task extends reflex {
         return board_task_vote::all()->eq("taskID",$this->id());
     }
 
+    /**
+     * Возвращает джанные стикера задачи
+     * Кэширует результат
+     **/
     public function stickerData() {
 
         $key = "board/stickerData/".$this->id()."/".$this->data("dataHash")."/".user::active()->id();
@@ -542,6 +568,8 @@ class board_task extends reflex {
         $data = $this->stickerDataNoCache();
         $loader = new mod_confLoader_json();
         $cached = $loader->write($data);
+
+        // Кэшируем данные задачи на 10 минут
         mod_cache::set($key,$cached,600);
 
         return $data;
