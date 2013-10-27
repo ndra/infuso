@@ -156,7 +156,14 @@ class board_controller_task extends mod_controller {
             $task->data($key,$val);
         }
 
-        //$task->data("status",board_task_status::STATUS_DEMAND);
+        if($task->status()->id() == board_task_status::STATUS_DRAFT) {
+            if(user::active()->checkAccess("boardUser")) {
+                $task->data("status",board_task_status::STATUS_BACKLOG);
+            } else {
+                $task->data("status",board_task_status::STATUS_DEMAND);
+            }
+        }
+
 
         if ($task->fields()->changed()->count() > 0) {
             $task->logCustom("Изменение данных",0,board_task_log::TYPE_TASK_MODIFIED);
@@ -481,6 +488,28 @@ class board_controller_task extends mod_controller {
             "hours" => $hours,
             "minutes" => $minutes,
         );
+
+    }
+
+    /**
+     * Контроллер добавления в бэклог
+     **/
+    public function post_moveToBacklog($p) {
+
+        $task = board_task::get($p["taskID"]);
+
+        // Параметры задачи
+        if(!user::active()->checkAccess("board/task/moveToBacklog",array(
+            "task" => $task
+        ))) {
+            mod::msg(user::active()->errorText(),1);
+            return;
+        }
+
+        $task->data("status",board_task_status::STATUS_BACKLOG);
+        $task->logCustom(array(
+            "type" => board_task_log::TYPE_TASK_MOVED_TO_BACKLOG,
+        ));
 
     }
 

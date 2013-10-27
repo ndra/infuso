@@ -32,7 +32,7 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                 general: {
                     icon:"/board/res/img/icons16/add.png",
                     onclick:[this.id(),"addTask"],
-                    help:"К исполнению",
+                    help:"В бэклог",
                 }, large: {
                     icon:"/board/res/img/icons24/add.png",
                 }
@@ -292,9 +292,8 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
         this.fire("action");
     
         this.call({
-            cmd:"board/controller/task/changeTaskStatus",
-            taskID:this.taskID,
-            status:0
+            cmd:"board/controller/task/moveToBacklog",
+            taskID:this.taskID
         });
     },
     

@@ -3,11 +3,13 @@
 <div class='x55qv4lhb8m' >
 
     foreach(board_task_status::all() as $status) {
-        <a class='item' href='#task-list/status/{$status->id()}' >
-            echo $status->title();
-            $n = $status->visibleTasks()->count();
-            <span class='count' >{$n}</span>
-        </a>
+        if($status->id() != board_task_status::STATUS_DRAFT) {
+            <a class='item' href='#task-list/status/{$status->id()}' >
+                echo $status->title();
+                $n = $status->visibleTasks()->count();
+                <span class='count' >{$n}</span>
+            </a>
+        }
     }
     <i>
         <a href='#' menu:id='reports' class='item' >Отчеты</a>

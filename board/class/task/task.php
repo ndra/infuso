@@ -658,11 +658,6 @@ class board_task extends reflex {
 
         switch($this->status()->id()) {
 
-            case board_task_status::STATUS_DRAFT:
-                $tools["main"][] = "add";
-                $tools["main"][] = "take";
-                break;
-
             case board_task_status::STATUS_IN_PROGRESS:
 
                 if(!$this->paused()) {
@@ -678,7 +673,7 @@ class board_task extends reflex {
 
                 break;
 
-            case board_task_status::STATUS_NEW:
+            case board_task_status::STATUS_BACKLOG:
 
                 if($this->isEpic()) {
                     $tools["main"][] = "subtask";
@@ -686,6 +681,15 @@ class board_task extends reflex {
                 } else {
                     $tools["main"][] = "take";
                 }
+
+                $tools["additional"][] = "problems";
+                $tools["additional"][] = "cancel";
+
+                break;
+
+            case board_task_status::STATUS_DEMAND:
+
+                $tools["main"][] = "add";
 
                 $tools["additional"][] = "problems";
                 $tools["additional"][] = "cancel";

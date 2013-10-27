@@ -107,6 +107,9 @@ class board_handler implements mod_handler {
             ->appendTo("boardUser")
             ->appendTo("board/task/fullAccess");
 
+        user_operation::create("board/task/moveToBacklog", "Переместить задачу в бэклог")
+            ->appendTo("boardUser");
+
        user_operation::create("board/newTaskInAnyProject","Создание задачи в любом проекте")
             ->appendTo("boardUser");
 

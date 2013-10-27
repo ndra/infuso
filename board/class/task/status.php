@@ -134,7 +134,7 @@ class board_task_status extends mod_controller {
 	 * Сортируются ли задачи в этом статусе
 	 **/
     public function sortable() {
-        if(in_array($this->id(),array(self::STATUS_NEW))) {
+        if(in_array($this->id(),array(self::STATUS_NEW,self::STATUS_DEMAND))) {
             return true;
         }
         return false;

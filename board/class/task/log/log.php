@@ -13,6 +13,7 @@ class board_task_log extends reflex {
     const TYPE_TASK_COMPLETED = 9;
     const TYPE_TASK_REVISED = 10;
     const TYPE_TASK_CANCELLED = 11;
+    const TYPE_TASK_MOVED_TO_BACKLOG = 12;
 
     public function reflex_table() {
         return array (
