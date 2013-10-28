@@ -2,8 +2,8 @@
 
 /**
  * Контроллер импорта товаров
- * 1С Подаключается к этому классу для обмена товарами и заказами 
- **/ 
+ * 1С Подаключается к этому классу для обмена товарами и заказами
+ **/
 class eshop_1c_exchange extends mod_controller {
 
     private static $dir = "/eshop/import/";
@@ -35,13 +35,18 @@ class eshop_1c_exchange extends mod_controller {
             return;
         }
 
+        mod::trace("$cmd");
+
         switch($cmd) {
+
             case "sale:checkauth":
             case "catalog:checkauth":
                 echo "success\n";
                 echo "xxx\n";
                 echo "yyy\n";
                 break;
+
+            // Начало выгрузки на сайт
             case "catalog:init":
                 file::mkdir($dir);
                 eshop_1c_utils::importBegin();
@@ -49,17 +54,29 @@ class eshop_1c_exchange extends mod_controller {
                 echo "zip=no\n";
                 echo "file_limit=0\n";
                 break;
+
+            // Прием файла
             case "catalog:file":
                 $str = file_get_contents("php://input");
                 $file = file::get("$dir/$_GET[filename]");
                 file::mkdir($file->up());
                 $file->put($str);
+
+                // Сохраняем имя последнего переданного файла
+                // Это понадобится нам позже чтобы определить когда закончить выгрузку
+                file::get("{$dir}/last-import-file.txt")->put($_GET["filename"]);
+
                 echo "success";
                 break;
+
+            // Разбор файла
             case "catalog:import":
-                if($_GET["filename"]=="import.xml") {
-                    if(self::importCatalog()) {
-                        eshop_1c_utils::importComplete();
+
+                $filename = $_GET["filename"];
+
+                if(preg_match("/import/",$filename)) {
+
+                    if(self::importCatalog($filename)) {
                         echo "success";
                         die();
                     } else {
@@ -68,8 +85,15 @@ class eshop_1c_exchange extends mod_controller {
                         die();
                     }
                 }
-                if($_GET["filename"]=="offers.xml") {
-                    if(self::importOffers()) {
+
+                if(preg_match("/offers/",$filename)) {
+                    if(self::importOffers($filename)) {
+
+                        if($filename == file::get("{$dir}/last-import-file.txt")->data()) {
+                            eshop_1c_utils::importComplete();
+                            mod::trace("1c export done");
+                        }
+
                         echo "success";
                         die();
                     } else {
@@ -78,7 +102,7 @@ class eshop_1c_exchange extends mod_controller {
                         die();
                     }
                 }
-                echo "success";
+
                 break;
 
             // Начало обмена заказами
@@ -137,22 +161,22 @@ class eshop_1c_exchange extends mod_controller {
             return file::get(self::$dir."/step.txt")->put($from);
         }
     }
-    
-    public static function importCatalog() {
+
+    public static function importCatalog($filename = "import.xml") {
 
         $vitem = reflex::virtual("eshop_item");
 
-        $xml = simplexml_load_file(file::get(self::$dir."/import.xml")->native());
+        $xml = simplexml_load_file(file::get(self::$dir."/".$filename)->native());
         $items = $xml->xpath("//Каталог/Товары/Товар");
         $count = sizeof($items);
         $from = self::from();
         $to = $from+self::$step;
         $items = $xml->xpath("//Каталог/Товары/Товар[position()>=$from and position()<=$to]");
-        
+
         foreach($items as $towar) {
             $vitem->processCatalogXML($towar,$xml);
         }
-        
+
         self::from($to);
         if($to>=$count) {
             self::from(0);
@@ -160,11 +184,11 @@ class eshop_1c_exchange extends mod_controller {
         }
     }
 
-    public static function importOffers() {
+    public static function importOffers($filename = "offers.xml") {
 
         $vitem = reflex::virtual("eshop_item");
 
-        $xml = simplexml_load_file(file::get(self::$dir."/offers.xml")->native());
+        $xml = simplexml_load_file(file::get(self::$dir."/".$filename)->native());
         $items = $xml->xpath("//Предложение");
         $count = sizeof($items);
         $from = self::from();
