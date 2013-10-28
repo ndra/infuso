@@ -126,15 +126,16 @@ class moduleManager extends mod_controller{
 	    tmp::exec("admin:footer");
 	}
 
-	public static function indexFailed() { admin::fuckoff(); }
+	public static function indexFailed() {
+        admin::fuckoff();
+    }
 
-	public static function postTest() { return mod_superadmin::check(); }
+	public static function postTest() {
+        return mod_superadmin::check();
+    }
 	
 	public static function post_build() {
-	    mod_classmap::buildClassMap();
-	    reflex_init::init();
-	    tmp_theme_init::init();
-	    mod_init_events::init();
+        mod::app()->deploy();
 	}
 
 }

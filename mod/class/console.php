@@ -75,34 +75,19 @@ class mod_console extends mod_controller{
 
 				$step = $_POST["step"];
 
-				if($step==0) {
-				    mod_classmap::buildClassMap();
-				    $next = true;
-				} else {
-
-		            $classes = mod::classes("mod_init");
-		            usort($classes,array("self","sortInitClasses"));
-		            $class = $classes[$step-1];
-
-		            if($class) {
-		            	$next = true;
-		            	call_user_func(array($class,"init"));
-					} else {
-					    $next = false;
-					}
-				}
+                $done = mod::app()->deployStep($step);
 
 	            $messages = array();
 	            foreach(mod_log::messages() as $msg) {
 	            	$messages[] = array(
-						"text"=>$msg->text(),
-						"error"=>$msg->error()
+						"text" => $msg->text(),
+						"error" => $msg->error()
 					);
 				}
 					
 	            $ret = array(
 					"messages" => $messages,
-					"next" => $next,
+					"next" => !$done,
 				);
 
 				echo json_encode($ret);
@@ -122,14 +107,14 @@ class mod_console extends mod_controller{
 						"next" => true,
 					);
 	            } else {
-	            	self::generateHtaccess();
+	            	mod::app()->generateHtaccess();
 	            }
 	            echo json_encode($ret);
 	            break;
 
 	        default:
 	        
-	            self::generateHtaccess();
+	            mod::app()->generateHtaccess();
 	            self::generatebasePack();
 	            self::header();
 				
@@ -161,14 +146,6 @@ class mod_console extends mod_controller{
 	            self::footer();
 	            break;
 	    }
-	}
-
-	public static function sortInitClasses($a,$b) {
-		$a = call_user_func(array($a,"priority"));
-		$b = call_user_func(array($b,"priority"));
-		if($a>$b) return -1;
-		if($a<$b) return 1;
-		return 0;
 	}
 
 	public static function header() {
@@ -210,53 +187,6 @@ class mod_console extends mod_controller{
 		foreach($base as $mod) {
 			mod_file::mkdir($mod);
 		}
-	}
-
-	public static function generateHtaccess() {
-	
-	    // Загружаем xml с настройками
-	    $htaccess = mod::conf("mod:htaccess");
-	    
-	    //if(is_array($htaccess)) $htaccess = implode("\n",$htaccess);
-	    $htaccess = strtr($htaccess,array('\n'=>"\n"));
-		$htaccess.="\n\n";
-
-		if(mod::conf("mod:htaccess-non-www"))
-			$htaccess.="
-RewriteCond %{HTTPS} off
-RewriteCond %{REQUEST_METHOD} !=POST
-RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
-RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
-
-RewriteCond %{HTTPS} on
-RewriteCond %{REQUEST_METHOD} !=POST
-RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
-RewriteRule ^(.*)$ https://%1/$1 [R=301,L]\n\n
-	";
-
-	    // Создаем .htaccess
-	    $str = $htaccess;
-	    $str.="RewriteEngine on \n";
-	    $str.="RewriteCond %{REQUEST_URI} !\. \n";
-	    $str.="RewriteRule .* /mod/pub/gate.php [L] \n";
-
-	    foreach(mod::all() as $mod)
-	        if($public=mod::info($mod,"mod","public")) {
-	            if(!is_array($public)) $public = array($public);
-	            foreach($public as $pub) {
-	                $pub = $mod."/".trim($pub,"/");
-	                $pub = "/".trim($pub,"/")."/";
-	                $pub = strtr($pub,array("/"=>'\/'));
-	                $str.="RewriteCond %{REQUEST_URI} !^$pub\n";
-	            }
-			}
-
-		$str.= "RewriteCond %{REQUEST_URI} !\/mod\/pub\/gate.php\n";
-		$str.= "RewriteCond %{REQUEST_URI} !^\/?[^/]*$\n";
-		$str.= "RewriteRule .* /mod/pub/gate.php [L]\n";
-		$str.= "ErrorDocument 404 /mod/pub/gate.php\n";
-
-	    mod_file::get(".htaccess")->put($str);
 	}
 
 	/**

@@ -6,20 +6,20 @@
 
 class mod_theme extends tmp_theme {
 
-public function path() {
-	return "/mod/theme/";
-}
+    public function path() {
+    	return "/mod/theme/";
+    }
 
-public function base() {
-	return "mod";
-}
+    public function base() {
+    	return "mod";
+    }
 
-public function autoload() {
-	return true;
-}
+    public function autoload() {
+    	return true;
+    }
 
-public function name() {
-	return "Стандартная тема mod";
-}
+    public function name() {
+    	return "Стандартная тема mod";
+    }
 
 }

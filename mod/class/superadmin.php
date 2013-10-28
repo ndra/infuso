@@ -2,20 +2,21 @@
 
 class mod_superadmin extends mod_controller {
 
+    private static $checked = false;
+	private static $checkResult = false;
+	private static $storedPassword = null;
+
     public static function changePassword($p) {
     
         $p1 = trim($p["p1"]);
         $p2 = trim($p["p2"]);
-        if($p1!=$p2)
+        if($p1!=$p2) {
             return;
+        }
             
         $hash = mod_crypt::hash($p1);
         mod_file::get("/mod/conf/__superadmin.txt")->put($hash);
     }
-    
-    private static $checked = false;
-	private static $checkResult = false;
-	private static $storedPassword = null;
 
     /**
      * Проверяет является ли пользователь суперадмином
