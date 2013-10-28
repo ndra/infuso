@@ -19,7 +19,7 @@ class board_controller_messages extends mod_controller {
 		
 		foreach($emails as $email) {
 
-            $date = $email->pdata("sent")->text();
+            $date = $email->pdata("sent")->date()->text();
             if($date!=$lastDate) {
 
                 $ret["data"][] = array(

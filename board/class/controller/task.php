@@ -267,61 +267,6 @@ class board_controller_task extends mod_controller {
     }
 
     /**
-     * Меняет статус задачи
-     **/
-    /*public static function post_changeTaskStatus($p) {
-
-        $task = board_task::get($p["taskID"]);
-        
-        $currentTaskStatus = $task->status();
-        
-        
-        $taskLogType = board_task_log::TYPE_TASK_STATUS_CHANGED; // по умлчанию тип таск лога у нас "Статус задачи изменен"
-
-        $status = $p["status"];
-        
-        // Параметры задачи
-        if(!user::active()->checkAccess("board/changeTaskStatus/$status",array(
-            "task" => $task,
-            "status" => $status,
-        ))) {
-            mod::msg(user::active()->errorText(),1);
-            return;
-        }
-
-        $task->data("status",$p["status"]);
-
-        $time = $p["time"];
-
-        // Текст про изменение статуса
-        $statusText = $task->status()->action();
-
-        if($p["comment"]) {
-            $statusText = $p["comment"];
-        }
-
-        $n = $task->storage()->setPath("/log/".$p["sessionHash"])->files()->count();
-        $files = $n ? $p["sessionHash"] : "";
-
-        if(!$p["status"]){
-            
-            switch($currentTaskStatus->id()){
-               
-                case board_task_status::STATUS_CHECKOUT:
-                    $taskLogType = board_task_log::TYPE_TASK_STATUS_RETURNED; //ставим статус возвращено
-                	break;
-                
-                default:
-                    $taskLogType = board_task_log::TYPE_TASK_STATUS_CHANGED;    
-                	reak;
-            }    
-        }
-        $task->logCustom($statusText,$time,$taskLogType,$files);
-
-        return true;
-    }*/
-
-    /**
      * Взять задачу
      **/
     public function post_takeTask($p) {
@@ -347,6 +292,7 @@ class board_controller_task extends mod_controller {
     public function post_stopTask($p) {
 
         $task = board_task::get($p["taskID"]);
+        $time = $p["time"];
 
         if(!user::active()->checkAccess("board/stopTask",array(
             "task" => $task,
@@ -358,6 +304,7 @@ class board_controller_task extends mod_controller {
         $task->data("status",board_task_status::STATUS_BACKLOG);
         $task->logCustom(array(
             "text" => $p["comment"],
+            "time" => $time,
             "type" => board_task_log::TYPE_TASK_STOPPED,
         ));
 
@@ -400,8 +347,9 @@ class board_controller_task extends mod_controller {
      * Помечает задачу как сделанную
      **/
     public function post_doneTask($p) {
-
+    
         $task = board_task::get($p["taskID"]);
+        $time = $p["time"];
 
         if(!user::active()->checkAccess("board/doneTask",array(
             "task" => $task,
@@ -413,6 +361,7 @@ class board_controller_task extends mod_controller {
         $task->data("status",board_task_status::STATUS_CHECKOUT);
         $task->logCustom(array(
             "text" => $p["comment"],
+            "time" => $time,
             "type" => board_task_log::TYPE_TASK_DONE,
         ));
 

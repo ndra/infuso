@@ -85,10 +85,6 @@ class board_task extends reflex {
                     'type' => 'x8g2-xkgh-jc52-tpe2-jcgb',
                     'label' => 'Пауза',
                 ),array (
-                    'name' => 'pauseTime',
-                    'type' => 'yvbj-cgin-m90o-cez7-mv2j',
-                    'label' => 'Суммарное время паузы',
-                ),array (
                     'name' => 'files',
                     'type' => 'gklv-0ijh-uh7g-7fhu-4jtg',
                     'label' => 'Количество файлов',
@@ -387,16 +383,7 @@ class board_task extends reflex {
         $b = $this->timeLog()->eq("charged",0)->isnull("end")->select("SUM(TIMESTAMPDIFF(SECOND,`begin`,now()))");
         $b = end(end($b))*1;
 
-        // Учитываем время в старом стиле
-        $date = $this->pdata("changed");
-        $d = util::now()->stamp() - $date->stamp();
-        $d -= $this->data("pauseTime");
-
-        if($this->paused()) {
-			$d-= util::now()->stamp() - $this->pdata("paused")->stamp();
-        }
-
-        return $a + $b + $d;
+        return $a + $b;
 
     }
 

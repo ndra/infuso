@@ -36,7 +36,9 @@ inx.ns("inx.mod.board").taskList = inx.list.extend({
         
         inx.hotkey("f5",[this.id(),"handleF5"]);
         
-        inx.on("board/taskChanged",[this.id(),"handleTaskChanged"]);        
+        inx.on("board/taskChanged",[this.id(),"handleTaskChanged"]);   
+        
+        setInterval(inx.cmd(this.id(),"load"),1000*60);     
         
     },
     

@@ -73,6 +73,10 @@ class board_controller_log extends mod_controller {
                 case board_task_log::TYPE_TASK_CANCELLED:
                     $action = "(Отменено) ";
                     break;
+                    
+                case board_task_log::TYPE_TASK_STOPPED:
+                    $action = "(Остановлено) ";
+                    break;
 
             }
 
@@ -82,6 +86,7 @@ class board_controller_log extends mod_controller {
                 "user" => $item->user()->nickname(),
                 "text" => $action.$item->data("text"),
                 "time" => date("H:i",$item->pdata("created")->stamp()),
+                "timeSpent" => round($item->data("timeSpent"),2),
                 "files" => $files,
             );
 

@@ -36,6 +36,12 @@ inx.ns("inx.mod.board").comments = inx.list.extend({
         
         this.on("itemclick",[this.id(),"handleItemClick"]);
         this.on("beforeload",[this.id(),"handleBeforeLoad"]);
+        inx.hotkey("f5",[this.id(),"handleF5"]);
+    },
+    
+    cmd_handleF5:function() {
+        this.cmd("load");
+        return;
     },
     
     cmd_handleBeforeLoad:function(loader) {
@@ -44,6 +50,7 @@ inx.ns("inx.mod.board").comments = inx.list.extend({
     
     renderer:function(e,data) {
     
+        // Отметка даты
         if(data.date) {
             $("<div>")
                 .html(data.date)
@@ -60,7 +67,19 @@ inx.ns("inx.mod.board").comments = inx.list.extend({
             paddingLeft:35
         })
         
-        $("<span>").html(data.time)
+        if(data.timeSpent) {
+            $("<div>").html(data.timeSpent)
+                .css({
+                    position:"absolute",
+                    right:0,
+                    top:3,
+                    fontSize:11,
+                    opacity:.5
+                })
+                .appendTo(e);
+        }
+        
+        $("<div>").html(data.time)
             .css({
                 position:"absolute",
                 left:0,

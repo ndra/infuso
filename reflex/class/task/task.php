@@ -179,14 +179,23 @@ class reflex_task extends reflex implements mod_handler {
 
     }
 
+	/**
+     * Возвращает вызываемый метод
+     **/
     public function method() {
         return $this->data("method");
     }
     
+    /**
+     * Возвращает вызываемый класс
+     **/
     public function className() {
         return $this->data("class");
     }
 
+	/**
+     * Возвращает параметры вызываемого метода
+     **/
     public function methodParams(){
         $params = $this->pdata("params");
         if(!is_array($params)) {
