@@ -114,21 +114,25 @@ class board_task_log extends reflex {
 
     public function reflex_afterCreate() {
 
-        $task = $this->task();
-        $users = array($task->responsibleUser()->id(),$task->pdata("creator")->id());
-        $users = array_unique($users);
+        if($this->data("type") == self::TYPE_COMMENT) {
 
-        // Рассылаем комментарий ответственному лицу и автору
-        foreach($users as $userID) {
-            if($userID != $this->user()->id()) {
-                $user = user::get($userID);
-                $taskText = util::str($this->text())->ellipsis(100);
-                $url = $this->url();
-                $text = $this->text();
-                $user->mailer()
-                    ->subject("Пользователь {$this->user()->title()} прокомментировал задачу <a href='{$url}' >«{$taskText}»</a>: {$text}")
-        			->send();
+            $task = $this->task();
+            $users = array($task->responsibleUser()->id(),$task->pdata("creator")->id());
+            $users = array_unique($users);
+
+            // Рассылаем комментарий ответственному лицу и автору
+            foreach($users as $userID) {
+                if($userID != $this->user()->id()) {
+                    $user = user::get($userID);
+                    $taskText = util::str($this->text())->ellipsis(100);
+                    $url = $this->url();
+                    $text = $this->text();
+                    $user->mailer()
+                        ->subject("Пользователь {$this->user()->title()} прокомментировал задачу <a href='{$url}' >«{$taskText}»</a>: {$text}")
+            			->send();
+                }
             }
+
         }
 
     }
