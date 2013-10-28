@@ -158,10 +158,17 @@ class reflex_storage extends mod_controller {
 	 **/
 	public function add($src,$name) {
 	    $name = self::normalizeName($name);
-	    if(!$this->exists()) return;
+	    if(!$this->exists()) {
+			return;
+		}
 	    $this->prepareFolder();
 	    $path = $this->path()."";
 	    $dest = $path.$name;
+	    
+	    if(file::get($src)->path() == "/") {
+        	throw new Exception("reflex_storage::add() first argument cannot be void");
+	    }
+	    
 	    file::get($src)->copy($dest);
 	    $this->reflex()->reflex_afterStorage();
 	    return file::get($dest)->path();
