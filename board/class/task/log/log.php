@@ -156,10 +156,17 @@ class board_task_log extends reflex {
     }
 
     /**
-     * Возвращает список файлов, прикрепелнных к логу
+     * Возвращает список файлов, прикрепелнных к записи лога
+     * (не путать с файлами задачи)
      **/
     public function files() {
-        return $this->task()->storage()->setPath("/log/".$this->data("files"))->files();
+
+        if($this->data("files")) {
+            return $this->task()->storage()->setPath("/log/".$this->data("files"))->files();
+        } else {
+            return array();
+        }
+
     }
 
 }

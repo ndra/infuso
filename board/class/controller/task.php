@@ -363,6 +363,7 @@ class board_controller_task extends mod_controller {
             "text" => $p["comment"],
             "time" => $time,
             "type" => board_task_log::TYPE_TASK_DONE,
+            "files" => $p["files"],
         ));
 
         return true;
