@@ -23,7 +23,7 @@ inx.ns("inx.mod.board").attachments = inx.list.extend({
             dropArea:p.dropArea,
             loader:{
                 cmd:"board/controller/attachment/uploadFile",
-                sessionHash:p.sessionHash || null,
+                "sessionHash":p.sessionHash || null,
                 taskID:p.taskID,
             }, oncomplete:function() {
                 this.owner().cmd("load");
