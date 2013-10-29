@@ -5,7 +5,18 @@ inx.service.register("reflex",new function() {
     var caller = inx({
         type:"inx.observable"
     });
-
+    
+    this.registerViewport = function(viewport){
+        this.viewport = viewport;  
+    }
+    
+    this.getSelectedItems = function() {
+        var list = inx(this.viewport).allItems().eq("type", "inx.mod.reflex.editor.list.items");
+        var selectedItems = list.info("selection");
+        
+        return selectedItems;    
+    }
+    
     this.action = function(action,e) {
     
         var action = (action).split("/");
@@ -15,7 +26,12 @@ inx.service.register("reflex",new function() {
             case "refresh":
                 inx.fire("reflex/refresh");
                 break;
-
+            
+            case "selectAll":
+                inx.fire("reflex/selectAll");
+                break;
+           
+           
             case "cmd":
 
                 var cmd = action[1];

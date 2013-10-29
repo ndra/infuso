@@ -37,6 +37,7 @@ inx.ns("inx.mod.reflex").editor = inx.viewport.extend({
         this.on("editItem",[this.id(),"editItem"]);
         inx.direct.bind(this.id(),"onDirect");
         
+        inx.service("reflex").registerViewport(this);
     },     
     
     cmd_handleSelectItem:function(id) {

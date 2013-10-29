@@ -10,6 +10,16 @@ inx.mod.reflex.editor.list.items = inx.list.extend({
         p.style.valign = "top";
         
         this.base(p);
-    }
+        
+        inx.on("reflex/selectAll", [this.id(),"reflexSelectAll"]);
+    },
+    
+    cmd_reflexSelectAll:function() {
+        if(!this.info("visibleRecursive")) {
+            return false;
+        }
+
+        this.cmd("selectAll");
+    },
     
 });
