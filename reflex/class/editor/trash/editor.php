@@ -5,8 +5,8 @@ class reflex_editor_trash_editor extends reflex_editor {
 	// Восстанавливает объект
 	public function action_restore() {
 		if(!$this->item()->exists()) return;
-		$data = @unserialize($this->item()->data("data"));
-		$meta = @unserialize($this->item()->data("meta"));
+		$data = json_decode($this->item()->data("data"), 1);
+        $meta = json_decode($this->item()->data("meta"), 1);
 		$item = reflex::create($this->item()->data("class"),$data);
 		if($item->exists()) {
 		    $this->item()->delete();

@@ -516,8 +516,8 @@ class reflex_editor_controller extends mod_controller {
                 if(get_class($item)!="reflex_editor_trash") {
                     $trash = reflex::create("reflex_editor_trash",array(
                         "title" => $item->title(),
-                        "data" => serialize($item->data()),
-                        "meta" => serialize($item->metaObject()->data()),
+                        "data" => json_encode($item->data()),
+                        "meta" => json_encode($item->metaObject()->data()),
                         "img" => $item->editor()->img(),
                         "class" => get_class($item),
                     ));
