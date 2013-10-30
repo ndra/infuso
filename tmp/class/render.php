@@ -9,8 +9,9 @@ class tmp_render {
 	private static $renderID = null;
 	
 	private static function lesscssInstance() {
-		if(!self::$less)
+		if(!self::$less) {
 			self::$less = new tmp_lesscss();
+		}
 		return self::$less;
 	}
 	

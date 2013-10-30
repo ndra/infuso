@@ -5,7 +5,6 @@ class mod_app {
 	private $post;
 	private $get;
 	private $files;
-	
 	private static $current;
 	
 	public function current() {
@@ -98,7 +97,9 @@ class mod_app {
 
 		    try {
 
-		        tmp::destroyConveyors();
+				//if(class_exists("tmp")) {
+		        //	tmp::destroyConveyors();
+		       // }
 
 		        $action = mod::action("mod_cmd","exception")
 		            ->param("exception",$exception)

@@ -40,28 +40,33 @@ class tmp_theme_init extends mod_init {
 		}
 
 		// Собираем темы-классы
-		foreach(mod::classes("tmp_theme") as $class)
-		    if($class!="tmp_theme_oldskul")
+		foreach(mod::classes("tmp_theme") as $class) {
+		    if($class!="tmp_theme_oldskul") {
 		        $themes[] = new $class();
+			}
+		}
 
 		$autoload = array();
 
 		foreach($themes as $theme) {
 		    $theme->buildMap();
-		    if($theme->autoload())
+		    if($theme->autoload()) {
 		        $autoload[] = $theme;
+			}
 		}
 
 		usort($autoload,array("self","sortThemes"));
 
-		foreach($autoload as $key=>$val)
+		foreach($autoload as $key=>$val) {
 		    $autoload[$key] = $val->id();
+		}
 
 		util::save_for_inclusion(tmp_theme::mapFolder()."/"."_autoload.php",$autoload);
 
 		$all = array();
-		foreach($themes as $theme)
+		foreach($themes as $theme) {
 		    $all[] = $theme->id();
+		}
 		util::save_for_inclusion(tmp_theme::mapFolder()."/"."_themes.php",$all);
 
 	}
