@@ -45,7 +45,8 @@ abstract class mod_model extends mod_controller {
 
         $class = get_class($this);
 
-        if(!self::$modelFields[$class]) {
+        if(!array_key_exists($class, self::$modelFields)) {
+            self::$modelFields[$class] = array();
             foreach($this->modelFields() as $field) {
                 self::$modelFields[$class][$field->name()] = $field;
             }

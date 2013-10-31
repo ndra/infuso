@@ -16,7 +16,7 @@ class util_date extends mod_component {
         return self::get(@date("Y-m-d H:i:s"));
     }
 
-    public static function get($y=null,$m=1,$d=1,$h=0,$min=0,$s=0) {
+    public static function get($y,$m=1,$d=1,$h=0,$min=0,$s=0) {
         switch(func_num_args()) {
             case 1:
                 return new self(func_get_arg(0));
@@ -35,16 +35,29 @@ class util_date extends mod_component {
     /**
      * Конструктор
      **/
-    private function __construct($time) {
+    private function __construct($time,$m=1,$d=1,$h=0,$min=0,$s=0) {
+    
+        switch(func_num_args()) {
+            case 1:
+		        // Числа интерпретируются как timestamp
+		        if(intval($time).""==$time) {
+		            $this->time = intval($time);
 
-        // Числа интерпретируются как timestamp
-        if(intval($time).""==$time) {
-            $this->time = intval($time);
-
-        // В противном случае попробуем распарсить строку
-        } else {
-            $this->time = @strtotime($time);
+		        // В противном случае попробуем распарсить строку
+		        } else {
+		            $this->time = @strtotime($time);
+		        }
+                break;
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+                $this->time = mktime($h,$min,$s,$m,$d,$time);
+                break;
         }
+
+
     }
 
     /**
@@ -232,8 +245,15 @@ class util_date extends mod_component {
     /**
     * Возвращает день
     **/
-    public function day() {
-        return @date("j",$this->stamp());
+    public function day($day = null) {
+    
+        if(func_num_args() == 0 ) {
+        	return @date("j",$this->stamp());
+		}
+		
+		if(func_num_args() == 1 ) {
+        	return new self($this->year(),$this->month(),$day,$this->hours(),$this->minutes(),$this->seconds());
+		}
     }
 
     /**
