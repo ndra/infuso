@@ -81,12 +81,13 @@ class board_task_log extends reflex {
         return reflex::get(get_class())->desc("created");
     }
 
+    /**
+     * Возвращает коллекцию записей в логе, видимых для активного пользователя
+     **/
     public static function visible() {
-
         $visibleTasks = board_task::visible();
         $log = self::all()->joinByField("taskID",$visibleTasks);
         return $log;
-
     }
 
     /**
@@ -132,9 +133,7 @@ class board_task_log extends reflex {
             			->send();
                 }
             }
-
         }
-
     }
 
     public function reflex_afterStore() {
