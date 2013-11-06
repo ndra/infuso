@@ -144,7 +144,7 @@ ndra.carousel.instance = function(e,p) {
     
         current = n;
         var visible = that.visible();
-        if(p.cycle) {
+        if(!p.cycle) {
             if(current+visible>total) current = total-visible;
             if(current<0) current = 0;
         }else{
