@@ -80,7 +80,7 @@ abstract class mod_field extends mod_component {
         $this->model = $model;
         return $this;
     }
-    
+
     /**
      * Возвращает модель, с которой связано это поле
      **/

@@ -7,16 +7,27 @@ class util_array extends mod_component implements iterator {
 
     private $data = array();
 
-    // Итераторская шняга
-    protected $items = array();
-    public function rewind() { reset($this->data); }
+    public function rewind() {
+		reset($this->data);
+	}
+    
     public function current() {
-        $ret = current($this->data);
-        return new self ($ret);
+		$key = $this->key();
+        $ret = &$this->data[$key];
+        return new self (&$ret);
     }
-    public function key() { return key($this->data); }
-    public function next() { return next($this->data); }
-    public function valid() { return current($this->data) !== false; }
+    
+    public function key() {
+		return key($this->data);
+	}
+    
+    public function next() {
+		return next($this->data);
+	}
+    
+    public function valid() {
+		return current($this->data) !== false;
+	}
 
     public function __construct(&$data) {
         $this->data = &self::toNativeArray($data);
