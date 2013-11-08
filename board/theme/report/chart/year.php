@@ -12,7 +12,9 @@ $tasks = board_task::all()
 $data = array();
 
 for($i=0;$i<12;$i++) {
+
     $date = util::now()
+        ->day(1)
         ->shiftMonth(-$i);
         
     $log2 = $log->copy()

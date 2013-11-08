@@ -9,7 +9,8 @@ inx.ns("inx.mod.board.report").time = inx.panel.extend({
         p.style = {
             border:0,
             background:"none",
-            spacing:4
+            spacing:4,
+            width:250
         }
     
         p.items = [{
@@ -24,7 +25,7 @@ inx.ns("inx.mod.board.report").time = inx.panel.extend({
             onclick:function() {
                 this.bubble("submit");
             }
-        }]
+        }];
     
         this.base(p);        
     }

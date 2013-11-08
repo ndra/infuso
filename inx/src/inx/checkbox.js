@@ -2,11 +2,24 @@ inx.checkbox = inx.box.extend({
 
     constructor:function(p) {
     
-        p.style = {
-            border:0,
-            background:"none",
-            width:"content",
-            height:18
+        if(!p.style) {
+            p.style = {}
+        }
+        
+        if(!p.border) {
+            p.border = 0;
+        }
+        
+        if(!p.background) {
+            p.background = "none";
+        }
+        
+        if(!p.height) {
+            p.height = 18;
+        }
+        
+        if(!p.width) {
+            p.width = "content";
         }
 
         this.private_label = p.label;

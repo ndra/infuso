@@ -8,8 +8,7 @@ inx.mod.board.main.informer = inx.panel.extend({
         p.style = {
             padding:15,
             spacing:10,
-            vscroll:true,
-            background:"#ededed"
+            vscroll:true
         }
    
         p.items = [{

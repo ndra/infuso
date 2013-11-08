@@ -16,7 +16,8 @@ class google_chart_test extends mod_controller {
 	    $chart->col("день","string");
 	    $chart->col("Посещения");
 	    $chart->col("Просмотры");
-	    for($i=0;$i<10;$i++) {
+	    $chart->width(500);
+	    for($i=0;$i<100;$i++) {
 	        $chart->row($i."",rand(),rand());
 		}
 
