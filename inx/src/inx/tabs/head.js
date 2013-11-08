@@ -21,8 +21,6 @@ inx.tabs.head = inx.panel.extend({
 
     cmd_update:function(items,selected) {
     
-        console.log(items);
-    
         if(!this.__body) {
             return;    
         }

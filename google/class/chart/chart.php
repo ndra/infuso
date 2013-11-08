@@ -5,6 +5,12 @@
  **/ 
 class google_chart extends mod_component {
 
+    private $cols = array();
+    
+	private $data = array();
+	
+	private static $id = 1;
+
 	private $conf = array(
 	    "width" => 300,
 	    "height" => 150,
@@ -13,6 +19,13 @@ class google_chart extends mod_component {
 	private $type = "LineChart";
 
 	private $firstColumnString = true;
+	
+	/**
+	 * Конструктор
+	 **/
+	public static function create() {
+	    return new self();
+	}
 
 	public function lineChart() {
 	    $this->type = "LineChart";
@@ -36,15 +49,6 @@ class google_chart extends mod_component {
 	}
 
 	/**
-	 * Конструктор
-	 **/
-	public static function create() {
-	    return new self();
-	}
-
-	private $cols = array();
-
-	/**
 	 * Добавляет колонку
 	 **/
 	public function col($title,$type="number") {
@@ -53,7 +57,6 @@ class google_chart extends mod_component {
 	    return $col;
 	}
 
-	private $data = array();
 	/**
 	 * Добавляет строку к массиву данных
 	 **/
@@ -113,8 +116,6 @@ class google_chart extends mod_component {
 	public function scriptChartType() {
 	    return $this->type;
 	}
-
-	private static $id = 1;
 
 	/**
 	 * Выполняет диаграмму

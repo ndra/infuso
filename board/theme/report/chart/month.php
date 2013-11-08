@@ -11,7 +11,7 @@ $tasks = board_task::all()
     
 $data = array();
 
-for($i=0;$i<50;$i++) {
+for($i=0;$i<10;$i++) {
 
     $date = util::now()
         ->shiftDay(-$i);
@@ -27,9 +27,9 @@ for($i=0;$i<50;$i++) {
     $row[] = $log2->sum("timeSpent");
     $row[] = $tasks2->sum("timeScheduled");
     
-    foreach(board_task_tag_description::all() as $tag) {
+    /*foreach(board_task_tag_description::all() as $tag) {
         $row[] = $tasks2->copy()->useTag($tag->id())->sum("timeScheduled");
-    }
+    } */
     
     $data[] = $row;
         
@@ -43,9 +43,9 @@ $chart->col("Месяц","string");
 $chart->col("Потрачено");
 $chart->col("Планировалось");
 
-foreach(board_task_tag_description::all() as $tag) {
+/*foreach(board_task_tag_description::all() as $tag) {
     $chart->col($tag->title());
-}
+} */
 
 foreach(array_reverse($data) as $row) {
     $chart->row($row);
