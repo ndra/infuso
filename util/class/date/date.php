@@ -8,7 +8,7 @@ class util_date extends mod_component {
 
     private $notime = null;
     private $noyear = null;
-
+    
     /**
      * Возвращает текущую дату
      **/
@@ -65,6 +65,10 @@ class util_date extends mod_component {
      */
     public function __toString() {
         return $this->standart();
+    }
+    
+    public function copy() {
+        return clone $this;
     }
 
     /**
@@ -252,8 +256,43 @@ class util_date extends mod_component {
 		}
 		
 		if(func_num_args() == 1 ) {
-        	return new self($this->year(),$this->month(),$day,$this->hours(),$this->minutes(),$this->seconds());
+        	$date = new self($this->year(),$this->month(),$day,$this->hours(),$this->minutes(),$this->seconds());
+        	$this->time = $date->stamp();
+        	return $this;
 		}
+    }
+    
+    /**
+     * Возвращает номер коммерческого дня недели
+     * 1 - Понедельник
+     * 2 - Вторник
+     * ...
+     * 7 - Воскресенье
+     **/
+    public function commercialWeekDay($day = null) {
+    
+        if(func_num_args() == 0 ) {
+        
+			$map = array(
+				0 => 7,
+				1 => 1,
+				2 => 2,
+				3 => 3,
+				4 => 3,
+				5 => 5,
+				6 => 6,
+			);
+        
+        	return $map[date("w",$this->stamp())];
+        }
+        
+		if(func_num_args() == 1 ) {
+			$wday = $this->commercialWeekDay();
+			$this->shiftDay( 1 - $wday );
+			$this->shiftDay( $day - 1 );
+			return $this;
+		}
+        
     }
 
     /**

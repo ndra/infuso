@@ -113,7 +113,8 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
             case "report-chart":
                 this.tabs.cmd("add",{
                     type:"inx.mod.board.report.chart",
-                    name:"report-gallery"
+                    name:"report-gallery",
+                    projectID:params.params.id
                 }).cmd("setParams",params.params);
                 break;
                 

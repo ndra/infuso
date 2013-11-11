@@ -11,10 +11,12 @@ class google_chart extends mod_component {
 	
 	private static $id = 1;
 
-	private $conf = array(
-	    "width" => 300,
-	    "height" => 150,
-	);
+	public function initialParams() {
+	    return array(
+		    "width" => 300,
+		    "height" => 150,
+		);
+	}
 
 	private $type = "LineChart";
 
@@ -90,7 +92,7 @@ class google_chart extends mod_component {
 	 * Задает ширину диаграммы
 	 **/
 	public function width($w) {
-	    $this->conf["width"] = $w;
+	    $this->param("width", $w);
 	    return $this;
 	}
 
@@ -98,7 +100,7 @@ class google_chart extends mod_component {
 	 * Задает высоту диаграммы
 	 **/
 	public function height($h) {
-	    $this->conf["height"] = $h;
+	    $this->param("height", $h);
 	    return $this;
 	}
 
@@ -106,8 +108,8 @@ class google_chart extends mod_component {
 	 * Задает заголовок диаграммы
 	 **/
 	public function title($t) {
-	    $this->conf["title"] = $t;
-	        return $this;
+	    $this->param("title", $t);
+	    return $this;
 	}
 
 	/**
@@ -121,6 +123,7 @@ class google_chart extends mod_component {
 	 * Выполняет диаграмму
 	 **/
 	public function exec() {
+	
 	    tmp::js("https://www.google.com/jsapi");
 	    $script = "";
 
@@ -138,7 +141,7 @@ class google_chart extends mod_component {
 	    $script.= "data.addRows(".json_encode($this->data).");";
 
 	    $script.= "var chart = new google.visualization.{$this->scriptChartType()}(document.getElementById('$id'));";
-	    $script.= "chart.draw(data,".json_encode($this->conf).");";
+	    $script.= "chart.draw(data,".json_encode($this->params()).");";
 	    $script.= "});";
 	    $script.= "</script>";
 	    tmp::head($script);
