@@ -8,6 +8,8 @@
  **/
 class reflex_content_defaultProcessor extends reflex_content_processor {
 
+    private static $tags = array();
+
 	public function defaultService() {
 	    return "contentProcessor";
 	}
@@ -25,16 +27,16 @@ class reflex_content_defaultProcessor extends reflex_content_processor {
         //Разбираем виджеты
         $html = self::processorWidget($html);
 
-        if($this->param("newlineToParagraph"))
+        if($this->param("newlineToParagraph")) {
             $html = self::newlineToParagraph($html);
+		}
 
-        if($tmp = $this->param("useTemplate"))
+        if($tmp = $this->param("useTemplate")) {
             $html = tmp::get($tmp)->param("content",$html)->rexec();
+		}
 
         return $html;
     }
-
-    private static $tags = array();
 
     public static function replaceTag($x) {
         $id = util::id();
@@ -78,7 +80,6 @@ class reflex_content_defaultProcessor extends reflex_content_processor {
         $html = strtr($html,self::$tags);
 
         return $html;
-
     }
 
     /**
