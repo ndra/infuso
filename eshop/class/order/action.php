@@ -25,7 +25,7 @@
             return;
         }
         $quantity = 1;
-        if($p["quantity"){
+        if($p["quantity"]){
             $quantity = $p["quantity"];
         }
         $order->addItem($p["itemID"], $quantity, $p["itemSku"]);
