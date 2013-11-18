@@ -24,7 +24,11 @@
             mod::msg("You can't change items in this order",1);
             return;
         }
-        $order->addItem($p["itemID"], 1, $p["itemSku"]);
+        $quantity = 1;
+        if($p["quantity"){
+            $quantity = $p["quantity"];
+        }
+        $order->addItem($p["itemID"], $quantity, $p["itemSku"]);
     }
     
     /**
