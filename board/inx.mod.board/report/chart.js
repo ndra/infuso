@@ -49,19 +49,15 @@ inx.ns("inx.mod.board.report").chart = inx.panel.extend({
             }
         });
         
-        p.items = [this.iframe, {
+        p.items = [this.iframe];
+        
+        /*p.items = [this.iframe, {
             type:"inx.mod.board.report.chart.conf"
-        }]
+        }] */
     
         this.base(p);
-        setInterval(inx.cmd(this.id(),"requestData"),1000);
     },
-    
-    cmd_requestData:function() {
-        var tbarData = inx(this).axis("tbar").info("data");
-        console.log(tbarData);
-    },
-    
+   
     cmd_setParams:function(params) {
     
         var src = {};
@@ -90,7 +86,7 @@ inx.ns("inx.mod.board.report").chart = inx.panel.extend({
         field.cmd("setValue",params.group);
         src.group = params.group;
         
-        src.projectID = this.projectID;
+        src.projectID = params.id;
         
         var ret = "/board_controller_report/projectChart";
         for(var i in src) {

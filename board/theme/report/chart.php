@@ -1,15 +1,16 @@
 <? 
 
+$project = board_project::get($params["projectID"]);
+$group = $params["group"];
+$current = util::date($params["from"])->date();
+$to = util::date($params["to"])->date();
+
 tmp::header();
 
 <div class='dcyy6ydrbx' >
 
-    $project = board_project::get($params["projectID"]);
-    <h1>Отчет по проекту «{$project->title()}»</h1>
-    
-    $group = $params["group"];
-    $current = util::date($params["from"])->date();
-    $to = util::date($params["to"])->date();
+    $d = ($to->stamp() - $current->stamp()) / 3600 / 24;
+    <h1>Отчет по проекту «{$project->title()}» {$current->num()} — {$to->num()} ({$d} д.)</h1>
     
     switch($group) {
         case "month":
@@ -25,6 +26,10 @@ tmp::header();
     }
     
     $time = board_task_time::all()
+        ->joinByField("taskID")
+        ->eq("board_task.projectID",$params["projectID"]);
+        
+    $log = board_task_log::all()
         ->joinByField("taskID")
         ->eq("board_task.projectID",$params["projectID"]);
         
@@ -66,17 +71,27 @@ tmp::header();
                 break;
         }
         
-        foreach($users as $userID) {
-            
+        foreach($users as $userID) {            
             $segmentTime = $time->copy()
                 ->eq("userID",$userID)
                 ->geq("date(begin)",$current)
                 ->lt("date(begin)",$next)
-                ->select("sum(unix_timestamp(`end`) - unix_timestamp(`begin`))");
+                ->where("unix_timestamp(`end`) - unix_timestamp(`begin`) < 3600 * 24 * 3")
+                ->select("sum(unix_timestamp(`end`) - unix_timestamp(`begin`)) as `time`");
                 
             $segmentTime = end(end($segmentTime)) /3600;
-            $row[] = $segmentTime;
+            $row[] = $segmentTime;        
+        }
         
+        foreach($users as $userID) {            
+            $timeSpent = $log->copy()
+                ->eq("userID",$userID)
+                ->geq("date(created)",$current)
+                ->lt("date(created)",$next)
+                ->select("sum(board_task_log.timeSpent)");
+                
+            $segmentTime = end(end($timeSpent)) * 1;
+            $row[] = $segmentTime;        
         }
     
         $data[] = $row;
@@ -107,6 +122,10 @@ tmp::header();
     foreach($users as $userID) {
         $chart->col(user::get($userID)->title());
     }
+    
+    foreach($users as $userID) {
+        $chart->col("*".user::get($userID)->title());
+    }    
     
     foreach($data as $row) {
         $chart->row($row);

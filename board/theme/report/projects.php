@@ -19,6 +19,7 @@ tmp::reset();
         ->limit(0)
         ->geq("date(created)",$from)
         ->leq("date(created)",$to)
+        ->having("`spent` > 0")
         ->select("sum(`board_task_log`.`timeSpent`) as `spent`, `projectID` ");
     
     <table class='x8367pvuga0' >
@@ -62,7 +63,7 @@ tmp::reset();
                         </a>
                     </td>
                     <td>
-                        <a href='/board/#report-chart/id/{$project->id()}' target='_top' >за год</a>
+                        <a href='/board/#report-chart/id/{$project->id()}' target='_top' ><img src='/board/res/img/icons16/chart.png' /></a>
                     </td>
                     <td>
                         echo round($row["spent"],2);

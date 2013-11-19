@@ -385,8 +385,9 @@ class tmp implements mod_handler {
     public function theme($id) {
         tmp_theme::loadDefaults();
         $theme = tmp_theme::get($id);
-        foreach($theme->templatesArray() as $key=>$tmp)
+        foreach($theme->templatesArray() as $key=>$tmp) {
             self::$templateMap[$key] = $tmp;
+		}
     }
 
     public function filePath($template,$ext) {

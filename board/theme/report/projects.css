@@ -7,5 +7,13 @@
     tr:nth-child(2n) td {
         background:#ededed;
     }
+    
+    a {
+        color:black;
+        text-decoration:none;
+        &:hover {
+            text-decoration:underline;
+        }
+    }
 
 }

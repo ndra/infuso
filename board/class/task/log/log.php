@@ -125,11 +125,11 @@ class board_task_log extends reflex {
             foreach($users as $userID) {
                 if($userID != $this->user()->id()) {
                     $user = user::get($userID);
-                    $taskText = util::str($this->text())->ellipsis(100);
-                    $url = $this->url();
-                    $text = $this->text();
+                    $taskText = util::str($this->task()->text())->ellipsis(100);
+                    $taskURL = $this->task()->url();
+                    $comment = $this->text();
                     $user->mailer()
-                        ->subject("Пользователь {$this->user()->title()} прокомментировал задачу <a href='{$url}' >«{$taskText}»</a>: {$text}")
+                        ->subject("Пользователь {$this->user()->title()} прокомментировал задачу <a href='{$taskURL}' >«{$taskText}»</a>: {$comment}")
             			->send();
                 }
             }
