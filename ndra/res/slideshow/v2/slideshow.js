@@ -381,7 +381,7 @@ ndra.slideshow = new function() {
             params = {};
 
         var items = $(selector);
-        items.click(function(e) {
+        $(document).on("click", selector, function(e) {
             var href = $(this).attr("href");
             e.preventDefault();
             if(!params.loader) {

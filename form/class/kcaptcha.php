@@ -29,7 +29,11 @@ class form_kcaptcha extends mod_controller{
             $allowed_symbols = "23456789abcdegikpqsvxyz"; }
         
         
-        $length = mt_rand(5,7);
+        if (mod::conf("form:symbolLength") != "") {
+            $length = mod::conf("form:symbolLength"); }
+        else {    
+            $length = mt_rand(5,7);
+        }
         
         if (mod::conf("form:white_noise_density") != "") {
             $white_noise_density = 1 / mod::conf("form:white_noise_density"); }

@@ -21,6 +21,9 @@ class form_conf extends mod_conf {
                 "id" => "form:fluctuation_amplitude",
                 "title" => "Амплитуда колебания символов капчи по вертикали (default=8)",
             ),array(
+                "id" => "form:symbolLength",
+                "title" => "Количество символов в капче (default=5-7)",
+            ),array(
                 "id" => "form:rand9",
                 "title" => "Нижний порог амплитуды колебания символов капчи по горизонтали (default=330)",
             ),array(
