@@ -96,6 +96,7 @@ ndra.menu = function(menu,submenu,p) {
     }
 
     $(menu).mouseenter(function() {
+        hide();
         var id = $(this).attr("menu:id");
 		show(id);
     })
