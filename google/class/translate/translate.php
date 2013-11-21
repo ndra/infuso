@@ -19,8 +19,9 @@ class google_translate extends mod_service {
 
     public function translate($original,$source,$target) {
         mod_profiler::beginOperation("google","translate",$original);
-        $this->realTranslate($original,$source,$target);
+        $ret = $this->realTranslate($original,$source,$target);
         mod_profiler::endOperation();
+        return $ret;
     }
 
     /**
