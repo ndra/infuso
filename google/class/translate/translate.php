@@ -17,10 +17,16 @@ class google_translate extends mod_service {
 
     private static $instance = null;
 
+    public function translate($original,$source,$target) {
+        mod_profiler::beginOperation("google","translate",$original);
+        $this->realTranslate($original,$source,$target);
+        mod_profiler::endOperation();
+    }
+
     /**
      * Возвращает перевод текста
      **/
-    public function translate($original,$source,$target) {
+    public function realTranslate($original,$source,$target) {
 
         if($this->param("bypass")) {
             return $original;
