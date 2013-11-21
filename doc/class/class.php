@@ -1,19 +1,37 @@
 <?
 
-class doc_class extends mod_controller {
+class doc_class extends mod_component {
 
 	private $className = null;
-
-	public function get($class) {
-		return new self($class);
-	}
 
 	public function __construct($class=null) {
 		$this->className = $class;
 	}
-
-	public function url() {
-		return mod_action::get("doc","class",array("class"=>$this->className))->url();
+	
+	/**
+	 * генерирует документацию класса
+	 **/
+	public function getDoc() {
+	
+	    $tmp = tmp::get("/doc/class", array(
+	        "class" => $this->className,
+		));
+	
+        tmp::pushConveyor();
+        ob_start();
+        $tmp->exec();
+        $html = ob_get_clean();
+        $conveyor = tmp::popConveyor();
+        
+        $content = array(
+			"conveyor" => $conveyor->serialize(),
+			"html" => $html,
+		);
+	
+	    return array(
+	        "content" => $content,
+		);
+	
 	}
 
 }

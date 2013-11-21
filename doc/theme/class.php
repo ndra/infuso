@@ -2,19 +2,21 @@
 
 tmp::Jq();
 
-$r = new reflectionClass($p1);
+$r = new reflectionClass($class);
 
-echo "<div class='control-panel-pjy7g7ij34'><a href='#' class='show-inherited'>Показать наследованные методы</a></div>";
+<div class='control-panel-pjy7g7ij34'>
+    <a href='#' class='show-inherited'>Показать наследованные методы</a>
+</div>
 
-echo "<div style='padding:0px 0px 70px 0px;' >";
-echo "<h1>Класс ".$r->getName()."</h1>";
-tmp::exec("block",$r->getDocComment());
-echo "</div>";
+<div style='padding:0px 0px 70px 0px;' >
+    <h1>Класс {$r->getName()}</h1>
+    tmp::exec("block", $r->getDocComment());
+</div>
 
 
 foreach($r->getMethods() as $method) {
     
-    //Наследованные методы
+    // Наследованные методы
     $inherited = false;
     if ($method->getDeclaringClass()->getName() != $r->getName()) {
         $inherited = true;
@@ -29,12 +31,7 @@ foreach($r->getMethods() as $method) {
     
     echo "</h2>";
     
-    
-    
     echo tmp::get("block")->param("p1", $method->getDocComment())->rexec();    
     echo "</div>";
     
 }
-
-
-?>

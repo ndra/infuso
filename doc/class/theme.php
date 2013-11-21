@@ -6,20 +6,20 @@
 
 class doc_theme extends tmp_theme {
 
-public function path() {
-	return "/doc/theme/";
-}
+	public function path() {
+		return "/doc/theme/";
+	}
 
-public function base() {
-	return "doc";
-}
+	public function base() {
+		return "doc";
+	}
 
-public function autoload() {
-	return true;
-}
+	public function autoload() {
+		return true;
+	}
 
-public function name() {
-	return "Стандартная тема doc";
-}
+	public function name() {
+		return "Стандартная тема doc";
+	}
 
 }

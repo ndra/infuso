@@ -17,9 +17,7 @@ class doc extends mod_controller {
 	 *  онтроллер главной страницы документации
 	 **/
 	public static function index() {
-	
 		tmp::add("center","doc:todo");
-	
 		tmp::add("left","doc:menu");
 		tmp::exec("doc:layout");
 	}
@@ -41,11 +39,5 @@ class doc extends mod_controller {
 		tmp::add("left","doc:menu");
 		tmp::exec("doc:layout");
 	}
-	
-	
-	
-	
-	
-
 	
 }
