@@ -26,7 +26,12 @@ class file_preview extends mod_component {
      * Высота картинки на текущий момент
      **/
     private $height = 0;
-
+    
+    /**
+     * Коммпресия jpeg в %
+     **/
+    private $jpegCompression = 100;
+    
     /**
      * Стэк операций
      **/
@@ -56,7 +61,7 @@ class file_preview extends mod_component {
             "maxWidth" => 2000, // Максимальная ширина превьюшки
             "maxHeight" => 2000, // Максимальная высота превьюшки
             "background" => mod::conf("file:preview-background"), // Цвет фона
-
+            "jpegCompression" => 100
         );
     }
 
@@ -70,6 +75,10 @@ class file_preview extends mod_component {
 
     private function getHeight() {
         return min($this->param("maxHeight"),$this->height);
+    }
+    
+    private function getJpegCompression() {
+        return min($this->param("jpegCompression"),$this->jpegCompression);
     }
 
     /**
@@ -189,17 +198,17 @@ class file_preview extends mod_component {
     }
 
     public function save($dest) {
-
+        
         if($this->isError()) {
             switch($this->getError()) {
                 case self::ERROR_TOO_LARGE:
-		            $error = file::get("/file/noimage/error.png")->preview($this->getWidth(),$this->getHeight());
-		            $error->render()->save($dest);
-		            return;
+                    $error = file::get("/file/noimage/error.png")->preview($this->getWidth(),$this->getHeight());
+                    $error->render()->save($dest);
+                    return;
                 default:
-		            $error = file::get("/file/noimage/noimage.png")->preview($this->getWidth(),$this->getHeight());
-		            $error->render()->save($dest);
-		            return;
+                    $error = file::get("/file/noimage/noimage.png")->preview($this->getWidth(),$this->getHeight());
+                    $error->render()->save($dest);
+                    return;
             }
         }
 
@@ -221,7 +230,7 @@ class file_preview extends mod_component {
             $color = imagecolorallocate($img,$bgcolor["red"],$bgcolor["green"],$bgcolor["blue"]);
             imagefill($img,0,0,$color);
             imagecopy($img,$this->img(),0,0,0,0,$width,$height);
-            imagejpeg($img,file::get($dest)->native(),100);
+            imagejpeg($img,file::get($dest)->native(),$this->getJpegCompression());
         }
     }
 
@@ -246,7 +255,7 @@ class file_preview extends mod_component {
      **/
     public function get() {
     
-		mod_profiler::beginOperation("file","preview",$this->src);
+        mod_profiler::beginOperation("file","preview",$this->src);
 
         $dest = $this->destFilename();
 
@@ -360,8 +369,8 @@ class file_preview extends mod_component {
         }
         return $rgbArray;
     }
-	
-	public function valign($valign) {
+    
+    public function valign($valign) {
         $available = array("top","middle","bottom");
         if(!in_array($valign,$available)){
             throw new Exception("Undefined vertical-align type");   
@@ -369,7 +378,7 @@ class file_preview extends mod_component {
         $this->setResizeParam("valign", $valign);
         return $this;
     }
-	
+    
     private function setResizeParam($key,$val) {
         $this->addOperation(array(
             "name" => "resize",
