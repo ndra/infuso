@@ -233,6 +233,7 @@ class forum_post extends reflex {
             "topicUrl" => $post->topic()->url()->absolute()."",
             "topicTitle" => $post->topic()->title(),
             "author" => $post->author()->title(),
+            "authorID" => $post->author()->id(),
             "code" => "forum/newPost",
         );
 
@@ -264,6 +265,7 @@ class forum_post extends reflex {
                 "topicUrl" => $post->topic()->url()->absolute()."",
                 "topicTitle" => $post->topic()->title(),
                 "author" => $post->author()->title(),
+                "authorID"=> $post->author()->id(),
                 "code" => "forum/newPost",
             );
         }
