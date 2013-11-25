@@ -76,6 +76,10 @@ class tmp_render {
 				    $code = self::lesscssInstance()->parse($code);
 				}
 			}
+			
+			if(!trim($code)) {
+			    return null;
+			}
 
 			// Сохраняем результат
 		    file::mkdir($file->up(),true);
