@@ -330,7 +330,7 @@ class tmp_conveyor extends mod_component {
 
         // Упакованные js
         $packJs = tmp_render::packIncludes($packJs,"js");
-        if($packCss) {
+        if($packJs) {
             $head.= "<script type='text/javascript' src='$packJs'></script>\n";
         }
 

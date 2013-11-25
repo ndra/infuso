@@ -78,7 +78,7 @@ class tmp_template extends tmp_generic {
     }
      
     /**
-     * Возвращает/меняет шаблон базовый шаблон
+     * Возвращает/меняет базовый шаблон
      **/
     public function base($base=null) {
 
@@ -157,7 +157,7 @@ class tmp_template extends tmp_generic {
      **/
     public function clearCache() {
         $p = $this->params();
-        $hash = $this->template().":".$this->cache.":".serialize($p);
+        $hash = $this->file().":".$this->cache.":".serialize($p);
         mod_cache::set($hash,null);
         return $this;
     }
@@ -189,8 +189,7 @@ class tmp_template extends tmp_generic {
 
         if($this->cache) {
             // расчитываем хэш для сохранения в кэш :)
-            $hash = $this->template().":".$this->cache.":".serialize($p);
-
+            $hash = $this->file().":".$this->cache.":".serialize($p);
             
             // Пробуем достать данные их кэша
             $cached = mod_cache::get($hash);

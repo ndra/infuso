@@ -29,8 +29,9 @@ class tmp implements mod_handler {
         $args = func_get_args();
         array_shift($args);
         $args = self::normalizeArguments($args);
-        foreach($args as $key=>$val)
+        foreach($args as $key=>$val) {
             $template->param($key,$val);
+        }
         $template->exec();
     }
 
@@ -144,7 +145,7 @@ class tmp implements mod_handler {
     }
 
     /**
-     * Добавляет в хэдей скрипт (js-код)
+     * Добавляет в хэдер скрипт (js-код)
      **/
     public static function script($str,$priority=null) {
         self::conveyor()->add(array(
@@ -266,6 +267,10 @@ class tmp implements mod_handler {
      **/
     public function obj($obj=null) {
     
+        if(self::$obj) {
+            return self::$obj;
+        }
+    
         $action = mod::app()->action();
         if(!$action) {
             return reflex::get("reflex_none",0);
@@ -273,6 +278,10 @@ class tmp implements mod_handler {
     
 		list($class,$id) = explode("/",$action->ar());
 		return reflex::get($class,$id);
+    }
+    
+    public function setCurrentObject($obj) {
+        self::$obj = $obj;
     }
 
     /**
@@ -390,6 +399,9 @@ class tmp implements mod_handler {
 		}
     }
 
+	/**
+	 * Возвращает путь к файлу шаблона с заданным расширением
+	 **/
     public function filePath($template,$ext) {
 
         tmp_theme::loadDefaults();
@@ -397,10 +409,11 @@ class tmp implements mod_handler {
         $template = trim($template,"/");
         $ret = self::$templateMap[$template][$ext];
 
-        if($ret)
+        if($ret) {
             return file::get($ret);
-        else
+        } else {
             return file::nonExistent();
+		}
     }
 
     public static function helper($html) {

@@ -26,24 +26,9 @@ class tmp_theme_init extends mod_init {
 
 		$themes = array();
 
-		// СОбираем олдскульные темы (templates в info.ini)
-		foreach(mod::all() as $mod) {
-		    $path = mod::info($mod,"tmp","path");
-		    if($path) {
-		        $themes[] = new tmp_theme_oldskul(array(
-					"id" => "-".$mod,
-					"path" => $mod."/".$path,
-					"base" => $mod,
-					"mod" => $mod,
-				));
-			}
-		}
-
-		// Собираем темы-классы
+    	// Собираем темы-классы
 		foreach(mod::classes("tmp_theme") as $class) {
-		    if($class!="tmp_theme_oldskul") {
-		        $themes[] = new $class();
-			}
+	        $themes[] = new $class();
 		}
 
 		$autoload = array();
