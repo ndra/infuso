@@ -142,7 +142,7 @@ ndra.carousel.instance = function(e,p) {
 
     this.moveTo = function(n,immediately) {
     
-        current = n;
+        current = n*that.offset();
         var visible = that.visible();
         if(!p.cycle) {
             if(current+visible>total) current = total-visible;
@@ -200,7 +200,7 @@ ndra.carousel.instance = function(e,p) {
 
         // Подсвечиваем навигацию
         navigation.children().removeClass(p.navigationActive);
-        navigation.children().eq(current).addClass(p.navigationActive);
+        navigation.children().eq(current/that.offset()).addClass(p.navigationActive);
 
         if(!immediately)
             lastChangeTime = new Date().getTime();
