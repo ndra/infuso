@@ -52,7 +52,7 @@ ndra.slideshow = new function() {
         previewHSpacing:10,
         previewVSpacing:10,
         loaderImg:"/ndra/res/slideshow/loading.gif",
-        slider:true,
+        hideSlider: false,
         minContentHeight:100,
     }
 
@@ -67,16 +67,18 @@ ndra.slideshow = new function() {
             p = {};
         params = p;
 
-        for(var i in initialParams)
-            params[i] = initialParams[i];
-
+        for(var i in initialParams){
+            if(typeof params[i] === "undefined")
+                params[i] = initialParams[i];
+        }    
+        
         ndra.slideshow.close();
-
+        
         opened = true;
-
+        
         iframes = $("iframe:visible");
         iframes.hide();
-
+        
         $("body,html").addClass("dw92npeij81-body");
 
         // Фиксированный див на весь экран
@@ -442,6 +444,9 @@ ndra.slideshow = new function() {
 
         // Слайдер виден если высота экрана > 600 есть более одной фотографии
         sliderVisible = $(window).height()>600 && ndra.slideshow.count() > 1;
+        if(params.hideSlider){
+            ndra.slideshow.hideSlider(); 
+        }
         var sliderHeight = sliderVisible ? (params.previewHeight + params.previewVSpacing*2) : 0;
         eRollerContainer.css({
             display: sliderVisible ? "block" : "none"
