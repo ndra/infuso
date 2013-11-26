@@ -25,6 +25,9 @@ mod.on = function(name,handler) {
  * Отправляет команду на сервер
  **/
 mod.cmd = function(data,fn) {
+    if (!window.JSON) {
+        return;
+    }
     var json = JSON.stringify(data);
     this.request = $.ajax({
         url: "/mod/pub/json.php?cmd="+data.cmd, // Добавляем команду к get-запросу (для логов)
