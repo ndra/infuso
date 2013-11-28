@@ -25,7 +25,7 @@ class geo_ip extends mod_component {
         return new self($_SERVER["REMOTE_ADDR"]);
     }
 
-    public function __construct($ip) {
+    public function __construct($ip=null) {
         $this->ip = $ip;
     }
 

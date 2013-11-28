@@ -14,7 +14,6 @@ class mod_component {
 
     private static $conf = null;
 
-
     private $___behaviours = array();
     private $nextBehaviourPriority = 0;
     private $defaultBehavioursAdded = false;
@@ -437,15 +436,13 @@ class mod_component {
             if($n>500) {
                 throw new Exception("Defered function recursion");
             }
-
         }
-
-
     }
 
     public function getComponentID() {
-        if(!$this->componentID)
+        if(!$this->componentID) {
             $this->componentID = util::id();
+        }
         return $this->componentID;
     }
 
@@ -453,7 +450,7 @@ class mod_component {
      * Возвращает массив дата-врапперов
      * Переопределите этот метод для создания собственных врапперов
      * return array(
-     *   "myparam" => "mixed", // Враппер к паарметру
+     *   "myparam" => "mixed", // Враппер к параметру
      *   "myvalue" => "mixed/data" // Враппер к ->data() для reflex
      * )
      **/
@@ -481,6 +478,10 @@ class mod_component {
         }
         return eval(func_get_arg(0));
     }
+    
+	public function confDescription() {
+		return array();
+	}
 
 }
 

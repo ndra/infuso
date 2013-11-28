@@ -36,18 +36,26 @@ class admin extends mod_controller {
 		admin::fuckoff();
 	}
 
-	public static function header($title) {
+	/**
+	 * Выводит шапку админки
+	 **/
+	public static function header($title="") {
 	    tmp::noindex();
 		tmp::param("title",$title);
 		tmp::param("back-end",1);
 		tmp::exec("/admin/header");
 	}
 
+	/**
+	 * Выводит подвал админки
+	 **/
 	public static function footer() {
 		tmp::exec("/admin/footer");
 	}
 
-	// Возвращает все параметры конфигурации
+	/**
+	 * Возвращает все параметры конфигурации
+	 **/
 	public static function configuration() {
 	    return array(
 	        array("id"=>"admin:secretURL","title"=>"Секретный ключ url"),

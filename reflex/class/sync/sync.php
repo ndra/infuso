@@ -2,6 +2,20 @@
 
 class reflex_sync extends mod_controller {
 
+	public function confDescription() {
+	    return array(
+	        "components" => array(
+	            get_called_class() => array(
+	                "params" => array(
+	                    "remoteToken" => "Токен удаленной машины",
+	                    "remoteHost" => "Хост удаленной машины",
+	                    "skip" => "[yaml] Пропустить модули",
+					),
+				),
+			),
+		);
+	}
+
     public static function indexTest() {
         return true;
     }

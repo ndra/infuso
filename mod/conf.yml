@@ -1,0 +1,43 @@
+---
+components:
+  file_preview:
+    params:
+      maxHeight: 15000
+  reflex_sync:
+    params:
+      remoteToken: 666
+      remoteHost: ndra.ru
+      skip:
+        - reflex_log
+push:
+  server: dev.ndra.ru
+  login: dev_ndra
+  password: Ap6Hq9WW
+  path: >
+    /home/ndra/data/www/dev.ndra.ru/public_html
+  bundles:
+    - admin
+    - board
+    - comment
+    - doc
+    - eshop
+    - file
+    - form
+    - forum
+    - geo
+    - google
+    - inx
+    - inxdev
+    - lang
+    - mod
+    - moduleManager
+    - ndra
+    - pay
+    - reflex
+    - TinyMCE
+    - tmp
+    - update
+    - user
+    - util
+    - vote
+    - youtube

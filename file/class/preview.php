@@ -41,7 +41,7 @@ class file_preview extends mod_component {
     const ERROR_TOO_LARGE = 2;
     const ERROR_LOAD_FAILED = 3;
 
-    public function __construct($src,$width=100,$height=100) {
+    public function __construct($src=null,$width=100,$height=100) {
 
         $this->src = file::get($src)->path();
 
@@ -64,6 +64,21 @@ class file_preview extends mod_component {
             "jpegCompression" => 100
         );
     }
+
+	public function confDescription() {
+	    return array(
+	        "components" => array(
+	            "file_preview" => array(
+	                "params" => array(
+	                    "maxWidth" => "Максимальная ширина превьюшки",
+	                    "maxHeight" => "Максимальная высота превьюшки",
+	                    "background" => "Цвет фона",
+	                    "jpegCompression" => "Уровень компресии jpg (0 — 100)",
+					),
+				),
+			),
+		);
+	}
 
     private function raiseError($error) {
         $this->error = $error;

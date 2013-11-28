@@ -28,7 +28,7 @@ public function exec() {
 	}
 
     if(mod_superadmin::check()) {
-		$url = mod_action::get("mod_conf_controller","components")->url();
+		$url = mod_action::get("mod_conf_controller","componentsVisual")->url();
 		echo "<a href='{$url}' ><nobr>Настройкка компонентов</nobr></a> ";
 	}
 	

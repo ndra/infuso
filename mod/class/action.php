@@ -6,13 +6,16 @@ class mod_action extends mod_component {
     private $action = "";
     private $ar = "";
 
-    private function __construct($className,$action,$params = array()) {
+    public function __construct($className=null,$action=null,$params = array()) {
         if(!trim($action)) {
             $action = "index";
         }
         $this->action = $action;
         $this->className = $className;
-        $this->params($params);
+        
+        if($params) {
+        	$this->params($params);
+        }
 
     }
 

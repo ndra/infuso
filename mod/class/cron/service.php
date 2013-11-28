@@ -15,6 +15,19 @@ class mod_cron_service extends mod_service {
 	        "delayMultiplier" => 10,
 		);
 	}
+	
+	public function confDescription() {
+	    return array(
+	        "components" => array(
+	            get_called_class() => array(
+	                "params" => array(
+	                    "minDelay" => "Минимальная задержка между вызовами",
+	                    "delayMultiplier" => "На сколько секунд увеличивать задержку при увеличении времени запуска на 1 секунду",
+					),
+				),
+			),
+		);
+	}
 
     /**
      * Проверяет, когда был запущен последний раз крон

@@ -1,9 +1,18 @@
 <?
 
-class update extends mod_controller{
+class update extends mod_controller {
 
-	/******************************************************************************/
-	// Настройки прямого доступа
+	public function confDescription() {
+	    return array(
+	        "push" => array(
+                "server" => "Сервер",
+                "login" => "Логин",
+                "password" => "Пароль",
+                "path" => "Путь на сервере",
+                "bundles" => "Список пакетов для закачивания",
+			),
+		);
+	}
 
 	public static function indexTest() { return mod_superadmin::check(); }
 	public static function postTest() { return mod_superadmin::check(); }
@@ -27,6 +36,8 @@ class update extends mod_controller{
         }
         return $ret;
 	}
+	
+	
 
 	/**
 	 * push:

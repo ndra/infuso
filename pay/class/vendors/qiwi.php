@@ -95,6 +95,18 @@ class pay_vendors_qiwi extends pay_vendors {
         );
     }
     
+	public function confDescription() {
+	    return array(
+	        "components" => array(
+	            get_called_class() => array(
+	                "params" => array(
+	                    "ltime" => "Время жизни счета для оплаты с помощью qiwi",
+					),
+				),
+			),
+		);
+	}
+    
     /**
      * Сгенерировать ключ для шифрования
      *

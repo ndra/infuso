@@ -31,7 +31,7 @@ class inx_mount_file extends mod_component {
 		return self::$buf[$path];
 	}
 	
-	private function __construct($path) {
+	public function __construct($path=null) {
 		$this->path = $path;
 	}
 

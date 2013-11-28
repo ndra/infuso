@@ -34,7 +34,7 @@ class user_mailer extends mod_component {
             "businessRules" => "",
         );
     }
-
+    
     /**
      * Статический метод для использования Mail builder'a
      *

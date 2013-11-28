@@ -7,7 +7,7 @@ class reflex_table_fieldGroup extends mod_component {
 
     private $table = null;
 
-    public function __construct($p) {
+    public function __construct($p = array()) {
         $this->params($p);
     }
 

@@ -11,7 +11,7 @@ function __autoload($class) {
 
 	$quickMap = array(
         "mod" => "/mod/class/mod.php",
-        "mod_classmap" => "/mod/class/classmap.php",
+        "mod_classmap" => "/mod/class/classmap/classmap.php",
         "mod_handler" => "/mod/class/handler.php",
         "mod_superadmin" => "/mod/class/superadmin.php",
         "mod_service" => "/mod/class/service.php",

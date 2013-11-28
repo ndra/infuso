@@ -1,0 +1,22 @@
+.lud3vtwmim {
+
+    * {
+        vertical-align:middle;
+    }
+
+    .edit, .delete {
+        cursor:pointer;
+        margin-right:5px;
+    }
+    
+    .edit {
+        margin-left:10px;
+    }
+    
+    .yaml {
+        
+        width:600px;
+        height:200px;    
+    }
+
+}

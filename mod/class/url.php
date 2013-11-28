@@ -62,7 +62,7 @@ class mod_url {
     }
 
     /**
-     * Возвращает / меняте путь
+     * Возвращает / менятет путь
      * Для http://www.mysite.ru/index.php?=123 путь будет /index.php
      * Путь всегда возвращается без закрывающего слэша
      **/
@@ -241,7 +241,9 @@ class mod_url {
             $ret.= $this->path();
         }
         
-        $ret = rtrim($ret,"/");
+        if($ret!="/") {
+        	$ret = rtrim($ret,"/");
+        }
         
 		if($this->trailingBackslash()) {
 		    $ret .= "/";
@@ -292,10 +294,7 @@ class mod_url {
      * Взвращает экшн для данного урл
      **/
     public function action() {
-
         return mod::service("route")->urlToAction($this);
-
-
     }
 
 }

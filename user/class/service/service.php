@@ -12,7 +12,18 @@ class user_service extends mod_service {
             "deleteUnverfiedUserDays" => 7,
         );
     }
-    
+
+	public function confDescription() {
+	    return array(
+	        "components" => array(
+	            get_called_class() => array(
+	                "params" => array(
+	                    "deleteUnverfiedUserDays" => "Через сколько дней удалять пользователей, не подтвердивших почту",
+					),
+				),
+			),
+		);
+	}
     
     /**
      * Возвращает список юзверов
