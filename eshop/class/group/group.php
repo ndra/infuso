@@ -25,10 +25,6 @@ class eshop_group extends reflex {
 	    return true;
 	}
 
-	public function reflex_rootGroup() {
-		return mod::info("eshop","mod","title");
-	}
-
 	public function reflex_title() {
 	    $title = trim($this->data("title"));
 	    if(!$title)

@@ -268,10 +268,6 @@ class eshop_item extends reflex {
         $this->updateParentsChain();
     }
 
-    public function reflex_rootGroup() {
-        return mod::info("eshop","mod","title");
-    }
-
     /**
      * @return Возвращает родительскую группу данного товара
      **/

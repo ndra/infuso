@@ -1,0 +1,9 @@
+public:
+  - /render/
+  - /render-php/
+  - /res/
+
+leave:
+  - /render/
+  - /themes/
+  - /render-php/

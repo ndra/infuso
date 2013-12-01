@@ -99,7 +99,7 @@ class mod_action extends mod_component {
      **/
     public function test() {
 
-        if(!mod::testClass($this->className(),"mod_controller")) {
+        if(!mod::app()->service("classmap")->testClass($this->className(),"mod_controller")) {
             return false;
 		}
 

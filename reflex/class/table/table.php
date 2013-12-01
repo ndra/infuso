@@ -149,12 +149,18 @@ class reflex_table extends mod_component {
      * Возвращает все таблицы модуля $mod
      **/
     public static function factoryModuleTables($mod) {
-        $path = mod::info($mod,"mysql","path");
-        if(!$path) return array();
+
+        $path = mod::service("bundle")->bundle($mod)->conf("mysql","path");
+        
+        if(!$path) {
+			return array();
+		}	
+			
         $path = "/$mod/$path";
         $ret = array();
-        foreach(file::get($path)->dir() as $file)
+        foreach(file::get($path)->dir() as $file) {
             $ret[] = self::factory($mod.":".$file->baseName());
+		}
             
         usort($ret,array(self,"sortByName"));
         return $ret;
@@ -259,9 +265,10 @@ class reflex_table extends mod_component {
      **/
     public function confPath() {
         list($mod,$id) = explode(":",$this->id());
-        $path = mod::info($mod,"mysql","path");
-        if(!$path)
+        $path = mod::service("bundle")->bundle($mod)->conf("mysql","path");
+        if(!$path) {
             return;
+        }
         $path = "/$mod/$path/$id.php";
         return $path;
     }
@@ -531,12 +538,7 @@ class reflex_table extends mod_component {
 
         // Добавляем в таблицу поля по умолчанию
         $field = mod::field("jft7-kef8-ccd6-kg85-iueh")->name("id");
-        mod::msg($field->typeName());
         $table->addField($field);
-        
-        //$table->addField()
-        //    ->conf("type", "v324-89xr-24nk-0z30-r243")
-            //->conf("name", "title");
 
         $table->saveConf();
     }

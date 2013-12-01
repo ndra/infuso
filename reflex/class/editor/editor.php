@@ -44,7 +44,7 @@ abstract class reflex_editor extends mod_component {
         //$hash = mod::base64URLDecode($hash);
         list($editorClass,$itemID) = explode(":",$hash);
 
-        if(!mod::testClass($editorClass,"reflex_editor")) {
+        if(!mod::service("classmap")->testClass($editorClass,"reflex_editor")) {
             $editorClass = "reflex_none_editor";
         }
 

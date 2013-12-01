@@ -29,7 +29,7 @@ class mod_route_service extends mod_service {
             return mod::action("mod");
         }
 
-        $routers = mod::classmap("routes");
+        $routers = mod::service("classmap")->classmap("routes");
 
         foreach($routers as $router) {
             if($callback = call_user_func(array($router,"forward"),$url)) {

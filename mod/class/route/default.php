@@ -21,7 +21,7 @@ class mod_route_default extends mod_route {
 		    }
 		}
 
-		if(mod::testClass($class,"mod_controller")) {
+		if(mod::service("classmap")->testClass($class,"mod_controller")) {
 			return mod_action::get($class,$action,$params);
 		}
 	}

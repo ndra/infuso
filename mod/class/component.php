@@ -252,7 +252,7 @@ class mod_component {
             $this->addBehaviour($b);
 		}
 
-        $bb = mod::classmap("behaviours");
+        $bb = mod::service("classmap")->classmap("behaviours");
         $bb = $bb[get_class($this)];
         if($bb) {
             foreach($bb as $b) {

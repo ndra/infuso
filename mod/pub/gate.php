@@ -1,8 +1,10 @@
 <?
 
-// Подключаем функцию автозагрузки
-if(!function_exists("__autoload")) {
-    include("../__autoload.inc.php");
-}
+// Загружаем основной класс приложения
+include("../class/app.php");
 
-mod_app::current()->exec();
+// Создаем приложение
+$app = mod_app::current();
+
+// Выполняем приложение
+$app->exec();

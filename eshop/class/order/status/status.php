@@ -33,8 +33,9 @@ class eshop_order_status extends mod_component {
 	 * Возвращает объект класса заказа по id (имени класса)
 	 **/
 	public static function get($class) {
-		if(mod::testClass($class,"eshop_order_status"))
+		if(mod::service("classmap")->testClass($class,"eshop_order_status")) {
 		    return new $class;
+		}
 		return new eshop_order_status_none();
 	}
 

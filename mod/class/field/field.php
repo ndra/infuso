@@ -43,7 +43,7 @@ abstract class mod_field extends mod_component {
         
             $class = $conf;
             
-            if(!mod::testClass($class,"mod_field")) {
+            if(!mod::service("classmap")->testClass($class,"mod_field")) {
                 $class = self::$descr[$conf];
             }
             

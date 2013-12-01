@@ -1,0 +1,11 @@
+public:
+  - /res/
+  - /files/
+
+leave:
+  - files
+
+inx:
+  path: /inx.mod.board/
+  namespace: inx.mod.board
+

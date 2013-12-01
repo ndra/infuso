@@ -26,7 +26,7 @@ class mod_post {
 	    $class = join("_",$d);
 
 	    // Проверяем теоретическую возможность обработать пост-запрос
-	    if(mod::testClass($class,"mod_controller")) {
+	    if(mod::service("classmap")->testClass($class,"mod_controller")) {
 
 	        $obj = new $class;
 		    if(call_user_func(array($obj,"postTest"),$p)) {

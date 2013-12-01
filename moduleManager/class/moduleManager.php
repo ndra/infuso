@@ -31,7 +31,9 @@ class moduleManager extends mod_controller{
 
         $tree[] = $module;
 
-	    foreach(mod::all() as $m) {
+	    foreach(mod::service("bundle")->all() as $bundle) {
+	    
+	        $m = (string) $bundle->path();
 
 	        // Модуль
 	        $module = array(
@@ -65,7 +67,7 @@ class moduleManager extends mod_controller{
             }
 
 	        // Inx
-	        if(mod::info($m,"inx","path")) {
+	        if($bundle->conf("inx","path")) {
 	            $module["children"][] = array(
 	                "text"=>"inx",
 	                "icon" => "/moduleManager/res/inx.gif",
@@ -77,7 +79,7 @@ class moduleManager extends mod_controller{
             }
 
 	        // Таблицы
-	        if(mod::info($m,"mysql","path"))
+	        if($bundle->conf("mysql","path"))
 	            $module["children"][] = array(
 	                "text"=>"Таблицы",
 	                "icon" => "/moduleManager/icons/tables.png",
@@ -93,12 +95,12 @@ class moduleManager extends mod_controller{
 
 	    }
 
-	    foreach($tree as $key=>$val) {
+	    /*foreach($tree as $key=>$val) {
 	        $tree[$key]["system"] = mod::info($val["id"],"moduleManager","pack");
 	        if($tree[$key]["system"]) {
 	            $tree[$key]["text"] = "<span style='color:gray;'>$val[id]</span>";
 			}
-	    }
+	    } */
 	    
 	    $sort = function($a,$b) {
 

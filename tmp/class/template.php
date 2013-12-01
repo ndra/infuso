@@ -2,7 +2,6 @@
 
 class tmp_template extends tmp_generic {
 
-    private static $exists = array();
     private static $current = null;
     
     private static $cachedTemplates = null;
@@ -12,8 +11,12 @@ class tmp_template extends tmp_generic {
     public $ttl = null;
     
     public $recache = null;
+    
+    private $templateProcessor = null;
 
-    public function __construct($name=null) {
+    public function __construct($name=null,$processor = null) {
+
+        $this->templateProcessor = $processor;
 
         if($name) {
             $name = self::handleName($name);
@@ -33,8 +36,25 @@ class tmp_template extends tmp_generic {
                 $this->param("*delayed",true);
             }
         }
-
     }
+    
+    /**
+     * Возвращает объект процессора шаблонов, к которому относится этот шаблон
+     **/
+    public function processor() {
+        return $this->templateProcessor;
+    }
+    
+	public function confDescription() {
+	    return array(
+	        "components" => array(
+	            get_called_class() => array(
+                    "cache" => "[yaml]Кэшировать эти шаблоны",
+                    "delayed" => "[yaml]Вызвать в отложенных функциях",
+				),
+			),
+		);
+	}
     
     /**
      * Загружает(если надо) и возвращает массив("имя шаблона"=>"ttl") шаблонов для кэша
@@ -183,8 +203,8 @@ class tmp_template extends tmp_generic {
         
         $p = $this->params();
 
-        tmp::css($this->fileCSS()."",1);
-        tmp::js($this->fileJS()."",1);
+        $this->processor()->css($this->fileCSS()."",1);
+        $this->processor()->js($this->fileJS()."",1);
         // Если включен режим кэширования
 
         if($this->cache) {
@@ -199,11 +219,11 @@ class tmp_template extends tmp_generic {
 
                 mod_profiler::beginOperation("tmp","cached miss",$this->template());
 
-                tmp::pushConveyor();
+                $this->processor()->pushConveyor();
                 ob_start();
                 $this->aexec($p);
                 $cached = ob_get_flush();
-                $conveyor = tmp::mergeConveyorDown();
+                $conveyor = $this->processor()->mergeConveyorDown();
                 
                 
                 if(!$conveyor->preventCaching()) {
@@ -226,7 +246,7 @@ class tmp_template extends tmp_generic {
                 $conveyorData = mod_cache::get($hash.":conveyor");
                 $conveyor = tmp_conveyor::unserialize($conveyorData);
 
-                tmp::conveyor()->mergeWith($conveyor);
+                $this->processor()->conveyor()->mergeWith($conveyor);
 
                 mod_profiler::endOperation();
             }
@@ -254,12 +274,15 @@ class tmp_template extends tmp_generic {
         // Запоминаем предыдущий шаблон
         $last = self::$current;
 
-        self::$current = $this->base() ? tmp::get($this->base()) : $this;
+        self::$current = $this->base() ? $this->processor()->template($this->base()) : $this;
 
         foreach($params as $key=>$val) {
             $$key = $val;
         }
-
+        
+        $app = mod::app();
+        $tmp = $this->processor();
+        
         // Проверяем наличие шаблона если мы в режиме отладки
         // Если пользователь не суперадмин - сразу выполняем шаблон
         if(mod::debug()) {
@@ -295,9 +318,9 @@ class tmp_template extends tmp_generic {
             );    
         }
         
-        tmp::pushConveyor();
+        $this->processor()->pushConveyor();
         $html = $this->rexec();
-        $conveyor = tmp::popConveyor();
+        $conveyor = $this->processor()->popConveyor();
         
         if($params["delayed"]) {
             $html = $conveyor->processDelayed($html);
@@ -368,10 +391,13 @@ class tmp_template extends tmp_generic {
     }
 
     public function includeScriptsAndStyles() {
-        tmp::css($this->fileCSS()."");
-        tmp::js($this->fileJS()."");
+        $this->processor()->css($this->fileCSS()."");
+        $this->processor()->js($this->fileJS()."");
     }
 
+	/**
+	 * Подключает скрипты и стили от этого шаблона, не выполняя его
+	 **/
     public function inc() {
         $this->includeScriptsAndStyles();
     }
@@ -381,13 +407,16 @@ class tmp_template extends tmp_generic {
      **/
     public function incr() {
         tmp_theme::loadDefaults();
-        foreach(tmp::templateMap() as $key=>$tmp)
+        foreach(tmp::templateMap() as $key=>$tmp) {
             if(strpos($key,$this->template())===0) {
-                if($tmp["css"])
+                if($tmp["css"]) {
                     tmp::css($tmp["css"]);
-                if($tmp["js"])
+                }
+				if($tmp["js"]) {
                     tmp::js($tmp["js"]);
+                }
             }
+		}
     }
 
     /**

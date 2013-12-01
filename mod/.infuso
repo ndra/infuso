@@ -1,0 +1,10 @@
+public:
+  -/res/
+  -/pub/
+  -/conf/
+  
+leave:
+  - /trace/
+  - /service/
+  - /cache/
+  - /exclude/

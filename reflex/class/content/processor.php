@@ -10,7 +10,7 @@ abstract class reflex_content_processor extends mod_service {
 	 **/
 	public static function get($class,$conf=array()) {
 	
-	    if(!mod::testClass($class,"reflex_content_processor")) {
+	    if(!mod::service("classmap")->testClass($class,"reflex_content_processor")) {
 	        throw new Exception("Class $class is not content processor;");
 	    }
 	

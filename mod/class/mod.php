@@ -22,46 +22,7 @@ class mod extends mod_controller {
 
 	}
 	
-	/**
-	 * Возвращает параметр из файла конфигурации модуля info.ini
-	 * Первый параметр - модуль
-	 * Второй параметр - имя связанного модуля
-	 * Третий параметр - ключ, значение которого нужно вернуть
-	 * Возвращает переменную или массив, в зависимости от того что содержится в файле info.ini
-	 **/
-	public static function info($module,$p1,$p2) {
-
-	    if($module==null) {
-	        $ret = array();
-	        foreach(mod::all() as $mod) {
-				if($values = mod::info($mod,$p1,$p2)) {
-					if(!is_array($values)) $values = array($values);
-					foreach($values as $v) $ret[] = $v;
-				}
-	        }
-	        return $ret;
-	    }
-
-		if(!self::$info[$module]) {
-	    	self::$info[$module] = mod_file::get("/$module/info.ini")->ini(true);
-	    }
-
-		return self::$info[$module][$p1][$p2];
-	}
-
 	private static $modules = null;
-
-	/**
-	 * Возвращает список всех модулей
-	 **/
-	public static function all() {
-		if(!self::$modules) {
-		    foreach(mod_file::get("/")->dir()->folders() as $folder) {
-		        self::$modules[] = $folder->name();
-		    }
-		}
-	    return self::$modules;
-	}
 
 	/**
 	 * Возвращает путь к корню сайта в файловой системе сервера
@@ -73,7 +34,7 @@ class mod extends mod_controller {
 
 	/**
 	 * Возвращает параметр конфигурации
-	 * той, что в /mod_conf/
+	 * той, что в /mod/conf/
 	 **/
 	public static function conf($key) {
 	    return mod_conf::get($key);
@@ -104,107 +65,6 @@ class mod extends mod_controller {
 		}
 	
 		return self::$debug;
-	}
-
-	/**
-	 * @return Возвращает список всех классов
-	 * @return Если указан параетр extends, возвращает список всех классов, расширяющих extends
-	 **/
-	public static function classes($extends=null) {
-
-		$ret = self::classmap();
-		$ret = $ret["map"];
-
-		if(!$ret)
-		    $ret = array();
-
-		if($extends) {
-
-		    if(!array_key_exists($extends,self::$extends)) {
-				self::$extends[$extends] = array();
-		        foreach($ret as $key=>$classProos) {
-		            if(in_array($extends,$classProos["p"]) && !$classProos["a"]) {
-		                self::$extends[$extends][] = $key;
-					}
-				}
-		    }
-
-		    return self::$extends[$extends];
-
-		}
-
-		return $ret;
-	}
-
-	/**
-	 * @return Один параметр - проверяет класс на наличие
-	 * @return Два параметра - проверяет класс на наличие и на то что он расширяет $extends
-	 **/
-	public static function testClass($class,$extends=null) {
-
-		if($class=="mod" && $extends=="mod_controller") {
-		    return true;
-        }
-
-	    $classes = self::classmap("map");
-	    if(!$classes) {
-	        return;
-        }
-
-		if(!array_key_exists($class."",$classes)) {
-			return false;
-        }
-
-		if($extends) {
-			if(!in_array($extends,$classes[$class]["p"]) && $extends!=$class) {
-			    return false;
-            }
-		}
-		    
-		return true;
-	}
-
-	private static $classmap = null;
-
-	/**
-	 * Возвращает карту классов
-	 * Если передан параметр, вернет часть карты классов
-	 **/
-	public static function classmap($key=null) {
-
-		// Загружаем карту класса по требованию
-		if(!self::$classmap) {
-		    $f = mod_file::get("/mod/service/classmap.inc.php");
-		    if($f->exists())
-		    	self::$classmap = $f->inc();
-		}
-
-	    if(!self::$classmap)
-		    self::$classmap = array();
-
-		$ret = self::$classmap;
-
-		if($key)
-		    $ret = $ret[$key];
-
-		return $ret;
-	}
-
-	public static function setClassMap($map) {
-		self::$classmap = $map;
-	}
-
-	public static function call($name) {
-
-		$name = strtr($name,array("::"=>":"));
-
-		$p = array();
-		for($i=1;$i<func_num_args();$i++) {
-		    $p[] = func_get_arg($i);
-		}
-
-		list($class,$method) = explode(":",$name);
-		return call_user_func_array(array($class,$method),$p);
 	}
 
 	/**
@@ -371,7 +231,7 @@ class mod extends mod_controller {
 	 * Возвращает службу по ее имени
 	 **/
 	public function service($serviceName) {
-	    return mod_service::get($serviceName);
+	    return mod::app()->service($serviceName);
 	}
 	
 	function base64URLEncode($data) {
@@ -392,6 +252,9 @@ class mod extends mod_controller {
         return $ret;
     }
 
+	/**
+	 * Возвращает текущее приложение
+	 **/
 	public function app() {
 	    return mod_app::current();
 	}

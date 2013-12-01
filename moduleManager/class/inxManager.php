@@ -9,8 +9,8 @@ class moduleManager_inxManager extends mod_controller {
         return mod_superadmin::check();
     }
     
-    private static function getPath($mod){
-        return $mod."/".mod::info($mod,"inx","path");
+    private static function getPath($mod) {
+        return mod::service("bundle")->bundle($mod)->inxPath();
     }
     
     public static function post_listItems($params) {

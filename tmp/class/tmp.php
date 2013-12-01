@@ -2,161 +2,51 @@
 
 class tmp implements mod_handler {
 
-    private static $conveyor;
+    //private static $conveyor;
 
-    private static $global = array();
-    private static $defaultParams = false;
+    //private static $global = array();
+    //private static $defaultParams = false;
 
-    private static $regions = array();
+    //private static $regions = array();
+    
     private static $templateMap = array();
     private static $obj = null;
-    private static $bodyClass = null;
+    //private static $bodyClass = null;
 
     /**
-     * @return Возващает объект шаблона
+     * Руотер статических методов (старый стиль) в динамические методы (новый стиль)
+     * Например tmp::exec() => mod::app()->tmp()->exec();
      **/
-    public function get($name,$params=array()) {
-        $tmp = new tmp_template($name);
-        $tmp->params($params);
-        return $tmp;
-    }
-
-    /**
-     * Выполняет шаболон
-     **/
-    public static function exec($name) {
-        $template = self::get($name);
-        $args = func_get_args();
-        array_shift($args);
-        $args = self::normalizeArguments($args);
-        foreach($args as $key=>$val) {
-            $template->param($key,$val);
-        }
-        $template->exec();
-    }
-
-    /**
-     * Возвращает текущую область видимости
-     **/
-    public function conveyor() {
-        if(!count(self::$conveyor))
-            self::$conveyor[] = new tmp_conveyor();
-        return end(self::$conveyor);
-    }
-
-    /**
-     * Создает новую область видимости
-     **/
-    public function pushConveyor() {
-        self::$conveyor[] = new tmp_conveyor();
-    }
-
-    /**
-     * Уничтожает текущую область видимости, применяя ее свойства к предыдущей
-     **/
-    public function mergeConveyorDown() {
-        $conveyor = self::popConveyor();
-        self::conveyor()->mergeWith($conveyor);
-        return $conveyor;
-    }
-
-    public function popConveyor() {
-        $conveyor = array_pop(self::$conveyor);
-        return $conveyor;
-    }
-
-    public function destroyConveyors() {
-        self::$conveyor = array();
-    }
-
-    /**
-     * Добавляет css автоматически
-     **/
-    public static function css($path,$priority = 0){
-        if($path{0}=="/")
-            self::packCSS($path,$priority);
-        else
-            self::singleCSS($path,$priority);
-    }
-
-    /**
-     * Добавляет css без упаковки
-     **/
-    public static function singleCSS($path,$priority=null) {
-        self::conveyor()->add(array(
-            "t" => "sc",
-            "c" => $path,
-            "p" => $priority,
-        ));
-    }
-
-    /**
-     * Добавляет упакованный css
-     **/
-    public static function packCSS($path,$priority=null) {
-        self::conveyor()->add(array(
-            "t" => "c",
-            "c" => $path,
-            "p" => $priority,
-        ));
-    }
-
-    /**
-     * Добавляет js автоматически
-     **/
-    public static function js($path,$priority=null) {
-        if($path{0}=="/")
-            self::packJS($path,$priority);
-        else
-            self::singleJS($path,$priority);
-    }
-
-    /**
-     * Добавляет js без упаковки
-     **/
-    public static function singleJS($path,$priority=null) {
-        self::conveyor()->add(array(
-            "t" => "sj",
-            "c" => $path,
-            "p" => $priority,
-        ));
-    }
-
-    /**
-     * Добавляет упакованный js с упаковкой
-     **/
-    public static function packJS($path,$priority=null) {
-        self::conveyor()->add(array(
-            "t" => "j",
-            "c" => $path,
-            "p" => $priority,
-        ));
-    }
-
-    /**
-     * Добавляет строку в хэд
-     **/
-    public static function head($str,$priority=null) {
-        self::conveyor()->add(array(
-            "t" => "h",
-            "c" => $str,
-            "p" => $priority,
-        ));
-    }
-
-    /**
-     * Добавляет в хэдер скрипт (js-код)
-     **/
-    public static function script($str,$priority=null) {
-        self::conveyor()->add(array(
-            "t" => "s",
-            "c" => $str,
-            "p" => $priority,
-        ));
-    }
-
-    public static function bodyClass($class) {
-        self::$bodyClass = $class;
+    public static function __callStatic($xmethod,$args) {
+    
+        $xmethod = strtolower($xmethod);
+    
+        $map = array(
+            "get" => "template",
+            "exec" => "exec",
+            "conveyor" => "conveyor",
+            "add" => "add",
+            "css" => "css",
+            "js" => "js",
+            "singlejs" => "singlejs",
+            "singlecss" => "singlecss",
+            "param" => "param",
+            "head" => "head",
+            "script" => "script",
+            "header" => "header",
+            "footer" => "footer",
+		);
+		$method = $map[$xmethod];
+		
+		if(!$method) {
+		    throw new Exception("tmp::{$xmethod} not found");
+		}
+    
+        $processor = mod::app()->tmp();
+        
+        return call_user_func_array(array(
+            $processor,$method
+		),$args);
     }
 
     public function headInsert() {
@@ -188,41 +78,6 @@ class tmp implements mod_handler {
 
     }
 
-    public function header($p1=null) {
-
-        if(!$p1["html"]) {
-            $html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">'."\n";
-            $html.= "<html xmlns='http://www.w3.org/1999/xhtml'>\n<head>\n";
-            $html.= "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />\n";
-			$html.= "<meta http-equiv='X-UA-Compatible' content='IE=EmulateIE7,IE=edge'>";
-
-            $html.= tmp_delayed::add(array(
-                "class" => "tmp",
-                "method" => "headInsert",
-                "priority" => 1000,
-            ));
-
-            $html.= "</head>\n";
-            $html.=  "<body".(self::$bodyClass ? ' class="' . self::$bodyClass . '"' : '') . ">\n";
-            $p1["html"] = $html;
-        }
-        echo $p1["html"];
-
-        if(mod::conf("admin:showMenu")) {
-            admin::menu();
-        }
-
-        mod_profiler::addMilestone("tmp::header()");
-
-    }
-
-    public static function footer() {
-
-        echo "</body></html>";
-
-        mod_profiler::addMilestone("tmp::footer() end");
-    }
-
     public function insertMessages($str) {
         return preg_replace_callback("/\<body[^>]*>/",array("self","insertMessagesCallback"),$str);
     }
@@ -243,23 +98,6 @@ class tmp implements mod_handler {
 
     public static function nocache() {
         tmp::conveyor()->preventCaching(true);
-    }
-
-    public static function param($key,$val=null) {
-
-        // Загружаем объект tmp::obj(), т.к. в этом методе устанавливаются некоторые базовые парамеры
-        if(!self::$defaultParams) {
-            self::$global["title"] = tmp::obj()->meta("title");
-            self::$global["pageTitle"] = tmp::obj()->meta("pageTitle");
-            self::$defaultParams = true;
-        }
-
-        if(func_num_args()==1) {
-            return self::$global[$key];
-        }
-        if(func_num_args()==2) {
-            self::$global[$key] = $val;
-        }
     }
 
     /**
@@ -293,56 +131,6 @@ class tmp implements mod_handler {
             $ret = tmp::obj()->title();
         }
         return $ret;
-    }
-
-    /**
-     * $params - массив аргументов функции
-     * Если в этом массиве один элемент и он - массив, возвращаем этот массив
-     * Если элементов больше чем один, складываем их в массив с ключами p1,p2,p3...
-     **/
-    public static function normalizeArguments($arguments) {
-
-        if(sizeof($arguments)==0) {
-            $ret = tmp_template::currentParams();
-            return $ret;
-        }
-
-        $ret = array();
-        foreach(array_values($arguments) as $key=>$val) {
-            $ret["p".($key+1)] = $val;
-        }
-
-        if(sizeof($arguments)==1) {
-            $a = end($arguments);
-            if(is_array($a))
-                foreach($a as $key=>$val)
-                    $ret[$key] = $val;
-        }
-
-        return $ret;
-    }
-    /**
-     * Добавляет в регион шаблон
-     **/
-    public static function add($block,$name) {
-
-        if(is_object($name)) {
-            tmp_block::get($block)->add($name);
-        } else {
-
-            $p = func_get_args();
-            $name = tmp_template::handleName($name);
-            $template = self::get($name);
-            array_shift($p);
-            array_shift($p);
-            $params = self::normalizeArguments($p);
-
-            foreach($params as $key=>$val)
-                $template->param($key,$val);
-
-            tmp_block::get($block)->add($template);
-        }
-
     }
 
     /**

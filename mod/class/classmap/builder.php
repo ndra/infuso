@@ -1,6 +1,6 @@
 <?
 
-class mod_classmap implements mod_handler {
+class mod_classmap_builder implements mod_handler {
 
 	/**
 	 * Парсит файл и возвращает массив с информацией о классе
@@ -62,12 +62,16 @@ class mod_classmap implements mod_handler {
 	private static function classMap($secondScan) {
 
 		$excludes = array();
-		foreach(mod_file::get("/mod/exclude/")->dir() as $file)
+		foreach(mod_file::get("/mod/exclude/")->dir() as $file) {
 		    $excludes[] = $file->basename();
+		}
 
 		$ret = array();
-		foreach(mod::all() as $mod)
-		    foreach(mod_file::get("/$mod/class/")->search() as $file)
+		
+		$bundles = mod::service("bundle")->all();
+		
+		foreach($bundles as $bundle) {
+		    foreach($bundle->classPath()->search() as $file)
 		        if($file->ext()=="php") {
 
 		            $descr = array(
@@ -117,6 +121,7 @@ class mod_classmap implements mod_handler {
 					$ret[$class] = $descr;
 
 				}
+			}
 		return $ret;
 	}
 
@@ -135,7 +140,7 @@ class mod_classmap implements mod_handler {
 		$ret = array();
 
 		// Берем поведения по умолчанию (на основании mod_behaviour::addToClass)
-		foreach(mod::classes("mod_behaviour") as $class) {
+		foreach(mod::service("classmap")->classes("mod_behaviour") as $class) {
 		    $obj = new $class;
 		    if($for = $obj->addToClass())
 		        $ret[$for][] = $class;
@@ -151,12 +156,14 @@ class mod_classmap implements mod_handler {
 
 	public static function handlers() {
 		$handlers = array();
-		foreach(mod::classes() as $class=>$fuck) {
+		foreach(mod::service("classmap")->classes() as $class=>$fuck) {
 			$r = new ReflectionClass($class);
 			if($r->implementsInterface("mod_handler")) {
-				foreach($r->getMethods() as $method)
-				    if(preg_match("/^on_(.*)/",$method->getName(),$matches))
+				foreach($r->getMethods() as $method) {
+				    if(preg_match("/^on_(.*)/",$method->getName(),$matches)) {
 				        $handlers[$matches[1]][] = $class;
+				    }
+				}
 			}
 		}
 		return $handlers;
@@ -167,7 +174,7 @@ class mod_classmap implements mod_handler {
 	 **/
 	public static function services() {
 		$services = array();
-		foreach(mod::classes() as $class=>$fuck) {
+		foreach(mod::service("classmap")->classes() as $class=>$fuck) {
 			$r = new ReflectionClass($class);
 			if($r->isSubclassOf("mod_service") && !$r->isAbstract()) {
 			    $item = new $class;
@@ -190,31 +197,41 @@ class mod_classmap implements mod_handler {
 		$ret = array();
 
 		// Берем поведения по умолчанию (на основании mod_behaviour::addToClass)
-		foreach(mod::classes("mod_route") as $class) {
+		foreach(mod::service("classmap")->classes("mod_route") as $class) {
 			$ret[] = $class;
 		}
 		
 		// Сортируем поведения
 	    usort($ret,array(self,"sortRoutes"));
 
-
 		return $ret;
 	}
+	
+	private static $building = false;
 
 	/**
 	 * Строит карту классов
 	 **/
 	public static function buildClassMap() {
-
+	
+	    if(self::$building) {
+	        return array();
+	    }
+	
+	    self::$building = true;
+	
 		$map = array();
 
 		// расчитываем карту классов в два шага
 		// На первом - просто собираем пути к файлам
 		// На втором - родителей
 		$map["map"] = self::classMap(false);
-		mod::setClassMap($map);
+			    
+		mod::service("classmap")->setClassMap($map);
 		$map["map"] = self::classMap(true);
-		mod::setClassMap($map);
+		mod::service("classmap")->setClassMap($map);
+		
+
 		
 		$map["behaviours"] = self::defaultBehaviours();
 		$map["handlers"] = self::handlers();
@@ -222,11 +239,13 @@ class mod_classmap implements mod_handler {
 		$map["services"] = self::services();
 
 		// Сохраняем карту классов в памяти, чтобы использовать ее уже в этом запуске скрипта
-		mod::setClassMap($map);
+		mod::service("classmap")->setClassMap($map);
 
 		mod_file::mkdir("/mod/service/");
 		mod_file::get("/mod/service/classmap.inc.php")->put("<"."? return ".var_export($map,1)."; ?".">");
 		mod_log::msg("Карта классов построена");
+		
+		self::$building = false;
 	}
 
 	public function on_mod_confSaved() {

@@ -1,0 +1,16 @@
+public:
+ - /res/
+ - /files/
+ - /export/
+ - /redactor/
+ - /system/
+
+title: Каталог
+
+inx:
+  path: /inx.mod.reflex/
+  namespace: inx.mod.reflex
+
+mysql:
+  path: /tables/
+

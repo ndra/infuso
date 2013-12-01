@@ -179,8 +179,8 @@ class pay_invoice extends reflex implements mod_handler {
 
         $class = 'pay_vendors_' . $driver;
 
-        //Проверка на существование класса драйвера
-        if(!mod::testClass($class)) {
+        // Проверка на существование класса драйвера
+        if(!mod::service("classmap")->testClass($class)) {
             throw new Exception("Несуществующий драйвер: " . $class);
         }
 

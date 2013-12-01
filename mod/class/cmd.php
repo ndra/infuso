@@ -12,7 +12,7 @@ class mod_cmd extends mod_controller {
         $tmp = mod::conf("mod:404");
         if(!$tmp)
 			$tmp = "mod:404";
-		if(mod::testClass("tmp"))
+		if(mod::service("classmap")->testClass("tmp"))
         	tmp::exec($tmp);
 		else
 		    echo "404: Рage not found";

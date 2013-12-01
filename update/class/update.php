@@ -83,14 +83,24 @@ class update extends mod_controller {
         }
 	}
 
-	// Пакует модуль $mod в zip-архив и сохраняет в папку
+	/**
+	 * Пакует модуль $mod в zip-архив и сохраняет в папку
+	 **/
 	public static function packModule($mod) {
 
 		$public = mod::info($mod,"mod","leave");
-		if(!$public) $public = array();
-		if(!is_array($public)) $public = array($public);
-		foreach($public as $key=>$val)
+		
+		if(!$public) {
+			$public = array();
+		}
+		
+		if(!is_array($public)) {
+			$public = array($public);
+		}
+		
+		foreach($public as $key=>$val) {
 		    $public[$key] = trim($val,"/");
+		}
 
 		$zip = new file_zip();
 		// Удаляем все лишние файлы

@@ -40,7 +40,7 @@ abstract class admin_widget extends mod_component {
 	 **/
 	public function all() {
 		$ret = array();
-		foreach(mod::classes("admin_widget") as $class) {
+		foreach(mod::service("classmap")->getClassesExtends("admin_widget") as $class) {
 		    $widget = new $class;
 		    if($widget->test())
 		        $ret[] = $widget;

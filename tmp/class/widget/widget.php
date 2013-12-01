@@ -20,7 +20,7 @@ abstract class tmp_widget extends tmp_generic {
 	    
 	    }
 	
-	    if(!mod::testClass($class,"tmp_widget")) {
+	    if(!mod::service("classmap")->testClass($class,"tmp_widget")) {
 	        throw new Exception("$class is not a widget");
 	    }
 	

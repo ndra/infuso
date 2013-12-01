@@ -1,11 +1,6 @@
 <?
 
-ini_set('register_globals', 'off');
-ini_set('magic_quotes_gpc', 'off');
-ini_set('magic_quotes_runtime', 'off');
-ini_set('default_charset', "utf-8");
-$GLOBALS["infusoStarted"] = microtime(1);
-$GLOBALS["infusoClassTimer"] = 0;
+
 
 function __autoload($class) {
 
@@ -26,7 +21,7 @@ function __autoload($class) {
         "mod_event" => "/mod/class/event.php",
         "mod_url" => "/mod/class/url.php",
         "mod_action" => "/mod/class/action.php",
-       // "mod_route" => "/mod/class/route/route.php",
+        "mod_bundle" => "/mod/class/bundle/bundle.php",
         "mod_console" => "/mod/class/console.php",
         "mod_conf" => "/mod/class/conf/conf.php",
         "mod_update" => "/mod/class/update.php",
@@ -58,9 +53,4 @@ function __autoload($class) {
 
 }
 
-if(mod_superadmin::check()) {
-    error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT);
-    ini_set("display_errors",1);
-} else {
-    ini_set("display_errors",0);
-}
+

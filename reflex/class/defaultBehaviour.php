@@ -20,8 +20,10 @@ class reflex_defaultBehaviour extends mod_behaviour {
 	public function reflex_rootGroup() {
 		$class = get_class($this->component());
 	    $mod = end(array_reverse(explode("_",$class)));
-	    $title = mod::info($mod,"mod","title");
-	    if(!$title) $title = $mod;
+        $path = mod::service("bundle")->bundle($mod)->conf("title");
+	    if(!$title) {
+			$title = $mod;
+		}
 	    return $title;
 	}
 

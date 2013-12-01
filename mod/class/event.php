@@ -25,7 +25,7 @@ class mod_event extends mod_component {
      * Возвращает массив классов, которые могут реагировать на данное событие
      **/
     public function handlers() {
-        $handlers = mod::classmap("handlers");
+        $handlers = mod::service("classmap")->classmap("handlers");
         $handlers = $handlers[$this->name()];
         if(!$handlers) {
             $handlers = array();

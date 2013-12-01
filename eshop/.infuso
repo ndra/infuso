@@ -1,0 +1,20 @@
+title:  Интернет-магазин
+
+public:
+  - /res/
+  - /files/
+  - /yandex/
+  - /import/
+
+leave:
+  - files
+  - yandex
+  - import
+  - system
+
+mysql:
+  path: /tables/
+
+inx:
+  namespace: inx.mod.eshop
+  path: /inx.mod.eshop/

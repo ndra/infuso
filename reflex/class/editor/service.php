@@ -117,7 +117,7 @@ class reflex_editor_service extends mod_service {
 		// В зависимости от класса переданного объекта, дейстуем по-разному
 
 		// Из коллекции делаем объект reflex_editor_root
-        if(mod::testClass(get_class($collection),"reflex_collection")) {
+        if(mod::service("classmap")->testClass(get_class($collection),"reflex_collection")) {
 
             if(!$collection->editor()->beforeCollectionView()) {
                 mod_profiler::endOperation();
@@ -145,7 +145,7 @@ class reflex_editor_service extends mod_service {
         }
 
         // Если передан редактор, то кладем в базу его
-        if(mod::testClass(get_class($collection),"reflex_editor")) {
+        if(mod::service("classmap")->testClass(get_class($collection),"reflex_editor")) {
             return $collection;
         }
     }

@@ -11,8 +11,9 @@ class reflex_util {
 	 **/
 	public static function getItemClass($class) {
 
-	    if(!mod::testClass($class,"reflex"))
+	    if(!mod::app()->service("classmap")->testClass($class,"reflex")) {
 			return "reflex_none";
+		}
 
 		return $class;
 	}

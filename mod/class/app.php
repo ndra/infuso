@@ -5,15 +5,29 @@ class mod_app {
 	private $post;
 	private $get;
 	private $files;
+
+	private static $initiated = false;
+	
+	/**
+	 * Процессор шаблонов приложения
+	 **/
+	private $templateProcessor = null;
+	
+	/**
+	 * Текущий экземпляр объекта приложения
+	 **/
 	private static $current;
 	
+	/**
+	 * Возвращает текущий экземпляр объекта приложерия
+	 **/
 	public function current() {
 	
 	    if(!self::$current) {
 	    
 		    $p = $_SERVER["REQUEST_URI"];
 	        $server = $_SERVER["SERVER_NAME"];
-	        $url = mod_url::get("http://$server$p");
+	        $url = "http://{$server}{$p}";
 
 		    self::$current = new self(array(
 		        "url" => $url,
@@ -31,13 +45,70 @@ class mod_app {
 	    $this->url = $params["url"];
 	    $this->post = $params["post"];
 	    $this->files = $params["files"];
+	    
+	    $this->init();
+	    
+	}
+	
+	/**
+	 * Подключает жизненно важные классы
+	 **/
+	public function includeCoreClasses() {
+	    include("component.php");
+	    include("controller/controller.php");
+	    include("profiler.php");
+	    include("superadmin.php");
+	    include("mod.php");
+	    include("service.php");
+	    include("classmap/service.php");
+	    include("file/file.php");
+	    include("file/filesystem.php");
+	    include("file/list.php");
+	}
+	
+	public function setErrorLevel() {
+		error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT);
+		ini_set("display_errors",1);
+	}
+	
+	public function configureIni() {
+		ini_set('register_globals', 'off');
+		ini_set('magic_quotes_gpc', 'off');
+		ini_set('magic_quotes_runtime', 'off');
+		ini_set('default_charset', "utf-8");
+	}
+	
+	/**
+	 * Коллбэк для загрузки несуществующего класса
+	 **/
+	public function loadClass($class) {
+		$classmap = $this->service("classmap");
+		$path = $classmap->classPath($class);
+		include(mod::root()."/".$path);
+	}
+	
+	public function init() {
+	
+	    if(!self::$initiated) {
+
+		    self::$initiated = true;
+
+   			$this->configureIni();
+   			$this->setErrorLevel();
+			$this->includeCoreClasses();
+
+			spl_autoload_register(array($this,"loadClass"));
+		}
+		
+		$this->registerService("classmap","mod_classmap_service");
+		
 	}
 
 	/**
 	 * Возвращаем массив $_POST
 	 **/
 	public function url() {
-	    return $this->url;
+	    return mod_url::get($this->url);
 	}
 	
 	/**
@@ -59,10 +130,17 @@ class mod_app {
 	}
 	
 	/**
-	 * Возвращает текущую записаь active record (reflex)
+	 * Возвращает текущую запись active record (reflex)
 	 **/
 	public function ar() {
 	    return $this->ar;
+	}
+	
+	public function tmp() {
+	    if(!$this->templateProcessor) {
+	        $this->templateProcessor = new tmp_processor();
+	    }
+	    return $this->templateProcessor;
 	}
 	
     /**
@@ -84,7 +162,7 @@ class mod_app {
 		        $action->exec();
 		    } else {
 		        mod_cmd::error(404);
-		    }
+		    } 
 
 		} catch(Exception $exception) {
 
@@ -96,10 +174,6 @@ class mod_app {
 		    mod::trace($_SERVER["REMOTE_ADDR"]." at ".$_SERVER["REQUEST_URI"]." got exception: ".$exception->getMessage());
 
 		    try {
-
-				//if(class_exists("tmp")) {
-		        //	tmp::destroyConveyors();
-		       // }
 
 		        $action = mod::action("mod_cmd","exception")
 		            ->param("exception",$exception)
@@ -141,16 +215,15 @@ RewriteRule ^(.*)$ https://%1/$1 [R=301,L]\n\n
 	    $str.="RewriteCond %{REQUEST_URI} !\. \n";
 	    $str.="RewriteRule .* /mod/pub/gate.php [L] \n";
 
-	    foreach(mod::all() as $mod)
-	        if($public=mod::info($mod,"mod","public")) {
-	            if(!is_array($public)) $public = array($public);
-	            foreach($public as $pub) {
-	                $pub = $mod."/".trim($pub,"/");
-	                $pub = "/".trim($pub,"/")."/";
-	                $pub = strtr($pub,array("/"=>'\/'));
-	                $str.="RewriteCond %{REQUEST_URI} !^$pub\n";
-	            }
-			}
+		$bundleManager = mod::service("bundle");
+	    foreach($bundleManager->all() as $bundle) {
+            foreach($bundle->publicFolders() as $pub) {
+                $pub = $mod."/".trim($pub,"/");
+                $pub = "/".trim($pub,"/")."/";
+                $pub = strtr($pub,array("/"=>'\/'));
+                $str.="RewriteCond %{REQUEST_URI} !^$pub\n";
+            }
+		}
 
 		$str.= "RewriteCond %{REQUEST_URI} !\/mod\/pub\/gate.php\n";
 		$str.= "RewriteCond %{REQUEST_URI} !^\/?[^/]*$\n";
@@ -213,6 +286,40 @@ RewriteRule ^(.*)$ https://%1/$1 [R=301,L]\n\n
             $n++;
         } while (!$done);
 
+    }
+    
+    private $registerdServices = array();
+    
+    /**
+     * Возвращает службу (объект) по имени службы
+     **/
+    public function service($name) {
+    
+        $class = $this->registredServices[$name];
+        
+        if(!$class) {
+            $services = $this->service("classmap")->classmap("services");
+            $class = $services[$name];
+        }
+        
+        if(!$class) {
+            throw new Exception("Service [$name] not found");
+        }
+        
+        return $class::serviceFactory();
+    
+        /**$class = mod_conf::general("services",$name,"class");
+
+
+
+
+
+        
+        **/
+    }
+    
+    public function registerService($service,$class) {
+        $this->registredServices[$service] = $class;
     }
 
 }

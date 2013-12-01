@@ -18,7 +18,7 @@ class eshop extends reflex {
 	 * Контроллер главной страницы заказа
 	 **/
 	public function index() {
-	    tmp::get("/eshop/title")->exec();
+		mod::app()->tmp()->template("/eshop/title")->exec();
 	}
 
 	/**
