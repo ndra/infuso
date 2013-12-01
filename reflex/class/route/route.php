@@ -131,12 +131,10 @@ class reflex_route extends mod_route implements mod_handler {
 	    if($action->action()=="item") {
 			$id = $action->param("id");
 			$obj = reflex::get($action->className(),$id);
-			if($obj->published()) {
-			    $action->ar(get_class($obj)."/".$obj->id());
-			} else {
-			    mod_cmd::error(404);
+			if(!$obj->published()) {
+				mod_cmd::error(404);
 			}
-			
+			$action->ar(get_class($obj)."/".$obj->id());
 		}
 
 		

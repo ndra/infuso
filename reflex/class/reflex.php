@@ -179,7 +179,7 @@ class reflex extends mod_model {
     }
 
     public final function reflex_updateSearch() {
-    
+
         if(!$this->reflex_meta()) {
             return;
 		}
@@ -188,9 +188,8 @@ class reflex extends mod_model {
 
         // Если объект не опубликован или запрещен для поиска, передаем пустую строку в данные для поиска
         if(!$this->published() || $search=="skip") {
-            if($this->metaObject()->exists()) {
+            if($this->metaObject()->exists())
                 $this->meta("search","");
-            }
             return;
         }
 
