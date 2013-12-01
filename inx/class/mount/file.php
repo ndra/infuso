@@ -60,12 +60,16 @@ class inx_mount_file extends mod_component {
 	 * Например, inx.mod.reflex
 	 **/
 	public function name() {
-		$path = file::get($this->mod()."/".mod::info($this->mod(),"inx","path"))->path();
+	
+	    $path = file::get($this->mod()."/".mod::service("bundle")->bundle($this->mod())->conf("inx","path"))->path();
+	
 		$ext = file::get($this->path())->ext();
 		$name = strtr($this->path(),array($path=>"",".$ext"=>""));
 		$name = file::get($name)->path();
 		$name = strtr($name,"/",".");
-		$name = mod::info($this->mod(),"inx","namespace").".".trim($name,".");
+		
+		$name = mod::service("bundle")->bundle($this->mod())->conf("inx","namespace").".".trim($name,".");
+
 		return $name;
 	}
 

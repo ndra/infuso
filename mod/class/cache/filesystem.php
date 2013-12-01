@@ -18,15 +18,15 @@ class mod_cache_filesystem extends mod_cache_driver {
      * Возвращает значение переменной
      **/
     public function get($key) {
-        return file::get(self::filename($key))->data();
+        return mod_file::get(self::filename($key))->data();
     }
 
     /**
      * Устанавливает значение переменной
      **/
     public function set($key,$val) {
-        file::mkdir(file::get(self::filename($key))->up());
-        file::get(self::filename($key))->put($val);
+        mod_file::mkdir(mod_file::get(self::filename($key))->up());
+        mod_file::get(self::filename($key))->put($val);
     }
 
     /**
@@ -34,7 +34,7 @@ class mod_cache_filesystem extends mod_cache_driver {
      * Удаляет папку /mod/cache/
      **/
     public function clear() {
-        file::get("/mod/cache/")->delete(true);
+        mod_file::get("/mod/cache/")->delete(true);
     }
     
     /**

@@ -79,7 +79,7 @@ class reflex extends mod_model {
 
     public static function classes() {
         $ret = array();
-        foreach(mod::classes("reflex") as $class) {
+        foreach(mod::service("classmap")->classes("reflex") as $class) {
             if(get_class(reflex::virtual($class))==$class) {
                 if($class!="reflex_none") {
                     $ret[] = $class;

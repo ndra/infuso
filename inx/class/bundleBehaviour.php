@@ -3,10 +3,10 @@
 class inx_bundleBehaviour extends mod_behaviour {
 
 	public function addToClass() {
-	    return "bundle";
+	    return "mod_bundle";
 	}
 
-	public function inxFolder() {
+	public function inxPath() {
 	    return $this->path()."/".$this->conf("inx","path");
 	}
 

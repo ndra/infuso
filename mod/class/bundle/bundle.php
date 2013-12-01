@@ -20,12 +20,12 @@ class mod_bundle extends mod_component {
 	 **/
 	public function conf() {
 	
-	    $file = file::get($this->path()."/.infuso");
+	    $file = mod_file::get($this->path()."/.infuso");
 	    if($file->exists()) {
-		    $data = file::get($this->path()."/.infuso")->data();
+		    $data = mod_file::get($this->path()."/.infuso")->data();
 			$conf = mod::service("yaml")->read($data);
 		} else {
-		    $conf = file::get($this->path()."/info.ini")->ini(true);
+		    $conf = mod_file::get($this->path()."/info.ini")->ini(true);
 			$conf["public"] = $conf["mod"]["public"];
 			$conf["leave"] = $conf["mod"]["leave"];
 		}
@@ -42,11 +42,11 @@ class mod_bundle extends mod_component {
 	 **/
 	public function exists() {
 	
-	    if(file::get($this->path()."/.infuso")->exists()) {
+	    if(mod_file::get($this->path()."/.infuso")->exists()) {
 	        return true;
 	    }
 
-		if(file::get($this->path()."/info.ini")->exists()) {
+		if(mod_file::get($this->path()."/info.ini")->exists()) {
 	        return true;
 	    }
 	    
@@ -63,7 +63,7 @@ class mod_bundle extends mod_component {
 	    $conf = $this->conf();
 	    $leave = is_array($conf["leave"]) ? $conf["leave"] : array();
 	    foreach($leave as $folder) {
-			$ret[] = (string) file::get($this->path()."/".$folder);
+			$ret[] = (string) mod_file::get($this->path()."/".$folder);
 	    }
 	    return $ret;
 	    
@@ -78,7 +78,7 @@ class mod_bundle extends mod_component {
 	    $conf = $this->conf();
 	    $public = is_array($conf["public"]) ? $conf["public"] : array();
 	    foreach($public as $folder) {
-			$ret[] = (string) file::get($this->path()."/".$folder);
+			$ret[] = (string) mod_file::get($this->path()."/".$folder);
 	    }
 	    return $ret;
 
@@ -88,7 +88,7 @@ class mod_bundle extends mod_component {
 	 * Возвращает путь к классам модуля
 	 **/
 	public function classPath() {
-	    return file::get($this->path()."/class/");
+	    return mod_file::get($this->path()."/class/");
 	}
 
 }

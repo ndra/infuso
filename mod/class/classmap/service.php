@@ -86,15 +86,12 @@ class mod_classmap_service extends mod_service {
  	public static function classmap($key=null) {
  	
 		// Загружаем карту класса по требованию
-		if(!self::$classmap) {
-		
+		if(self::$classmap === null) {
 		    if(file_exists("../service/classmap.inc.php")) {
 		        self::$classmap = include("../service/classmap.inc.php");
 		    } else {
-		        include_once("../class/classmap/builder.php");
-          		mod_classmap_builder::buildClassMap();
+          		self::$classmap = array();
 		    }
-	    	
 		}
 
 		$ret = self::$classmap;
@@ -108,6 +105,32 @@ class mod_classmap_service extends mod_service {
 	
 	public function setClassMap($classmap) {
 		self::$classmap = $classmap;
+	}
+	
+	public function includeClass($class) {
+	
+	    // Достаем путь к классу из карты классов
+	    $path = $this->classPath($class);
+	    
+	    if($path) {
+			include(mod::root()."/".$path);
+		}
+		
+		// Если класс не нашелся в карте сайта, сканируем папку /mod/class
+		// И подключаем все классыв ней рекурсивно
+		else {
+		
+		    $class = preg_replace("/^mod_/","",$class);
+			$a = explode("_",$class);
+			$p1 = mod::root()."/mod/class/".implode("/",$a).".php";
+			$p2 = mod::root()."/mod/class/".implode("/",$a)."/".$a[sizeof($a)-1].".php";
+			if(file_exists($p1)) {
+			    include_once($p1);
+			} elseif(file_exists($p2)) {
+			    include_once($p2);
+			}
+			
+		}
 	}
 
 }

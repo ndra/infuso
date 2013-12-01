@@ -45,9 +45,7 @@ class mod_app {
 	    $this->url = $params["url"];
 	    $this->post = $params["post"];
 	    $this->files = $params["files"];
-	    
 	    $this->init();
-	    
 	}
 	
 	/**
@@ -82,9 +80,7 @@ class mod_app {
 	 * Коллбэк для загрузки несуществующего класса
 	 **/
 	public function loadClass($class) {
-		$classmap = $this->service("classmap");
-		$path = $classmap->classPath($class);
-		include(mod::root()."/".$path);
+		$this->service("classmap")->includeClass($class);
 	}
 	
 	public function init() {
@@ -101,6 +97,9 @@ class mod_app {
 		}
 		
 		$this->registerService("classmap","mod_classmap_service");
+		$this->registerService("route","mod_route_service");
+		$this->registerService("bundle","mod_bundle_manager");
+		$this->registerService("yaml","mod_confLoader_yaml");
 		
 	}
 
@@ -149,7 +148,7 @@ class mod_app {
 	public function exec() {
 	
 	    Header("HTTP/1.0 200 OK");
-	
+
 		try {
 
 			// Выполняем post-команду
@@ -157,12 +156,12 @@ class mod_app {
 
 		    // Выполняем экшн
 		    $action = $this->action();
-		    
+
 		    if($action) {
 		        $action->exec();
 		    } else {
 		        mod_cmd::error(404);
-		    } 
+		    }
 
 		} catch(Exception $exception) {
 
@@ -175,9 +174,11 @@ class mod_app {
 
 		    try {
 
-		        $action = mod::action("mod_cmd","exception")
+		        /*$action = mod::action("mod_cmd","exception")
 		            ->param("exception",$exception)
-		            ->exec();
+		            ->exec(); */
+		            
+				die($exception);
 
 		    } catch(Exception $ex2) {
 		        throw $exception;
@@ -240,7 +241,7 @@ RewriteRule ^(.*)$ https://%1/$1 [R=301,L]\n\n
 
 		if($step==0) {
             $this->generateHtaccess();
-		    mod_classmap::buildClassMap();
+		    mod_classmap_builder::buildClassMap();
 		    $next = true;
 		} else {
 
@@ -257,7 +258,7 @@ RewriteRule ^(.*)$ https://%1/$1 [R=301,L]\n\n
                 return 0;
             };
 
-            $classes = mod::classes("mod_init");
+            $classes = mod::service("classmap")->classes("mod_init");
             usort($classes,$sort);
             $class = $classes[$step-1];
 

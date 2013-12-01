@@ -13,8 +13,8 @@ class inx_init extends mod_init {
 		// Очищаем папку
 		file::get("/inx/pub/")->delete(true);
 
-		foreach(mod::all() as $mod) {
-			self::buildModule($mod);
+		foreach(mod::service("bundle")->all() as $mod) {
+			self::buildModule($mod->path());
         }
 
 		self::generateBuildID();
@@ -28,8 +28,7 @@ class inx_init extends mod_init {
 	}
 
 	public static function getModulePath($mod) {
-		$path = mod::info($mod,"inx","path");
-	    return $path ? "/$mod/$path/" : null;
+		return mod::service("bundle")->bundle($mod)->inxPath();
 	}
 
 	public static function generateBuildID() {

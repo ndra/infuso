@@ -27,7 +27,7 @@ class tmp_theme_init extends mod_init {
 		$themes = array();
 
     	// Собираем темы-классы
-		foreach(mod::classes("tmp_theme") as $class) {
+		foreach(mod::service("classmap")->classes("tmp_theme") as $class) {
 	        $themes[] = new $class();
 		}
 

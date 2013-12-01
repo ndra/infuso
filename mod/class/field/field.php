@@ -133,7 +133,7 @@ abstract class mod_field extends mod_component {
     public static function collect() {
         file::mkdir(file::get(self::$path)->up());
         $ret = array();
-        foreach(mod::classes("mod_field") as $class) {
+        foreach(mod::service("classmap")->classes("mod_field") as $class) {
 
             $obj = new $class;
 

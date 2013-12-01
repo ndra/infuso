@@ -38,7 +38,7 @@ class reflex_init extends mod_init {
 	
 	public static function buildEditorMap() {
 	    $map = array();
-		foreach(mod::classes("reflex_editor") as $class) {
+		foreach(mod::service("classmap")->classes("reflex_editor") as $class) {
 		    $e = new $class;
 		    $map[$e->itemClass()][] = $class;
 		}

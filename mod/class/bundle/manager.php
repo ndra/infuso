@@ -26,7 +26,7 @@ class mod_bundle_manager extends mod_service {
 				$leave = $bundle->leave();
 			}
 	    
-	        foreach(file::get($path)->dir()->folders() as $folder) {
+	        foreach(mod_file::get($path)->dir()->folders() as $folder) {
 				if(!in_array((string)$folder,$leave)) {
 				    $scan($folder);
 				}

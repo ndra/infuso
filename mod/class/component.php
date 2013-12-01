@@ -287,7 +287,7 @@ class mod_component {
      * Загрузка параметров из конфигурации YAML
      **/
     private function loadParams() {
-
+    
         if($this->paramsLoaded) {
             return;
         }
@@ -298,6 +298,7 @@ class mod_component {
         $this->params($this->initialParams());
 
         $params = $this->componentConf("params");
+        
         if(is_array($params)) {
             foreach($params as $key=>$val) {
                 $this->param($key,$val);
