@@ -1,0 +1,8 @@
+public:
+  - /img/
+  - /build/
+  - /res/
+
+inx:
+  namespace: inx.mod.inxdev
+  path: /inx.mod.inxdev/

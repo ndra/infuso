@@ -1,0 +1,8 @@
+public:
+  - /res/
+  
+leave:
+  - /templates/
+
+mysql:
+  path: /tables/

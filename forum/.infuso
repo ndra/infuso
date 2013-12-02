@@ -1,0 +1,7 @@
+public:
+  - /res/
+  - /files/
+  - /files/
+
+mysql:
+  path: /tables/

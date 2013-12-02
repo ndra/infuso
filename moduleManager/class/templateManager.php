@@ -113,8 +113,9 @@ class moduleManager_templateManager extends mod_controller {
 		$tmp->add($p["name"]);
 		$reload = self::get($p["themeID"],$p["id"])->name();
 		$theme = tmp_theme::get($p["themeID"]);
-		if($reload==$theme->template($theme->base())->name())
+		if($reload==$theme->template($theme->base())->name()) {
 		    $reload = 0;
+		}
 		return $reload;
 	}
 
@@ -125,9 +126,9 @@ class moduleManager_templateManager extends mod_controller {
 		self::get($p["themeID"],$p["id"])->delete();
 		$reload = self::get($p["themeID"],$p["id"])->parent()->name()."";
 		$theme = tmp_theme::get($p["themeID"]);
-		if($reload==$theme->template($theme->base())->name())
+		if($reload==$theme->template($theme->base())->name()) {
 		    $reload = 0;
-		    
+		}
 		return $reload;
 	}
 
@@ -138,8 +139,9 @@ class moduleManager_templateManager extends mod_controller {
 		self::get($p["themeID"],$p["id"])->rename($p["name"]);
 		$reload = self::get($p["themeID"],$p["id"])->parent()->name();
 		$theme = tmp_theme::get($p["themeID"]);
-		if($reload==$theme->template($theme->base())->name())
+		if($reload==$theme->template($theme->base())->name()) {
 		    $reload = 0;
+		}
 		return $reload;
 	}
 
@@ -147,6 +149,7 @@ class moduleManager_templateManager extends mod_controller {
 	 * Копирование старых шаблонов
 	 **/
 	public static function post_restoreTemplates($p) {
+	
 		$theme = tmp_theme::get($p["themeID"]);
 		$folders = array(
 		    "/eshop/templates/",
@@ -159,6 +162,7 @@ class moduleManager_templateManager extends mod_controller {
 	     	"/vote/templates/",
 	     	"/lang/templates/",
 		);
+		
 		foreach($folders as $folder) {
 		    $folder = file::get($folder);
 		    if($folder->exists()) {
@@ -167,6 +171,7 @@ class moduleManager_templateManager extends mod_controller {
 			    $folder->copy($dest);
 		    }
 		}
+		
 		$theme->buildMap();
 	}
 

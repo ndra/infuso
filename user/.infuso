@@ -1,0 +1,16 @@
+public:
+  - /res/
+  
+leave:
+  - /files/
+  - /templates/
+conf = user::configuration
+
+title = Пользователи
+
+mysql:
+  path: /tables/
+
+inx:
+  path: /inx.mod.user/
+  namespace: inx.mod.user

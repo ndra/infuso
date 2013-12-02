@@ -2,9 +2,10 @@ public:
   -preview
   -res
   -/preview/
+  
 leave:
   - preview
 
 inx:
-  path:/inx.mod.file/
-  namespace:inx.mod.file
+  path: /inx.mod.file/
+  namespace: inx.mod.file

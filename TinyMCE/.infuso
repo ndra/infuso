@@ -1,0 +1,6 @@
+mod:
+  public: /editor/
+
+inx:
+  path: /inx.mod.TinyMCE/
+  namespace: inx.mod.TinyMCE

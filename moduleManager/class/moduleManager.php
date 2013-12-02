@@ -33,7 +33,7 @@ class moduleManager extends mod_controller{
 
 	    foreach(mod::service("bundle")->all() as $bundle) {
 	    
-	        $m = (string) $bundle->path();
+	        $m = trim($bundle->path(),"/");
 
 	        // Модуль
 	        $module = array(

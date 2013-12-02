@@ -16,9 +16,9 @@ mod.msg = function(text,error) {
 
 mod.handlers = {}
 mod.on = function(name,handler) {
-	if(!mod.handlers[name])
-		mod.handlers[name] = [];
-	mod.handlers[name].push(handler);
+    if(!mod.handlers[name])
+        mod.handlers[name] = [];
+    mod.handlers[name].push(handler);
 }
 
 /**
@@ -30,7 +30,7 @@ mod.cmd = function(data,fn) {
     }
     var json = JSON.stringify(data);
     this.request = $.ajax({
-        url: "/mod/pub/json.php?cmd="+data.cmd, // Добавляем команду к get-запросу (для логов)
+        url: "/mod_json/?cmd="+data.cmd, // Добавляем команду к get-запросу (для логов)
         data: {data:json},
         type: "POST",
         success:function(d){
@@ -39,7 +39,7 @@ mod.cmd = function(data,fn) {
         error:function(r) {
             if(r.readyState!=0) {
                 mod.handleCmd(false,r.responseText);
-			}
+            }
         }
     })
 },
@@ -50,9 +50,9 @@ mod.parseCmd = function(str) {
         eval("var data="+str);
     } catch(ex) {
         return {
-			success:false,
-			text:str
-		};
+            success:false,
+            text:str
+        };
     }
     
     // Выводим сообщения
@@ -68,10 +68,10 @@ mod.parseCmd = function(str) {
     }
     
     return {
-		success:data.completed,
-		data:data.data,
-		meta:data.meta
-	}
+        success:data.completed,
+        data:data.data,
+        meta:data.meta
+    }
 }
 
 /**
@@ -80,8 +80,8 @@ mod.parseCmd = function(str) {
 mod.fire = function(name,params) {
     var handlers = mod.handlers[name];
     if(handlers)
-    	for(var j in handlers)
-    		handlers[j](params);
+        for(var j in handlers)
+            handlers[j](params);
 }
 
 mod.handleCmd = function(success,response,fn) {
@@ -102,6 +102,6 @@ mod.handleCmd = function(success,response,fn) {
     }
 
     if(fn)
-		fn(ret.data);
+        fn(ret.data);
 
 }

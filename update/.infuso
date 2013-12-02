@@ -1,0 +1,9 @@
+public:
+  - /dump/
+  
+leave:
+  - /dump/
+
+inx:
+  namespace: inx.mod.update
+  path: /inx.mod.update/

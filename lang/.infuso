@@ -1,0 +1,14 @@
+title: Языки
+
+public:
+  - /files/
+  
+leave:
+  - /files/
+
+mysql:
+  path: /tables/
+
+inx:
+  path: /inx.mod.lang/
+  namespace: inx.mod.lang

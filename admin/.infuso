@@ -1,0 +1,7 @@
+public:
+  - /res/
+
+inx:
+  namespace: inx.mod.admin
+  path: /inx.mod.admin/
+

@@ -52,7 +52,7 @@ inx.handlers = {}
 inx.conf = {
     url:"/inx/pub/",
     res:"/inx/res/",
-    cmdUrl:"/mod/pub/json.php",
+    cmdUrl:"/mod_json/",
     z_index_dialog:100000000,
     z_index_message:120000000,
     z_index_field:110000000,

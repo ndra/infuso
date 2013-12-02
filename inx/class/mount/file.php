@@ -61,7 +61,8 @@ class inx_mount_file extends mod_component {
 	 **/
 	public function name() {
 	
-	    $path = file::get($this->mod()."/".mod::service("bundle")->bundle($this->mod())->conf("inx","path"))->path();
+	    $inxPath = mod::service("bundle")->bundle($this->mod())->conf("inx","path");
+	    $path = file::get($this->mod()."/".$inxPath)->path();
 	
 		$ext = file::get($this->path())->ext();
 		$name = strtr($this->path(),array($path=>"",".$ext"=>""));

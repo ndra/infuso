@@ -1,0 +1,11 @@
+public:
+  - /pub/
+  - /res/
+  
+leave:
+  - /pub/
+
+inx:
+  path: /src/
+  namespace: ""
+

@@ -1,0 +1,6 @@
+mysql:
+  path: /tables/
+
+inx:
+  path: inx.mod.seo
+  namespace: inx.mod.seo

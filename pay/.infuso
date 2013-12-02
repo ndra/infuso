@@ -1,0 +1,10 @@
+mod:
+  - leave: /templates/
+
+mysql:
+  path: /tables/
+
+inx:
+  namespace: inx.mod.pay
+  path: /inx.mod.pay/
+    

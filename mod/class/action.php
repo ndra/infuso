@@ -210,7 +210,7 @@ class mod_action extends mod_component {
     }
 
     public function all() {
-        $map = mod::classmap("routes");
+        $map = mod::service("classmap")->classmap("routes");
         return $map;
     }
 

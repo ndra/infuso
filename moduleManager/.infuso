@@ -1,0 +1,9 @@
+public:
+  - /res/
+  - /icons/
+  - /pack/
+  - /pack/
+
+inx:
+  path: /inx.mod.moduleManager/
+  namespace: inx.mod.moduleManager

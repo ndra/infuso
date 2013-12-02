@@ -7,7 +7,15 @@ class inx_bundleBehaviour extends mod_behaviour {
 	}
 
 	public function inxPath() {
-	    return $this->path()."/".$this->conf("inx","path");
+
+	    $inxPath = $this->conf("inx","path");
+
+	    if($inxPath) {
+	        return $this->path()."/".$inxPath;
+	    }
+	    
+	    return null;
+
 	}
 
 }
