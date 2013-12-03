@@ -1,9 +1,11 @@
 <?
 
+use infuso\core\superadmin;
+
 class moduleManager extends mod_controller{
 
 	public static function indexTest() {
-        return mod_superadmin::check();
+        return superadmin::check();
     }
 	
 	public static function index() {

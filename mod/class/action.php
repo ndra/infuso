@@ -9,6 +9,7 @@ class action extends component {
     private $ar = "";
 
     public function __construct($className=null,$action=null,$params = array()) {
+    
         if(!trim($action)) {
             $action = "index";
         }
@@ -18,7 +19,6 @@ class action extends component {
         if($params) {
         	$this->params($params);
         }
-
     }
 
     public function get($class,$action=null,$params=array()) {
@@ -101,7 +101,7 @@ class action extends component {
      **/
     public function test() {
 
-        if(!mod::app()->service("classmap")->testClass($this->className(),"mod_controller")) {
+        if(!mod::app()->service("classmap")->testClass($this->className(),"infuso\\core\\controller")) {
             return false;
 		}
 
@@ -149,6 +149,7 @@ class action extends component {
         ob_start();
 
         if(!$this->test()) {
+        
             call_user_func($this->failCallback(),$this->params());
 
         } else {

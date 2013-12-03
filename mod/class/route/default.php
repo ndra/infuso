@@ -21,8 +21,9 @@ class mod_route_default extends mod_route {
 		    }
 		}
 
-		if(mod::service("classmap")->testClass($class,"mod_controller")) {
-			return mod_action::get($class,$action,$params);
+
+		if(mod::service("classmap")->testClass($class,"infuso\\core\\controller")) {
+			return \infuso\core\action::get($class,$action,$params);
 		}
 	}
 

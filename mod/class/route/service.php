@@ -33,7 +33,7 @@ class service extends \infuso\core\service {
         }
 
         $routers = core\mod::service("classmap")->classmap("routes");
-
+        
         foreach($routers as $router) {
             if($callback = call_user_func(array($router,"forward"),$url)) {
                 \infuso\core\profiler::endOperation();
@@ -51,7 +51,7 @@ class service extends \infuso\core\service {
        // $serializedAction = mod_cache::get($key);
 
         if(!$serializedAction) {
-
+        
             $action = $this->forwardTest($url);
             if($action) {
                 $serializedAction = json_encode(array(

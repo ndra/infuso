@@ -197,9 +197,9 @@ class mod extends controller {
 
 	public static function session($key,$val=null) {
 		if(func_num_args()==1) {
-		    return mod_session::get($key);
+		    return \mod_session::get($key);
 		}
-	    mod_session::set($key,$val);
+	    \mod_session::set($key,$val);
 	}
 
 	/**
