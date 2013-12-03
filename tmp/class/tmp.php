@@ -194,7 +194,7 @@ class tmp implements mod_handler {
             $html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">'."\n";
             $html.= "<html xmlns='http://www.w3.org/1999/xhtml'>\n<head>\n";
             $html.= "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />\n";
-			$html.= "<meta http-equiv='X-UA-Compatible' content='IE=EmulateIE7,IE=edge'>";
+			//$html.= "<meta http-equiv='X-UA-Compatible' content='IE=EmulateIE7,IE=edge'>";
 
             $html.= tmp_delayed::add(array(
                 "class" => "tmp",
