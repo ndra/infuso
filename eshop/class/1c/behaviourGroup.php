@@ -5,8 +5,11 @@
  **/ 
 class eshop_1c_behaviourGroup extends mod_behaviour {
 
+	/**
+	 * @todo add conf here
+	 **/
     public function addToClass() {
-        return mod_conf::get("eshop:1c") ? "eshop_group" : null;
+        // return mod_conf::get("eshop:1c") ? "eshop_group" : null;
     }
     
     public function fields() {

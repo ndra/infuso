@@ -2,7 +2,7 @@
 /**
  * Сервис для отправка письма через стандартный sendmail
  */
-class mod_mailer extends mod_service {
+class mod_mailer extends \infuso\core\service {
 
     /**
      * Этот класс используеться по-умолчанию для сервиса "mailer"

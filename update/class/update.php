@@ -14,10 +14,14 @@ class update extends mod_controller {
 		);
 	}
 
-	public static function indexTest() { return mod_superadmin::check(); }
-	public static function postTest() { return mod_superadmin::check(); }
-	public static function indexTitle() { return "Архивация модулей"; }
-
+	public static function indexTest() {
+		return mod_superadmin::check();
+	}
+	
+	public static function postTest() {
+		return mod_superadmin::check();
+	}
+	
 	public static function index() {
 		tmp::exec("admin:header",array("title"=>"Архивация модулей"));
 		inx::add(array(
@@ -25,7 +29,10 @@ class update extends mod_controller {
 		));
 		tmp::exec("admin:footer");
 	}
-	public static function indexFailed() { admin::fuckoff(); }
+	
+	public static function indexFailed() {
+		admin::fuckoff();
+	}
 
 	public static function conf() {
         $ret = mod_conf::general("push");
@@ -36,8 +43,6 @@ class update extends mod_controller {
         }
         return $ret;
 	}
-	
-	
 
 	/**
 	 * push:

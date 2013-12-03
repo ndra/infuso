@@ -1,6 +1,8 @@
 <?
 
-class mod_file_list implements Iterator{
+namespace infuso\core;
+
+class flist implements \Iterator{
 
     // Итераторская шняга
     private $items = array();

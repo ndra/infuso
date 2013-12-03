@@ -4,7 +4,14 @@
 include("../class/app.php");
 
 // Создаем приложение
-$app = mod_app::current();
+$p = $_SERVER["REQUEST_URI"];
+$server = $_SERVER["SERVER_NAME"];
+$url = "http://{$server}{$p}";
+$app = new \infuso\core\app(array(
+    "url" => $url,
+    "post" => $_POST,
+    "files" => $_FILES,
+));
 
 // Выполняем приложение
 $app->exec();

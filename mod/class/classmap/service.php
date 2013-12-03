@@ -1,6 +1,8 @@
 <?
 
-class mod_classmap_service extends mod_service {
+namespace infuso\core;
+
+class classmapService extends service {
 
 	private static $extends = array();
 	
@@ -11,6 +13,10 @@ class mod_classmap_service extends mod_service {
 	}
 	
 	public function classes($extends = null) {
+	    return $this->getClassesExtends($extends);
+	}
+	
+	public function map($extends = null) {
 	    return $this->getClassesExtends($extends);
 	}
 	
@@ -74,10 +80,8 @@ class mod_classmap_service extends mod_service {
 	 * Возвращает пкть к файлу класса
 	 **/
 	public function classPath($class) {
-	
 	    $map = self::classmap();
 	    return $map["map"][$class]["f"];
-	
 	}
 	
 	/**
@@ -107,21 +111,38 @@ class mod_classmap_service extends mod_service {
 		self::$classmap = $classmap;
 	}
 	
+	private static $aliases = array(
+	    "file" => "infuso\\core\\file",
+	    "mod_file" => "infuso\\core\\file",
+	    "mod_profiler" => "infuso\\core\\profiler",
+	    "mod_url" => "infuso\\core\\url",
+	    "mod" => "infuso\\core\\mod",
+	    "mod_component" => "infuso\\core\\component",
+	    "mod_controller" => "infuso\\core\\controller",
+	    "mod_service" => "infuso\\core\\service",
+	);
+	
 	public function includeClass($class) {
 	
+	    $alias = self::$aliases[$class];
+	    if($alias) {
+	        self::includeClass($alias);
+	        return;
+	    }
+	    
 	    // Достаем путь к классу из карты классов
 	    $path = $this->classPath($class);
 	    
 	    if($path) {
-			include(mod::root()."/".$path);
+			include_once(mod::root()."/".$path);
 		}
 		
 		// Если класс не нашелся в карте сайта, сканируем папку /mod/class
 		// И подключаем все классыв ней рекурсивно
 		else {
-		
-		    $class = preg_replace("/^mod_/","",$class);
-			$a = explode("_",$class);
+		    $class2 = strtr($class,array("\\" => "_"));
+		    $class2 = preg_replace("/^(mod_)|(infuso_core_)/","",$class2);
+			$a = explode("_",$class2);
 			$p1 = mod::root()."/mod/class/".implode("/",$a).".php";
 			$p2 = mod::root()."/mod/class/".implode("/",$a)."/".$a[sizeof($a)-1].".php";
 			if(file_exists($p1)) {
@@ -131,6 +152,13 @@ class mod_classmap_service extends mod_service {
 			}
 			
 		}
+		
+	    foreach(self::$aliases as $key => $val) {
+	        if($val == $class) {
+				class_alias($class,$key);
+	        }
+	    }
+		
 	}
 
 }

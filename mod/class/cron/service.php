@@ -3,7 +3,7 @@
 /**
  * Контроллер крона
  **/
-class mod_cron_service extends mod_service {
+class mod_cron_service extends \infuso\core\service {
 
 	public function defaultService() {
 	    return "cron";

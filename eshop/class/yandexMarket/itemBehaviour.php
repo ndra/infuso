@@ -6,7 +6,7 @@
 class eshop_yandexMarket_itemBehaviour extends mod_behaviour {
 
     public function addToClass() {
-        return mod_conf::get("eshop:yandex:market") ? "eshop_item" : null;
+       // return mod_conf::get("eshop:yandex:market") ? "eshop_item" : null;
     }
     
     public function behaviourPriority() {

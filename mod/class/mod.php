@@ -1,6 +1,8 @@
 <?
 
-class mod extends mod_controller {
+namespace infuso\core;
+
+class mod extends controller {
 
 	private static $info = array();
 
@@ -15,7 +17,7 @@ class mod extends mod_controller {
 	public static function index() {
 	    
 	    try {
-			mod_console::xindex();
+			\infuso\core\console::xindex();
 		} catch (Exception $ex) {
 		    echo "Exception: ".$ex->getMessage();
 		}
@@ -37,7 +39,7 @@ class mod extends mod_controller {
 	 * той, что в /mod/conf/
 	 **/
 	public static function conf($key) {
-	    return mod_conf::get($key);
+	    return conf::get($key);
 	}
 
 	/**
@@ -49,12 +51,12 @@ class mod extends mod_controller {
 	    
 	        self::$debug = false;
 	
-		    if(!mod_conf::get("mod:debug")) {
+		    if(!conf::get("mod:debug")) {
 				self::$debug = false;
 				return self::$debug;
 		    }
 
-		    if(!mod_superadmin::check()) {
+		    if(!superadmin::check()) {
 		        self::$debug = false;
 				return self::$debug;
 		    }
@@ -80,7 +82,7 @@ class mod extends mod_controller {
 	}
 
 	public static function loadXMLConf($doc) {
-	    $driver = new mod_confLoader_xml();
+	    $driver = new \mod_confLoader_xml();
 	    $php = $driver->read($doc);
 	    return $php;
 	}
@@ -146,7 +148,7 @@ class mod extends mod_controller {
 	 * Выводит сообщение
 	 **/
 	public function msg($message,$error=false) {
-		mod_log::msg($message,$error);
+		log::msg($message,$error);
 	}
 
 	/**
@@ -160,14 +162,14 @@ class mod extends mod_controller {
 	 * Возвращает экшн (класс mod_action)
 	 **/
 	public static function action($a,$b=null,$c=array()) {
-		return mod_action::get($a,$b,$c);
+		return action::get($a,$b,$c);
 	}
 
 	/**
 	 * Создает и возвращает экземпляр класса mod_event
 	 **/
 	public function event($eventName,$params=array()) {
-		return new mod_event($eventName,$params);
+		return new event($eventName,$params);
 	}
 
 	/**
@@ -224,7 +226,7 @@ class mod extends mod_controller {
 	 * Вместо класса может использоваться короткий илиас, например "checkbox"
 	 **/
 	public function field($class) {
-		return mod_field::get($class);
+		return \mod_field::get($class);
 	}
 	
 	/**
@@ -256,7 +258,7 @@ class mod extends mod_controller {
 	 * Возвращает текущее приложение
 	 **/
 	public function app() {
-	    return mod_app::current();
+	    return \infuso\core\app::current();
 	}
 
 }

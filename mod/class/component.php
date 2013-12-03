@@ -1,6 +1,8 @@
 <?
 
-class mod_component {
+namespace infuso\core;
+
+class component {
 
     /**
      * Параметры компонента
@@ -37,7 +39,7 @@ class mod_component {
      **/
     public final function addBehaviour($behaviour) {
 
-        mod_profiler::beginOperation("mod","addbehaviour",$behaviour);
+        profiler::beginOperation("mod","addbehaviour",$behaviour);
 
         if(!is_string($behaviour)) {
             throw new Exception("mod_component::addBehaviour() - аргумент должен быть строкой, содержащей имя класса");
@@ -54,7 +56,7 @@ class mod_component {
             $this->behavioursSorted = false;
         }
 
-        mod_profiler::endOperation("mod","addbehaviour",$behaviour);
+        profiler::endOperation("mod","addbehaviour",$behaviour);
 
         return $this;
     }
@@ -163,7 +165,7 @@ class mod_component {
         $line = $b[2]["line"];
         $file = $b[2]["file"];
 
-        throw new Exception("Call undefined method $class::$fn in $file on line $line");
+        throw new \Exception("Call undefined method $class::$fn in $file on line $line");
     }
 
     /**
@@ -193,7 +195,7 @@ class mod_component {
         $this->addDefaultBehaviours();
         if(!$this->behavioursSorted) {
 
-            mod_profiler::beginOperation("mod","normalizeBehaviours",get_class($this));
+            profiler::beginOperation("mod","normalizeBehaviours",get_class($this));
 
             foreach($this->___behaviours as $key=>$behaviour) {
                 if(is_string($behaviour)) {
@@ -206,19 +208,19 @@ class mod_component {
 
             $this->sortBehaviours();
 
-            mod_profiler::endOperation();
+            profiler::endOperation();
         }
 
     }
 
     private final function sortBehaviours() {
 
-        mod_profiler::beginOperation("mod","sortBehaviours",get_class($this));
+        profiler::beginOperation("mod","sortBehaviours",get_class($this));
 
         $this->behavioursSorted = true;
         usort($this->___behaviours,array("self","sortBehavioursCallback"));
 
-        mod_profiler::endOperation();
+        profiler::endOperation();
     }
 
     private static function sortBehavioursCallback($a,$b) {
@@ -244,7 +246,7 @@ class mod_component {
             return;
 		}
 
-        mod_profiler::beginOperation("mod","addDefaultBehaviours",get_class($this));
+        profiler::beginOperation("mod","addDefaultBehaviours",get_class($this));
 
         $this->defaultBehavioursAdded = true;
 
@@ -260,7 +262,7 @@ class mod_component {
 			}
 		}
 
-        mod_profiler::endOperation("mod","addDefaultBehaviours",get_class($this));
+        profiler::endOperation("mod","addDefaultBehaviours",get_class($this));
 
     }
     
@@ -321,7 +323,7 @@ class mod_component {
         $args = func_get_args();
         array_unshift($args,get_class($this));
         array_unshift($args,"components");
-        return call_user_func_array(array("mod_conf","general"),$args);
+        return call_user_func_array(array("\infuso\core\conf","general"),$args);
     }
 
     /**
@@ -462,7 +464,7 @@ class mod_component {
     public function factoryReflectionMethod($class,$method) {
 
         if(!self::$reflections[$class.":".$method]) {
-            self::$reflections[$class.":".$method] = new ReflectionMethod($class,$method);
+            self::$reflections[$class.":".$method] = new \ReflectionMethod($class,$method);
         }
         return self::$reflections[$class.":".$method];
 
@@ -486,4 +488,4 @@ class mod_component {
 
 }
 
-register_shutdown_function(array("mod_component","callDeferedFunctions"));
+register_shutdown_function(array("\infuso\core\component","callDeferedFunctions"));

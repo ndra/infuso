@@ -5,8 +5,11 @@
  **/ 
 class eshop_1c_behaviourItem extends mod_behaviour {
 
+	/**
+	 * @todo add conf here
+	 **/
     public function addToClass() {
-        return mod_conf::get("eshop:1c") ? "eshop_item" : null;
+//        return mod_conf::get("eshop:1c") ? "eshop_item" : null;
     }
 
     public function behaviourPriority() {

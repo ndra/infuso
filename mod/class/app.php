@@ -1,12 +1,19 @@
 <?
 
-class mod_app {
+namespace infuso\core;
+
+class app {
 
 	private $post;
 	private $get;
 	private $files;
 
 	private static $initiated = false;
+	
+	/**
+	 * Список зарегистрирвоанных служб
+	 **/
+	private $registerdServices = array();
 	
 	/**
 	 * Процессор шаблонов приложения
@@ -22,30 +29,13 @@ class mod_app {
 	 * Возвращает текущий экземпляр объекта приложерия
 	 **/
 	public function current() {
-	
-	    if(!self::$current) {
-	    
-		    $p = $_SERVER["REQUEST_URI"];
-	        $server = $_SERVER["SERVER_NAME"];
-	        $url = "http://{$server}{$p}";
-
-		    self::$current = new self(array(
-		        "url" => $url,
-		        "post" => $_POST,
-		        "files" => $_FILES,
-			));
-	    
-	    }
-	    
 	    return self::$current;
-
 	}
 	
 	public function __construct($params) {
 	    $this->url = $params["url"];
 	    $this->post = $params["post"];
 	    $this->files = $params["files"];
-	    $this->init();
 	}
 	
 	/**
@@ -60,8 +50,8 @@ class mod_app {
 	    include("service.php");
 	    include("classmap/service.php");
 	    include("file/file.php");
-	    include("file/filesystem.php");
-	    include("file/list.php");
+	    include("file/localFile.php");
+	    include("file/flist.php");
 	}
 	
 	public function setErrorLevel() {
@@ -93,21 +83,22 @@ class mod_app {
    			$this->setErrorLevel();
 			$this->includeCoreClasses();
 
+			// Регистрируем загрузчик классов
 			spl_autoload_register(array($this,"loadClass"));
 		}
 		
-		$this->registerService("classmap","mod_classmap_service");
-		$this->registerService("route","mod_route_service");
-		$this->registerService("bundle","mod_bundle_manager");
+		$this->registerService("classmap","infuso\\core\\classmapService");
+		$this->registerService("route","\\infuso\\core\\route\\service");
+		$this->registerService("bundle","\\infuso\\core\\bundle\\manager");
 		$this->registerService("yaml","mod_confLoader_yaml");
-		
+		$this->registerService("cache","\\infuso\\core\\cache\\service");
 	}
 
 	/**
-	 * Возвращаем массив $_POST
+	 * Возвращает объект текущего урл
 	 **/
 	public function url() {
-	    return mod_url::get($this->url);
+	    return url::get($this->url);
 	}
 	
 	/**
@@ -147,12 +138,15 @@ class mod_app {
      **/
 	public function exec() {
 	
+	    self::$current = $this;
+	    $this->init();
+	
 	    Header("HTTP/1.0 200 OK");
 
 		try {
 
 			// Выполняем post-команду
-		    mod_post::process($this->post(),$this->files());
+		    post::process($this->post(),$this->files());
 
 		    // Выполняем экшн
 		    $action = $this->action();
@@ -160,7 +154,7 @@ class mod_app {
 		    if($action) {
 		        $action->exec();
 		    } else {
-		        mod_cmd::error(404);
+		        cmd::error(404);
 		    }
 
 		} catch(Exception $exception) {
@@ -231,7 +225,7 @@ RewriteRule ^(.*)$ https://%1/$1 [R=301,L]\n\n
 		$str.= "RewriteRule .* /mod/pub/gate.php [L]\n";
 		$str.= "ErrorDocument 404 /mod/pub/gate.php\n";
 
-	    mod_file::get(".htaccess")->put($str);
+	    file::get(".htaccess")->put($str);
 	}
 
     /**
@@ -241,7 +235,7 @@ RewriteRule ^(.*)$ https://%1/$1 [R=301,L]\n\n
 
 		if($step==0) {
             $this->generateHtaccess();
-		    mod_classmap_builder::buildClassMap();
+		    classmap\builder::buildClassMap();
 		    $next = true;
 		} else {
 
@@ -289,10 +283,9 @@ RewriteRule ^(.*)$ https://%1/$1 [R=301,L]\n\n
 
     }
     
-    private $registerdServices = array();
-    
     /**
      * Возвращает службу (объект) по имени службы
+     * @todo вернуть назначение класса службам через конфиг
      **/
     public function service($name) {
     
@@ -304,18 +297,12 @@ RewriteRule ^(.*)$ https://%1/$1 [R=301,L]\n\n
         }
         
         if(!$class) {
-            throw new Exception("Service [$name] not found");
+            throw new \Exception("Service [$name] not found");
         }
         
         return $class::serviceFactory();
     
         /**$class = mod_conf::general("services",$name,"class");
-
-
-
-
-
-        
         **/
     }
     

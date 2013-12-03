@@ -9,11 +9,13 @@ class eshop_order_status extends mod_component {
 	 * Возвращает массив с экземплярами все классов заказов
 	 **/
 	public static function all() {
+	
 		$ret = array();
-		foreach(mod::classes("eshop_order_status") as $class) {
+		foreach(mod::service("classmap")->map("eshop_order_status") as $class) {
 		    $status = new $class;
-		    if($status->exists())
+		    if($status->exists()) {
 		        $ret[] = $status;
+		    }
 		}
 
 		usort($ret,array("self","sortStatuses"));

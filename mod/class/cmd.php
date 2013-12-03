@@ -1,6 +1,8 @@
 <?
 
-class mod_cmd extends mod_controller {
+namespace infuso\core;
+
+class cmd extends controller {
 
 	public function indexTest() {
 	    return true;

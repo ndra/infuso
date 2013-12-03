@@ -1,6 +1,8 @@
 <?
 
-class mod_url {
+namespace infuso\core;
+
+class url {
 
     private $scheme = null;
     private $host = null;

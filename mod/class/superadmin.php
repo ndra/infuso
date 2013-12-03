@@ -1,6 +1,8 @@
 <?
 
-class mod_superadmin extends mod_controller {
+namespace infuso\core;
+
+class superadmin extends controller {
 
     private static $checked = false;
 	private static $checkResult = false;
@@ -44,7 +46,7 @@ class mod_superadmin extends mod_controller {
     public static function getStoredPassword() {
 
         if(self::$storedPassword===null) {
-            self::$storedPassword = trim(mod_file::get("/mod/conf/__superadmin.txt")->data());
+            self::$storedPassword = trim(file::get("/mod/conf/__superadmin.txt")->data());
         }
 
         return self::$storedPassword;

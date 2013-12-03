@@ -1,9 +1,11 @@
 <?
 
+namespace infuso\core;
+
 /**
  * Обработчик пост-запросов
  **/
-class mod_post {
+class post {
 
 	/**
 	 * Обрабатывает POST-запрос

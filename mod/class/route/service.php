@@ -1,6 +1,9 @@
 <?
 
-class mod_route_service extends mod_service {
+namespace infuso\core\route;
+use infuso\core;
+
+class service extends \infuso\core\service {
 
 	public function defaultService() {
 		return "route";
@@ -18,22 +21,22 @@ class mod_route_service extends mod_service {
 
     public final function forwardTest($url) {
 
-        mod_profiler::beginOperation("url","forward",$url);
+        core\profiler::beginOperation("url","forward",$url);
 
         if(is_string($url)) {
             $url = mod_url::get($url);
         }
 
         if($url->path()=="/mod") {
-            mod_profiler::endOperation();
-            return mod::action("mod");
+            core\profiler::endOperation();
+            return core\mod::action("mod");
         }
 
-        $routers = mod::service("classmap")->classmap("routes");
+        $routers = core\mod::service("classmap")->classmap("routes");
 
         foreach($routers as $router) {
             if($callback = call_user_func(array($router,"forward"),$url)) {
-                mod_profiler::endOperation();
+                \infuso\core\profiler::endOperation();
                 return $callback;
             }
         }
@@ -56,7 +59,7 @@ class mod_route_service extends mod_service {
 					$action->action(),
 					$action->params()
 				));
-                mod_cache::set($key,$serializedAction);
+                core\mod::service("cache")->set($key,$serializedAction);
             }
             return $action;
 

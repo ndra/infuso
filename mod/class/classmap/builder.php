@@ -1,6 +1,11 @@
 <?
 
-class mod_classmap_builder implements mod_handler {
+namespace infuso\core\classmap;
+
+use infuso\core\file as file;
+use infuso\core\mod as mod;
+
+class builder {
 
 	/**
 	 * Парсит файл и возвращает массив с информацией о классе
@@ -16,7 +21,7 @@ class mod_classmap_builder implements mod_handler {
 	        "abstract" => false,
 		);
 	
-	    $str = mod_file::get($path)->data();
+	    $str = file::get($path)->data();
 	    $tokens = @token_get_all($str);
 	    
 	    $catchClassName = false;
@@ -24,8 +29,14 @@ class mod_classmap_builder implements mod_handler {
 	    
 	        switch($token[0]) {
 	        
+	            default:
+	                $catchClassName = false;
+	                $catchNamespace = false;
+					break;
+	        
 	            case T_CLASS:
 	                $catchClassName = true;
+	                $catchNamespace = false;
 	                $type = "class";
 	                break;
 	                
@@ -37,18 +48,34 @@ class mod_classmap_builder implements mod_handler {
 				case T_ABSTRACT:
 				    $ret["abstract"] = true;
 				    break;
+				    
+				case T_NAMESPACE:
+				    $catchNamespace = true;
+				    break;
 	                
 				// Игнорируем пробелы
 				case T_WHITESPACE;
 				    break;
+				    
+				case T_NS_SEPARATOR:
+				    if($catchNamespace) {
+				    	$ret["namespace"].= "\\";
+				    }
+				    break;
 	                
-				default:
+				case T_STRING:
+				
+				    if($catchNamespace) {
+						$ret["namespace"].= $token[1];
+				    }
+				    
 				    if($catchClassName) {
 						$ret["type"] = $type;
 						$ret["class"] = $token[1];
+						$ret["namespace"] = trim($ret["namespace"],"\\");
 						return $ret;
-						$catchClassName = false;
 				    }
+				    
 				    break;
 	        }
 	    }
@@ -62,7 +89,7 @@ class mod_classmap_builder implements mod_handler {
 	private static function classMap($secondScan) {
 
 		$excludes = array();
-		foreach(mod_file::get("/mod/exclude/")->dir() as $file) {
+		foreach(file::get("/mod/exclude/")->dir() as $file) {
 		    $excludes[] = $file->basename();
 		}
 
@@ -82,8 +109,13 @@ class mod_classmap_builder implements mod_handler {
 					$info = self::getFileInfo($file->path());
 					$class = $info["class"];
 					
-		        	if(!$class)
+					if($info["namespace"]) {
+					    $class = $info["namespace"]."\\".$class;
+					}
+
+		        	if(!$class) {
 		        	    continue;
+		        	}
 		        	    
 					if(array_key_exists($class,$ret) && !$secondScan) {
 					    mod::msg("Duplicate file ".$file->path()." for class $class",1);
@@ -99,13 +131,13 @@ class mod_classmap_builder implements mod_handler {
 					        mod::msg("File ".$file->path()." disabled due fatal error on previous relink",1);
 					        continue;
 						}
-						mod_file::mkdir("/mod/exclude/",1);
-						mod_file::get("/mod/exclude/$hash.txt")->put($file->path());
+						file::mkdir("/mod/exclude/",1);
+						file::get("/mod/exclude/$hash.txt")->put($file->path());
 						class_exists($class);
-						mod_file::get("/mod/exclude/$hash.txt")->delete();
+						file::get("/mod/exclude/$hash.txt")->delete();
 
 			        	// Отмечаем абстрактные классы
-						$reflection = new ReflectionClass($class);
+						$reflection = new \ReflectionClass($class);
 						if($reflection->isAbstract() || $reflection->isInterface())
 							$descr["a"] = 1;
 
@@ -142,8 +174,9 @@ class mod_classmap_builder implements mod_handler {
 		// Берем поведения по умолчанию (на основании mod_behaviour::addToClass)
 		foreach(mod::service("classmap")->classes("mod_behaviour") as $class) {
 		    $obj = new $class;
-		    if($for = $obj->addToClass())
+		    if($for = $obj->addToClass()) {
 		        $ret[$for][] = $class;
+		    }
 		}
 
 		// Сортируем поведения
@@ -157,7 +190,7 @@ class mod_classmap_builder implements mod_handler {
 	public static function handlers() {
 		$handlers = array();
 		foreach(mod::service("classmap")->classes() as $class=>$fuck) {
-			$r = new ReflectionClass($class);
+			$r = new \ReflectionClass($class);
 			if($r->implementsInterface("mod_handler")) {
 				foreach($r->getMethods() as $method) {
 				    if(preg_match("/^on_(.*)/",$method->getName(),$matches)) {
@@ -175,7 +208,7 @@ class mod_classmap_builder implements mod_handler {
 	public static function services() {
 		$services = array();
 		foreach(mod::service("classmap")->classes() as $class=>$fuck) {
-			$r = new ReflectionClass($class);
+			$r = new \ReflectionClass($class);
 			if($r->isSubclassOf("mod_service") && !$r->isAbstract()) {
 			    $item = new $class;
 			    if($defaultService = $item->defaultService()) {
@@ -241,15 +274,11 @@ class mod_classmap_builder implements mod_handler {
 		// Сохраняем карту классов в памяти, чтобы использовать ее уже в этом запуске скрипта
 		mod::service("classmap")->setClassMap($map);
 
-		mod_file::mkdir("/mod/service/");
-		mod_file::get("/mod/service/classmap.inc.php")->put("<"."? return ".var_export($map,1)."; ?".">");
-		mod_log::msg("Карта классов построена");
+		file::mkdir("/mod/service/");
+		file::get("/mod/service/classmap.inc.php")->put("<"."? return ".var_export($map,1)."; ?".">");
+		mod::msg("Карта классов построена");
 		
 		self::$building = false;
-	}
-
-	public function on_mod_confSaved() {
-		self::buildClassMap();
 	}
 
 }

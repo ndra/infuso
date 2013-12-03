@@ -2,16 +2,8 @@
 
 class tmp implements mod_handler {
 
-    //private static $conveyor;
-
-    //private static $global = array();
-    //private static $defaultParams = false;
-
-    //private static $regions = array();
-    
     private static $templateMap = array();
     private static $obj = null;
-    //private static $bodyClass = null;
 
     /**
      * Руотер статических методов (старый стиль) в динамические методы (новый стиль)

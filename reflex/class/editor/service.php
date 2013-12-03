@@ -72,7 +72,7 @@ class reflex_editor_service extends mod_service {
             $ritems[] = $obj->reflex_root();
         }
 
-        foreach(mod::classes("reflex_editor") as $class) {
+        foreach(mod::service("classmap")->map("reflex_editor") as $class) {
             $obj = new $class;
             $ritems[] = $obj->root();
         }

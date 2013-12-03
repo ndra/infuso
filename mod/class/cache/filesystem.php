@@ -1,9 +1,11 @@
 <?
 
+namespace infuso\core\cache;
+
 /**
  * Драйвер кэша файловой системы
  **/
-class mod_cache_filesystem extends mod_cache_driver {
+class filesystem extends driver {
 
     /**
      * Воозвращает файл переменнгой по ключу
@@ -18,15 +20,15 @@ class mod_cache_filesystem extends mod_cache_driver {
      * Возвращает значение переменной
      **/
     public function get($key) {
-        return mod_file::get(self::filename($key))->data();
+        return \infuso\core\file::get(self::filename($key))->data();
     }
 
     /**
      * Устанавливает значение переменной
      **/
     public function set($key,$val) {
-        mod_file::mkdir(mod_file::get(self::filename($key))->up());
-        mod_file::get(self::filename($key))->put($val);
+        \infuso\core\file::mkdir(\infuso\core\file::get(self::filename($key))->up());
+        \infuso\core\file::get(self::filename($key))->put($val);
     }
 
     /**
@@ -34,7 +36,7 @@ class mod_cache_filesystem extends mod_cache_driver {
      * Удаляет папку /mod/cache/
      **/
     public function clear() {
-        mod_file::get("/mod/cache/")->delete(true);
+        \infuso\core\file::get("/mod/cache/")->delete(true);
     }
     
     /**

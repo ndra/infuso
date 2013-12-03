@@ -1,6 +1,8 @@
 <?
 
-class mod_action extends mod_component {
+namespace infuso\core;
+
+class action extends component {
 
     private $className = "";
     private $action = "";
@@ -20,7 +22,7 @@ class mod_action extends mod_component {
     }
 
     public function get($class,$action=null,$params=array()) {
-        return new mod_action($class,$action,$params);
+        return new action($class,$action,$params);
     }
 
     /**
@@ -103,7 +105,7 @@ class mod_action extends mod_component {
             return false;
 		}
 
-        $class = $this->className();
+        $class = "\\".$this->className();
         $obj = new $class;
 
         if(!call_user_func($this->testCallback(),$this->params())) {
@@ -130,7 +132,7 @@ class mod_action extends mod_component {
      **/
     public function exec() {
 
-        mod_component::callDeferedFunctions();
+        component::callDeferedFunctions();
 
         // Если экшн начинается с mod - блокируем события
         // Это делается для того, чтобы случайно не сломать консоль кривым событием
@@ -172,7 +174,7 @@ class mod_action extends mod_component {
 	        $content = $event->param("content");
         }
 
-        mod_component::callDeferedFunctions();
+        component::callDeferedFunctions();
 
         echo $content;
 

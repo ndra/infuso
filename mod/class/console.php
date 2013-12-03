@@ -1,6 +1,10 @@
 <?
 
-class mod_console extends mod_controller{
+namespace infuso\core;
+
+use \infuso\core\log;
+
+class console extends controller {
 
 	public static function indexTest() {
 		return mod_superadmin::check();
@@ -26,12 +30,12 @@ class mod_console extends mod_controller{
 	
 		// Пробуем залогиниться
 	    if($_GET["cmd"]=="login") {
-	        mod_superadmin::post_login($_POST);
-	        mod_console::redirect("/mod/");
+	        superadmin::post_login($_POST);
+	        console::redirect("/mod/");
 	    }
 
 	    // Проверяем наличие административного пароля
-	    if(!mod_superadmin::check()) {
+	    if(!superadmin::check()) {
 			self::fuckoff();
 		}
 
@@ -78,7 +82,7 @@ class mod_console extends mod_controller{
                 $done = mod::app()->deployStep($step);
 
 	            $messages = array();
-	            foreach(mod_log::messages() as $msg) {
+	            foreach(log::messages() as $msg) {
 	            	$messages[] = array(
 						"text" => $msg->text(),
 						"error" => $msg->error()
@@ -119,7 +123,7 @@ class mod_console extends mod_controller{
 	            self::header();
 				
 	            // Выводим предостережение в случае пароля 0000
-	            if(mod_superadmin::is0000()) {
+	            if(superadmin::is0000()) {
 	                echo "<div style='background:red;margin-bottom:20px;padding:10px;color:white;border:1px solid brown;' >";
 	                echo "Infuso works with superadmin password <b>0000</b>. You must <a style='color:white;border-bottom:1px solid white;' href='?cmd=change'>change</a> superadmin password as soon as possible.";
 	                echo "</div>";
@@ -185,7 +189,7 @@ class mod_console extends mod_controller{
 		);
 		
 		foreach($base as $mod) {
-			mod_file::mkdir($mod);
+			file::mkdir($mod);
 		}
 	}
 

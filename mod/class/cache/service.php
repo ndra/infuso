@@ -1,6 +1,9 @@
 <?
 
-class mod_cache extends mod_service {
+use infuso\core;
+namespace infuso\core\cache;
+
+class service extends \infuso\core\service {
 
     private static $driver = null;
     private static $read = 0;
@@ -17,13 +20,13 @@ class mod_cache extends mod_service {
     private function driver() {
 
         if(!self::$driver) {
-            switch(mod_conf::get("mod:cacheDriver")) {
+            switch(\infuso\core\conf::get("mod:cacheDriver")) {
                 default:
                 case "filesystem":
-                    self::$driver = new mod_cache_filesystem();
+                    self::$driver = new filesystem();
                     break;
                 case "xcache":
-                    self::$driver = new mod_cache_xcache();
+                    self::$driver = new xcache();
                     break;
             }
         }
@@ -49,14 +52,14 @@ class mod_cache extends mod_service {
      **/
     public static function get($key) {
 
-        mod_profiler::beginOperation("cache","read",$key);
+        \infuso\core\profiler::beginOperation("cache","read",$key);
 
         self::$read++;
         if(!array_key_exists($key,self::$memoryCache)) {
             self::$memoryCache[$key] = self::driver()->get($key);
         }
 
-        mod_profiler::endOperation();
+        \infuso\core\profiler::endOperation();
 
         return self::$memoryCache[$key];
         
@@ -66,11 +69,11 @@ class mod_cache extends mod_service {
      * Записывает переменную в кэш
      **/
     public static function set($key,$val,$ttl = null) {
-        mod_profiler::beginOperation("cache","write",$key);
+        \infuso\core\profiler::beginOperation("cache","write",$key);
         self::$write++;
         self::driver()->set($key,$val,$ttl);
         self::$memoryCache[$key] = $val;
-        mod_profiler::endOperation();
+        \infuso\core\profiler::endOperation();
     }
 
     public static function clear() {

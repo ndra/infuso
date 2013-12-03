@@ -1,6 +1,8 @@
 <?
 
-class mod_log {
+namespace infuso\core;
+
+class log {
 
     /**
      * Отправляет сообщение
@@ -46,7 +48,7 @@ class mod_log {
         @session_start();
         if(!$_SESSION["log:messages"]) $_SESSION["log:messages"] = array();
         foreach($_SESSION["log:messages"] as $m) {
-            $msg[] = new mod_log_msg($m);
+            $msg[] = new \mod_log_msg($m);
         }
         if($clear)
             self::clear();

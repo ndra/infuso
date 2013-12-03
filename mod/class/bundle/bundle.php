@@ -1,9 +1,13 @@
 <?
 
+namespace infuso\core\bundle;
+use infuso\core\file as file;
+use infuso\core\mod as mod;
+
 /**
  * Класс, реализующий бандл
  **/
-class mod_bundle extends mod_component {
+class bundle extends \infuso\core\component {
 
 	private $path = null;
 	
@@ -20,12 +24,12 @@ class mod_bundle extends mod_component {
 	 **/
 	public function conf() {
 	
-	    $file = mod_file::get($this->path()."/.infuso");
+	    $file = file::get($this->path()."/.infuso");
 	    if($file->exists()) {
-		    $data = mod_file::get($this->path()."/.infuso")->data();
+		    $data = file::get($this->path()."/.infuso")->data();
 			$conf = mod::service("yaml")->read($data);
 		} else {
-		    $conf = mod_file::get($this->path()."/info.ini")->ini(true);
+		    $conf = file::get($this->path()."/info.ini")->ini(true);
 			$conf["public"] = $conf["mod"]["public"];
 			$conf["leave"] = $conf["mod"]["leave"];
 		}
@@ -42,11 +46,11 @@ class mod_bundle extends mod_component {
 	 **/
 	public function exists() {
 	
-	    if(mod_file::get($this->path()."/.infuso")->exists()) {
+	    if(\infuso\core\file::get($this->path()."/.infuso")->exists()) {
 	        return true;
 	    }
 
-		if(mod_file::get($this->path()."/info.ini")->exists()) {
+		if(\infuso\core\file::get($this->path()."/info.ini")->exists()) {
 	        return true;
 	    }
 	    
@@ -63,7 +67,7 @@ class mod_bundle extends mod_component {
 	    $conf = $this->conf();
 	    $leave = is_array($conf["leave"]) ? $conf["leave"] : array();
 	    foreach($leave as $folder) {
-			$ret[] = (string) mod_file::get($this->path()."/".$folder);
+			$ret[] = (string) file::get($this->path()."/".$folder);
 	    }
 	    return $ret;
 	    
@@ -78,7 +82,7 @@ class mod_bundle extends mod_component {
 	    $conf = $this->conf();
 	    $public = is_array($conf["public"]) ? $conf["public"] : array();
 	    foreach($public as $folder) {
-			$ret[] = (string) mod_file::get($this->path()."/".$folder);
+			$ret[] = (string) file::get($this->path()."/".$folder);
 	    }
 	    return $ret;
 
@@ -88,7 +92,7 @@ class mod_bundle extends mod_component {
 	 * Возвращает путь к классам модуля
 	 **/
 	public function classPath() {
-	    return mod_file::get($this->path()."/class/");
+	    return file::get($this->path()."/class/");
 	}
 
 }

@@ -1,9 +1,11 @@
 <?
 
+namespace infuso\core;
+
 /**
  * Базовый класс для служб
  **/
-class mod_service extends mod_controller {
+class service extends controller {
 
     public function defaultService() {
         return false;

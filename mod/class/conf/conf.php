@@ -1,9 +1,11 @@
 <?
 
+namespace infuso\core;
+
 /**
  * Класс для загрузки конфигурации
  **/
-class mod_conf extends mod_component {
+class conf extends component {
 
 	private static $path = "/mod/conf/conf.xml";
 	private static $generalConf = null;
@@ -34,8 +36,8 @@ class mod_conf extends mod_component {
         // Если в буфере нет конфигурации - загружаем ее
         if(self::$generalConf===null) {
 
-            $reader = new mod_confLoader_yaml();
-            $yml = mod_file::get("/mod/conf/components.yml")->data();
+            $reader = new \mod_confLoader_yaml();
+            $yml = file::get("/mod/conf/components.yml")->data();
             self::$generalConf = $reader->read($yml);
 
             if(!self::$generalConf) {
@@ -60,8 +62,8 @@ class mod_conf extends mod_component {
 
 		if(!self::$cache) {
 
-			if(!mod_file::get(self::$path)->exists())
-			    $cache = mod_file::get("/mod/conf/mod.ini")->ini(1);
+			if(!file::get(self::$path)->exists())
+			    $cache = file::get("/mod/conf/mod.ini")->ini(1);
 			else
 				$cache = mod::loadXMLConf(self::$path);
 

@@ -1,6 +1,8 @@
 <?
 
-abstract class mod_cache_driver extends mod_component {
+namespace infuso\core\cache;
+
+abstract class driver extends \infuso\core\component {
 
 	/**
 	 * Возвращает значение переменной

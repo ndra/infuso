@@ -3,7 +3,7 @@
 /**
  * Класс-обертка для работы с сессией
  **/
-class mod_session extends mod_service {
+class mod_session extends \infuso\core\service {
 
 	private static $started;
 

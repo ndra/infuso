@@ -1,4 +1,6 @@
-<? class eshop_order_action extends mod_controller{
+<?
+
+class eshop_order_action extends mod_controller {
 
     public static function indexTest() {
         return true;

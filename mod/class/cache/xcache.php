@@ -1,9 +1,11 @@
 <?
 
+namespace infuso\core\cache;
+
 /**
  * Драйвер кэша для xcache
  **/
-class mod_cache_xcache extends mod_cache_driver {
+class xcache extends driver {
 
     private static $prefix = null;
 

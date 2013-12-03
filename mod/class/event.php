@@ -1,9 +1,11 @@
 <?
 
+namespace infuso\core;
+
 /**
  * Класс, описывающий событие
  **/
-class mod_event extends mod_component {
+class event extends component {
 
     private static $firedEvents = array();
 

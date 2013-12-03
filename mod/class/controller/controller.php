@@ -1,6 +1,8 @@
 <?
 
-class mod_controller extends mod_component {
+namespace infuso\core;
+
+class controller extends component {
 
 	private $redirectUrl = null;
 

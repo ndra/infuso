@@ -1,6 +1,8 @@
 <?
 
-abstract class mod_file extends mod_component {
+namespace infuso\core;
+
+abstract class file extends component {
 
     public static $fileClass = "mod_file";
     
@@ -34,14 +36,14 @@ abstract class mod_file extends mod_component {
      * Уведомляет о начале операции с файлом (для профайлера)
      **/
     public static function beginOperation($operation,$name) {
-        mod_profiler::beginOperation("file",$operation,$name);
+        \infuso\core\profiler::beginOperation("file",$operation,$name);
     }
 
     /**
      * Уведомляет об окончании операции с файлом
      **/
     public static function endOperation() {
-        mod_profiler::endOperation();
+        \infuso\core\profiler::endOperation();
     }
 
     /**
@@ -55,7 +57,7 @@ abstract class mod_file extends mod_component {
         // В режиме отладки ведем лог
         self::beginOperation("get",$name);
 
-        $ret = new mod_file_filesystem($name);
+        $ret = new localFile($name);
 
         // В режиме отладки ведем лог
         self::endOperation();
@@ -141,7 +143,7 @@ abstract class mod_file extends mod_component {
      **/
     public static function mkdir($name) {
 
-        mod_profiler::beginOperation("file","mkdir",$name);
+        \infuso\core\profiler::beginOperation("file","mkdir",$name);
 
         $name = self::get($name)->path();
         $n2 = trim($name,"/");
@@ -153,7 +155,7 @@ abstract class mod_file extends mod_component {
         }
         @mkdir(self::get($name)->native());
 
-        mod_profiler::endOperation();
+        \infuso\core\profiler::endOperation();
 
         return self::get($name);
 

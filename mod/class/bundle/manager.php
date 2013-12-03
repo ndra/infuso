@@ -1,9 +1,11 @@
 <?
 
+namespace infuso\core\bundle;
+
 /**
  * Служба управления бандлами
  **/
-class mod_bundle_manager extends mod_service {
+class manager extends \infuso\core\service {
 
 	public function defaultService() {
 		return "bundle";
@@ -26,7 +28,7 @@ class mod_bundle_manager extends mod_service {
 				$leave = $bundle->leave();
 			}
 	    
-	        foreach(mod_file::get($path)->dir()->folders() as $folder) {
+	        foreach(\infuso\core\file::get($path)->dir()->folders() as $folder) {
 				if(!in_array((string)$folder,$leave)) {
 				    $scan($folder);
 				}
@@ -41,7 +43,7 @@ class mod_bundle_manager extends mod_service {
 	}
 	
 	public function bundle($bundle) {
-	    return new mod_bundle($bundle);
+	    return new bundle($bundle);
 	}
 
 }

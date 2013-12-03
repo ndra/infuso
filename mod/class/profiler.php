@@ -1,6 +1,8 @@
 <?
 
-class mod_profiler {
+namespace infuso\core;
+
+class profiler {
 
     public static $stack = array();
 
@@ -15,7 +17,7 @@ class mod_profiler {
      **/
     public static function beginOperation($group,$operation,$key) {
 
-        if(!mod_superadmin::check())
+        if(!superadmin::check())
             return;
 
         if(!mod::debug())
@@ -62,7 +64,7 @@ class mod_profiler {
      **/
     public static function endOperation() {
 
-        if(!mod_superadmin::check())
+        if(!superadmin::check())
             return;
 
         if(!mod::debug())

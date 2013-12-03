@@ -5,9 +5,9 @@
  **/ 
 class eshop_1c_behaviourOrder extends mod_behaviour {
 
-    public function addToClass() {
+   /* public function addToClass() {
         return mod_conf::get("eshop:1c") ? "eshop_order" : null;
-    }
+    } */
     
     public function behaviourPriority() {
         return -1;

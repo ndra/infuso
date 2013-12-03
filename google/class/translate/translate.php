@@ -3,7 +3,7 @@
 /**
  * Класс гугл перевода
  **/
-class google_translate extends mod_service {
+class google_translate extends \infuso\core\service {
 
     public function defaultService() {
         return "translate";
