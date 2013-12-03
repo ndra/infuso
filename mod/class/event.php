@@ -75,9 +75,9 @@ class event extends component {
         
         if($callback) {
         
-            mod_profiler::beginOperation("event",$this->name(),$callback[0]."::".$callback[1]);
+            profiler::beginOperation("event",$this->name(),$callback[0]."::".$callback[1]);
             call_user_func($callback,$this);
-            mod_profiler::endOperation();
+            profiler::endOperation();
             
             return true;
         }

@@ -29,7 +29,7 @@ class cmd extends controller {
 	public static function error($code) {
 	
 	    if($code==404) {
-			mod::action("mod_cmd",404)->exec();
+			mod::action("\infuso\core\cmd",404)->exec();
 		}
 		echo "<!--".str_repeat("**** ",100)."-->";
 		die();

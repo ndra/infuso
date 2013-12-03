@@ -1,5 +1,7 @@
 <?
 
+use \infuso\core\log;
+
 /**
  * Отложенная функция php
  **/
@@ -18,7 +20,7 @@ class tmp_delayed implements mod_handler {
 	
 	    $content = $event->param("content");
 	    
-	    if(sizeof(mod_log::messages(false))) {
+	    if(sizeof(log::messages(false))) {
 	    	$content = self::insertMessages($content);
 	    }
 	    

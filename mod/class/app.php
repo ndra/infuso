@@ -128,7 +128,7 @@ class app {
 	
 	public function tmp() {
 	    if(!$this->templateProcessor) {
-	        $this->templateProcessor = new tmp_processor();
+	        $this->templateProcessor = new \tmp_processor();
 	    }
 	    return $this->templateProcessor;
 	}

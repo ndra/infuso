@@ -3,7 +3,7 @@
 class inx_bundleBehaviour extends mod_behaviour {
 
 	public function addToClass() {
-	    return "mod_bundle";
+	    return "infuso\\core\\bundle\\bundle";
 	}
 
 	public function inxPath() {

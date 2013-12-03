@@ -1,5 +1,7 @@
 <?
 
+use \infuso\core\event;
+
 class reflex extends mod_model {
 
 	/**
@@ -408,7 +410,7 @@ class reflex extends mod_model {
         if(!$this->exists())
             return;
             
-		$event = new mod_event("reflex_beforeDelete",array(
+		$event = new event("reflex_beforeDelete",array(
 		    "item" => $this,
 		));
 
@@ -426,7 +428,7 @@ class reflex extends mod_model {
         	$this->storage()->clear();
         }
         
-		$event = new mod_event("reflex_afterDelete",array(
+		$event = new event("reflex_afterDelete",array(
 		    "item" => $this,
 		));
 
@@ -462,7 +464,7 @@ class reflex extends mod_model {
 
         $this->justCreated = true;
         
-		$event = new mod_event("reflex_beforeCreate",array(
+		$event = new \infuso\core\event("reflex_beforeCreate",array(
 		    "item" => $this,
 		));
 
@@ -472,7 +474,7 @@ class reflex extends mod_model {
 
 		$this->storeCreated($keepID);
             
-		$event = new mod_event("reflex_afterCreate",array(
+		$event = new \infuso\core\event("reflex_afterCreate",array(
 		    "item" => $this,
 		));
         
@@ -491,7 +493,7 @@ class reflex extends mod_model {
             return false;
 		}
 
-		$event = new mod_event("reflex_beforeStore",array(
+		$event = new event("reflex_beforeStore",array(
 		    "item" => $this,
 		));
 
@@ -524,7 +526,7 @@ class reflex extends mod_model {
 
         $this->reflex_updateSearch();
         
-		$event = new mod_event("reflex_afterStore",array(
+		$event = new event("reflex_afterStore",array(
 		    "item" => $this,
 		));
 		
@@ -645,7 +647,7 @@ class reflex extends mod_model {
             return false;
         }
         
-		$event = new mod_event("reflex_beforeStore",array(
+		$event = new event("reflex_beforeStore",array(
 		    "item" => $this,
 		));
 
@@ -679,7 +681,7 @@ class reflex extends mod_model {
         // Метод store может быть вызванповторно
         $this->markAsClean();
         
-		$event = new mod_event("reflex_afterStore",array(
+		$event = new event("reflex_afterStore",array(
 		    "item" => $this,
 		    "changedFields" => $changedFields,
 		));

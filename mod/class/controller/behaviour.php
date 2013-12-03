@@ -24,7 +24,7 @@ class mod_controller_behaviour extends mod_behaviour {
 	 * По умолчанию при ошибке вызова ф-ции indexTest вводим ошибку 404
 	 **/
 	public function indexFailed() {
-	    mod_cmd::error(404);
+	    \infuso\core\cmd::error(404);
 	}
 
 	/**
