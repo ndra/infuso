@@ -6,8 +6,9 @@
     echo "<img src='/admin/res/user.gif' align='absmiddle' style='margin-right:5px;' />";
     echo $info ? $info["email"] : "Вход не выполнен";
     echo " ";
-    if(mod_superadmin::check())
+    if(\infuso\core\superadmin::check()) {
         echo ", root";
+    }
     inx::add();
 
 </div>

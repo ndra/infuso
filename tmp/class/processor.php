@@ -1,9 +1,12 @@
 <?
 
+namespace mod\template;
+use infuso\core;
+
 /**
  * Класс процессора шаблонов
  **/
-class tmp_processor extends mod_component {
+class processor extends core\component {
 
 	/**
 	 * Список шаблонов в регионах
@@ -21,7 +24,7 @@ class tmp_processor extends mod_component {
      * @return Возващает объект шаблона
      **/
     public function template($name,$params=array()) {
-        $tmp = new tmp_template($name,$this);
+        $tmp = new template($name,$this);
         $tmp->params($params);
         return $tmp;
     }
@@ -34,7 +37,7 @@ class tmp_processor extends mod_component {
     public static function normalizeArguments($arguments) {
 
         if(sizeof($arguments)==0) {
-            $ret = tmp_template::currentParams();
+            $ret = template::currentParams();
             return $ret;
         }
 
@@ -79,7 +82,7 @@ class tmp_processor extends mod_component {
         } else {
 
             $p = func_get_args();
-            $name = tmp_template::handleName($name);
+            $name = template::handleName($name);
             $template = $this->template($name);
             array_shift($p);
             array_shift($p);
@@ -89,7 +92,7 @@ class tmp_processor extends mod_component {
                 $template->param($key,$val);
             }
 
-            tmp_block::get($block)->add($template);
+            \tmp_block::get($block)->add($template);
         }
 
     }
@@ -99,7 +102,7 @@ class tmp_processor extends mod_component {
      **/
     public function conveyor() {
         if(!count($this->conveyor)) {
-            $this->conveyor[] = new tmp_conveyor();
+            $this->conveyor[] = new conveyor();
 		}
         return end($this->conveyor);
     }
@@ -223,6 +226,10 @@ class tmp_processor extends mod_component {
 
     public function footer() {
         echo "</body></html>";
+    }
+    
+	public function jq() {
+        \tmp_lib::jq();
     }
 
 }

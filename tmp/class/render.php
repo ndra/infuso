@@ -63,7 +63,7 @@ class tmp_render {
 	        foreach($items as $item) {
 	            if($str = trim(file::get($item)->data())) {
 	                // В режиме отладки дописываем источник
-	                if(mod_conf::get("mod:debug"))
+	                if(\infuso\core\conf::get("mod:debug"))
 	                	$code.= "/* source:".$item.": */\n\n";
 
 	                $code.= $str.($ext=="js" ? "\n;\n" : "\n\n");

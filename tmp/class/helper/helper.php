@@ -1,6 +1,6 @@
 <?
 
-class tmp_helper extends tmp_widget {
+class tmp_helper extends \mod\template\widget {
 
     private $style = array();
 

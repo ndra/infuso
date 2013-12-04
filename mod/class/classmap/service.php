@@ -120,6 +120,11 @@ class classmapService extends service {
 	    "mod_component" => "infuso\\core\\component",
 	    "mod_controller" => "infuso\\core\\controller",
 	    "mod_service" => "infuso\\core\\service",
+	    "mod_superadmin" => "infuso\\core\\superadmin",
+	    "mod_action" => "infuso\\core\\action",
+	    "tmp" => "\\mod\\template\\tmp",
+	    "tmp_widget" => "\\mod\\template\\widget",
+	    "tmp_template" => "\\mod\\template\\template",
 	);
 	
 	public function includeClass($class) {

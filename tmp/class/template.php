@@ -1,6 +1,9 @@
 <?
 
-class tmp_template extends tmp_generic {
+namespace mod\template;
+use infuso\core;
+
+class template extends generic {
 
     private static $current = null;
     
@@ -217,7 +220,7 @@ class tmp_template extends tmp_generic {
             // Если в кэше еще нет шаблона
             if(!$cached || $this->recache) {
 
-                mod_profiler::beginOperation("tmp","cached miss",$this->template());
+                core\profiler::beginOperation("tmp","cached miss",$this->template());
 
                 $this->processor()->pushConveyor();
                 ob_start();
@@ -231,13 +234,13 @@ class tmp_template extends tmp_generic {
                     mod_cache::set($hash.":conveyor",$conveyor->serialize(), $this->ttl);
                 }
 
-                mod_profiler::endOperation();
+                core\profiler::endOperation();
 
 
             // Если шаблон в кэше
             } else {
 
-                mod_profiler::beginOperation("tmp","cached hit",$this->template());
+                core\profiler::beginOperation("tmp","cached hit",$this->template());
 
                 // Выводим содержимое из кэша
                 echo $cached;
@@ -248,14 +251,14 @@ class tmp_template extends tmp_generic {
 
                 $this->processor()->conveyor()->mergeWith($conveyor);
 
-                mod_profiler::endOperation();
+                core\profiler::endOperation();
             }
         }
         // Если кэширование выключено
         else {
-            mod_profiler::beginOperation("tmp","exec",$this->template());
+            core\profiler::beginOperation("tmp","exec",$this->template());
             $this->aexec($p);
-            mod_profiler::endOperation();
+            core\profiler::endOperation();
         }
     }
 
@@ -280,24 +283,24 @@ class tmp_template extends tmp_generic {
             $$key = $val;
         }
         
-        $app = mod::app();
+        $app = core\mod::app();
         $tmp = $this->processor();
         
         // Проверяем наличие шаблона если мы в режиме отладки
         // Если пользователь не суперадмин - сразу выполняем шаблон
-        if(mod::debug()) {
+        if(core\mod::debug()) {
             if(!$this->file()->exists()) {
                 throw new Exception("Шаблон '{$this->template()}' не найден.");
             }
         }
 
-        if(mod::debug()) {
+        if(core\mod::debug()) {
             echo "<!-- ".$this->template()." -->";
         }
 
         include $this->file()->native();
 
-        if(mod::debug()) {
+        if(core\mod::debug()) {
             echo "<!-- end of ".$this->template()." -->";
         }
 

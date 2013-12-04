@@ -1,6 +1,6 @@
 <?
 
-class reflex_editor_widget extends tmp_widget {
+class reflex_editor_widget extends \mod\template\widget {
 
 	public function name() {
 	    return "Редактор";

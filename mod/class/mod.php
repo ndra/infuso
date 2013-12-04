@@ -15,13 +15,11 @@ class mod extends controller {
 	}
 	
 	public static function index() {
-	    
-	    try {
-			\infuso\core\console::xindex();
-		} catch (Exception $ex) {
-		    echo "Exception: ".$ex->getMessage();
-		}
-
+		\infuso\core\console::xindex();
+	}
+	
+	public static function indexFailed() {
+		\infuso\core\console::xindex();
 	}
 	
 	private static $modules = null;
@@ -140,8 +138,8 @@ class mod extends controller {
 	 * Подключает библиотеку core.js
 	 **/
 	public static function coreJS() {
-        tmp::jq();
-		tmp::singlejs("/mod/res/core.js",-900);
+        mod::app()->tmp()->jq();
+		mod::app()->tmp()->singlejs("/mod/res/core.js",-900);
 	}
 
 	/**
@@ -215,9 +213,9 @@ class mod extends controller {
 	 **/
 	public function url($url=null) {
 		if(func_num_args()==0) {
-		    return mod_url::current();
+		    return url::current();
 		}
-		return mod_url::get($url);
+		return url::get($url);
 	}
 
 	/**

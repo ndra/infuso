@@ -145,12 +145,12 @@ class action extends component {
         if(!$suspendEvent) {
         	mod::fire("mod_beforeActionSYS");
         }
-
+        
         ob_start();
 
         if(!$this->test()) {
         
-            call_user_func($this->failCallback(),$this->params());
+			call_user_func($this->failCallback(),$this->params());
 
         } else {
 
@@ -223,15 +223,15 @@ class action extends component {
      **/
     public final function url() {
 
-        mod_profiler::beginOperation("url","build",$this->canonical());
+        profiler::beginOperation("url","build",$this->canonical());
 
-        if(mod_conf::get("mod:cacheURL")) {
+        if(conf::get("mod:cacheURL")) {
 
             // Урл кэшируются на день
             $hash = "action-url:".$this->hash().ceil(time()/3600/24);
 
-            if($url = mod_cache::get($hash)) {
-                mod_profiler::endOperation();
+            if($url = mod::service("cache")->get($hash)) {
+                profiler::endOperation();
                 return $url;
             }
         }
@@ -239,11 +239,11 @@ class action extends component {
 
         $url = $this->urlWithoutCache();
 
-        if(mod_conf::get("mod:cacheURL")) {
-            mod_cache::set($hash,$url);
+        if(conf::get("mod:cacheURL")) {
+            mod::service("cache")->set($hash,$url);
         }
 
-        mod_profiler::endOperation();
+        profiler::endOperation();
 
         return $url;
 

@@ -1,6 +1,10 @@
 <?
 
-class tmp_conveyor extends mod_component {
+namespace mod\template;
+use infuso\core;
+use infuso\core\profiler;
+
+class conveyor extends core\component {
 
     private $items = array();
     private $delayed = array();
@@ -52,7 +56,7 @@ class tmp_conveyor extends mod_component {
     public function addDelayedFunction($delayedFunctionParams) {
     
         if(!$delayedFunctionParams["key"]) {
-            $delayedFunctionParams["key"] = util::id();
+            $delayedFunctionParams["key"] = \util::id();
         }
 
         $this->delayed[] = $delayedFunctionParams;
@@ -91,8 +95,8 @@ class tmp_conveyor extends mod_component {
      **/
     public function processDelayed($str) {
     
-        mod_profiler::beginOperation("tmp","processDelayed","");
-        mod_profiler::setVariable("contentSize",mb_strlen($str,"utf-8"));
+        profiler::beginOperation("tmp","processDelayed","");
+        profiler::setVariable("contentSize",mb_strlen($str,"utf-8"));
 
         while($delayed = $this->getDelayedFunction()) {
 
@@ -105,13 +109,13 @@ class tmp_conveyor extends mod_component {
 
             ob_start();
 
-            mod_profiler::beginOperation("tmp","execDelayed",$delayed["class"]."::".$delayed["method"]."()");
+            profiler::beginOperation("tmp","execDelayed",$delayed["class"]."::".$delayed["method"]."()");
 
             call_user_func_array(array(
                 $delayed["class"],
                 $delayed["method"]
             ),$arguments);
-            mod_profiler::endOperation();
+            profiler::endOperation();
 
             self::$delayedFunctionResult["/".$delayed["key"]."/"] = ob_get_clean();
 
@@ -123,7 +127,7 @@ class tmp_conveyor extends mod_component {
             $str = preg_replace_callback(array_keys(self::$delayedFunctionResult), array(self, "replaceDelayedFn"), $str, -1, $count);
         } while ($count > 0);
 
-        mod_profiler::endOperation();
+        profiler::endOperation();
         return $str;
         
     }
@@ -195,7 +199,7 @@ class tmp_conveyor extends mod_component {
      **/
     public function getContentForAjax() {
 
-        mod_profiler::beginOperation("tmp","execConveyor",null);
+        profiler::beginOperation("tmp","execConveyor",null);
 
         $singleCss = array();
         $packCss = array();
@@ -263,7 +267,7 @@ class tmp_conveyor extends mod_component {
             $head.= "$item\n";
         }
         
-        mod_profiler::endOperation("tmp","execConveyor");
+        profiler::endOperation("tmp","execConveyor");
 
         return $head;
     }
@@ -274,7 +278,7 @@ class tmp_conveyor extends mod_component {
      **/
     public function exec() {
     
-        mod_profiler::beginOperation("tmp","execConveyor",null);
+        profiler::beginOperation("tmp","execConveyor",null);
 
         $singleCss = array();
         $packCss = array();
@@ -318,7 +322,7 @@ class tmp_conveyor extends mod_component {
         }
 
         // Упакованные css
-        $packCss = tmp_render::packIncludes($packCss,"css");
+        $packCss = \tmp_render::packIncludes($packCss,"css");
         if($packCss) {
             $head.= "<link rel='stylesheet' type='text/css' href='$packCss' />\n";
         }
@@ -329,7 +333,7 @@ class tmp_conveyor extends mod_component {
         }
 
         // Упакованные js
-        $packJs = tmp_render::packIncludes($packJs,"js");
+        $packJs = \tmp_render::packIncludes($packJs,"js");
         if($packJs) {
             $head.= "<script type='text/javascript' src='$packJs'></script>\n";
         }
@@ -342,7 +346,7 @@ class tmp_conveyor extends mod_component {
             $head.= "$item\n";
         }
             
-        mod_profiler::endOperation("tmp","execConveyor");
+        profiler::endOperation("tmp","execConveyor");
 
         return $head;
     }

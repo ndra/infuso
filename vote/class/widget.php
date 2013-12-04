@@ -3,7 +3,7 @@
 /**
  * Виджет опроса
  **/
-class vote_widget extends tmp_widget {
+class vote_widget extends \mod\template\widget {
 
 	public function name() {
 		return "Опрос";

@@ -1,9 +1,12 @@
 <?
 
+namespace mod\template;
+use infuso\core;
+
 /**
  * Базовый абстрактный класс для всех виджетов
  **/
-abstract class tmp_widget extends tmp_generic {
+abstract class widget extends generic {
 
 	/**
 	 * @return Возвращает объект виджета
@@ -20,8 +23,8 @@ abstract class tmp_widget extends tmp_generic {
 	    
 	    }
 	
-	    if(!mod::service("classmap")->testClass($class,"tmp_widget")) {
-	        throw new Exception("$class is not a widget");
+	    if(!\mod::service("classmap")->testClass($class,"mod\\template\\widget")) {
+	        throw new \Exception("$class is not a widget");
 	    }
 	
 	    return new $class;

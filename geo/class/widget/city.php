@@ -3,7 +3,7 @@
 /**
  * Виджет выбора страны-региона-города
  **/
-class geo_widget_city extends tmp_widget {
+class geo_widget_city extends \mod\template\widget {
 
 	public function __construct() {
 		$this->param("countries",geo_country::all());

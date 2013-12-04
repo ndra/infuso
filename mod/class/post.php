@@ -54,8 +54,8 @@ class post {
 			
 		}
 
-	    $cmd = mod_superadmin::check() ? $cmd : "";
-	    mod_log::msg("Команда $cmd отклонена",1);
+	    $cmd = superadmin::check() ? $cmd : "";
+	    mod::msg("Команда $cmd отклонена",1);
 	}
 
 }

@@ -1,9 +1,12 @@
 <?
 
+namespace mod\template;
+use infuso\core;
+
 /**
  * Базовый класс для шаблонов, виджетов в пр.
  **/
-abstract class tmp_generic extends mod_component {
+abstract class generic extends core\component {
 
     public function __invoke() {
         $args = func_get_args();
@@ -30,7 +33,7 @@ abstract class tmp_generic extends mod_component {
         $params = $this->params();
         $params["*delayed"] = false;
     
-        return tmp_delayed::add(array(
+        return \tmp_delayed::add(array(
             "class" => "tmp_generic",
             "method" => "execStatic",
             "arguments" => array(

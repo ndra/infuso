@@ -4,7 +4,7 @@
  * Виджет комментария
  **/
 
-class comment_widget extends tmp_widget {
+class comment_widget extends \mod\template\widget {
 
 	public function name() {
 	    return "Оставить отзыв";

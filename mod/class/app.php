@@ -128,7 +128,7 @@ class app {
 	
 	public function tmp() {
 	    if(!$this->templateProcessor) {
-	        $this->templateProcessor = new \tmp_processor();
+	        $this->templateProcessor = new \mod\template\processor();
 	    }
 	    return $this->templateProcessor;
 	}
@@ -150,11 +150,11 @@ class app {
 
 		    // Выполняем экшн
 		    $action = $this->action();
-
+		    
 		    if($action) {
-		        $action->exec();
+				$action->exec();
 		    } else {
-		        cmd::error(404);
+				$this->httpError(404);
 		    }
 
 		} catch(Exception $exception) {
@@ -181,8 +181,12 @@ class app {
 		}
 	
 	}
+	
+	public function httpError() {
+	    $this->tmp()->exec("/mod/404");
+	}
 
-public static function generateHtaccess() {
+	public static function generateHtaccess() {
 
 	    // Загружаем xml с настройками
 	    $htaccess = mod::conf("mod:htaccess");

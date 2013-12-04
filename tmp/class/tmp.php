@@ -1,6 +1,12 @@
 <?
 
-class tmp implements mod_handler {
+namespace mod\template;
+use infuso\core;
+use infuso\core\mod;
+use infuso\core\file;
+use tmp_theme;
+
+class tmp implements \mod_handler {
 
     private static $templateMap = array();
     private static $obj = null;
@@ -27,6 +33,7 @@ class tmp implements mod_handler {
             "script" => "script",
             "header" => "header",
             "footer" => "footer",
+            "jq" => "jq",
 		);
 		$method = $map[$xmethod];
 		
@@ -107,7 +114,7 @@ class tmp implements mod_handler {
         }
     
 		list($class,$id) = explode("/",$action->ar());
-		return reflex::get($class,$id);
+		return \reflex::get($class,$id);
     }
     
     public function setCurrentObject($obj) {
@@ -144,22 +151,18 @@ class tmp implements mod_handler {
      * Выводит содержимое региона добавленное при помощи метода add
      **/
     public static function region($block,$prefix="",$suffix="") {
-        tmp_block::get($block)->exec($prefix,$suffix);
+        \tmp_block::get($block)->exec($prefix,$suffix);
     }
 
     /**
      * @return Возвращает объект блока
      **/
     public function block($name) {
-        return tmp_block::get($name);
+        return \tmp_block::get($name);
     }
 
     public static function reset() {
-        tmp_lib::reset();
-    }
-
-    public static function jq() {
-        tmp_lib::jq();
+        \tmp_lib::reset();
     }
 
     public function templateMap() {

@@ -14,7 +14,7 @@ class eshop_widget extends admin_widget {
 
 		echo "<h2>Интернет-магазин</h2>";
 
-		if(mod_conf::get("eshop:yandex:market")) {
+		if(\infuso\core\conf::get("eshop:yandex:market")) {
 	        echo "Яндекс.Маркет: ";
 	        $url = mod_action::get("eshop_yandexMarket")->url();
 			echo "<a href='{$url}' >выгрузка</a>, ";
@@ -22,7 +22,7 @@ class eshop_widget extends admin_widget {
 	        echo "<a href='{$url}' >отчет</a><br/>";
 		}
 
-		if(mod_conf::get("eshop:1c")) {
+		if(\infuso\core\conf::get("eshop:1c")) {
 			$url = mod_action::get("eshop_1c_import")->url();
 			echo "<a href='{$url}' >Ручная загрузка CommerceML</a><br/>";
 		}

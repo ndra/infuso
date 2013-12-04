@@ -138,7 +138,7 @@ class user_operation extends reflex {
 
         $ret = false;
         
-        if(mod_superadmin::check() && $this->data("role")==true) {
+        if(\infuso\core\superadmin::check() && $this->data("role")==true) {
             $ret = true;
         }
 

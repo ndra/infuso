@@ -15,7 +15,7 @@ class controller extends component {
 	public final function redirect($url) {
 	
 	    // Выполняем редирект только если есть экшн
-		if(mod_action::current()) {
+		if(action::current()) {
 		    $this->redirectUrl = $url;
 			$this->defer("processRedirect");
 		}

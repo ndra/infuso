@@ -18,7 +18,7 @@ class mod_json extends mod_controller {
 			$data = $_POST["data"];
 			$data = json_decode($data,1);
 
-			$jret = mod_post::process(
+			$jret = \infuso\core\post::process(
 				$data,
 				$_FILES,
 				$status
@@ -40,7 +40,7 @@ class mod_json extends mod_controller {
 
 		// Собираем массив сообщений
 		$messages = array();
-		foreach(mod_log::messages() as $msg) {
+		foreach(\infuso\core\log::messages() as $msg) {
 			$messages[] = array(
 				"text" => $msg->text(),
 				"error" => $msg->error(),
@@ -49,7 +49,7 @@ class mod_json extends mod_controller {
 
 		// Собираем массив событий
 		$events = array();
-		foreach(mod_event::all() as $event) {
+		foreach(\infuso\core\event::all() as $event) {
 			$events[] = array(
 				"name" => $event->name(),
 				"params" => $event->params()

@@ -14,7 +14,7 @@ class admin extends mod_controller {
 	    		tmp::exec("admin:not_logged_in");
 			}
 		} else {
-		    /infuso/core/cmd::error(404);
+			mod::app()->httpError(404);
 		}
 	}
 
