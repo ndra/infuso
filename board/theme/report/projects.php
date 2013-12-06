@@ -21,18 +21,14 @@ tmp::reset();
         ->leq("date(created)",$to)
         ->having("`spent` > 0")
         ->select("sum(`board_task_log`.`timeSpent`) as `spent`, `projectID` ");
+        
+    $spentSum = 0;
+    $scheduledSum = 0;
+    $completedHoursSum = 0;
+    $completedNumberSum = 0;
     
     <table class='x8367pvuga0' >
     
-        <tr>
-            <td>Проект</td>
-            <td></td>
-            <td>Потрачено времени</td>
-            <td>Поставлено задач</td>
-            <td>Закрыто задач (ч.)</td>
-            <td>Закрыто задач (шт.)</td>
-        </tr>
-        
             foreach($items as $row) {
             
                 // Поставлено задач (ч.)
@@ -66,31 +62,62 @@ tmp::reset();
                         <a href='/board/#report-chart/id/{$project->id()}' target='_top' ><img src='/board/res/img/icons16/chart.png' /></a>
                     </td>
                     <td>
+                        $spentSum+= $row["spent"];
                         echo round($row["spent"],2);
                     </td>
                     
                     <td>
                         echo $scheduled;
+                        $scheduledSum+= $scheduled;
                     </td>
                     
                     <td>
                         echo $completed;
+                        $completedHoursSum += $completed;
                     </td>                
     
                     <td>
                         echo $number;
+                        $completedNumberSum += $number;
                     </td>
                     
                 </tr>
             }
+            
+            <thead>    
+                <tr>
+                    <td>Проект</td>
+                    <td></td>
+                    <td>Потрачено</td>
+                    <td>Поставлено</td>
+                    <td>Закрыто, ч.</td>
+                    <td>Закрыто, шт.</td>
+                </tr>
+                <tr class='sum' >
+                    <td>Все проекты</td>
+                    <td><a href='/board/#report-chart/' target='_top' ><img src='/board/res/img/icons16/chart.png' /></a></td>
+                    <td>
+                        echo round($spentSum,2);
+                    </td>
+                    <td>
+                        echo round($scheduledSum,2);
+                    </td>
+                    <td>
+                        echo round($completedHoursSum,2);
+                    </td>
+                    <td>
+                        echo round($completedNumberSum,2);
+                    </td>
+                </tr>
+            </thead>
     
     </table>
     
-    <br/><br/>
+    /*<br/><br/>
     tmp::exec("../contributors",array(
         "from" => $from,
         "to" => $to,
-    ));
+    )); */
     
 </div>
 

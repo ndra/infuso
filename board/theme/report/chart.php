@@ -5,12 +5,40 @@ $group = $params["group"];
 $current = util::date($params["from"])->date();
 $to = util::date($params["to"])->date();
 
+$mode = "user";
+$split = $params["split"] = $params["split"] ?: "user";
+
+$time = board_task_time::visible()
+    ->joinByField("taskID")
+    ->geq("date(begin)",$current)
+    ->lt("date(begin)",$to);
+    //->eq("board_task.projectID",$params["projectID"]);
+    
+$log = board_task_log::all()
+    ->gt("timeSpent",0)
+    ->joinByField("taskID");
+    
+if($params["projectID"]) {
+    $log->eq("board_task.projectID",$params["projectID"]);
+}
+
 tmp::header();
+
+mod::coreJS();
 
 <div class='dcyy6ydrbx' >
 
     $d = ($to->stamp() - $current->stamp()) / 3600 / 24;
-    <h1>Отчет по проекту «{$project->title()}» {$current->num()} — {$to->num()} ({$d} д.)</h1>
+    
+    if($project->exists()) {
+        <h1>Отчет по проекту «{$project->title()}» {$current->num()} — {$to->num()} ({$d} д.)</h1>
+    } else {
+        <h1>Отчет по проектам {$current->num()} — {$to->num()} ({$d} д.)</h1>
+    }
+    
+    tmp::exec("menu",array(
+        "params" => $params,
+    ));
     
     switch($group) {
         case "month":
@@ -25,15 +53,8 @@ tmp::header();
             throw new Exception("wrong request param 'group'");
     }
     
-    $time = board_task_time::all()
-        ->joinByField("taskID")
-        ->eq("board_task.projectID",$params["projectID"]);
-        
-    $log = board_task_log::all()
-        ->joinByField("taskID")
-        ->eq("board_task.projectID",$params["projectID"]);
-        
     $users = $time->distinct("userID");
+    $projects = $time->distinct("board_task.projectID");
         
     $data = array();
     
@@ -57,7 +78,9 @@ tmp::header();
             $text.= " ".$map[$xdate->commercialWeekDay()];
         }
         
-        $row[] = $text;
+        $row["date"] = array(
+            "value" => $text,
+        );
     
         switch($group) {
             case "month":
@@ -71,27 +94,58 @@ tmp::header();
                 break;
         }
         
-        foreach($users as $userID) {            
-            $segmentTime = $time->copy()
-                ->eq("userID",$userID)
-                ->geq("date(begin)",$current)
-                ->lt("date(begin)",$next)
-                ->where("unix_timestamp(`end`) - unix_timestamp(`begin`) < 3600 * 24 * 3")
-                ->select("sum(unix_timestamp(`end`) - unix_timestamp(`begin`)) as `time`");
-                
-            $segmentTime = end(end($segmentTime)) /3600;
-            $row[] = $segmentTime;        
+        if($mode=="auto") {
+            foreach($users as $userID) {            
+                $segmentTime = $time->copy()
+                    ->eq("userID",$userID)
+                    ->geq("date(begin)",$current)
+                    ->lt("date(begin)",$next)
+                    ->where("unix_timestamp(`end`) - unix_timestamp(`begin`) < 3600 * 24 * 3")
+                    ->select("sum(unix_timestamp(`end`) - unix_timestamp(`begin`)) as `time`");
+                    
+                $segmentTime = end(end($segmentTime)) /3600;
+                $row["a-".$userID] = array(
+                    "value" => round($segmentTime,2),
+                );
+            }
         }
         
-        foreach($users as $userID) {            
-            $timeSpent = $log->copy()
-                ->eq("userID",$userID)
-                ->geq("date(created)",$current)
-                ->lt("date(created)",$next)
-                ->select("sum(board_task_log.timeSpent)");
+        if($mode=="user") {
+        
+            $onclick = "mod.fire('board/showLog',{from:'$current',to:'$next'})";
+        
+            if($split == "user") {
+            
+                $timeSpent = $log->copy()
+                    ->geq("date(created)",$current)
+                    ->lt("date(created)",$next)
+                    ->groupBy("userID")
+                    ->select("sum(board_task_log.timeSpent) as `sum`,userID");
+                    
+                foreach($timeSpent as $userTime) {
+                    $row[$userTime["userID"]] = array(
+                        "value" => round($userTime["sum"],2),
+                        "onclick" => $onclick,
+                    );
+                }
                 
-            $segmentTime = end(end($timeSpent)) * 1;
-            $row[] = $segmentTime;        
+            } elseif($split == "project") {
+            
+                $timeSpent = $log->copy()
+                    ->geq("date(created)",$current)
+                    ->lt("date(created)",$next)
+                    ->groupBy("board_task.projectID")
+                    ->select("sum(board_task_log.timeSpent) as `sum`,projectID");
+                    
+                foreach($timeSpent as $groupTime) {
+                    $row[$groupTime["projectID"]] = array(
+                        "value" => round($groupTime["sum"],2),
+                        "onclick" => $onclick,
+                    );
+                }
+            
+            }
+            
         }
     
         $data[] = $row;
@@ -100,38 +154,64 @@ tmp::header();
         $n++;
     }
     
-    $chart = google_chart::create();
-    $chart->param("hAxis",array(
-        slantedTextAngle => 90,
-        slantedText => true,
-        maxAlternation => 4,
-        showTextEvery => 1,
-        textStyle => array(
-            fontSize => 10
-        ),
-    ));
-    $chart->param("chartArea",array(
-        "height" => "50%",
-    ));
-    $chart->param("isStacked", true);
-    $chart->columnChart();
-    $chart->width("100%");
-    $chart->height(300);
-    $chart->col("Месяц","string");
+    $chart = new board_chart;    
     
-    foreach($users as $userID) {
-        $chart->col(user::get($userID)->title());
+    if($mode == "auto") {
+        $colGroup = array(
+            "label" => "Потрачено времени (авто)",
+            "cols" => array(),
+        );
+        foreach($users as $userID) {    
+            $colGroup["cols"][] = array(
+                "name" => "a-".$userID,
+                "label" => user::get($userID)->title(),
+            );
+        }    
+        $chart->addColGroup($colGroup);
     }
     
-    foreach($users as $userID) {
-        $chart->col("*".user::get($userID)->title());
-    }    
+    if($mode == "user") {
     
-    foreach($data as $row) {
-        $chart->row($row);
+        if($split == "user") {
+        
+            $colGroup = array(
+                "label" => "Потрачено времени (указал)",
+                "cols" => array(),
+            );
+            foreach($users as $userID) {    
+                $colGroup["cols"][] = array(
+                    "name" => $userID,
+                    "label" => user::get($userID)->title(),
+                );
+            }    
+            $chart->addColGroup($colGroup);
+            
+        } elseif($split == "project") {
+        
+            $colGroup = array(
+                "label" => "Потрачено времени",
+                "cols" => array(),
+            );
+            foreach($projects as $projectID) {    
+                $colGroup["cols"][] = array(
+                    "name" => $projectID,
+                    "label" => board_project::get($projectID)->title(),
+                );
+            }    
+            $chart->addColGroup($colGroup);
+        
+        }
+    
+
+        
+        foreach($data as $row) {
+            $chart->addRow($row);
+        }
     }
     
     $chart->exec();
+    
+    <div class='details' ></div>
     
 </div>
 

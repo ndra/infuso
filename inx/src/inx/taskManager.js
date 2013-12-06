@@ -54,7 +54,7 @@ inx.taskManager = {
         dep = dep ? dep+1 : 1;
         
         if(dep>100) {
-            alert("Task depth limit. Stop at "+l[0][0]+" : "+l[0][1]);
+            alert("Task depth limit.");
             inx.taskManager.active = false;
             return;
         }
@@ -68,8 +68,9 @@ inx.taskManager = {
             n++;
         }
         
-        if(n)
+        if(n) {
             inx.taskManager.exec(dep);
+        }
         
     }
 }

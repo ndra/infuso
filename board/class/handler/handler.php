@@ -193,6 +193,9 @@ class board_handler implements mod_handler {
 
 		user_operation::create("board/showReportDone","Просмотр отчета по сделанному")
 		    ->appendTo("guest");
+		    
+		user_operation::create("board/showTimeSpentChart","Просмотр отчета-гарфика по потраченному времени")
+		    ->appendTo("guest");
         
     }
     

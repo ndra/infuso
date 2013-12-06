@@ -8,7 +8,7 @@ inx.ns("inx.mod.admin").login = inx.dialog.extend({
         p.width = 400;
         p.height = 210;
         
-        p.layout = "inx.layout.fit";
+        //p.layout = "inx.layout.fit";
         
         p.style = {
             border:0

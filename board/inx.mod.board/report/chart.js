@@ -3,13 +3,10 @@
 
 inx.ns("inx.mod.board.report").chart = inx.panel.extend({
 
-    constructor:function(p) {  
+    constructor:function(p) {   
     
-        p.style = {
-            padding:20,
-            spacing:10
-        }  
-    
+        p.layout = "inx.layout.fit";
+
         p.tbar = [{
             type:"inx.select",
             name:"group",
@@ -43,18 +40,12 @@ inx.ns("inx.mod.board.report").chart = inx.panel.extend({
         this.iframe = inx({
             type:"inx.iframe",
             style:{
-                padding:10,
-                height:400,
-                border:1
+                height:500
             }
         });
         
         p.items = [this.iframe];
         
-        /*p.items = [this.iframe, {
-            type:"inx.mod.board.report.chart.conf"
-        }] */
-    
         this.base(p);
     },
    
@@ -86,7 +77,9 @@ inx.ns("inx.mod.board.report").chart = inx.panel.extend({
         field.cmd("setValue",params.group);
         src.group = params.group;
         
-        src.projectID = params.id;
+        if(params.id) {
+            src.projectID = params.id;
+        }
         
         var ret = "/board_controller_report/projectChart";
         for(var i in src) {

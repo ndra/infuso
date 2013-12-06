@@ -1,0 +1,19 @@
+.k6k070zxwy {
+
+    tr:hover {
+        td {
+            background:#ededed;
+        }
+    }
+
+    td {
+        padding-bottom:2px;
+        padding-right:10px;
+    }
+    
+    .col-sum {
+        margin-left:5px;
+        display:inline-block;
+    }
+
+}

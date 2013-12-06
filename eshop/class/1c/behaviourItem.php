@@ -62,7 +62,6 @@ class eshop_1c_behaviourItem extends mod_behaviour {
             "title" => $towar->Наименование."",
             "importKey" => $importKey,
             "article" => $towar->Артикул."",
-            "photos" => $photos,
             "description" => $towar->Описание."",
             "order" => true,
         );

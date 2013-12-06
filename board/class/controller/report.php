@@ -173,31 +173,10 @@ class board_controller_report extends mod_controller {
     /**
      * Контроллер для ленты с моей активностью за день
      **/
-    public function index_vote() {
-
-        // Параметры задачи
-        if(!user::active()->checkAccess("board/showReportVote")) {
-            mod::msg(user::active()->errorText(),1);
-            tmp::header();
-            tmp::footer();
-            return;
-        }
-
-        tmp::exec("/board/report/vote");
-
-    }
-
-    /**
-     * Контроллер для ленты с моей активностью за день
-     **/
     public function index_projectChart($p) {
 
-        $project = board_project::get($p["id"]);
-
         // Параметры задачи
-        if(!user::active()->checkAccess("board/showReportProjectActivity",array(
-            "project" => $project,
-        ))) {
+        if(!user::active()->checkAccess("board/showTimeSpentChart")) {
             mod::msg(user::active()->errorText(),1);
             tmp::header();
             tmp::footer();
@@ -207,6 +186,25 @@ class board_controller_report extends mod_controller {
         tmp::exec("/board/report/chart",array(
             "params" => $p,
         ));
+
+    }
+    
+    /**
+     * Контроллер для ленты с моей активностью за день
+     **/
+    public function post_chartDetails($p) {
+    
+        // Параметры задачи
+        if(!user::active()->checkAccess("board/showTimeSpentChart")) {
+            mod::msg(user::active()->errorText(),1);
+            tmp::header();
+            tmp::footer();
+            return;
+        }
+    
+        return tmp::get("/board/report/chart/details",array(
+            "params" => $p,
+        ))->getContentForAjax();
 
     }
 

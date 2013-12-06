@@ -10,9 +10,9 @@ class reflex_content_defaultProcessor extends reflex_content_processor {
 
     private static $tags = array();
 
-	public function defaultService() {
-	    return "contentProcessor";
-	}
+    public function defaultService() {
+        return "contentProcessor";
+    }
 
     /**
      * Стандартный процессор контента
@@ -29,11 +29,11 @@ class reflex_content_defaultProcessor extends reflex_content_processor {
 
         if($this->param("newlineToParagraph")) {
             $html = self::newlineToParagraph($html);
-		}
+        }
 
         if($tmp = $this->param("useTemplate")) {
             $html = tmp::get($tmp)->param("content",$html)->rexec();
-		}
+        }
 
         return $html;
     }
@@ -52,12 +52,13 @@ class reflex_content_defaultProcessor extends reflex_content_processor {
         self::$tags = array();
 
         // Заменяем скрипты плейсхолдерами (чтобы в скриптах не вставлялись <br/>)
-        $html = preg_replace_callback("/\<script[^>]*\>.*\<\/script\>/is",array(self,"replaceTag"),$html);
+        //$html = preg_replace_callback("/\<script[^>]*\>.*\<\/script\>/is",array(self,"replaceTag"),$html);
 
         // Убираем пробелы около \n
         $html = explode("\n",$html);
-        foreach($html as $key=>$val)
+        foreach($html as $key=>$val) {
             $html[$key] = trim($val);
+        }
         $html = implode("\n",$html);
 
         // Убираем новые строки между тэгами
@@ -67,17 +68,54 @@ class reflex_content_defaultProcessor extends reflex_content_processor {
         // Заменяем две и более новых строки на две
         $html = preg_replace("/\n{2,}/","\n\n",$html);
 
-        // Преобразуем два перехода на новую строку в параграф
-        $html = explode("\n\n",$html);
-        foreach($html as $key=>$val)
-            $html[$key] = "<p>".$val."</p>";
+        // Разрезаем текст по тэгам и двойным пробелам
+        $tags = array(
+            "h1",
+            "h2",
+            "h3",
+            "h4",
+            "h5",
+            "h6",
+            "script",
+            "ul",
+            "ol",
+            "div"
+        );
+        $regex = array();
+        foreach($tags as $tag) {
+            $regex[] = "(\<$tag\>.*\<\/$tag\>)";
+        }
+        $regex = implode("|",$regex);
+        $html = preg_split("/(\n\n)|{$regex}/Us",$html,-1,PREG_SPLIT_DELIM_CAPTURE);
+
+        $regex = array();
+        foreach($tags as $tag) {
+            $regex[] = "(\<$tag)";
+        }
+        $regex = "/".implode("|",$regex)."/";
+
+        foreach($html as $key => $val) {
+            $val = trim($val,"\n");
+            if($val) {
+                if(!preg_match($regex,$val)) {
+                    $val = strtr($val,array(
+                        "\n" => "<br/>",
+                    ));
+                    $val = "<p>".$val."</p>";
+                }
+                $html[$key] = $val;
+            } else {
+                $html[$key] = "";
+            }
+        }
         $html = implode("",$html);
 
-        $html = strtr($html,array(
+        /*$html = strtr($html,array(
             "\n" => "<br/>",
-        ));
+        )); */
 
-        $html = strtr($html,self::$tags);
+        // Возвращаем спрятанные тэги
+//        $html = strtr($html,self::$tags);
 
         return $html;
     }

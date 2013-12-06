@@ -49,6 +49,11 @@ class board_task_time extends reflex {
     public static function all() {
         return reflex::get(get_class())->desc("begin");
     }
+    
+    public function visible() {
+        $tasks = board_task::visible();
+        return self::all()->joinByField("taskID",$tasks);
+    }
 
     /**
      * Возвращает запись в логе по id

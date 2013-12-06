@@ -1,0 +1,43 @@
+.mwiz6j92fe {
+
+    position:relative; 
+    padding-top:17px;
+
+    .chart {
+        td {
+            vertical-align:bottom;
+            padding-right:3px;
+            white-space:nowrap;
+            padding-bottom:110px;
+            
+            div {
+                vertical-align:bottom;
+            }
+        }        
+    }
+    
+    .col-label {
+    
+        top:34px;
+        left:-18px;
+        font-size:11px;
+        position:absolute;
+        
+        -webkit-transform: rotate(90deg);
+        -moz-transform: rotate(90deg);
+        -o-transform: rotate(90deg);
+        -ms-transform: rotate(90deg);
+        transform: rotate(90deg);
+    }
+    
+    .sum {
+        position:absolute;
+        top:-16px;
+        opacity:.1;
+    }
+    
+    .colgroup:hover .sum {
+        opacity:1;
+    }
+
+}

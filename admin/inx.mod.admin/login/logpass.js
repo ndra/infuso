@@ -27,6 +27,7 @@ inx.mod.admin.login.logpass = inx.form.extend({
     },
     
     cmd_handleData:function(data) {
+    
         this.items().cmd("destroy");
         if(data.email) {
             this.cmd("add",{
