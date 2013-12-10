@@ -45,7 +45,7 @@ class user_action extends mod_controller {
 	 **/
 	public function redirectAfterLogin() {
 	
-		$this->redirect("location:/");
+		$this->redirect("/");
 		
         // Выбрасываем событие редиректа при авторизации
         mod::fire("user_afterloginRedirect");
