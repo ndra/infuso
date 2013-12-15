@@ -1,0 +1,11 @@
+.zpladp07tf {
+
+    input[type=textfield] {
+        width:50px;
+    }
+    
+    input[type=textfield], label {
+        margin-right:10px;
+    }    
+
+}

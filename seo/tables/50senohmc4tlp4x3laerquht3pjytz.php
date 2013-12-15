@@ -30,6 +30,19 @@
     ),
     2 => 
     array (
+      'editable' => 1,
+      'id' => 'df10j4lbxklrqpahqf1ztmv0dp50oc',
+      'name' => 'url',
+      'type' => 'v324-89xr-24nk-0z30-r243',
+      'label' => 'Продвигаемая страница',
+      'group' => '',
+      'default' => '',
+      'indexEnabled' => 0,
+      'help' => '',
+      'length' => '',
+    ),
+    3 => 
+    array (
       'id' => 'o24qoug3fg9kfrhk4u9t8xbemgpdoe',
       'name' => 'query',
       'type' => 'v324-89xr-24nk-0z30-r243',
@@ -38,7 +51,7 @@
       'default' => '',
       'help' => '',
     ),
-    3 => 
+    4 => 
     array (
       'id' => '4v2owg6jyv2j4ehjp5rqfl2xc9h3cu',
       'name' => 'update',
@@ -48,7 +61,7 @@
       'default' => '',
       'help' => '',
     ),
-    4 => 
+    5 => 
     array (
       'id' => 'vzxp5bxp5hx4uh3m1sxplhdwghof1r',
       'name' => 'priority',

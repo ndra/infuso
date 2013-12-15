@@ -1,0 +1,23 @@
+.yp2yr8yzq7 {
+
+    td {
+        padding:4px;
+        border-bottom: 1px solid #ededed;
+    }
+    
+    tr:hover td {
+        background:#ededed;
+    }
+    
+    .position {
+        display:inline-block;
+        width:50px;
+    }
+    
+    thead {
+        tr {
+            font-weight:bold;
+        }
+    }
+    
+}

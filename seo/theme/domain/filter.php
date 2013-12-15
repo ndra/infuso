@@ -14,13 +14,20 @@ if($params["to_date"]){
 }
 
 
-<form method='post'>
-<input type='hidden' name='cmd' value='seo:filterByDate'>
+<form method='post' class='zpladp07tf' >
 
-<input type='hidden' name='id' value='{$domain->id()}'>От 
-<input type='textfield' class='witcdlhmrn' value="$from">
-<input type='hidden' name="from_date" value="{$params['from_date']}">До 
-<input type='textfield' class='witcdlhmrn' value="$to">
-<input type='hidden' name="to_date" value="{$params['to_date']}">
-<input type='submit' value="Фильтрануть">
+    <input type='hidden' name='cmd' value='seo:filterByDate'>
+    
+    <input type='hidden' name='id' value='{$domain->id()}'>
+    
+    <label>от</label>
+    <input type='textfield' class='witcdlhmrn' value="$from">
+    <input type='hidden' name="from_date" value="{$params['from_date']}">
+    
+    <label>до</label>
+    <input type='textfield' class='witcdlhmrn' value="$to">
+    
+    <input type='hidden' name="to_date" value="{$params['to_date']}">
+    <input type='submit' value="Фильтрануть">
+    
 </form>

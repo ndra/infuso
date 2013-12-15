@@ -1,5 +1,8 @@
 <?
 
+/**
+ * Контроллер отчета по продвижению
+ **/
 class seo extends mod_controller {
 
     public static function indexTest() {
@@ -26,11 +29,19 @@ class seo extends mod_controller {
         tmp::exec("seo:domain",seo_domain::get($p["id"]));
         admin::footer();
     }
+    
+    public function index_test() {
+        $x = mod::service("seoQueryInfo")->source("google")->info("верное рещение");
+        var_export($x);
+        
+    }
 
     public static function normalizeDomain($domain) {
-        $domain = preg_replace("/^www\./","",$domain);
-        preg_match("/[a-z\d\.\_\-]*/",$domain,$matches);
-        return $matches[0];
+        //$domain = preg_replace("/^www\./","",$domain);
+        //preg_match("/[a-z\d\.\_\-]*/",$domain,$matches);
+        //return $matches[0];
+        
+        return $domain;
     }
     
     public static function postTest() {

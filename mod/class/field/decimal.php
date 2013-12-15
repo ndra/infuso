@@ -2,13 +2,21 @@
 
 	class mod_field_decimal extends mod_field_bigint {
 
-	public function typeID() { return "yvbj-cgin-m90o-cez7-mv2j"; }
+	public function typeID() {
+		return "yvbj-cgin-m90o-cez7-mv2j";
+	}
 	
-	public function typeName() { return "Дробное число"; }
+	public function typeName() {
+		return "Дробное число";
+	}
 
-	public function mysqlType() { return "double"; }
+	public function mysqlType() {
+		return "double";
+	}
 	
-	public function mysqlIndexType() { return "index"; }
+	public function mysqlIndexType() {
+		return "index";
+	}
 
 	public function editorInx() {
 		return array(

@@ -6,10 +6,11 @@ inx.ns("inx.mod.reflex.fields").links = inx.panel.extend({
     
        // p.height = 200;
        // p.autoHeight = false;
-        p.layout = "inx.layout.fit";
+        //p.layout = "inx.layout.fit";
         
         p.style = {
-            height:"content"
+            height:"content",
+            border:1
         }
         
         /*this.addObject = inx({

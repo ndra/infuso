@@ -2,27 +2,23 @@
 
 $domain = $p1;
 
-echo "<div style='padding:20px;' >";
+<div style='padding:20px;' >
 
-echo "<h2>".$domain->title()."</h2>";
-
-<div>
-    tmp::exec("filter", array("domain"=>$domain));
+    <h2>{$domain->title()}</h2>
+    
+    <div style='margin-bottom:20px;' >
+        tmp::exec("filter", array("domain"=>$domain));
+    </div>
+    
+    <div>
+        $day = $_GET["date"];
+        tmp::exec("positions",$domain,$day);
+    </div>
+    
+    <div>
+        //tmp::exec("chart",$domain,$day);
+    </div>
+    
 </div>
 
-echo "<div>";
-$day = $_GET["date"];
-tmp::exec("positions",$domain,$day);
-echo "</div>";
-
-echo "<div>";
-tmp::exec("chart",$domain,$day);
-echo "</div>";
-
-echo "<div>";
-tmp::exec("liveinternet",$domain);
-echo "</div>";
-
-echo "</div>";
-
-?>
+util::profiler();

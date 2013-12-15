@@ -41,16 +41,6 @@
     ),
     3 => 
     array (
-      'id' => 'ds8nrul4ah2h5y9nh0c11qjw2715xn',
-      'name' => 'public',
-      'type' => 'fsxp-lhdw-ghof-1rnk-5bqp',
-      'editable' => '1',
-      'label' => 'Показывать на сайте',
-      'param' => '',
-      'help' => '',
-    ),
-    4 => 
-    array (
       'id' => '4lbnyvrqcartwe2omeink5znfab3mu',
       'name' => 'updated',
       'type' => 'x8g2-xkgh-jc52-tpe2-jcgb',
@@ -59,23 +49,13 @@
       'param' => '',
       'help' => '',
     ),
-    5 => 
+    4 => 
     array (
       'id' => '2ow9rxy9rxpvixp9iqfv2opvijcviq',
       'name' => 'extra',
       'type' => 'puhj-w9sn-c10t-85bt-8e67',
       'editable' => '2',
       'label' => 'Дополнительно',
-      'param' => '',
-      'help' => '',
-    ),
-    6 => 
-    array (
-      'id' => 'nfusqp9bqcebtwu2nwlztw1bxmghjm',
-      'name' => 'backlinks',
-      'type' => 'fsxp-lhdw-ghof-1rnk-5bqp',
-      'editable' => '1',
-      'label' => 'Искать бэклинки',
       'param' => '',
       'help' => '',
     ),

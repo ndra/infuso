@@ -3,7 +3,10 @@
 class seo_query extends reflex implements mod_handler {
 
     public static function all() {
-        return reflex::get(get_class())->joinByField("domain")->neq("seo_domain.id",0)->asc("priority");
+        return reflex::get(get_class())
+			->joinByField("domain")
+			->neq("seo_domain.id",0)
+			->asc("priority");
     }
 
     public static function get($id) {
@@ -18,7 +21,9 @@ class seo_query extends reflex implements mod_handler {
         return seo_domain::get($this->data("domain"));
     }
 
-    public function reflex_parent() { return $this->_domain(); }
+    public function reflex_parent() {
+		return $this->_domain();
+	}
 
     public function reflex_cleanup() {
         if(!$this->_domain()->exists()) return true;
@@ -73,6 +78,9 @@ class seo_query extends reflex implements mod_handler {
         ));
     }
 
+	/**
+	 * Обновляет данные по этому запросу
+	 **/
     public function refresh() {
 
         foreach($this->_domain()->engines() as $engine) {
