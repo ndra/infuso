@@ -117,6 +117,8 @@ class google_translate extends mod_service {
         );
 
         $url = "https://www.googleapis.com/language/translate/v2?".http_build_query($params);
+        
+        $this->log($str);
 
         $file = file::http($url);
         $tr = $file->data();
@@ -133,6 +135,17 @@ class google_translate extends mod_service {
             throw new Exception("Google translate error: {$error[message]} ({$error[reason]})");
         } else {
             return $tr["data"]["translations"][0]["translatedText"];
+        }
+    }
+    
+    private function log($original) {
+    
+        if($this->param("log")) {
+            reflex::create("google_translate_log",array(
+                "ip" => $_SERVER['REMOTE_ADDR'],
+                "original" => $original,
+                "originalLength" => util::str($original)->length(),
+            ));
         }
     }
 

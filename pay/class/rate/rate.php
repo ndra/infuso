@@ -1,5 +1,8 @@
 <?
 
+/**
+ * Модель курса валют модуля pay
+ **/
 class pay_rate extends reflex {
 
     /**
