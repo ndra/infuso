@@ -13,7 +13,7 @@
 #
 #
 
-class ndra_markdown  extends mod_service {
+class ndra_markdown extends mod_service {
 
 	public function defaultService() {
 	    return "markdown";

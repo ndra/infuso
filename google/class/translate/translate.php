@@ -5,6 +5,21 @@
  **/
 class google_translate extends mod_service {
 
+    public function confDescription() {
+        return array(
+            "components" => array(
+                "google_translate" => array(
+                    "params" => array(
+                        "exceptionOnError" => "Вызывать ли исключение при ошибке переводчика",
+                        "bypass" => "Не переводить",
+                        "passiveMode" => "Пассивный режим (только из кэша, запросы к api не делаются)",
+                        "log" => "Записывать в лог",
+                    ),
+                ),
+            ),
+        );
+    }
+
     public function defaultService() {
         return "translate";
     }

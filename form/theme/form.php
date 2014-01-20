@@ -8,8 +8,11 @@ $tag->tag("form");
 $tag->params($form->params());
 
 $tag->attr("id", "$id");
-$tag->attr("method", "post");
-    
+
+// Если не задан метод, используем POST
+if(!$tag->attr("method")) {
+    $tag->attr("method", "post");
+}    
     
 $tag->begin();
 

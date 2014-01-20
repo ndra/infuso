@@ -463,19 +463,20 @@ class pay_invoice extends reflex implements mod_handler {
         //Задаем статус
         if(func_num_args() == 1) {
 
-            if (!array_key_exists($status, self::statusAll()))
+            if (!array_key_exists($status, self::statusAll())) {
                 throw new Exception("Pay: несуществующий статус оплаты с кодом " . $status);
+			}
 
-            //Если указан тип Требует прерки, заполняем поле время проверки
+            // Если указан тип Требует прерки, заполняем поле время проверки
             if($status == self::STATUS_CHECK) {
                 $this->data("timeCheck", self::getCheckRefreshTime());
             }
 
-            //Установить статус счета
+            // Установить статус счета
             $this->data("status", $status);
 
             return $this;
         }
     }
 
-} //END CLASS
+}

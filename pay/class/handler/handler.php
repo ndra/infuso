@@ -11,7 +11,7 @@ class pay_handler implements mod_handler {
     
     /**
      * Обработчик собития Cron-а, проверка статуса счетов, помеченых на такую проверку
-     *
+     * @todo переделать под новый стиль управления задачами
      * @return void
      **/
     public function on_mod_cron() {

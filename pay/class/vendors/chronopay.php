@@ -65,8 +65,9 @@ class pay_vendors_chronopay extends pay_vendors {
         
         self::loadConf();
         
-        if ($p["key"] != self::$key)
+        if ($p["key"] != self::$key) {
             throw new Exception("Неверный защитный ключ");
+		}
 
         $out_summ = $_REQUEST["total"];
         
@@ -74,19 +75,24 @@ class pay_vendors_chronopay extends pay_vendors {
         $my_crc = md5(self::$passSecure1 . $_REQUEST["customer_id"] . $_REQUEST["transaction_id"] . $_REQUEST["transaction_type"] . $out_summ);
         
         
-        if ($my_crc != $crc)
+        if ($my_crc != $crc) {
             throw new Exception("Неверная подпись CRC");
+		}
         
         // Загружаем счет
         $invoice = pay_invoice::get((integer)$_REQUEST["cs1"]);
         
-        if ($invoice->data("currency") != self::$currency)
-        {
+        if ($invoice->data("currency") != self::$currency) {
             $invoice->log("Счет выставлен в другой валюте, код " . $invoice->data("currency"));
             throw new Exception("Счет выставлен в другой валюте, код " . $invoice->data("currency"));
         }
         
-        //Зачисляем средства
+        if($invoice->paid()) {
+            $invoice->log("Вызов метода pay_vendors_chronopay::index_result() для уже оплаченного счета. Скорее всего хронопей не получил ответа от нашего сервера при прошлом вызове этого метода.");
+            return;
+        }
+        
+        // Зачисляем средства
         $invoice->incoming(array(
             "sum" => (string)$out_summ,
             "driver" => "Chronopay")
@@ -97,7 +103,6 @@ class pay_vendors_chronopay extends pay_vendors {
     * Выполнено зачисление средств
     *
     * @return void
-    * @todo Нужно переписать методы index_success и index_fail что бы они возвращали редирект на страницу счета.
     **/
     public function index_success($p = NULL) {
     
@@ -113,7 +118,6 @@ class pay_vendors_chronopay extends pay_vendors {
     * Ошибка при зачисление денежных средств
     *
     * @return void
-    * @todo Нужно переписать методы index_success и index_fail что бы они возвращали редирект на страницу счета.
     **/
     public function index_fail($p = NULL) {
        self::loadConf();
