@@ -153,7 +153,7 @@ class mod extends controller {
 	 * Заносит сообщение в лог
 	 **/
 	public function trace($message) {
-		mod_log::trace($message);
+		log::trace($message);
 	}
 
 	/**
