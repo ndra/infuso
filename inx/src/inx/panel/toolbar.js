@@ -7,7 +7,7 @@ inx.panel.toolbar = inx.panel.extend({
             background:"#ededed",
             padding:5,
             spacing:2,
-            height:"content",
+            height:"content"
         }
         p.layout = "inx.layout.column";
         this.base(p);
@@ -16,8 +16,9 @@ inx.panel.toolbar = inx.panel.extend({
     __defaultChildType:"inx.button",
       
     cmd_add:function(c) {
-        if(c=="|")
+        if(c=="|") {
             c={ type:"inx.panel.separator" };
+		}
         this.base(c);
     }
     

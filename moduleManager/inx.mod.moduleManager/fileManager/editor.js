@@ -38,7 +38,7 @@ inx.mod.moduleManager.fileManager.editor = inx.tabs.extend({
             cmd:"moduleManager_fileManager:setContents",
             path:this.path,
             module:this.module,
-            php:this.editor.info("value"),
+            php:this.editor.info("value")
         });
         return false;
     },

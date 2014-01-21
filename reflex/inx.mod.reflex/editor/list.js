@@ -508,6 +508,6 @@ inx.mod.reflex.editor.list = inx.tabs.extend({
             sel.push(data["class"]+":"+data.ids[i]);
         this.actions.cmd("sel",sel);
         this.selection = sel;
-    },
+    }
 
 });

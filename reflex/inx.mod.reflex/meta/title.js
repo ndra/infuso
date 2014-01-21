@@ -11,7 +11,7 @@ inx.mod.reflex.meta.title = inx.tabs.extend({
         
     cmd_requestData:function() {
         this.call({
-            cmd:"lang:controller:getAll",
+            cmd:"lang:controller:getAll"
         },[this.id(),"handleData"]);
     },
     
@@ -32,7 +32,7 @@ inx.mod.reflex.meta.title = inx.tabs.extend({
         
         if(n < 2) {
             this.cmd("hideTabs");
-        }        
+        }
         
     }
      

@@ -44,7 +44,7 @@ inx.mod.moduleManager.templateManager.editor.tab = inx.tabs.extend({
     cmd_showPrefs:function() {
         inx({
             type:"inx.mod.moduleManager.templateManager.editor.preferences",
-            templateID:this.templateID,
+            templateID:this.templateID
         }).setOwner(this).cmd("render");
     }
 

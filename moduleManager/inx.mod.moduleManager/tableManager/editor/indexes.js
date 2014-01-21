@@ -13,7 +13,7 @@ inx.mod.moduleManager.tableManager.editor.indexes = inx.list.extend({
         ];
         p.loader = {
             cmd:"moduleManager:tableManager:listIndexes",
-            tableID:p.tableID,
+            tableID:p.tableID
         }
         this.base(p);
         this.on("itemdblclick","editIndex");

@@ -53,6 +53,6 @@ inx.panel = inx.panel.extend({
     
     info_clientHeight:function() {
         return Math.max(0,(this.__bodyHeight || 0) - this.style("padding")*2 - (this.private_style.hscroll ? 10 : 0));
-    },
+    }
     
 });

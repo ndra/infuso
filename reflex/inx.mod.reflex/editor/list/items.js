@@ -4,8 +4,11 @@
 inx.mod.reflex.editor.list.items = inx.list.extend({
 
     constructor:function(p) {
-        if(!p.style)
+    
+        if(!p.style) {
             p.style = {}
+		}
+		
         p.style.spacing = 4;
         p.style.valign = "top";
         
@@ -18,8 +21,7 @@ inx.mod.reflex.editor.list.items = inx.list.extend({
         if(!this.info("visibleRecursive")) {
             return false;
         }
-
         this.cmd("selectAll");
-    },
+    }
     
 });

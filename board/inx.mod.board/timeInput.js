@@ -73,7 +73,7 @@ inx.ns("inx.mod.board").timeInput = inx.dialog.extend({
         this.cmd("add",{
             type:"inx.textarea",
             name:"comment",
-            y:40,
+            y:40
         });
         
         this.on("submit",[this.id(),"save"]);
