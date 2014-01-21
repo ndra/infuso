@@ -183,7 +183,7 @@ inx.ns("inx.mod.board").main = inx.viewport.extend({
             title:"Оцените задачу",
             style:{
                 border:0,
-                background:"white",
+                background:"white"
             },items:[{
                 type:"inx.mod.board.vote",
                 taskID:p.taskID

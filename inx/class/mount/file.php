@@ -87,6 +87,11 @@ class inx_mount_file extends mod_component {
 			}
 			$this->src = preg_replace("/^(\/\/ @[^\n]+\n)+/", "", $this->src);
 		}
+		
+	    if(preg_match("/.*\,\s*\}.*/",$this->src,$matches)) {
+	        mod::msg("trailing coma in {$this->path()} ".$matches[0],1);
+	    }
+		
 		return $this->src;
 	}
 
@@ -147,7 +152,11 @@ class inx_mount_file extends mod_component {
             }
 
 			try {
-				$this->compiled.= self::$conf["pack"] ? inx_JSMin::minify($this->fullCode()) : $this->fullCode();
+			
+			    $data = $this->fullCode();
+			    $data = self::$conf["pack"] ? inx_JSMin::minify($data) : $data;
+				$this->compiled.= $data;
+				
 			} catch (Exception $ex) {
 			    mod::msg($this->path().": ".$ex->getMessage(),1);
 			}

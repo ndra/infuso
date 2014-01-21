@@ -98,7 +98,7 @@ inx.textarea = inx.textfield.extend({
             if(key=="fontSize") {
                 if(this.input) {
                     this.input.css({
-                        fontSize:this.private_style["fontSize"],                        
+                        fontSize:this.private_style["fontSize"]                        
                     });
                     this.rulerInput = null;
                 }

@@ -48,7 +48,7 @@ inx.combo = inx.textfield.extend({
             style:{
                 maxHeight:200,
                 height:"content",
-                border:0,
+                border:0
             },listeners:{
                 itemclick:[this.id(),"native_handleSelect"],
                 load:[this.id(),"handleLoad"],

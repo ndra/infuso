@@ -30,7 +30,7 @@ inx.mod.board.projects.editor = inx.dialog.extend({
     
         this.call({
             cmd:"board/controller/project/getProject",
-            projectID:this.projectID,
+            projectID:this.projectID
         },[this.id(),"handleData"]);
     
     },

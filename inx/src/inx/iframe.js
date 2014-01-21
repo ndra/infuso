@@ -76,7 +76,7 @@ inx.iframe = inx.panel.extend({
         
         this.iframe.css({
             width:this.info("bodyWidth"),
-            height:this.info("bodyHeight"),
+            height:this.info("bodyHeight")
         })
     }
     

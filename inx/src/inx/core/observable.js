@@ -168,5 +168,5 @@ inx.observable.debug = {
     cmds:{},
     cmdCountByID:{},
     cmdCountByName:{},
-    totalTime:{},
+    totalTime:{}
 }

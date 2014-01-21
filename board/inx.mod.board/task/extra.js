@@ -8,7 +8,7 @@ inx.mod.board.task.extra = inx.panel.extend({
         p.style = {
             valign:"top",
             border:0,
-            spacing:10,
+            spacing:10
         }  
         p.labelWidth = 100;
         

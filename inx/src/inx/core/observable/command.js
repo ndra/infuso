@@ -132,7 +132,7 @@ inx.command = inx.observable.extend({
         
         this.cmd("logThis",{
             statusText:"Success",
-            profiler:ret.profiler,
+            profiler:ret.profiler
         });
         
         inx.taskManager.exec();

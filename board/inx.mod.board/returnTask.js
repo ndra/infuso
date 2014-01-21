@@ -27,7 +27,7 @@ inx.ns("inx.mod.board").returnTask = inx.dialog.extend({
             labelAlign:"top",
             style:{
                 width: "parent"
-            },
+            }
         },{
             type:"inx.button",
             text:"Вернуть",

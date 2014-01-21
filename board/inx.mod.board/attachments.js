@@ -24,7 +24,7 @@ inx.ns("inx.mod.board").attachments = inx.list.extend({
             loader:{
                 cmd:"board/controller/attachment/uploadFile",
                 "sessionHash":p.sessionHash || null,
-                taskID:p.taskID,
+                taskID:p.taskID
             }, oncomplete:function() {
                 this.owner().cmd("load");
             }

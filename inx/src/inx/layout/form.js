@@ -97,7 +97,7 @@ inx.layout.form = {
                             y+= lh + 4;
                             
                         container.css({
-                            top:y,
+                            top:y
                         });
                         
                         item.cmd("width",bodyWidth);

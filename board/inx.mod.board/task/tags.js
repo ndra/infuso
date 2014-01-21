@@ -31,7 +31,7 @@ inx.mod.board.task.tags = inx.panel.extend({
         this.cmd("add",{
             type:"inx.panel",
             width:16,
-            html:"<img src='/board/res/img/icons16/tag.png' />",
+            html:"<img src='/board/res/img/icons16/tag.png' />"
         });
         
         for(var i=0;i<data.tags.length;i++) {

@@ -101,7 +101,7 @@ inx.calendar = inx.panel.extend({
                 var month = inx({
                     type:"inx.calendar.month",
                     style:{
-                        border:0,
+                        border:0
                     },
                     listeners:{
                         select:[this.id(),"handleClick"]
