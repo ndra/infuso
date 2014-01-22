@@ -14,7 +14,7 @@ class util_array extends mod_component implements iterator {
     public function current() {
 		$key = $this->key();
         $ret = &$this->data[$key];
-        return new self (&$ret);
+        return new self ($ret);
     }
     
     public function key() {
