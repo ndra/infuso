@@ -186,12 +186,11 @@ class app {
 	    $this->tmp()->exec("/mod/404");
 	}
 
-	public static function generateHtaccess() {
+	public function generateHtaccess() {
 
 	    // Загружаем xml с настройками
 	    $htaccess = mod::conf("mod:htaccess");
 
-	    //if(is_array($htaccess)) $htaccess = implode("\n",$htaccess);
 	    $htaccess = strtr($htaccess,array('\n'=>"\n"));
 		$htaccess.="\n\n";
 
@@ -214,15 +213,11 @@ RewriteRule ^(.*)$ https://%1/$1 [R=301,L]\n\n
 	    $str.="RewriteCond %{REQUEST_URI} !\. \n";
 	    $str.="RewriteRule .* /mod/pub/gate.php [L] \n";
 
-		$bundleManager = mod::service("bundle");
-	    foreach($bundleManager->all() as $bundle) {
-            foreach($bundle->publicFolders() as $pub) {
-                $pub = $mod."/".trim($pub,"/");
-                $pub = "/".trim($pub,"/")."/";
-                $pub = strtr($pub,array("/"=>'\/'));
-                $str.="RewriteCond %{REQUEST_URI} !^$pub\n";
-            }
-		}
+        foreach($this->publicFolders() as $pub) {
+            $pub = "/".trim($pub,"/")."/";
+            $pub = strtr($pub,array("/"=>'\/'));
+            $str.= "RewriteCond %{REQUEST_URI} !^$pub\n";
+        }
 
 		$str.= "RewriteCond %{REQUEST_URI} !\/mod\/pub\/gate.php\n";
 		$str.= "RewriteCond %{REQUEST_URI} !^\/?[^/]*$\n";
@@ -231,9 +226,30 @@ RewriteRule ^(.*)$ https://%1/$1 [R=301,L]\n\n
 
 	    file::get(".htaccess")->put($str);
 	}
+	
+	/**
+	 * Возвращает массив публичных папок приложения
+	 **/
+	public function publicFolders() {
+	
+	    $ret = array(
+	        $this->publicPath(),
+		);
+	
+		$bundleManager = mod::service("bundle");
+	    foreach($bundleManager->all() as $bundle) {
+            foreach($bundle->publicFolders() as $pub) {
+                $ret[] = $pub;
+            }
+		}
+		
+		return $ret;
+	
+	}
 
     /**
      * Один шаг инсталляции приложения
+     * Вернет true, если инициализация на этом шаге закончилась
      **/
     public function deployStep($step) {
 
@@ -305,13 +321,27 @@ RewriteRule ^(.*)$ https://%1/$1 [R=301,L]\n\n
         }
         
         return $class::serviceFactory();
-    
-        /**$class = mod_conf::general("services",$name,"class");
-        **/
     }
     
+    /**
+     * Регистрирует класс в качестве службы
+     **/
     public function registerService($service,$class) {
         $this->registredServices[$service] = $class;
+    }
+    
+    /**
+     * Возвращает директорию данных приложения
+     **/
+    public function varPath() {
+		return file::get("/var");
+    }
+    
+    /**
+     * Возвращает публичную директорию приложения
+     **/
+    public function publicPath() {
+        return file::get("/pub");
     }
 
 }

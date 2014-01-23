@@ -74,10 +74,9 @@ class classmapService extends service {
 
 		return true;
 	}
-
 	
 	/**
-	 * Возвращает пкть к файлу класса
+	 * Возвращает путь к файлу класса
 	 **/
 	public function classPath($class) {
 	    $map = self::classmap();
@@ -122,10 +121,20 @@ class classmapService extends service {
 	    "mod_service" => "infuso\\core\\service",
 	    "mod_superadmin" => "infuso\\core\\superadmin",
 	    "mod_action" => "infuso\\core\\action",
+	    "mod_field" => "infuso\\core\\field",
 	    "tmp" => "\\mod\\template\\tmp",
 	    "tmp_widget" => "\\mod\\template\\widget",
 	    "tmp_template" => "\\mod\\template\\template",
+	    "util" => "\\infuso\\util\\util",
 	);
+	
+	/**
+	 * Возвращает объект бандла для данного класса
+	 **/
+	public function getClassBundle($class) {
+	    $classPath = $this->classPath($class);
+		return new \infuso\core\bundle\bundle(file::get($classPath)->up()->up());
+	}
 	
 	public function includeClass($class) {
 	

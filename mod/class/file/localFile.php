@@ -267,11 +267,11 @@ class localFile extends file {
 	public function preview($width=100,$height=100) {
 	    
 	    if(func_num_args()==0) {
-	    	return new file_preview($this->path());
+	    	return new \file_preview($this->path());
 		}
 		
 		if(func_num_args()==2) {
-	    	return new file_preview($this->path(),$width,$height);
+	    	return new \file_preview($this->path(),$width,$height);
 	    }
 		
 	}

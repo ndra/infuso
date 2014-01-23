@@ -11,7 +11,7 @@ class post {
 	 * Обрабатывает POST-запрос
 	 **/
 	public function process($p,$files,&$status=null) {
-
+	
 		$status = false;
 
 	    if(!$cmd = trim($p["cmd"])) {
@@ -28,7 +28,7 @@ class post {
 	    $class = join("_",$d);
 
 	    // Проверяем теоретическую возможность обработать пост-запрос
-	    if(mod::service("classmap")->testClass($class,"mod_controller")) {
+	    if(mod::service("classmap")->testClass($class,"infuso\core\controller")) {
 
 	        $obj = new $class;
 		    if(call_user_func(array($obj,"postTest"),$p)) {
@@ -47,7 +47,7 @@ class post {
 			        } catch(mod_userLevelException $ex) {
 			            mod::msg($ex->getMessage(),1);
 			        }
-			        mod_component::callDeferedFunctions();
+			        component::callDeferedFunctions();
 			        return $ret;
 			    }
 			}

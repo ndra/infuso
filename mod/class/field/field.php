@@ -1,6 +1,9 @@
 <?
 
-abstract class mod_field extends mod_component {
+namespace infuso\core;
+use infuso\util\util;
+
+abstract class field extends component {
 
 	/**
 	 * Конфигурация поля
@@ -43,7 +46,7 @@ abstract class mod_field extends mod_component {
         
             $class = $conf;
             
-            if(!mod::service("classmap")->testClass($class,"mod_field")) {
+            if(!mod::service("classmap")->testClass($class,"\\infuso\\core\\field")) {
                 $class = self::$descr[$conf];
             }
             
@@ -133,7 +136,7 @@ abstract class mod_field extends mod_component {
     public static function collect() {
         file::mkdir(file::get(self::$path)->up());
         $ret = array();
-        foreach(mod::service("classmap")->classes("mod_field") as $class) {
+        foreach(mod::service("classmap")->classes("infuso\\core\\field") as $class) {
 
             $obj = new $class;
 
@@ -282,7 +285,7 @@ abstract class mod_field extends mod_component {
     }
 
     public function mysqlValue() {
-        return "'".reflex_mysql::escape($this->value())."'";
+        return "'".\reflex_mysql::escape($this->value())."'";
     }
 
     /**

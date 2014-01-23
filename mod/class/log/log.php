@@ -80,7 +80,7 @@ class log {
     public static function trace($trace) {
 
         $trace = self::toString($trace);
-        mod_file::mkdir("/mod/trace/");
+        file::mkdir("/mod/trace/");
 
         $message = "";
         $message.= date("h:i:s")." ";
@@ -106,7 +106,7 @@ class log {
         $message.= " >> ".$trace."\n";
         $date = date("Y-m-d");
         $path = "/mod/trace/$date.txt";
-        $handle = fopen(mod_file::get($path)->native(),'a');
+        $handle = fopen(file::get($path)->native(),'a');
         fwrite($handle, $message);
     }
 

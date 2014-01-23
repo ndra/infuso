@@ -1,70 +1,79 @@
-<? class mod_field_files extends mod_field {
+<?
 
-public function typeID() { return "f927-wl0n-410x-4grx-pg0o"; }
-public function typeName() { return "Список файлов"; }
+class mod_field_files extends mod_field {
 
-public function mysqlType() { return "blob"; }
+	public function typeID() {
+		return "f927-wl0n-410x-4grx-pg0o";
+	}
+	
+	public function typeName() {
+		return "Список файлов";
+	}
 
-public function mysqlIndexFields() {
-	return $this->name()."(1)";
-}
+	public function mysqlType() {
+		return "blob";
+	}
 
-public function editorInx() {
-	return array(
-	    "type" => "inx.mod.file.files",
-	    "value" => $this->value(),
-	);
-}
+	public function mysqlIndexFields() {
+		return $this->name()."(1)";
+	}
 
-public function tableCol() { return array(
-    "type"=>"image",
-);}
+	public function editorInx() {
+		return array(
+		    "type" => "inx.mod.file.files",
+		    "value" => $this->value(),
+		);
+	}
 
-public function tableRender() {
-    return $this->pvalue()->first()->preview(16,16)."";
-}
+	public function tableCol() { return array(
+	    "type"=>"image",
+	);}
 
-public function pvalue() {
-    $files = @json_decode($this->value(),1);
-    if(!is_array($files)) $files = array();
-    $ret = array();
-    foreach($files as $file)
-        $ret[] = file::get($file["f"]);
-    $ret = new file_list($ret);
-    return $ret;
-}
+	public function tableRender() {
+	    return $this->pvalue()->first()->preview(16,16)."";
+	}
 
-public function prepareValue($files) {
+	public function pvalue() {
+	    $files = @json_decode($this->value(),1);
+	    if(!is_array($files)) $files = array();
+	    $ret = array();
+	    foreach($files as $file)
+	        $ret[] = file::get($file["f"]);
+	    $ret = new file_list($ret);
+	    return $ret;
+	}
 
-    if(!$files)
-		$files = array();
+	public function prepareValue($files) {
 
-    // Если передана строка, пытаемся раскодировать ее как json
-    // Если не получилось, считаем что строка - имя файла
-    // Преобразуем строку в массив и переходим к обработке массива
-    if(is_string($files)) {
-        $e = @json_decode($files,1);
-        if(is_array($e)) $files = $e;
-        else $files = array($files);
-    }
+	    if(!$files)
+			$files = array();
 
-    // Если передан массив, преобразуем его в json
-    if(is_array($files)) {
-        $ret = array();
-        foreach($files as $file) {
-            if(!is_array($file)) $file = array("f"=>$file."");
-            $ret[] = $file;
-        }
-        $files = json_encode($ret);
-    }
+	    // Если передана строка, пытаемся раскодировать ее как json
+	    // Если не получилось, считаем что строка - имя файла
+	    // Преобразуем строку в массив и переходим к обработке массива
+	    if(is_string($files)) {
+	        $e = @json_decode($files,1);
+	        if(is_array($e)) $files = $e;
+	        else $files = array($files);
+	    }
 
-	// Отфильтровываем пустые массивы
-    if($files=="[]")
-		$files = "";
+	    // Если передан массив, преобразуем его в json
+	    if(is_array($files)) {
+	        $ret = array();
+	        foreach($files as $file) {
+	            if(!is_array($file)) $file = array("f"=>$file."");
+	            $ret[] = $file;
+	        }
+	        $files = json_encode($ret);
+	    }
 
-    return $files;
-}
+		// Отфильтровываем пустые массивы
+	    if($files=="[]")
+			$files = "";
 
-public function filterType() { return "checkbox"; }
+	    return $files;
+	}
+
+	public function filterType() { return "checkbox"; }
 
 }
