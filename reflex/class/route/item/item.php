@@ -221,17 +221,25 @@ class reflex_route_item extends reflex {
 	 * Эта функция ищет в списке роутов роут с таким же урл, как у этого и, если найдет,
 	 * переименовывает текущий.
 	 **/
-	public function handleDupes() {
-	
-	    $dupes = $this->itemsWithSameURL();
-	    
-	    if($dupes->count()) {
-	        if(!$this->data("suffix")) {
-	            $this->data("suffix",util::id(7));
-	        }
-			$this->data("url",$this->data("url")."-".$this->data("suffix"));
-	    }
-	}
+    public function handleDupes() {
+
+        $dupes = $this->itemsWithSameURL();
+
+        foreach($dupes as $dupe) {
+            if(!$dupe->item()->exists()) {
+                $dupe->delete();
+            }
+        }
+
+        $dupes = $this->itemsWithSameURL();
+
+        if($dupes->count()) {
+            if(!$this->data("suffix")) {
+                $this->data("suffix",util::id(7));
+            }
+            $this->data("url",$this->data("url")."-".$this->data("suffix"));
+        }
+    }
 
 	/**
 	 * Возвращает список элементов с таким же хэшем

@@ -156,8 +156,10 @@ class pay_invoice extends reflex implements mod_handler {
      * @return reflex
      **/
     public static function get($id = 0) {
-        if ($id <= 0 || !is_int($id))
+    
+        if ($id <= 0 || !is_int($id)) {
             throw new Exception("Задан невалидный номер счета: ".var_export($id,1));
+		}         
 
         return reflex::get(get_class(), $id);
     }
