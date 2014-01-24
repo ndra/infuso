@@ -69,9 +69,12 @@ class eshop_1c_behaviourItem extends mod_behaviour {
         // Загружаем группу
         $groupID = $towar->Группы->Ид."";
         $groupXML = end($xml->xpath("//Классификатор/Группы/descendant::Группа[Ид='$groupID']"));
-        $vgroup = reflex::virtual("eshop_group");
-        $group = $vgroup->processCatalogXML($groupXML,$xml);
-        $data["parent"] = $group->id();        
+        
+        if($groupXML) {
+	        $vgroup = reflex::virtual("eshop_group");
+	        $group = $vgroup->processCatalogXML($groupXML,$xml);
+	        $data["parent"] = $group->id();
+		}
         
         $item = eshop_1c_utils::importItem($data);
     }
