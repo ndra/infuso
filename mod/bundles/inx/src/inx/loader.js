@@ -23,8 +23,7 @@ inx.loader = {
         // Определяем путь
         var path = name.split(".");
         path = inx.conf.url+path.join("/")+".js";
-        //path+='?_='+inx.conf.build_id;
-        
+
         if(inx.loader.is_requested(name)) return;
 
         inx.loader.heap.unshift(name);

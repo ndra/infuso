@@ -11,13 +11,12 @@ class inx_init extends mod_init {
 	    mod::msg("inx");
 	
 		// Очищаем папку
-		file::get("/inx/pub/")->delete(true);
+		//file::get("/inx/pub/")->delete(true);
 
 		foreach(mod::service("bundle")->all() as $mod) {
 			self::buildModule($mod->path());
         }
 
-		self::generateBuildID();
 	}
 
 	public static function packFile($mod,$file) {
@@ -29,10 +28,6 @@ class inx_init extends mod_init {
 
 	public static function getModulePath($mod) {
 		return mod::service("bundle")->bundle($mod)->inxPath();
-	}
-
-	public static function generateBuildID() {
-		file::get("/inx/build_id.txt")->put(rand());
 	}
 
 	public static function buildModule($mod) {

@@ -14,7 +14,7 @@ class admin_theme extends tmp_theme {
 	}
 
 	public function path() {
-		return "/admin/theme/";
+		return mod::service("classmap")->getClassBundle(get_class())->path()."/theme/";
 	}
 
 	public function base() {

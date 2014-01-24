@@ -75,7 +75,6 @@ class console extends controller {
 	            break;
 
 	        case "relink":
-	        
 
 				$step = $_POST["step"];
 
@@ -119,7 +118,6 @@ class console extends controller {
 	        default:
 	        
 	            mod::app()->generateHtaccess();
-	            self::generatebasePack();
 	            self::header();
 				
 	            // Выводим предостережение в случае пароля 0000
@@ -170,27 +168,6 @@ class console extends controller {
 
 	public static function footer() {
 	    echo "</body></html>";
-	}
-
-	public static function generateBasePack() {
-	
-		$base = array(
-			"admin",
-			"doc",
-			"file",
-			"form",
-			"inx",
-			"moduleManager",
-			"reflex",
-			"tmp",
-			"user",
-			"lang",
-			"util",
-		);
-		
-		foreach($base as $mod) {
-			file::mkdir($mod);
-		}
 	}
 
 	/**
