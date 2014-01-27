@@ -1,4 +1,4 @@
 <?
 
-chdir("pub");
+chdir("core/pub");
 include("gate.php");

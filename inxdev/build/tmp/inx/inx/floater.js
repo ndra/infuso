@@ -1,3 +1,0 @@
-// @include inx.panel,inx.layout.fit
-
-inx.floater=inx.panel.extend({constructor:function(p){this.base(p);this.task("render");},cmd_render:function(){this.x=100;this.y=100;var left=$(window).width()-this.info("width")-160;this.private_wnd=$("<div>").appendTo("body").addClass("inx-shadowframe").css({position:"fixed",zIndex:inx.conf.z_index_dialog,background:"#ededed"});this.base(this.private_wnd);this.cmd("updatePosition");var cmpid=this.id();$(window).resize(function(){inx(cmpid).cmd("updatePosition");});},cmd_updatePosition:function(){this.private_wnd.css({left:$(window).width()-this.info("width")-30,top:$(window).height()-this.info("height")-30});},cmd_syncLayout:function(){this.base();this.task("updatePosition");}});

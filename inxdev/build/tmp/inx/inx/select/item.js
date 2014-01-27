@@ -1,2 +1,0 @@
-
-inx.select.item=inx.panel.extend({constructor:function(p){this.base(p);},cmd_setText:function(html){this.cmd("html","");var e=$("<div>").css({padding:3,whiteSpace:"nowrap"}).html(html);this.cmd("html",e);this.cmd("setBorder",1);},cmd_render:function(c){this.base(c);this.__body.css({overflow:"hidden"});},cmd_mousedown:function(){this.owner().cmd("expand");}});

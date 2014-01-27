@@ -1,4 +1,0 @@
-
-inx.dd={enable:function(e,obj,fn,adv){e.mousedown(function(ev){window.focus();ev.preventDefault();inx.dd.start(arguments[0],obj,fn,adv)});},start:function(e,obj,fn,adv){try{inx.dd.obj=obj;inx.dd.fn=fn;inx.dd.adv=adv;var ret=this.fire({phase:"start",event:e});if(ret===false)inx.dd.obj=null;}catch(ex){inx.msg(ex);}},mousemove:function(e){var x=e.pageX;var y=e.pageY;var dx=x-inx.dd.lx;var dy=y-inx.dd.ly;inx.dd.lx=x;inx.dd.ly=y;if(inx.dd.obj){inx.dd.fire({dx:dx,dy:dy,event:e});e.preventDefault();}},mouseup:function(e){var x=e.pageX;var y=e.pageY;var dx=x-inx.dd.lx;var dy=y-inx.dd.ly;inx.dd.lx=x;inx.dd.ly=y;if(inx.dd.obj)
-inx.dd.fire({phase:"stop",dx:dx,dy:dy,event:e});inx.dd.obj=null;},fire:function(p){if(!p.dx)p.dx=0;if(!p.dy)p.dy=0;return inx(inx.dd.obj).cmd(inx.dd.fn,p,inx.dd.adv)}}
-$(document).mousemove(inx.dd.mousemove);$(document).mouseup(inx.dd.mouseup);

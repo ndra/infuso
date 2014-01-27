@@ -1,7 +1,0 @@
-public:
-  - /res/
-  
-inx:
-  path: /src/
-  namespace: ""
-

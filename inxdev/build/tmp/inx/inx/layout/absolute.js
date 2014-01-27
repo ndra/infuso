@@ -1,2 +1,0 @@
-
-inx.ns("inx.layout").absolute={create:function(){this.__body.css("overflow","hidden");},add:function(cmp){cmp=inx(cmp);var e=$("<div />").css({position:"absolute",left:cmp.info("param","x"),top:cmp.info("param","y")}).appendTo(this.__body);cmp.cmd("render",e);cmp.data("layoutContainer",e);},remove:function(cmp){cmp=inx(cmp);var e=cmp.data("layoutContainer").get(0);e.parentNode.removeChild(e);},sync:function(){}}

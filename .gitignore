@@ -8,40 +8,6 @@
 /.idea/*
 
 # Папки
-/PHPExcel
-/eshop/files
-/file/preview
-
-/board/files
-
-# Пользовательские файлы форума
-/forum/files
-
-/tmp/render
-
-/tmp/render-php
-
-# Карты шаблонов тем
-/tmp/themes
-
-/mod/conf
-/mod/service
-/reflex/system
-/reflex/export
-
-
-/inx/pub
-
-/mod/trace
-
-# Кэш в файловой системе
-/mod/cache
-
-# Информация о файлах, которые надо пропускать при построении карты сайта
-/mod/exclude
-
-# Папка для основной реализации сайта
-/site
-
-/update/dump
-/user/files/
+/var
+/pub
+/conf

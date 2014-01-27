@@ -1,0 +1,8 @@
+public:
+  - /res/
+  - /version/
+  
+inx:
+  path: /src/
+  namespace: ""
+

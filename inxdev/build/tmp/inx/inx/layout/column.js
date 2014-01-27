@@ -1,3 +1,0 @@
-
-inx.ns("inx.layout").column={create:function(){this.private_body2=$("<div>").appendTo(this.__body);},add:function(cmp){cmp=inx(cmp);var e=$("<div>").css({overflow:"hidden",position:"absolute"}).appendTo(this.private_body2);cmp.cmd("render",e);cmp.data("layoutContainer",e);},remove:function(cmp){cmp=inx(cmp);var e=cmp.data("layoutContainer").get(0);e.parentNode.removeChild(e);},sync:function(){var h=0;var n=this.items.length;var width=Math.round(this.info("bodyWidth")/n);var x=0;for(var i=0;i<n;i++){if(i==n-1)width=this.info("bodyWidth")-x;var cmp=inx(this.items[i]);cmp.cmd("width",width);var e=$(cmp.data("layoutContainer"));e.css({left:x});var hh=cmp.info("height");if(hh>h)h=hh;x+=width;}
-this.private_body2.height(h);}}
