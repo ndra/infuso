@@ -50,12 +50,13 @@ class tmp_render {
 	 * @return bool Включен ли lesscss
 	 **/
 	public function less() {
-		return mod::conf("tmp:lesscss");
+		return true;
 	}
 	
     /**
      * Упаковывает массив css или js файлов в один, сохраняет на диск
      * и возвращает имя сгенерированного файла
+     * @todo Сделать отключение кэширваония рендера
      **/
 	public static function packIncludes($items,$ext) {
 	
@@ -68,14 +69,16 @@ class tmp_render {
 	    $hash = md5(self::renderID()." - ".serialize($items));
 	    $file = file::get("{$rpath}/$hash.$ext");
 
-	    if(mod::conf("tmp:always-render") || !$file->exists()) {
+        //if(mod::conf("tmp:always-render") || !$file->exists()) {
+	    if(!$file->exists()) {
 
 	        $code = "";
 	        foreach($items as $item) {
 	            if($str = trim(file::get($item)->data())) {
 	                // В режиме отладки дописываем источник
-	                if(\infuso\core\conf::get("mod:debug"))
+	                if(mod::debug()) {
 	                	$code.= "/* source:".$item.": */\n\n";
+	                }
 
 	                $code.= $str.($ext=="js" ? "\n;\n" : "\n\n");
 				}

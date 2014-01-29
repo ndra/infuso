@@ -201,7 +201,13 @@ class util {
     }
 
     public static function splitAndTrim($str,$separator) {
-        return \infuso\core\mod::splitAndTrim($str,$separator);
+        $ret = array();
+        foreach(explode($separator,$str) as $part) {
+            if(trim($part)!=="") {
+                $ret[] = $part;
+            }
+        }
+        return $ret;
     }
 
     /**

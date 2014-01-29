@@ -326,8 +326,9 @@ class reflex extends mod_model {
 
         $symbols = "[a-z0-9\_\-\:]+";
 
-        if(preg_match("/^{$symbols}$/i",$name))
+        if(preg_match("/^{$symbols}$/i",$name)) {
             return "`$table`.`".$name."`";
+        }
 
         if(preg_match("/^({$symbols})\.({$symbols})$/i",$name,$matches)) {
             return "`".$matches[1]."`.`".$matches[2]."`";
@@ -513,9 +514,7 @@ class reflex extends mod_model {
         $insert = " (".implode(",",array_keys($data)).") values (".implode(",",$data).") ";
 
         $query = "insert into `$table` $insert ";
-        reflex_mysql::query($query);
-
-        $id = reflex_mysql::insertID();
+        $id = mod::service("db")->query($query)->exec()->lastInsertId();
 
         // Заносим данные в объект
         // Объект заносим объект в буфер
@@ -666,15 +665,16 @@ class reflex extends mod_model {
         }
 
         $set = array();
-        foreach($changedFields as $field)
-            $set[] = "`".reflex_mysql::escape($field->name())."`=".$field->mysqlValue();
+        foreach($changedFields as $field) {
+            $set[] = "`".$field->name()."`=".$field->mysqlValue();
+        }
         $set = "set ".implode(",",$set)." ";
 
-        $id = reflex_mysql::escape($this->id());
+        $id = $this->id();
         self::$stored++;
 
         $from = $this->from();
-        reflex_mysql::query("update $from $set where `id`='$id' ");
+        mod::service("db")->query("update $from $set where `id`='$id' ")->exec();
 
         // Сразу после сохранения, помечаем объект как чистый
         // Таким образом, если в reflex_afterStore() будут изменены поля объекта,

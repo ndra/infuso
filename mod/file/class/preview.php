@@ -55,12 +55,13 @@ class file_preview extends mod_component {
 
     /**
      * Параметры по умолчанию для компонента
+     * @todo сделать настрйоку фона превьюшек
      **/
     public function initialParams() {
         return array(
             "maxWidth" => 2000, // Максимальная ширина превьюшки
             "maxHeight" => 2000, // Максимальная высота превьюшки
-            "background" => mod::conf("file:preview-background"), // Цвет фона
+            "background" => "",
             "jpegCompression" => 100
         );
     }

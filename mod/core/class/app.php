@@ -193,12 +193,13 @@ class app {
 		$gatePath = file::get($gatePath);
 
 	    // Загружаем xml с настройками
-	    $htaccess = mod::conf("mod:htaccess");
+	    //$htaccess = mod::conf("mod:htaccess");
+	    $htaccess = "";
 
 	    $htaccess = strtr($htaccess,array('\n'=>"\n"));
 		$htaccess.="\n\n";
 
-		if(mod::conf("mod:htaccess-non-www"))
+		/*if(mod::conf("mod:htaccess-non-www"))
 			$htaccess.="
 RewriteCond %{HTTPS} off
 RewriteCond %{REQUEST_METHOD} !=POST
@@ -209,7 +210,7 @@ RewriteCond %{HTTPS} on
 RewriteCond %{REQUEST_METHOD} !=POST
 RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
 RewriteRule ^(.*)$ https://%1/$1 [R=301,L]\n\n
-	";
+	"; */
 
 	    // Создаем .htaccess
 	    $str = $htaccess;

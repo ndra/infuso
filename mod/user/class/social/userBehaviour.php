@@ -10,7 +10,8 @@ class user_social_userBehaviour extends mod_behaviour {
 	}
 
 	public function addToClass() {
-	    return mod::conf("user:social") ? "user" : null;
+	    //return mod::conf("user:social") ? "user" : null;
+	    return "user";
 	}
 
     /**

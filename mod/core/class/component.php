@@ -117,7 +117,7 @@ class component {
 
         if(array_key_exists($fn,$wrappers)) {
 
-            $wrappers = mod::splitAndTrim($wrappers[$fn],",");
+            $wrappers = \infuso\util\util::splitAndTrim($wrappers[$fn],",");
             foreach($wrappers as $wrapper) {
 
                 if(preg_match("/^mixed(\/([a-z0-1\_]*))?/",$wrapper,$matches)) {
@@ -155,7 +155,7 @@ class component {
 
     public function __set($key,$val) {
         $class = get_class($this);
-        throw new Exception("access to undefined property $class::$key");
+        throw new \Exception("access to undefined property $class::$key");
     }
 
     public function componentCall($fn) {
@@ -323,11 +323,6 @@ class component {
         $args = func_get_args();
         array_unshift($args,get_class($this));
         array_unshift($args,"components");
-        
-        if(get_class($this) == "infuso\\dao\\connection") {
-            var_export(call_user_func_array(array("\infuso\core\conf","general"),$args));
-        }
-        
         return call_user_func_array(array("\infuso\core\conf","general"),$args);
     }
 

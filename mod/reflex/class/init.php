@@ -10,12 +10,14 @@ class reflex_init extends mod_init {
 
 	    mod::msg("<b>reflex</b>");
 
-	    $v = mod::service("db")->command("select version()")->query()->fetchColumn();
+	    $v = mod::service("db")->query("select version()")->exec()->fetchScalar();
 	    
 	    if(floatval($v)<5) {
 	        mod::msg("You need mysql version 5 or greater. You haver version $v",1);
 	        return;
 	    }
+	    
+	    mod::msg("mysql version {$v} ok");
 
 		// Собираем типы полей
 	    mod_field::collect();

@@ -287,7 +287,7 @@ abstract class field extends component {
     }
 
     public function mysqlValue() {
-        return "'".\reflex_mysql::escape($this->value())."'";
+        return mod::service("db")->quote($this->value());
     }
 
     /**

@@ -35,7 +35,7 @@ class mod extends controller {
 	    
 	        self::$debug = false;
 	
-		    if(!conf::get("mod:debug")) {
+		    if(!conf::general("mod:debug")) {
 				self::$debug = false;
 				return self::$debug;
 		    }

@@ -247,15 +247,10 @@ class inx_mount_file extends mod_component {
 	 * Возврщает целевой путь - куда будет скомпилирован компонент
 	 **/
 	public function dest() {
-	
 	    $conf = self::conf();
-	
 		$ret = $conf["dest"];
 		$ret.= strtr($this->name(),".","/");
 		$ret.= ".".file::get($this->path())->ext();
-		
-		mod::msg("inx --- ".$this->name()." / ".$ret);
-		
 		return $ret;
 	}
 

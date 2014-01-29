@@ -16,11 +16,12 @@ class service extends \infuso\core\service {
     
     /**
      * Возвращает драйвер кэширущей системы
+     * @todo вернуть возможность выбора драйвера
      **/
     private function driver() {
 
         if(!self::$driver) {
-            switch(\infuso\core\conf::get("mod:cacheDriver")) {
+            switch("filesystem") {
                 default:
                 case "filesystem":
                     self::$driver = new filesystem();

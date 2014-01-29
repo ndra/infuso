@@ -16,14 +16,16 @@ class command extends \infuso\core\component {
 	    return $this->connection;
 	}
 	
-	public function query() {
-	    return $this->query;
-	}
-	
 	public function exec() {
 	    $dbh = $this->connection()->dbh();
-	    $result = $dbh->query($this->query());
-	    return $result;
+	    $result = $dbh->query($this->query);
+	    
+	    $error = $dbh->errorInfo();
+	    if($error[0] != "00000") {
+	        throw new \Exception($this->query." ".$error[2]);
+	    }
+	    
+	    return new reader($result,$dbh->lastInsertId());
 	}
 
 }

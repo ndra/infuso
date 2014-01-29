@@ -259,7 +259,7 @@ class reflex_table extends mod_component {
      * Возвращает имя таблицы с префиксом (такое, которое реально используется в mysql)
      **/
     public function prefixedName() {
-        return mod::conf("reflex:mysql_table_prefix").$this->name();
+        return mod::service("db")->tablePrefix().$this->name();
     }
 
     /**

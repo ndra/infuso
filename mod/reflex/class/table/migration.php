@@ -55,17 +55,18 @@ class reflex_table_migration {
             $q = implode(", ",$this->q);
             $q = "alter table `{$this->table()->prefixedName()}` $q";
             mod::trace($q);
-            reflex_mysql::query($q);
+            return mod::service("db")->query($q)->exec();
         }
 
     }
 
     public function updateEngine() {
-        reflex_mysql::query("SHOW TABLE STATUS like '{$this->table()->prefixedName()}' ");
-        $status = reflex_mysql::get_row();
+		$query = "SHOW TABLE STATUS like '{$this->table()->prefixedName()}' ";
+        $status = mod::service("db")->query($query)->exec()->fetch();
         $engine = $status["Engine"];
-        if($engine!="MyISAM")
+        if($engine!="MyISAM") {
             $this->q[] = "ENGINE=myisam";
+		}
     }
 
     /*public function updateRowFormat() {
@@ -144,7 +145,7 @@ class reflex_table_migration {
     public function createTable() {
         $table = $this->table()->prefixedName();
         $query = "create table if not exists `$table` (`id` bigint(20) primary key) ";
-        reflex_mysql::query($query);
+        mod::service("db")->query($query)->exec();
     }
 
     /**
@@ -152,8 +153,7 @@ class reflex_table_migration {
      **/
     public function describeField($field) {
         $query = "show full columns from `{$this->table()->prefixedName()}` like '{$field->name()}' ";
-        reflex_mysql::query($query);
-        return reflex_mysql::get_row();
+        return mod::service("db")->query($query)->exec()->fetch();
     }
 
     /**
@@ -161,8 +161,7 @@ class reflex_table_migration {
      **/
     public function realFields() {
         $query = "show full columns from `{$this->table()->prefixedName()}` ";
-        reflex_mysql::query($query);
-        return reflex_mysql::get_col("Field");
+        return mod::service("db")->query($query)->exec()->fetchCol("Field");
     }
 
     /**
@@ -202,8 +201,10 @@ class reflex_table_migration {
 
         // Индексы, которые реально есть
         $b = array();
-        reflex_mysql::query("show index from `{$this->table()->prefixedName()}` ");
-        foreach(reflex_mysql::get_array() as $index) {
+        $query = "show index from `{$this->table()->prefixedName()}` ";
+        $items = mod::service("db")->query($query)->exec()->fetchAll();
+        
+        foreach($items as $index) {
             $name = $index["Key_name"];
             $indexDescr = $index["Column_name"];
             if($n=$index["Sub_part"])
@@ -251,9 +252,11 @@ class reflex_table_migration {
         }
 
         // Убираем ненужные индексы
-        foreach($b as $name=>$fuck)
-            if(!array_key_exists($name,$a))
+        foreach($b as $name=>$fuck) {
+            if(!array_key_exists($name,$a)) {
                 $this->q[] = "drop index `$name`";
+			}
+		}
 
     }
 

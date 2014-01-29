@@ -220,12 +220,13 @@ class action extends component {
     /**
      * @return Возвращает url экшна
      * url Кэшируется на сутки
+     * @todo сделать настройки кэширвоания url
      **/
     public final function url() {
 
         profiler::beginOperation("url","build",$this->canonical());
 
-        if(conf::get("mod:cacheURL")) {
+        if(true) {
 
             // Урл кэшируются на день
             $hash = "action-url:".$this->hash().ceil(time()/3600/24);

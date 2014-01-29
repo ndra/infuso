@@ -18,7 +18,7 @@ class connection extends \infuso\core\service {
 	    return "db";
 	}
 	
-	public function command($query) {
+	public function query($query) {
 	    return new command($this,$query);
 	}
 	
@@ -30,6 +30,14 @@ class connection extends \infuso\core\service {
 		$user = $this->param("user");
 		$password = $this->param("password");
 	    $this->dbh = new \PDO($dsn, $user, $password);
+	}
+	
+	public function quote($str) {
+	    return $this->dbh()->quote($str);
+	}
+	
+	public function tablePrefix() {
+	    return "infuso_";
 	}
 	
 	/**

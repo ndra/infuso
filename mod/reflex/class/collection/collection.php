@@ -46,7 +46,6 @@ class reflex_collection extends mod_component implements Iterator {
     public function valid() { $this->load(); return $this->current() !== false; }
 
     public final function __construct($class=null) {
-        reflex_mysql::connect();
         $this->itemClass = $class;
         if($class) {
             $obj = new $class;
@@ -374,9 +373,8 @@ class reflex_collection extends mod_component implements Iterator {
                 $query.= "limit $from,$perPage";
             }
 
-            reflex_mysql::query($query);
-
-            $ret = reflex_mysql::get_array();
+            $ret = mod::service("db")->query($query)->exec()->fetchAll();
+            
             return $ret;
 
         } else {
@@ -520,11 +518,11 @@ class reflex_collection extends mod_component implements Iterator {
 
             case "s:s":
                 $key = $this->normalizeColName($key);
-                $val = reflex_mysql::escape($val);
+                $val = mod::service("db")->quote($val);
                 if($fn) {
 					$key = "$fn($key)";
 				}
-                $this->where("$key='$val'",$key);
+                $this->where("$key=$val",$key);
                 break;
 
             case "a:s":
@@ -595,8 +593,8 @@ class reflex_collection extends mod_component implements Iterator {
     
 		    case "s:s":
 		        $key = $this->normalizeColName($key);
-		        $val = reflex_mysql::escape($val);
-		        $this->where("$key<>'$val'",$key);
+		        $val = mod::service("db")->quote($val);
+		        $this->where("{$key}<>{$val}",$key);
 		        break;
 		        
 			case "s:a":
@@ -1016,8 +1014,9 @@ class reflex_collection extends mod_component implements Iterator {
         if($g=$this->groupBy())
             $query.= " group by {$g} ";
         $query.= " order by {$this->orderBy()} ";
-        if($perPage)
+        if($perPage) {
             $query.= "limit $from,$perPage";
+		}
         reflex_mysql::query($query);
         return reflex_mysql::get_col();
 
@@ -1030,7 +1029,7 @@ class reflex_collection extends mod_component implements Iterator {
     public function delete() {
         $this->callBeforeQuery();
         $query = "delete `{$this->itemClass()}` from {$this->fromWithoutJoins()} where {$this->whereQuery()} ";
-        reflex_mysql::query($query);
+        return mod::service("db")->query($query)->exec();
     }
 
     /**
@@ -1039,10 +1038,10 @@ class reflex_collection extends mod_component implements Iterator {
      **/
     public function data($key,$val) {
         if(func_num_args()==2) {
-            $key = reflex_mysql::escape($key);
-            $val = reflex_mysql::escape($val);
-            $query = "update {$this->from()} set `$key`='$val' where {$this->whereQuery()} ";
-            reflex_mysql::query($query);
+            //$key = reflex_mysql::escape($key);
+            $val = mod::service("db")->quote($val);
+            $query = "update {$this->from()} set `$key`=$val where {$this->whereQuery()} ";
+            mod::service("db")->query($query)->exec();
             return $this;
         }
     }
