@@ -23,6 +23,7 @@ class inx {
 
 		if(!self::$included) {
 		    $ret.= "inx.conf.url='{$bundlePath}/version/".$version."/';\n";
+		    $ret.= "inx.conf.res='{$bundlePath}/res/';\n";
 		}
 
 		// Только если мы добавляем компонент

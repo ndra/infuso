@@ -7,20 +7,8 @@ namespace infuso\core;
  **/
 class conf extends component {
 
-	private static $path = "/conf/conf.xml";
-	
 	private static $generalConf = null;
 
-	private static $cache = null;
-
-	public function clearCache() {
-		self::$cache = array();
-	}
-
-	public function path() {
-		return self::$path;
-	}
-	
 	/**
 	 * Возвращает параметр из общей конфигурации components.yml
 	 **/

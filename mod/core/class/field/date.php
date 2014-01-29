@@ -47,9 +47,10 @@ class mod_field_date extends mod_field {
 	}
 
 	public function mysqlValue() {
-		if(!$this->value())
+		if(!$this->value()) {
 			return "null";
-		return "'".reflex_mysql::escape($this->value())."'";
+		}
+		return parent::mysqlValue();
 	}
 
 	public function filterType() {

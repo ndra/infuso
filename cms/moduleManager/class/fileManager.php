@@ -43,14 +43,14 @@ class moduleManager_fileManager extends mod_controller {
             if(!$item->folder()) {
                 $ext = $item->ext();
                 $icon = in_array($ext,array("php","js")) ? $ext : "page";
-                $file["icon"] = "/moduleManager/icons/$icon.gif";
+                $file["icon"] = self::inspector()->bundle()->path()."/icons/$icon.gif";
                 if(in_array($ext,array("jpg","gif","png"))) {
                     $file["icon"] = $item->preview(16,16)."";
                 }
             } else {
                 $file["icon"] = "folder";
             }
-            
+
             $ret[] = $file;
         }
         return $ret;

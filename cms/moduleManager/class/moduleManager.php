@@ -97,13 +97,6 @@ class moduleManager extends mod_controller{
 
 	    }
 
-	    /*foreach($tree as $key=>$val) {
-	        $tree[$key]["system"] = mod::info($val["id"],"moduleManager","pack");
-	        if($tree[$key]["system"]) {
-	            $tree[$key]["text"] = "<span style='color:gray;'>$val[id]</span>";
-			}
-	    } */
-	    
 	    $sort = function($a,$b) {
 
 	        if($a["text"]=="/") {

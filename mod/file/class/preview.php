@@ -216,13 +216,16 @@ class file_preview extends mod_component {
     public function save($dest) {
         
         if($this->isError()) {
+        
+            $bundlePath = self::inspector()->bundle()->path();
+
             switch($this->getError()) {
                 case self::ERROR_TOO_LARGE:
-                    $error = file::get("/file/noimage/error.png")->preview($this->getWidth(),$this->getHeight());
+                    $error = file::get("{$bundlePath}/noimage/error.png")->preview($this->getWidth(),$this->getHeight());
                     $error->render()->save($dest);
                     return;
                 default:
-                    $error = file::get("/file/noimage/noimage.png")->preview($this->getWidth(),$this->getHeight());
+                    $error = file::get("{$bundlePath}/noimage/noimage.png")->preview($this->getWidth(),$this->getHeight());
                     $error->render()->save($dest);
                     return;
             }
