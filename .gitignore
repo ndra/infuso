@@ -8,6 +8,6 @@
 /.idea/*
 
 # Папки
-/var
-/pub
-/conf
+/var/*
+/pub/*
+/conf/*
