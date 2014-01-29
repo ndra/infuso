@@ -1,0 +1,1 @@
+/cms/board/class/access/access.php

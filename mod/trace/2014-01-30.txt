@@ -1,0 +1,36 @@
+12:36:38 infuso\core\log::trace >> 127.0.0.1 at /test/ got exception: Call undefined method user::xxx in Z:\home\mysite.ru\infuso\test\class\test.php on line 11
+12:37:18 infuso\core\log::trace >> 127.0.0.1 at /test/ got exception: Call undefined method user::xxx in Z:\home\mysite.ru\infuso\test\class\test.php on line 11
+12:38:24 infuso\core\log::trace >> 127.0.0.1 at /test/ got exception: Call undefined method user::xxx in Z:\home\mysite.ru\infuso\test\class\test.php on line 11
+12:43:44 infuso\core\log::trace >> 127.0.0.1 at /test/ got exception: Call undefined method user::xxx in Z:\home\mysite.ru\infuso\test\class\test.php on line 11
+12:44:37 infuso\core\log::trace >> 127.0.0.1 at /test/ got exception: Call undefined method user::xxx in Z:\home\mysite.ru\infuso\test\class\test.php on line 11
+12:45:21 infuso\core\log::trace >> 127.0.0.1 at /test/ got exception: Call undefined method user::xxx in Z:\home\mysite.ru\infuso\test\class\test.php on line 14
+12:46:18 infuso\core\log::trace >> 127.0.0.1 at /test/ got exception: Call undefined method user::xxx in Z:\home\mysite.ru\infuso\test\class\test.php on line 14
+12:46:43 infuso\core\log::trace >> 127.0.0.1 at /test/ got exception: Call undefined method user::xxx in Z:\home\mysite.ru\infuso\test\class\test.php on line 14
+12:46:44 infuso\core\log::trace >> 127.0.0.1 at /test/ got exception: Call undefined method user::xxx in Z:\home\mysite.ru\infuso\test\class\test.php on line 14
+12:47:39 infuso\core\log::trace >> 127.0.0.1 at /test/ got exception: Call undefined method user::xxx in Z:\home\mysite.ru\infuso\test\class\test.php on line 14
+12:48:00 infuso\core\log::trace >> 127.0.0.1 at /test/ got exception: Call undefined method user::xxx in Z:\home\mysite.ru\infuso\test\class\test.php on line 14
+12:48:21 infuso\core\log::trace >> 127.0.0.1 at /test/ got exception: Call undefined method user::xxx in Z:\home\mysite.ru\infuso\test\class\test.php on line 14
+12:48:51 infuso\core\log::trace >> 127.0.0.1 at /test/ got exception: Call undefined method user::xxx in Z:\home\mysite.ru\infuso\test\class\test.php on line 14
+12:49:05 infuso\core\log::trace >> 127.0.0.1 at /test/ got exception: Call undefined method user::xxx in Z:\home\mysite.ru\infuso\test\class\test.php on line 14
+12:49:12 infuso\core\log::trace >> 127.0.0.1 at /test/ got exception: Call undefined method user::xxx in Z:\home\mysite.ru\infuso\test\class\test.php on line 14
+12:50:36 infuso\core\log::trace >> 127.0.0.1 at /test/ got exception: Call undefined method user::xxx in Z:\home\mysite.ru\infuso\test\class\test.php on line 14
+12:50:37 infuso\core\log::trace >> 127.0.0.1 at /test/ got exception: Call undefined method user::xxx in Z:\home\mysite.ru\infuso\test\class\test.php on line 14
+12:50:59 infuso\core\log::trace >> 127.0.0.1 at /test/ got exception: Call undefined method user::xxx in Z:\home\mysite.ru\infuso\test\class\test.php on line 14
+12:51:08 infuso\core\log::trace >> 127.0.0.1 at /test/ got exception: Call undefined method user::xxx in Z:\home\mysite.ru\infuso\test\class\test.php on line 14
+12:51:48 infuso\core\log::trace >> 127.0.0.1 at /test/ got exception: Call undefined method user::xxx in Z:\home\mysite.ru\infuso\test\class\test.php on line 15
+12:52:50 infuso\core\log::trace >> 127.0.0.1 at /test/ got exception: Call undefined method user::xxx in Z:\home\mysite.ru\infuso\test\class\test.php on line 15
+03:01:55 infuso\core\log::trace >> 127.0.0.1 at /mod/?cmd=relink got exception: delete `reflex_none` from  where 1  You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where 1' at line 1
+03:02:37 infuso\core\log::trace >> 127.0.0.1 at /mod/?cmd=relink got exception: delete `reflex_none` from  where 1  You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where 1' at line 1
+03:03:51 infuso\core\log::trace >> 127.0.0.1 at /mod/?cmd=relink got exception: delete `reflex_none` from  where 1  You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where 1' at line 1
+03:05:59 infuso\core\log::trace >> 127.0.0.1 at /mod/?cmd=relink got exception: delete `reflex_none` from  where 1  You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where 1' at line 1
+03:06:57 infuso\core\log::trace >> 127.0.0.1 at /mod/?cmd=relink got exception: delete `reflex_none` from  where 1  You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where 1' at line 1
+03:07:38 infuso\core\log::trace >> 127.0.0.1 at /mod/?cmd=relink got exception: delete `reflex_none` from  where 1  You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where 1' at line 1
+03:08:21 infuso\core\log::trace >> 127.0.0.1 at /mod/?cmd=relink got exception: delete `reflex_none` from  where 1  You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where 1' at line 1
+03:08:57 infuso\core\log::trace >> 127.0.0.1 at /mod/?cmd=relink got exception: delete `reflex_none` from  where 1  You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where 1' at line 1
+03:14:56 infuso\core\log::trace >> 127.0.0.1 at /mod/?cmd=relink got exception: delete `reflex_none` from  where 1  You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where 1' at line 1
+03:15:40 infuso\core\log::trace >> 127.0.0.1 at /mod/?cmd=relink got exception: delete `reflex_none` from  where 1  You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where 1' at line 1
+03:16:22 infuso\core\log::trace >> 127.0.0.1 at /mod/?cmd=relink got exception: delete `reflex_none` from  where 1  You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where 1' at line 1
+03:21:44 infuso\core\log::trace >> 127.0.0.1 at /mod/?cmd=relink got exception: delete `reflex_none` from  where 1  You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where 1' at line 1
+03:22:31 infuso\core\log::trace >> 127.0.0.1 at /mod/?cmd=relink got exception: delete `reflex_none` from  where 1  You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where 1' at line 1
+03:23:18 infuso\core\log::trace >> 127.0.0.1 at /mod/?cmd=relink got exception: delete `reflex_none` from  where 1  You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where 1' at line 1
+03:28:00 infuso\core\log::trace >> 127.0.0.1 at /test/ got exception: Call undefined method user::xxx in Z:\home\mysite.ru\infuso\test\class\test.php on line 15

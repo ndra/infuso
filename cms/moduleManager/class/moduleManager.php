@@ -56,7 +56,7 @@ class moduleManager extends mod_controller{
 
 	        // Шаблоны
 	        foreach(tmp_theme::all() as $theme) {
-	            if($theme->mod()==$m) {
+	            if(trim($theme->bundle()->path(),"/") == $m) {
 		            $module["children"][] = array(
 		                "text" => $theme->name(),
 		                "editor" => array(

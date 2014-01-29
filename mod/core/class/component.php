@@ -150,7 +150,7 @@ class component {
 
     public function __get($key) {
         $class = get_class($this);
-        throw new Exception("access to undefined property $class::$key");
+        throw new \Exception("access to undefined property $class::$key");
     }
 
     public function __set($key,$val) {

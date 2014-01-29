@@ -4,7 +4,7 @@
 
     tmp_lib::components();
     
-    foreach(mod_log::messages() as $msg) {
+    foreach(\infuso\core\log::messages() as $msg) {
     
         $class = $msg->error() ? "error" : "ok";
         

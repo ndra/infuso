@@ -110,7 +110,7 @@ class tmp implements \mod_handler {
     
         $action = mod::app()->action();
         if(!$action) {
-            return reflex::get("reflex_none",0);
+            return \reflex::get("reflex_none",0);
         }
     
 		list($class,$id) = explode("/",$action->ar());

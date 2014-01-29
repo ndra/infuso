@@ -7,9 +7,12 @@ class test extends \infuso\core\controller {
     }
     
     public function index() {
-        
-        $preview = file::get("1.jpg")->preview();
-        echo $preview;
+
+		tmp::header();
+		
+		$user = \infuso\ActiveRecord\Record::create("user");
+
+		tmp::footer();
         
     }
 

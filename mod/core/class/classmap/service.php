@@ -155,6 +155,7 @@ class classmapService extends service {
 	    "tmp_widget" => "\\mod\\template\\widget",
 	    "tmp_template" => "\\mod\\template\\template",
 	    "util" => "\\infuso\\util\\util",
+	    "reflex" => "\\infuso\\ActiveRecord\\Record",
 	);
 	
 	/**

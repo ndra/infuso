@@ -134,57 +134,101 @@ class app {
 	    return $this->templateProcessor;
 	}
 	
+	public function clearTmp() {
+	    $this->templateProcessor = null;
+	}
+	
     /**
      * Запускает приложение
      **/
 	public function exec() {
 	
-	    self::$current = $this;
-	    $this->init();
-	
-	    Header("HTTP/1.0 200 OK");
-
-		try {
-
-			// Выполняем post-команду
-		    post::process($this->post(),$this->files());
-
-		    // Выполняем экшн
-		    $action = $this->action();
-		    
-		    if($action) {
-				$action->exec();
-		    } else {
-				$this->httpError(404);
-		    }
-
-		} catch(Exception $exception) {
-
-		    while(ob_get_level()) {
+	    ob_start();
+	    
+	    try {
+	    
+	        $this->execWithoutExceptionHandling();
+	    
+	    } catch(\Exception $exception) {
+	    
+			while(ob_get_level()) {
 		        ob_end_clean();
 		    }
+		    
+		    ob_start();
 
 		    // Трейсим ошибки
 		    mod::trace($_SERVER["REMOTE_ADDR"]." at ".$_SERVER["REQUEST_URI"]." got exception: ".$exception->getMessage());
 
 		    try {
 
-		        /*$action = mod::action("mod_cmd","exception")
-		            ->param("exception",$exception)
-		            ->exec(); */
-		            
-				die($exception);
+				// Сбрасываем процессор шаблонов
+		        $this->clearTmp();
+
+				\tmp::exec("mod/exception", array(
+				    "exception" => $exception,
+				));
 
 		    } catch(Exception $ex2) {
 		        throw $exception;
 		    }
+	    
+	    }
+	    
+        $content = ob_get_clean();
 
+        // Пост-обработка (отложенные функции)
+        if(!$suspendEvent) {
+	        $event = mod::fire("mod_afterActionSYS",array(
+	            "content" => $content,
+	        ));
+	        $content = $event->param("content");
+        }
+
+        echo $content;
+	
+	}
+     
+     
+	public function execWithoutExceptionHandling() {
+	
+	    self::$current = $this;
+	    $this->init();
+	
+	    Header("HTTP/1.0 200 OK");
+
+		// Выполняем post-команду
+	    post::process($this->post(),$this->files());
+	    
+	    component::callDeferedFunctions();
+	    
+		// Выполняем экшн
+	    $action = $this->action();
+
+        // Если экшн начинается с mod - блокируем события
+        // Это делается для того, чтобы случайно не сломать консоль кривым событием
+        $suspendEvent = false;
+        if($action && preg_match("/^mod$/",$action->className())) {
+            $suspendEvent = true;
 		}
+
+        // Если события не заблокированы - вызываем событие
+        if(!$suspendEvent) {
+        	mod::fire("mod_beforeActionSYS");
+        }
+
+	    if($action) {
+			$action->exec();
+	    } else {
+			$this->httpError(404);
+	    }
+	    
+	    component::callDeferedFunctions();
 	
 	}
 	
 	public function httpError() {
-	    $this->tmp()->exec("/mod/404");
+		\tmp::exec("/mod/404");
 	}
 
 	public function generateHtaccess() {

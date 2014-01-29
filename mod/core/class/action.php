@@ -132,52 +132,17 @@ class action extends component {
      **/
     public function exec() {
 
-        component::callDeferedFunctions();
-
-        // Если экшн начинается с mod - блокируем события
-        // Это делается для того, чтобы случайно не сломать консоль кривым событием
-        $suspendEvent = false;
-        if(preg_match("/^mod$/",$this->className())) {
-            $suspendEvent = true;
-		}
-
-        // Если события не заблокированы - вызываем событие
-        if(!$suspendEvent) {
-        	mod::fire("mod_beforeActionSYS");
-        }
-        
-        ob_start();
-
         if(!$this->test()) {
-        
 			call_user_func($this->failCallback(),$this->params());
-
         } else {
-
             // Если события не заблокированы - вызываем событие
             if(!$suspendEvent) {
                 mod::fire("mod_beforeAction",array(
                     "action" => $this,
                 ));
             }
-
             call_user_func($this->callback(),$this->params());
-
         }
-
-        $content = ob_get_clean();
-
-        // Пост-обработка (отложенные функции)
-        if(!$suspendEvent) {
-	        $event = mod::fire("mod_afterActionSYS",array(
-	            "content" => $content,
-	        ));
-	        $content = $event->param("content");
-        }
-
-        component::callDeferedFunctions();
-
-        echo $content;
 
     }
 

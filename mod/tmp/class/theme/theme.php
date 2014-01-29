@@ -126,8 +126,8 @@ abstract class tmp_theme extends mod_component {
 	/**
 	 * Возвращает модуль, в котором находится эта тема
 	 **/
-	public function mod() {
-		return file::get(strtr(get_class($this),"_","/"))->mod();
+	public function bundle() {
+		return self::inspector()->bundle();
 	}
 
 	/**

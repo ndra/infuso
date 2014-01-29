@@ -7,7 +7,7 @@
 class board_theme extends tmp_theme {
 
     public function path() {
-        return "/board/theme/";
+        return self::inspector()->bundle()->path()."/theme/";
     }
     
     public function base() {
