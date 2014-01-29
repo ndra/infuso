@@ -24,7 +24,6 @@
   'seo_query_position' => '/cms/seo:xfk59ov07arnurdv5rgn3jpwj7wi60',
   'seotools_rewrite' => '/cms/seotools:96qy5sn8a6jce6t850jp50jylsny5s',
   'seotools_slowLoad' => '/cms/seotools:5sv0se2fvvehqw9neib5jl6g9ozd8a',
-  'site_new' => '/cms/site:cu0dkl23w5iowas3cu6nm52nk563ye',
   'vote' => '/cms/vote:qd305yarqlp2kfbru5muk172xb98zn',
   'vote_answer' => '/cms/vote:083a5smyu8h8qqfnktxedozdo8phk9',
   'vote_option' => '/cms/vote:esoyg0xyg6jm9ro8v2t41znm50nfv0',

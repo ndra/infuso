@@ -323,6 +323,11 @@ class component {
         $args = func_get_args();
         array_unshift($args,get_class($this));
         array_unshift($args,"components");
+        
+        if(get_class($this) == "infuso\\dao\\connection") {
+            var_export(call_user_func_array(array("\infuso\core\conf","general"),$args));
+        }
+        
         return call_user_func_array(array("\infuso\core\conf","general"),$args);
     }
 

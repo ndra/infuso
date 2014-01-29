@@ -10,9 +10,7 @@ class reflex_init extends mod_init {
 
 	    mod::msg("<b>reflex</b>");
 
-	    reflex_mysql::query("select version()");
-	    
-	    $v = reflex_mysql::scalar();
+	    $v = mod::service("db")->command("select version()")->query()->fetchColumn();
 	    
 	    if(floatval($v)<5) {
 	        mod::msg("You need mysql version 5 or greater. You haver version $v",1);
