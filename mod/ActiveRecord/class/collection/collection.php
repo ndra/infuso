@@ -23,12 +23,9 @@ class Collection extends \infuso\core\component implements \Iterator {
     // @todo это временная переменная, для доступа из класса reflex_filter
     public $queryParams = array();
 
-    public function defaultBehaviours() {
-        return array(
-            "reflex_collection_behaviour"
-        );
+    public function _beforeQuery() {
     }
-
+    
     /**
      * Вызывает триггер beforeQuery
      * Делает это один раз, чтобы избежать рекурсии
@@ -433,8 +430,9 @@ class Collection extends \infuso\core\component implements \Iterator {
 
         // Если у коллекции нет таблицы, возвращаем 0 не выполняя запрос
         // @todo - это проверка временная. Переписать более аккуратно
-        if(!$this->table()->id())
+        if(!$this->table()->id()) {
             return 0;
+        }
 
         $groupBy = $this->normalizeColName($this->groupBy());
         $what = $this->groupBy() ? "distinct {$groupBy} " : "*";
@@ -450,8 +448,7 @@ class Collection extends \infuso\core\component implements \Iterator {
 
         }
 
-        reflex_mysql::query($q);
-        $count = reflex_mysql::get_scalar();
+        $count = mod::service("db")->query($q)->exec()->fetchScalar();
 
         if($cached) {
             mod_cache::set($q,$count);
@@ -541,7 +538,7 @@ class Collection extends \infuso\core\component implements \Iterator {
 
                 $r = array();
                 foreach($val as $v) {
-                    $r[] = "'".reflex_mysql::escape($v)."'";
+                    $r[] = mod::service("db")->quote($v);
 				}
 
                 switch(sizeof($r)) {

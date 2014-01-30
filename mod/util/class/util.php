@@ -229,7 +229,7 @@ class util {
      * @return class util_string
      */
     public static function str($str) {
-        return new util_str($str);
+        return new \util_str($str);
     }
     
     /**
@@ -311,8 +311,8 @@ class util {
         return $str2;
     }
     
-    function bytesToSize1000($bytes, $precision = 2)
-    {
+    function bytesToSize1000($bytes, $precision = 2) {
+    
         // human readable format -- powers of 1000
         //
         $unit = array('b','kb','mb','gb','tb','pb','eb');

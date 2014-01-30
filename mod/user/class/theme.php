@@ -14,7 +14,7 @@ class user_theme extends tmp_theme {
 	}
 
 	public function path() {
-		return "/user/theme/";
+		return self::inspector()->bundle()->path()."/theme/";
 	}
 
 	public function base() {

@@ -10,7 +10,7 @@ class test extends \infuso\core\controller {
 
 		tmp::header();
 		
-		$user = \infuso\ActiveRecord\Record::create("user");
+		echo user::all()->count();
 
 		tmp::footer();
         

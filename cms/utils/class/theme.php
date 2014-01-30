@@ -1,10 +1,11 @@
 <?
 
-/**
- * Стандартная тема для интернет-магазина
- **/
+namespace infuso\admin\utils;
 
-class util_theme extends tmp_theme {
+/**
+ * Стандартная тема модуля admin
+ **/
+class theme extends \tmp_theme {
 
 	/**
 	 * @return Приоритет темы =-1
@@ -14,11 +15,11 @@ class util_theme extends tmp_theme {
 	}
 
 	public function path() {
-		return self::inspector()->bundle()->path()."/theme/";
+		return self::bundle()->path()."/theme/";
 	}
 
 	public function base() {
-		return "util";
+		return "admin/utils";
 	}
 
 	public function autoload() {
@@ -26,7 +27,7 @@ class util_theme extends tmp_theme {
 	}
 
 	public function name() {
-		return "util";
+		return "utils";
 	}
 
 }

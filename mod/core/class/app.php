@@ -148,7 +148,7 @@ class app {
 	    try {
 	    
 	        $this->execWithoutExceptionHandling();
-	    
+
 	    } catch(\Exception $exception) {
 	    
 			while(ob_get_level()) {
@@ -165,7 +165,7 @@ class app {
 				// Сбрасываем процессор шаблонов
 		        $this->clearTmp();
 
-				\tmp::exec("mod/exception", array(
+				\tmp::exec("/mod/exception", array(
 				    "exception" => $exception,
 				));
 

@@ -3,7 +3,7 @@
 /**
  * Основной контроллер каталога
  **/
-class reflex_editor_controller extends mod_controller {
+class reflex_editor_controller extends \infuso\core\controller {
 
     /**
      * Видимость для браузера

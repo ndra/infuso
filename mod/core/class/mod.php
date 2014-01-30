@@ -28,8 +28,11 @@ class mod extends controller {
 
 	/**
 	 * Включен ли режим отладки
+	 * @todo сделать настройки режима отладки
 	 **/
 	public function debug() {
+	
+	    return true;
 	
 	    if(self::$debug===null) {
 	    

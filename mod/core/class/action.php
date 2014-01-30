@@ -205,7 +205,8 @@ class action extends component {
 
         $url = $this->urlWithoutCache();
 
-        if(conf::get("mod:cacheURL")) {
+        //if(conf::get("mod:cacheURL")) {
+        if(true) {
             mod::service("cache")->set($hash,$url);
         }
 
