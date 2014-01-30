@@ -15,11 +15,12 @@ $orders = eshop::orders()->eq("date(sent)",util::now()->notime());
     }
 </div>
 
-$table = reflex_table::factoryByName("eshop_order")->prefixedName();
-reflex_mysql::query("select date(`sent`) as `date`, count(*) as `count`, sum(`total`) as `total` from `$table` where TIMESTAMPDIFF(DAY,`sent`,now()) < 100 and `status`!='eshop_order_status_cancelled' group by `date`;");
-
-
-$r = reflex_mysql::get_col("count","date");
+$table = infuso\ActiveRecord\table::factoryByName("eshop_order")->prefixedName();
+$query = "select date(`sent`) as `date`, count(*) as `count`, sum(`total`) as `total` from `$table` where TIMESTAMPDIFF(DAY,`sent`,now()) < 100 and `status`!='eshop_order_status_cancelled' group by `date`;";
+$r = array();
+foreach(mod::service("db")->query($query)->exec()->fetchAll() as $row) {
+    $r[$row["date"]] = $row["count"];
+}
 
 $chart = new google_chart();
 $chart->col("date","string");
@@ -36,8 +37,6 @@ for($i=-30;$i<=0;$i++) {
 }
     
 $chart->exec();
-
-$r = reflex_mysql::get_col("total","date");
 
 $chart = new google_chart();
 $chart->col("date","string");

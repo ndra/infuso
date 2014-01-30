@@ -38,6 +38,7 @@ class table extends \infuso\core\component {
     private static $bufferReflex = array();
     
 	protected $fieldsWokenUp;
+	protected $indexesWokenUp;
 	protected $fieldsReady;
     
     /**
@@ -397,7 +398,7 @@ class table extends \infuso\core\component {
         // Автоматические индексы
         foreach($this->fields() as $field) {
             if($field->indexEnabled()) {
-                $this->indexes[] = reflex_table_index::get(array(
+                $this->indexes[] = \reflex_table_index::get(array(
                     "name" => "+".$field->name(),
                     "fields" => $field->mysqlIndexFields(),
                     "automatic" => true,
@@ -407,7 +408,7 @@ class table extends \infuso\core\component {
         
         if($conf = $this->conf["indexes"]) {
             foreach($conf as $indexData) {
-                $this->indexes[] = new reflex_table_index($indexData);
+                $this->indexes[] = new \reflex_table_index($indexData);
             }
         }
         
@@ -422,7 +423,7 @@ class table extends \infuso\core\component {
             $index = reflex_table_index::create();
     
         $this->indexesLazyInit();
-        $index = reflex_table_index::get($index);
+        $index = \reflex_table_index::get($index);
         $this->indexes[] = $index;
         return $index;
     }

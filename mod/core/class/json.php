@@ -1,6 +1,9 @@
 <?
 
-class mod_json extends mod_controller {
+/**
+ * Контроллер для json-запросов
+ **/
+class mod_json extends \infuso\core\controller {
 
 	public function indexTest() {
 	    return true;

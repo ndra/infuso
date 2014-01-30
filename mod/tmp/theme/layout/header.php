@@ -13,7 +13,7 @@
                     $tmp->exec("user:loginForm");
                 </td>                
                 <td>
-                    $tmp->exec("lang:selector");
+                    //$tmp->exec("lang:selector");
                 </td>        
             </tr>
         </table>

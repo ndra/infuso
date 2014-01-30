@@ -131,7 +131,7 @@ class Record extends \mod_model {
                 return reflex::virtual("reflex_meta_item");
             }
 
-            $this->metaObject = reflex_meta_item::get(get_class($this).":".$this->id(),$lang);
+            $this->metaObject = \reflex_meta_item::get(get_class($this).":".$this->id(),$lang);
         }
 
         return $this->metaObject;
@@ -246,7 +246,7 @@ class Record extends \mod_model {
         } else {
 
             $params["id"] = $this->id();
-            $action = mod_action::get(get_class($this),"item",$params);
+            $action = \mod_action::get(get_class($this),"item",$params);
             return mod::url($action->url());
 
         }
@@ -586,8 +586,9 @@ class Record extends \mod_model {
         unset(self::$dirtyItems[$key]);
 
         // Убираем у полей отметку об изменении
-        foreach($this->fields()->changed() as $field)
+        foreach($this->fields()->changed() as $field) {
             $field->applyChanges();
+        }
 
     }
 
@@ -602,7 +603,7 @@ class Record extends \mod_model {
         $items = array_keys(self::$dirtyItems);
 
         $b = 0;
-
+        
         while(sizeof($items)) {
 
             self::$dirtyItems = array();
@@ -850,15 +851,16 @@ class Record extends \mod_model {
      **/
     public final function editor() {
 
-        $map = file::get("/reflex/system/editors.php")->inc();
+        $map = \infuso\core\file::get("/reflex/system/editors.php")->inc();
 
         $class = $this->reflex_editor();
 
         if(!$class) {
 
             $classes = $map[get_class($this)];
-            if(!$classes)
+            if(!$classes) {
                 $classes = array();
+            }
 
             $class = end($classes);
 
@@ -903,5 +905,3 @@ class Record extends \mod_model {
     }
 
 }
-
-//register_shutdown_function(array("reflex","storeAll"));

@@ -48,10 +48,10 @@ if($user->exists()) {
         echo "<a href='$url'>Забыли пароль</a>";
     </div>
     
-    if(mod::conf("user:social")) {
+    /*if(mod::conf("user:social")) {
         <div style='padding-top:10px;' >
             tmp::exec("user:social.login");
         </div>
-    }
+    } */
     
 }

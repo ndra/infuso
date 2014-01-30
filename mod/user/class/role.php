@@ -1,9 +1,10 @@
 <?
 
 /**
- * Модель роли пользователя
+ * роли пользователя
+ * @todo выпилить этот класс т.к. вместо него есть user_operation
  **/
-class user_role extends reflex {
+class user_role {
 
 	/**
 	 * Возвращает коллекцию всех ролей
@@ -19,16 +20,6 @@ class user_role extends reflex {
 	    return self::all()->eq("code",$code)->one();
 	}
 	
-	/**
-	 * Раздлы для каталога
-	 **/
-	public static function reflex_root() {
-	    $ret = array();
-	    if(mod_superadmin::check())
-	        $ret[] = self::all()->param("tab","user")->title("Роли");
-		return $ret;
-	}
-	
 
 	/**
 	 * Конструктор роли
@@ -39,10 +30,6 @@ class user_role extends reflex {
 	        "code" => $code,
 	        "title" => $title,
 		));
-	}
-	
-	public function parentRole() {
-	    return user_role::get($this->data("parentRole"));
 	}
 	
 }

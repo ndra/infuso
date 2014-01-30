@@ -12,10 +12,11 @@ class reader {
 
 	public function __construct(\PDOStatement $statement,$lastInsertId) {
 	    $this->statement = $statement;
-	    $this->$lastInsertId = $lastInsertId;
+	    $this->lastInsertId = $lastInsertId;
 	}
 	
 	public function fetchAll() {
+	    $this->statement->setFetchMode(\PDO::FETCH_ASSOC );
 	    return $this->statement->fetchAll();
 	}
 	

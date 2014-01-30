@@ -60,7 +60,7 @@ mod_profiler::addMilestone("done");
         <tr>
             <td class='title' >MySQL</td>
             <td>
-                tmp::exec("mysql");
+                //tmp::exec("mysql");
             </td>
         </tr>
         

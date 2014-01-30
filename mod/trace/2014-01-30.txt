@@ -1,0 +1,7 @@
+07:17:44 infuso\core\log::trace >> 127.0.0.1 at /eshop got exception: Шаблон 'reflex/search' не найден.
+08:13:16 infuso\core\log::trace >> 127.0.0.1 at /eshop got exception: Шаблон 'reflex/search' не найден.
+08:14:26 infuso\core\log::trace >> 127.0.0.1 at /eshop got exception: Шаблон 'reflex/search' не найден.
+08:19:13 infuso\core\log::trace >> 127.0.0.1 at /eshop got exception: Шаблон 'lang/selector' не найден.
+08:20:27 infuso\core\log::trace >> 127.0.0.1 at /eshop got exception: access to undefined property infuso\ActiveRecord\table::indexesWokenUp
+08:20:54 infuso\core\log::trace >> 127.0.0.1 at /eshop got exception: access to undefined property infuso\ActiveRecord\table::indexesWokenUp
+08:28:43 infuso\core\log::trace >> 127.0.0.1 at /user_action/register/ got exception: Шаблон 'form/form' не найден.

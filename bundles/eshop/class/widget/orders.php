@@ -6,8 +6,9 @@
 class eshop_widget_orders extends admin_widget {
 
     public function test() {
-        if(user::active()->checkAccess("eshop:showOrdersWidget"))
+        if(user::active()->checkAccess("eshop:showOrdersWidget")) {
             return true;
+		}
     }
     
     public function inStartPage() {
