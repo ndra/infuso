@@ -42,8 +42,13 @@ class tmp_delayed implements mod_handler {
 	 * Кэллбэк для tmp_delayed::insertMessages()
 	 **/
     public function insertMessagesCallback($str) {
-        $tmp = tmp::get("mod:messages");
-        return $str[0].$tmp->rexec();
+    
+        try {
+        	$tmp = tmp::get("/mod/messages");
+        	return $str[0].$tmp->rexec();
+        } catch (\Exception $ex) {
+			echo $ex->getMessage();
+        }
     }
 
 }

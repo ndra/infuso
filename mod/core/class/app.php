@@ -138,6 +138,19 @@ class app {
 	    $this->templateProcessor = null;
 	}
 	
+	/**
+	 * Возвращает флаг того активны ли события приложения
+	 * Например, mod_beforeActionSYS или mod_afterActionSys
+	 * События приложения выключаются для контроллера mod - консоли
+	 * т.к. ошибка в стороннем классе может сделать невозможным использование консоли
+	 **/
+	public function eventsEnabled() {
+	    if($this->action() && preg_match("/^mod$/",$this->action()->className())) {
+	        return false;
+	    }
+	    return true;
+	}
+	
     /**
      * Запускает приложение
      **/
@@ -178,7 +191,7 @@ class app {
         $content = ob_get_clean();
 
         // Пост-обработка (отложенные функции)
-        if(!$suspendEvent) {
+        if($this->eventsEnabled()) {
 	        $event = mod::fire("mod_afterActionSYS",array(
 	            "content" => $content,
 	        ));
@@ -191,29 +204,22 @@ class app {
      
      
 	public function execWithoutExceptionHandling() {
-	
+
 	    self::$current = $this;
 	    $this->init();
-	
+
 	    Header("HTTP/1.0 200 OK");
 
 		// Выполняем post-команду
 	    post::process($this->post(),$this->files());
-	    
+
 	    component::callDeferedFunctions();
-	    
+
 		// Выполняем экшн
 	    $action = $this->action();
 
-        // Если экшн начинается с mod - блокируем события
-        // Это делается для того, чтобы случайно не сломать консоль кривым событием
-        $suspendEvent = false;
-        if($action && preg_match("/^mod$/",$action->className())) {
-            $suspendEvent = true;
-		}
-
         // Если события не заблокированы - вызываем событие
-        if(!$suspendEvent) {
+        if($this->eventsEnabled()) {
         	mod::fire("mod_beforeActionSYS");
         }
 
@@ -222,7 +228,7 @@ class app {
 	    } else {
 			$this->httpError(404);
 	    }
-	    
+
 	    component::callDeferedFunctions();
 	
 	}

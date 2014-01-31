@@ -1,0 +1,6 @@
+08:05:13 infuso\core\log::trace >> 127.0.0.1 at /mod/?cmd=relink got exception: invalid data source name
+08:06:26 infuso\core\log::trace >> 127.0.0.1 at /mod/?cmd=relink got exception: invalid data source name
+08:40:43 infuso\core\log::trace >> 127.0.0.1 at /favicon.ico got exception: invalid data source name
+09:16:01 infuso\core\log::trace >> 127.0.0.1 at /favicon.ico got exception: invalid data source name
+09:16:20 infuso\core\log::trace >> 127.0.0.1 at /favicon.ico got exception: invalid data source name
+09:24:50 infuso\core\log::trace >> 127.0.0.1 at /mod/ got exception: Шаблон 'mod/404' не найден.

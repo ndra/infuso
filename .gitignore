@@ -2,7 +2,6 @@
 /.htaccess
 /robots.txt
 /favicon.ico
-/inx/build_id.txt
 
 #PhpStorm project files
 /.idea/*

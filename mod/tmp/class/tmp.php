@@ -77,16 +77,6 @@ class tmp implements \mod_handler {
 
     }
 
-    public function insertMessages($str) {
-        return preg_replace_callback("/\<body[^>]*>/",array("self","insertMessagesCallback"),$str);
-    }
-
-    public function insertMessagesCallback($str) {
-
-        $tmp = tmp::get("mod:messages");
-        return $str[0].$tmp->rexec();
-    }
-
     /**
      * Запрещает текущую страницу к индексации
      * (На практике устанавливает специальный параметр, который учитывается при построеннии шапки)

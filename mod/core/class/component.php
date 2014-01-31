@@ -116,8 +116,19 @@ class component {
         $wrappers = $this->dataWrappers();
 
         if(array_key_exists($fn,$wrappers)) {
+        
+        
+			$split = function($str) {
+		        $ret = array();
+		        foreach(explode(",",$str) as $part) {
+		            if(trim($part)!=="") {
+		                $ret[] = $part;
+		            }
+		        }
+		        return $ret;
+		    };
 
-            $wrappers = \infuso\util\util::splitAndTrim($wrappers[$fn],",");
+            $wrappers = $split($wrappers[$fn]);
             foreach($wrappers as $wrapper) {
 
                 if(preg_match("/^mixed(\/([a-z0-1\_]*))?/",$wrapper,$matches)) {

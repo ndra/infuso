@@ -23,6 +23,8 @@ class console extends controller {
 
 	public static function xindex() {
 	
+	    try {
+	
 		// Пробуем залогиниться
 	    if($_GET["cmd"]=="login") {
 	        superadmin::post_login($_POST);
@@ -111,7 +113,7 @@ class console extends controller {
 	            break;
 
 	        default:
-	        
+
 	            mod::app()->generateHtaccess();
 	            self::header();
 				
@@ -143,6 +145,10 @@ class console extends controller {
 	            self::footer();
 	            break;
 	    }
+	    
+	    } catch (\Exception $ex) {
+	        echo $ex;
+	    }
 	}
 	
 	public static function resPath() {
@@ -158,6 +164,7 @@ class console extends controller {
 	    echo "<head>";
 	    echo "<title>Console</title>";
 	    echo "<style>";
+	    
 	    echo "html,body{padding:100px;font-family:arial;width:700px;font-size:14px;height:100%;}";
 	    echo "input{font-size:19px;padding:3px;}";
 	    echo ".log-message{padding:3px;}";
