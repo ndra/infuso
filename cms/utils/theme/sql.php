@@ -10,38 +10,40 @@ admin::header();
     
     <input type='submit' value='Выполнить' />
     
-    try {
-    
-        $result = mod::service("db")->query($_POST["query"])->exec();
+    if($_POST["query"]) {
+        try {
         
-        <table class='result' >
+            $result = mod::service("db")->query($_POST["query"])->exec();
             
-            foreach($result->fetchAll() as $rowIndex => $row) {
-            
-                // Заголовок таблицы
-                if($rowIndex == 0) {
-                    <thead>
-                        <tr>
-                            foreach($row as $key => $val) {
-                                <td>{$key}</td>
-                            }
-                        </tr>
-                    </thead>
-                }
-            
-                <tr>                
-                    foreach($row as $key => $val) {
-                        <td>
-                            echo \infuso\util\util::str($val)->esc();
-                        </td>        
+            <table class='result' >
+                
+                foreach($result->fetchAll() as $rowIndex => $row) {
+                
+                    // Заголовок таблицы
+                    if($rowIndex == 0) {
+                        <thead>
+                            <tr>
+                                foreach($row as $key => $val) {
+                                    <td>{$key}</td>
+                                }
+                            </tr>
+                        </thead>
                     }
-                </tr>
-            }
+                
+                    <tr>                
+                        foreach($row as $key => $val) {
+                            <td>
+                                echo \infuso\util\util::str($val)->esc();
+                            </td>        
+                        }
+                    </tr>
+                }
+                
+            </table>
             
-        </table>
-        
-    } catch(Exception $ex) {
-        mod::msg($ex->getMessage(),1);
+        } catch(Exception $ex) {
+            mod::msg($ex->getMessage(),1);
+        }
     }
     
 </form>

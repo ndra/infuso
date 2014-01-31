@@ -199,6 +199,8 @@ class app {
         }
 
         echo $content;
+        
+        mod::fire("mod_appShutdown");
 	
 	}
      

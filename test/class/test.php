@@ -12,9 +12,9 @@ class tester extends \infuso\core\controller {
 
 		\tmp::header();
 		
-		$a = \mod::action("infuso\\test\\tester","fuck",array("id"=>123,"sss" => 5555));
-		$url = $a->url();
-		echo "<a href='{$url}' >{$url}</a>";
+		$user = \user::get(22);
+		//$user->data("firstName",rand());
+		var_export($user->data());
 
 		\tmp::footer();
         

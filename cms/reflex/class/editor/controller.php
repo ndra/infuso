@@ -23,6 +23,9 @@ class reflex_editor_controller extends \infuso\core\controller {
      * Основной контроллер
      **/
     public static function index($p) {
+    
+		mod::msg(self::tabData());
+    
         admin::header("Каталог");
 
         mod::service("reflexEditor")->clearCache();

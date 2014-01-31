@@ -16,5 +16,9 @@ class inspector {
 	public function bundle() {
 	    return mod::service("classmap")->getClassBundle($this->className);
 	}
+	
+	public function className() {
+	    return $this->className;
+	}
 
 }

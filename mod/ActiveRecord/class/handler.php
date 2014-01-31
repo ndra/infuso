@@ -36,7 +36,7 @@ class handler implements \mod_handler {
 
     }
     
-    public function on_mod_afterActionSYS() {
+    public function on_mod_appShutdown() {
         Record::storeAll();
     }
 
