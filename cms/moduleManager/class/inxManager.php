@@ -21,7 +21,7 @@ class moduleManager_inxManager extends mod_controller {
         foreach($parent->children() as $item) {
 
             $ret[] = array(
-                "icon" => $item->isDirective("link_with_parent") ? "/moduleManager/res/inx_linked.png" : "/moduleManager/res/inx.gif",
+                "icon" => self::inspector()->bundle()->path().($item->isDirective("link_with_parent") ? "/res/inx_linked.png" : "/res/inx.gif"),
                 "text" => $item->lastName(),
                 "linked" => $item->isDirective("link_with_parent"),
                 "folder"=> !!sizeof($item->children()),

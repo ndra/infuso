@@ -24,7 +24,7 @@ class moduleManager extends mod_controller{
         // Файлы
         $module["children"][] = array(
             "text" => "Файлы",
-            "icon" => "/moduleManager/icons/files.png",
+            "icon" => self::inspector()->bundle()->path()."/icons/files.png",
             "editor" => array(
 	            "basedir" => "/",
 	            "type" => "inx.mod.moduleManager.fileManager",
@@ -47,7 +47,7 @@ class moduleManager extends mod_controller{
 	        // Файлы
 	        $module["children"][] = array(
 	            "text" => "Файлы",
-	            "icon" => "/moduleManager/icons/files.png",
+	            "icon" => self::inspector()->bundle()->path()."/icons/files.png",
                 "editor" => array(
     	            "basedir" => $m,
     	            "type" => "inx.mod.moduleManager.fileManager",
@@ -72,7 +72,7 @@ class moduleManager extends mod_controller{
 	        if($bundle->conf("inx","path")) {
 	            $module["children"][] = array(
 	                "text"=>"inx",
-	                "icon" => "/moduleManager/res/inx.gif",
+	                "icon" => self::inspector()->bundle()->path()."/res/inx.gif",
                     "editor" => array(
                         "module" => $m,
                         "type" => "inx.mod.moduleManager.inx.manager",
@@ -84,7 +84,7 @@ class moduleManager extends mod_controller{
 	        if($bundle->conf("mysql","path"))
 	            $module["children"][] = array(
 	                "text"=>"Таблицы",
-	                "icon" => "/moduleManager/icons/tables.png",
+	                "icon" => self::inspector()->bundle()->path()."/icons/tables.png",
                     "editor" => array(
     	                "module" => $m,
     	                "type" => "inx.mod.moduleManager.tableManager",
