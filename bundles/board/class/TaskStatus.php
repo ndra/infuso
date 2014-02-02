@@ -1,6 +1,8 @@
 <?
 
-class board_task_status extends mod_controller {
+namespace Infuso\Board;
+
+class TaskStatus extends \Infuso\Core\Controller {
 
     const STATUS_DEMAND = 200;
     const STATUS_NEW = 0;
@@ -190,7 +192,7 @@ class board_task_status extends mod_controller {
     }
 
     public function visibleTasks() {
-        $tasks = board_task::visible();
+        $tasks = Task::visible();
         $tasks->eq("status",$this->id());
         if($this->id() != self::STATUS_IN_PROGRESS) {
             $tasks->eq("epicParentTask",0);

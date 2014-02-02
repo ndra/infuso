@@ -459,7 +459,7 @@ class table extends \infuso\core\component {
         if($conf = $this->conf["fieldGroups"]) {
         
             foreach($conf as $groupData) {
-                $group = new reflex_table_fieldGroup($groupData);
+                $group = new fieldGroup($groupData);
                 $group->setTable($this);
                 $this->fieldGroups[] = $group;
                 $names[] = $group->name();

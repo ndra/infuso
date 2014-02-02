@@ -3,7 +3,7 @@
 /**
  * Класс-инициализатор
  **/
-class user_init implements mod_handler {
+class user_init extends \Infuso\Core\Component implements mod_handler {
 
     /**
      * Метод, в котором реализуется бизнес-логика инициализации
@@ -11,9 +11,12 @@ class user_init implements mod_handler {
     public function on_mod_beforeInit() {
     
         // Очищаем список операций
+        mod::msg("Init users");
         mod::msg("Removing roles and operations");
         user_operation::all()->delete();
         user_role::all()->delete();
+        
+        mod::msg("Creating default roles");
         
         // Создаем роль по умолчанию
         $role = user_role::create("guest");
@@ -79,7 +82,7 @@ class user_init implements mod_handler {
         \Infuso\Cms\Reflex\RootTab::create(array(
             "title" => "Пользователи",
             "name" => "user",
-            "icon" => "/user/res/icons/48/user.png",
+            "icon" => self::inspector()->bundle()->path()."/res/icons/48/user.png",
             "priority" => 500,
 		));
 

@@ -1,6 +1,8 @@
 <?
 
-class board_access extends reflex {
+namespace Infuso\Board;
+
+class Access extends \Infuso\ActiveRecord\Record {
 
     public function reflex_table() {
 
@@ -41,14 +43,14 @@ class board_access extends reflex {
 	 * Возвращает список всех объектов
 	 **/
 	public static function all() {
-		return reflex::get(get_class());
+		return \Infuso\ActiveRecord\Record::get(get_class());
 	}
 
     /**
      * Возвращает объект
      **/	     
 	public static function get($id) {
-		return reflex::get(get_class(),$id);
+		return \Infuso\ActiveRecord\Record::get(get_class(),$id);
 	}
 
     public function user() {

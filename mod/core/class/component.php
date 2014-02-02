@@ -2,7 +2,7 @@
 
 namespace infuso\core;
 
-class component {
+class Component {
 
     /**
      * Параметры компонента
@@ -208,7 +208,7 @@ class component {
 
             profiler::beginOperation("mod","normalizeBehaviours",get_class($this));
 
-            foreach($this->___behaviours as $key=>$behaviour) {
+            foreach($this->___behaviours as $key => $behaviour) {
                 if(is_string($behaviour)) {
                     $behaviour = new $behaviour;
                     $behaviour->registerComponent($this,$this->nextBehaviourPriority);

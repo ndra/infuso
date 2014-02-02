@@ -1,6 +1,11 @@
 <?
 
-class board_user extends mod_behaviour {
+namespace Infuso\Board;
+
+/**
+ * Поведение для класса пользователя, добавляющее методы доски
+ **/
+class userBehaviour extends \infuso\Core\Behaviour {
 
     public function boardLog() {
         return board_task_log::all()->eq("userID",$this->id());

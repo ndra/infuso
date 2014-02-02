@@ -63,7 +63,7 @@ class classmapService extends service {
 	
 	    $class = self::prepareClass($class);
 	    $extends = self::prepareClass($extends);
-	
+	    
 		if($class=="mod" && $extends=="mod_controller") {
 		    return true;
         }
@@ -72,6 +72,12 @@ class classmapService extends service {
 	    if(!$classes) {
 	        return;
         }
+        
+	    if($class=="infuso\\board\\collectionbehaviour") {
+	        //var_export(array_key_exists($class."",$classes));
+	        echo "<pre>";
+	        var_export($classes);
+	    }
 
 		if(!array_key_exists($class."",$classes)) {
 			return false;
@@ -164,6 +170,7 @@ class classmapService extends service {
 	    "mod_superadmin" => "infuso\\core\\superadmin",
 	    "mod_action" => "infuso\\core\\action",
 	    "mod_field" => "infuso\\core\\field",
+	    "mod_behaviour" => "infuso\\core\\behaviour",
 	    "tmp" => "\\mod\\template\\tmp",
 	    "tmp_widget" => "\\mod\\template\\widget",
 	    "tmp_template" => "\\mod\\template\\template",

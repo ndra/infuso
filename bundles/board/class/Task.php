@@ -1,6 +1,8 @@
 <?
 
-class board_task extends reflex {
+namespace Infuso\Board;
+
+class Task extends \Infuso\ActiveRecord\Record {
 
     public function reflex_table() {
     
@@ -113,8 +115,8 @@ class board_task extends reflex {
      * Возвращает список всех задач
      **/
     public static function all() {
-        return reflex::get(get_class())
-            ->addBehaviour("board_collectionBehaviour")
+        return \Infuso\ActiveRecord\Record::get(get_class())
+            ->addBehaviour("Infuso\\Board\\CollectionBehaviour")
             ->asc("priority");
     }
 
@@ -122,7 +124,7 @@ class board_task extends reflex {
      * Возвращает список видимых задач для активного пользователя
      **/
     public static function visible() {
-        $projects = board_project::visible();
+        $projects = Project::visible();
         return self::all()->joinByField("projectID",$projects);
     }
 
@@ -552,7 +554,8 @@ class board_task extends reflex {
     public function stickerData() {
 
         $key = "board/stickerData/".$this->id()."/".$this->data("dataHash")."/".user::active()->id();
-        $cached = mod_cache::get($key);
+        $cacheService = mod::service("cache");
+        $cached = $cacheService->get($key);
         if($cached) {
             $cached = json_decode($cached,1);
             return $cached;
@@ -563,7 +566,7 @@ class board_task extends reflex {
         $cached = $loader->write($data);
 
         // Кэшируем данные задачи на 10 минут
-        mod_cache::set($key,$cached,600);
+        $cacheService->set($key,$cached,600);
 
         return $data;
 

@@ -31,13 +31,15 @@ class reflex_editor_behaviourInx extends mod_behaviour {
             "items" => array(),
         );
 
-        if($fields = $this->component()->inxFieldsTab())
+        if($fields = $this->component()->inxFieldsTab()) {
             $ret["items"][] = $fields;
+        }
 
-        foreach($this->component()->inxExtraTabs() as $tab)
+        foreach($this->component()->inxExtraTabs() as $tab) {
             $ret["items"][] = $tab;
+		}
 
-        if($this->item()->reflex_meta())
+        if($this->item()->reflex_meta()) {
             $ret["items"][] = array(
                 "type" => "inx.mod.reflex.meta",
                 "title" => "Мета",
@@ -45,19 +47,22 @@ class reflex_editor_behaviourInx extends mod_behaviour {
                 "lazy" => true,
                 "index" => $this->hash(),
             );
+        }
 
         foreach($this->item()->childrenWithBehaviours() as $key=>$list) {
             $list->addBehaviour("reflex_editor_collection");
             $ret["items"][] = $list->editor()->inxList($list);
         }
 
-        if(get_class($this->item())!="reflex_log" && $this->component()->log())
+        if(get_class($this->item())!="reflex_log" && $this->component()->log()) {
             $ret["items"][] = array(
                 "type" => "inx.mod.reflex.log",
                 "title" => "Журнал",
                 "name" => "log",
+                "lazy" => true,
                 "index" => $this->hash(),
             );
+        }
 
         return $ret;
     }

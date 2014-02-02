@@ -26,8 +26,6 @@ class handler extends \Infuso\Core\Component implements \mod_handler {
 		$op = user_operation::create("reflex:viewConf","Просмотр настроек")
 			->appendTo("admin");
 			
-        rootTab::removeAll();
-			
 		// Добавляем вкладки в каталоге
         rootTab::create(array(
             "title" => "Контент",

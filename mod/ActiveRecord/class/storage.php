@@ -1,6 +1,13 @@
 <?
 
-class reflex_storage extends mod_controller {
+namespace infuso\ActiveRecord;
+
+use \Infuso\Core\File;
+
+/**
+ * Класс-файловое хранилище для ActiveRecord
+ **/
+class Storage extends \Infuso\Core\Controller {
 
 	private $class;
 	private $id;
@@ -27,12 +34,15 @@ class reflex_storage extends mod_controller {
 	    return $ret;
 	}
 	
+	/**
+	 * Возвращает id записи ActiveRecord, с которой связан этот экземпляр хранилища
+	 **/
 	public function id() {
 		return $this->id;
 	}
 	
 	public function reflex() {
-		return reflex::get($this->class,$this->id);
+		return Record::get($this->class,$this->id);
 	}
 
 	public function defaultFolder() {

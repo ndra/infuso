@@ -1,9 +1,11 @@
 <?
 
+namespace Infuso\Core;
+
 /**
  * Класс, реализующий паттерн "Поведение"
  **/
-class mod_behaviour {
+class Behaviour {
 
 	/**
 	 * Ссылка на компонент
@@ -72,12 +74,14 @@ class mod_behaviour {
 	 * По умолчанию вызывается метод с тем же имененм, но это можно изменить
 	 **/
 	public function routeBehaviourMethod($fn) {
-	    if(!method_exists($this,$fn))
+	
+	    if(!method_exists($this,$fn)) {
 	        return false;
+	    }
 	        
 		// Проверяем, является ли метод которым мы хотим вызвать публичным
 	    $class = get_class($this);
-	    $reflection = mod_component::factoryReflectionMethod($class,$fn);
+	    $reflection = Component::factoryReflectionMethod($class,$fn);
 	    if(!$reflection->isPublic()) {
 	        return false;
 		}

@@ -1,6 +1,11 @@
 <?
 
-class board extends mod_controller {
+namespace Infuso\Board;
+
+use \User;
+use \Tmp;
+
+class Main extends \Infuso\Core\Controller {
 
     public static function indexTest() {
         return user::active()->exists();

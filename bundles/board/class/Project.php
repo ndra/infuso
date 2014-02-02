@@ -1,11 +1,13 @@
 <?
 
-class board_project extends reflex {
+namespace Infuso\Board;
+
+class Project extends \Infuso\ActiveRecord\Record {
 
     public function reflex_table() {
 
         return array (
-            'name' => get_class(),
+            'name' => "infuso_board_project",
             'fields' => array (
                 array (
                     'name' => 'id',
@@ -54,7 +56,7 @@ class board_project extends reflex {
 	 * Возвращает список всех проектов
 	 **/
 	public static function all() {
-		return reflex::get(get_class())->desc("priority");
+		return \Infuso\ActiveRecord\Record::get(get_class())->desc("priority");
 	}
 
 	/**
@@ -62,8 +64,8 @@ class board_project extends reflex {
 	 **/	 	
 	public static function visible() {
 
-		if(user::active()->checkAccess("board:viewAllProjects")) {
-			$projects = board_project::all();
+		if(\user::active()->checkAccess("board:viewAllProjects")) {
+			$projects = Project::all();
         } else {
 
             $access = board_access::all()

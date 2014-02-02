@@ -958,8 +958,8 @@ class Collection extends \infuso\core\component implements \Iterator {
     public function sum($key) {
         $this->callBeforeQuery();
         $key = $this->normalizeColName($key);
-        reflex_mysql::query("select sum($key) from {$this->from()} where {$this->whereQuery()} ");
-        return reflex_mysql::get_scalar()*1;
+        $q = "select sum($key) from {$this->from()} where {$this->whereQuery()} ";
+        return mod::service("db")->query($q)->exec()->fetchScalar();
     }
 
     /**
@@ -1096,12 +1096,15 @@ class Collection extends \infuso\core\component implements \Iterator {
     public function virtual($p=null) {
 
         $this->callBeforeQuery();
-        foreach($this->eqs as $key=>$val)
+        foreach($this->eqs as $key=>$val) {
             $new[$key] = $val;
+        }
 
-        if(is_array($p))
-            foreach($p as $key=>$val)
+        if(is_array($p)) {
+            foreach($p as $key=>$val) {
                 $new[$key] = $val;
+            }
+        }
 
         return reflex::virtual($this->itemClass(),$new);
     }

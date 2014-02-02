@@ -7,6 +7,10 @@ use infuso\core\mod as mod;
 
 class builder {
 
+	public function excludePath() {
+	    return mod::app()->varPath()."/exclude/";
+	}
+
 	/**
 	 * Парсит файл и возвращает массив с информацией о классе
 	 * array(
@@ -89,7 +93,7 @@ class builder {
 	private static function classMap($secondScan) {
 
 		$excludes = array();
-		foreach(file::get("/mod/exclude/")->dir() as $file) {
+		foreach(file::get(self::excludePath())->dir() as $file) {
 		    $excludes[] = $file->basename();
 		}
 
@@ -118,6 +122,10 @@ class builder {
 		        	}
 		        	
 		        	$class = strtolower($class);
+		        	
+		        	if(!preg_match("/[a-zA-Z0-9\_\/]/",$class)) {
+						mod::msg("Class $class have strange symbols in it's name.",1);
+		        	}
 		        	    
 					if(array_key_exists($class,$ret) && !$secondScan) {
 					    mod::msg("Duplicate file ".$file->path()." for class $class",1);
@@ -133,10 +141,10 @@ class builder {
 					        mod::msg("File ".$file->path()." disabled due fatal error on previous relink",1);
 					        continue;
 						}
-						file::mkdir("/mod/exclude/",1);
-						file::get("/mod/exclude/$hash.txt")->put($file->path());
+						file::mkdir(self::excludePath(),1);
+						file::get(self::excludePath()."/$hash.txt")->put($file->path());
 						class_exists($class);
-						file::get("/mod/exclude/$hash.txt")->delete();
+						file::get(self::excludePath()."/$hash.txt")->delete();
 
 			        	// Отмечаем абстрактные классы
 						$reflection = new \ReflectionClass($class);
@@ -174,7 +182,7 @@ class builder {
 		$ret = array();
 
 		// Берем поведения по умолчанию (на основании mod_behaviour::addToClass)
-		foreach(mod::service("classmap")->classes("mod_behaviour") as $class) {
+		foreach(mod::service("classmap")->classes("Infuso\Core\Behaviour") as $class) {
 		    $obj = new $class;
 		    if($for = $obj->addToClass()) {
 		        $ret[$for][] = $class;

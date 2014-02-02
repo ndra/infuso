@@ -12,9 +12,15 @@ class tester extends \infuso\core\controller {
 
 		\tmp::header();
 		
-		$c = \infuso\core\post::getControllerClass("Infuso:Cms:Reflex:controller:views");
-		var_export($c);
-		
+        //$items = \Infuso\Board\Task::all();
+        //echo $items->count();
+        
+        $x = "infuso\\board\\collectionbehaviour";
+        //new $x;
+        $z = \mod::service("classmap")->testClass($x);
+        //var_export($z);
+       
+
 		\tmp::footer();
         
     }

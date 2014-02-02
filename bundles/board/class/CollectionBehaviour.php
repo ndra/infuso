@@ -1,6 +1,8 @@
 <?
 
-class board_collectionBehaviour extends mod_behaviour {
+namespace Infuso\Board;
+
+class CollectionBehaviour extends \Infuso\Core\Behaviour {
 
     public function useTag($tag) {
 

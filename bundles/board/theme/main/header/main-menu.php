@@ -1,9 +1,12 @@
 <?
 
+namespace Infuso\Board;
+use \User, \ndra_menu;
+
 <div class='x55qv4lhb8m' >
 
-    foreach(board_task_status::all() as $status) {
-        if($status->id() != board_task_status::STATUS_DRAFT) {
+    foreach(taskStatus::all() as $status) {
+        if($status->id() != taskStatus::STATUS_DRAFT) {
             <a class='item' href='#task-list/status/{$status->id()}' >
                 echo $status->title();
                 $n = $status->visibleTasks()->count();

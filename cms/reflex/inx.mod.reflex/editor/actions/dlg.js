@@ -18,7 +18,7 @@ inx.mod.reflex.editor.actions.dlg = inx.dialog.extend({
             this.task("complete");
             return;
         }
-        this.call({cmd:"reflex:editor:controller:doAction",action:this.action,id:id},[this.id(),"step"]);
+        this.call({cmd:"infuso:cms:reflex:controller:doAction",action:this.action,id:id},[this.id(),"step"]);
         this.index++;                
         
         if(this.index==1) var html = "0%";

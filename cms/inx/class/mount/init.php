@@ -21,6 +21,10 @@ class inx_init extends mod_init {
         }
 
 	}
+	
+	public static function generateBuildID() {
+		file::get(mod::app()->publicPath()."/inx/build_id.txt")->put(rand());
+	}
 
 	public static function packFile($mod,$file) {
 		$path = self::getModulePath($mod)."/".$file;

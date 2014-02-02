@@ -1,10 +1,12 @@
 <?
 
+namespace Infuso\Board;
+
 /**
  * Стандартная тема для интернет-магазина
  **/
 
-class board_theme extends tmp_theme {
+class Theme extends \tmp_theme {
 
     public function path() {
         return self::inspector()->bundle()->path()."/theme/";

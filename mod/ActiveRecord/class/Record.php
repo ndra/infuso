@@ -782,7 +782,7 @@ class Record extends \mod_model {
      **/
     public final function storage() {
         $source = $this->reflex_storageSource();
-        return new reflex_storage(get_class($source),$source->id());
+        return new storage(get_class($source),$source->id());
     }
 
     public function log($text,$params=array()) {
@@ -798,7 +798,7 @@ class Record extends \mod_model {
 		$source = $this->reflex_logSource();
 
         $log = reflex::create("reflex_log",array(
-            "user" => user::active()->id(),
+            "user" => \user::active()->id(),
             "index" => get_class($source).":".$source->id(),
             "text" => $text,
             "comment" => $params["comment"],
