@@ -672,8 +672,8 @@ class Collection extends \infuso\core\component implements \Iterator {
 
     public function gt($key,$val) {
         $key = $this->normalizeColName($key);
-        $val = reflex_mysql::escape($val);
-        $this->where("$key>'$val'",$key);
+        $val = mod::service("db")->quote($val);
+        $this->where("{$key} > {$val}",$key);
         return $this;
     }
 
@@ -693,8 +693,8 @@ class Collection extends \infuso\core\component implements \Iterator {
 
     public function leq($key,$val) {
         $key = $this->normalizeColName($key);
-        $val = reflex_mysql::escape($val);
-        $this->where("$key<='$val'",$key);
+        $val = mod::service("db")->quote($val);
+        $this->where("{$key} <= {$val}",$key);
         return $this;
     }
 

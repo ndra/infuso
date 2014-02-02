@@ -1,6 +1,11 @@
 <?
 
-class reflex_editor_init implements mod_handler {
+namespace Infuso\Cms\Reflex;
+
+use \user_role, \user_operation;
+use \mod, \file, \util;
+
+class handler extends \Infuso\Core\Component implements \mod_handler {
 
 	public function on_mod_init() {
 	
@@ -21,21 +26,35 @@ class reflex_editor_init implements mod_handler {
 		$op = user_operation::create("reflex:viewConf","Просмотр настроек")
 			->appendTo("admin");
 			
+        rootTab::removeAll();
+			
 		// Добавляем вкладки в каталоге
-
-        reflex_editor_rootTab::create(array(
+        rootTab::create(array(
             "title" => "Контент",
             "name" => "",
-            "icon" => "/reflex/res/icons/48/content.png",
+            "icon" => self::inspector()->bundle()->path()."/res/icons/48/content.png",
             "priority" => 1000,
 		));
 		
-        reflex_editor_rootTab::create(array(
+        rootTab::create(array(
             "title" => "Системные",
             "name" => "system",
-            "icon" => "/reflex/res/icons/48/system.png",
+            "icon" => self::inspector()->bundle()->path()."/res/icons/48/system.png",
 		));
+		
+		self::buildEditorMap();
 
 	}
-
+	
+	public static function buildEditorMap() {
+	    $map = array();
+		foreach(\mod::service("classmap")->classes("reflex_editor") as $class) {
+		    $e = new $class;
+		    $map[$e->itemClass()][] = $class;
+		}
+		$path = mod::app()->varPath()."/reflex/editors.php";
+		file::mkdir(file::get($path)->up());
+		util::save_for_inclusion($path,$map);
+	}
+	
 }

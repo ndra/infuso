@@ -1,9 +1,13 @@
 <?
 
+namespace Infuso\Cms\Reflex;
+
+use \user, \admin, \mod, \inx;
+
 /**
  * Основной контроллер каталога
  **/
-class reflex_editor_controller extends \infuso\core\controller {
+class controller extends \Infuso\Core\Controller {
 
     /**
      * Видимость для браузера
@@ -24,12 +28,10 @@ class reflex_editor_controller extends \infuso\core\controller {
      **/
     public static function index($p) {
     
-		mod::msg(self::tabData());
-    
         admin::header("Каталог");
 
         mod::service("reflexEditor")->clearCache();
-        
+
         inx::add(array(
             "type" => "inx.mod.reflex.editor",
             "menu" => $p["menu"],
@@ -43,7 +45,7 @@ class reflex_editor_controller extends \infuso\core\controller {
 
         $ret = array();
         
-        foreach(reflex_editor_rootTab::allVisible() as $tab) {
+        foreach(rootTab::allVisible() as $tab) {
 	        $ret[] = array(
 	            "text" => $tab->title(),
 	            "name" => $tab->data("name"),
@@ -92,11 +94,11 @@ class reflex_editor_controller extends \infuso\core\controller {
     public function get($index) {
 
         if(!$index) {
-            $editor = new reflex_editor_root_editor(0);
+            $editor = new \reflex_editor_root_editor(0);
             $index = $editor->hash();
         }
 
-        $editor = reflex_editor::byHash($index);
+        $editor = \reflex_editor::byHash($index);
 
         return $editor;
 
@@ -113,7 +115,7 @@ class reflex_editor_controller extends \infuso\core\controller {
      * Возвращает список на основе переменной $_REQUEST
      **/
     public function getListByP($p,$filter=true) {
-        $list = reflex_collection::unserialize($p["listData"]);
+        $list = \Infuso\ActiveRecord\Collection::unserialize($p["listData"]);
         $list->addBehaviour("reflex_editor_collection");
         $list->applyParams($p);
         return $list;

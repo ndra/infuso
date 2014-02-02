@@ -33,7 +33,7 @@ inx.mod.reflex.editor.item = inx.panel.extend({
     
     cmd_requestData:function() {
         this.call({
-            cmd:"reflex:editor:controller:getItem",
+            cmd:"infuso:cms:reflex:controller:getItem",
             index:this.index
         },[this.id(),"handleData"]);
     },

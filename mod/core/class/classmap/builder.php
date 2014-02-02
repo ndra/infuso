@@ -116,6 +116,8 @@ class builder {
 		        	if(!$class) {
 		        	    continue;
 		        	}
+		        	
+		        	$class = strtolower($class);
 		        	    
 					if(array_key_exists($class,$ret) && !$secondScan) {
 					    mod::msg("Duplicate file ".$file->path()." for class $class",1);
@@ -146,7 +148,7 @@ class builder {
 			        	while($parent) {
 			        	    $parent = get_parent_class($parent);
 							if($parent)
-								$descr["p"][] = $parent;
+								$descr["p"][] = strtolower($parent);
 			        	}
 		        	}
 

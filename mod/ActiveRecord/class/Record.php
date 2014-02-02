@@ -88,11 +88,9 @@ class Record extends \mod_model {
 
     public static function classes() {
         $ret = array();
-        foreach(mod::service("classmap")->classes("reflex") as $class) {
-            if(get_class(reflex::virtual($class))==$class) {
-                if($class!="reflex_none") {
-                    $ret[] = $class;
-                }
+        foreach(mod::service("classmap")->classes("infuso\\ActiveRecord\\Record") as $class) {
+            if($class!="reflex_none") {
+                $ret[] = $class;
             }
         }
         return $ret;
@@ -851,7 +849,7 @@ class Record extends \mod_model {
      **/
     public final function editor() {
 
-        $map = \infuso\core\file::get("/reflex/system/editors.php")->inc();
+        $map = \infuso\core\file::get(mod::app()->varPath()."/reflex/editors.php")->inc();
 
         $class = $this->reflex_editor();
 

@@ -23,7 +23,7 @@ class reflex_editor_root extends reflex {
     }
 
     public function getList() {
-        return reflex_collection::unserialize($this->data("data"));
+        return \Infuso\ActiveRecord\Collection::unserialize($this->data("data"));
     }
 
     public function reflex_cleanup() {

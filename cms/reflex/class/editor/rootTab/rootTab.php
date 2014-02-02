@@ -1,9 +1,14 @@
 <?
 
+namespace Infuso\Cms\Reflex;
+
+use \Infuso\ActiveRecord\Record;
+use \mod;
+
 /**
  * Модель вкладки в каталоге
  **/
-class reflex_editor_rootTab extends reflex {
+class rootTab extends Record {
 
 	/**
 	 * Описание таблицы
@@ -39,7 +44,7 @@ class reflex_editor_rootTab extends reflex {
 	}
 	
 	public static function all() {
-	    return reflex::get(get_class())->desc("priority");
+	    return Record::get(get_class())->desc("priority");
 	}
 
 	public static function allVisible() {
@@ -78,7 +83,7 @@ class reflex_editor_rootTab extends reflex {
 	 * Создает новую вкладку
 	 **/
 	public static function create($p) {
-	    return reflex::create(get_class(),$p);
+	    return Record::create(get_class(),$p);
 	}
 	
 	public function removeAll() {

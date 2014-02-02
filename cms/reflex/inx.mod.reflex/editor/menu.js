@@ -57,7 +57,7 @@ inx.mod.reflex.editor.menu = inx.tree.extend({
     
         var tab = this.tabs.info("item",tab).name;
         this.cmd("setLoader",{
-            cmd:"reflex:editor:controller:views",
+            cmd:"infuso:cms:reflex:controller:views",
             tab:tab
         });
         

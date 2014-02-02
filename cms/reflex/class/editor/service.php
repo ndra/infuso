@@ -64,7 +64,6 @@ class reflex_editor_service extends mod_service {
 
         mod_profiler::beginOperation("reflex","buildMap",1);
 
-
         $ritems = array();
 
         foreach(reflex::classes() as $class) {
@@ -78,7 +77,7 @@ class reflex_editor_service extends mod_service {
         }
 
         $heap = array();
-
+        
         foreach($ritems as $items) {
 
             //Если не объект и не масив
@@ -111,13 +110,13 @@ class reflex_editor_service extends mod_service {
      * @return Object class reflex_editor или null
      **/
     private function buildOne($collection) {
-
+    
         mod_profiler::beginOperation("reflex","buildOne",1);
 
 		// В зависимости от класса переданного объекта, дейстуем по-разному
 
 		// Из коллекции делаем объект reflex_editor_root
-        if(mod::service("classmap")->testClass(get_class($collection),"reflex_collection")) {
+        if(mod::service("classmap")->testClass(get_class($collection),"infuso\ActiveRecord\Collection")) {
 
             if(!$collection->editor()->beforeCollectionView()) {
                 mod_profiler::endOperation();
@@ -129,7 +128,7 @@ class reflex_editor_service extends mod_service {
 	        if(!$group) {
 	            $group = $collection->virtual()->reflex_rootGroup();
             }
-
+            
             $root = reflex::create("reflex_editor_root", array(
 	            "parent" => 0,
 	            "data" => $collection->serialize(),
@@ -144,7 +143,7 @@ class reflex_editor_service extends mod_service {
 
         }
 
-        // Если передан редактор, то кладем в базу его
+        // Если передан редактор, кладем в базу его
         if(mod::service("classmap")->testClass(get_class($collection),"reflex_editor")) {
             return $collection;
         }

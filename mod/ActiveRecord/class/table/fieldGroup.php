@@ -1,9 +1,11 @@
 <?
 
+namespace infuso\ActiveRecord;
+
 /**
  * Класс описывающий таблицу
  **/
-class reflex_table_fieldGroup extends mod_component {
+class fieldGroup extends \infuso\core\component {
 
     private $table = null;
 

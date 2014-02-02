@@ -46,15 +46,4 @@ class util {
 	    return reflex::get($action->className(),$params["id"]);
 	}
 	
-	public static function collectNames() {
-		$ret = array();
-		foreach(mod::service("bundle")->all() as $mod) {
-		    foreach(table::factoryModuleTables($mod->path()) as $table) {
-		    	$ret[$table->name()] = $table->id();
-		    }
-		}
-		file::mkdir("/reflex/system/");
-		\infuso\util\util::save_for_inclusion("/reflex/system/names.inc.php",$ret);
-	}
-
 }

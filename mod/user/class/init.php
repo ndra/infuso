@@ -76,7 +76,7 @@ class user_init implements mod_handler {
         
         // Таб для каталога
         
-        reflex_editor_rootTab::create(array(
+        \Infuso\Cms\Reflex\RootTab::create(array(
             "title" => "Пользователи",
             "name" => "user",
             "icon" => "/user/res/icons/48/user.png",

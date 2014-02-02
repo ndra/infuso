@@ -8,14 +8,13 @@ class tester extends \infuso\core\controller {
         return true;
     }
     
-    public function index_fuck($p) {
+    public function index($p) {
 
 		\tmp::header();
 		
-		$user = \user::get(22);
-		//$user->data("firstName",rand());
-		var_export($user->data());
-
+		$c = \infuso\core\post::getControllerClass("Infuso:Cms:Reflex:controller:views");
+		var_export($c);
+		
 		\tmp::footer();
         
     }

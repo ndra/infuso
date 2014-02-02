@@ -199,7 +199,7 @@ inx.mod.reflex.editor.list = inx.tabs.extend({
         }
 
         var data = {
-            cmd:"reflex:editor:controller:getList"
+            cmd:"infuso:cms:reflex:controller:getList"
         };
 
         var list = this.info("list");

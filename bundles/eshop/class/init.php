@@ -3,7 +3,7 @@
 /**
  * Обработчик событий модуля eshop
  **/
-class eshop_init implements mod_handler {
+class eshop_init extends \Infuso\Core\Component implements \mod_handler {
 
 	public function on_mod_init() {
 	
@@ -63,10 +63,10 @@ class eshop_init implements mod_handler {
 	    	
         // Таб для каталога
 
-        reflex_editor_rootTab::create(array(
+        \Infuso\Cms\Reflex\rootTab::create(array(
             "title" => "Магазин",
             "name" => "eshop",
-            "icon" => "/eshop/res/icons/48/eshop.png",
+            "icon" => self::inspector()->bundle()->path()."/res/icons/48/eshop.png",
             "priority" => 2000,
 		));
 	    

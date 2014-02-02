@@ -2,6 +2,7 @@
 
 namespace infuso\ActiveRecord;
 use \infuso\core\mod;
+use \infuso\core\file;
 
 class init extends \mod_init {
 
@@ -22,18 +23,33 @@ class init extends \mod_init {
 	    
 	    mod::msg("mysql version {$v} ok");
 
-		// Собираем типы полей
-	    \infuso\core\field::collect();
-
 		// Собираем имена таблиц
-	    util::collectNames();
+	    self::collectNames();
 
 		// Проходимся по классам и создаем таблицы для них
 		foreach(Record::classes() as $class) {
-		    $table = reflex::virtual($class)->table();
+		    $table = Record::virtual($class)->table();
 		    $table->migrateUp();
 		}
 
+	}
+	
+	/**
+	 * Собирает имена таблиц в файл
+	 * @todo со временем мы откажемся от хранения таблиц в отдельных файлах
+	 **/
+	public static function collectNames() {
+	
+		$ret = array();
+		foreach(mod::service("bundle")->all() as $mod) {
+		    foreach(table::factoryModuleTables($mod->path()) as $table) {
+		    	$ret[$table->name()] = $table->id();
+		    }
+		}
+		
+		$dir = mod::app()->varPath()."/reflex";
+		file::mkdir($dir);
+		\infuso\util\util::save_for_inclusion("{$dir}/names.php",$ret);
 	}
 
 }

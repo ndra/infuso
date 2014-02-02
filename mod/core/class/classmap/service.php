@@ -34,6 +34,8 @@ class classmapService extends service {
 		}
 
 		if($extends) {
+		
+		    $extends = strtolower($extends);
 
 		    if(!array_key_exists($extends,self::$extends)) {
 				self::$extends[$extends] = array();
@@ -51,7 +53,16 @@ class classmapService extends service {
 		return $ret;
 	}
 	
+	private static function prepareClass($class) {
+	    $class = strtolower($class);
+	    $class = trim($class,"\\");
+	    return $class;
+	}
+	
 	public static function testClass($class,$extends=null) {
+	
+	    $class = self::prepareClass($class);
+	    $extends = self::prepareClass($extends);
 	
 		if($class=="mod" && $extends=="mod_controller") {
 		    return true;
@@ -81,6 +92,8 @@ class classmapService extends service {
 	 * Если такой инфомрации не на найдено и класс загружен, использует Reflection
 	 **/
 	public function classPath($class) {
+	
+	    $class = strtolower($class);
 	
 	    // Пробуем использовать карту сайта
 	    $map = self::classmap();
@@ -155,7 +168,7 @@ class classmapService extends service {
 	    "tmp_widget" => "\\mod\\template\\widget",
 	    "tmp_template" => "\\mod\\template\\template",
 	    "util" => "\\infuso\\util\\util",
-	    "reflex" => "\\infuso\\ActiveRecord\\Record",
+	    "reflex" => "\\infuso\\activerecord\\record",
 	);
 	
 	/**
@@ -163,6 +176,7 @@ class classmapService extends service {
 	 **/
 	public function getClassBundle($class) {
 	
+	    $class = strtolower($class);
 	    $path = file::get($this->classPath($class));
 	    
 	    while($path->name() != "class" && $path != "/") {
@@ -180,6 +194,8 @@ class classmapService extends service {
 	}
 	
 	public function includeClass($class) {
+	
+	    $class = strtolower($class);
 	
 		// Если класс является алиасом, то подключаем сам класс, а не алиас
 	    $alias = self::$aliases[$class];

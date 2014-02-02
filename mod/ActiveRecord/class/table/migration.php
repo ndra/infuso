@@ -1,9 +1,14 @@
 <?
 
+namespace infuso\ActiveRecord;
+
+use infuso\core\mod;
+use infuso\core\file;
+
 /**
  * Класс миграции mysql
  **/
-class reflex_table_migration {
+class tableMigration {
 
     private $table = null;
 
@@ -12,7 +17,7 @@ class reflex_table_migration {
      **/
     private $q = array();
 
-    public function __construct(reflex_table $table) {
+    public function __construct(table $table) {
         $this->table = $table;
     }
 
@@ -189,7 +194,7 @@ class reflex_table_migration {
         // Индексы, которые должны быть
         $a = array();
         foreach($this->table()->indexes() as $index) {
-            $fields = util::splitAndTrim($index->fields(),",");
+            $fields = \infuso\util\util::splitAndTrim($index->fields(),",");
             sort($fields);
             $a[$index->name()]["fields"] = $fields;
             $a[$index->name()]["type"] = $index->type();

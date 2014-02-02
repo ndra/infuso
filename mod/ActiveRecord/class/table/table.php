@@ -40,6 +40,8 @@ class table extends \infuso\core\component {
 	protected $fieldsWokenUp;
 	protected $indexesWokenUp;
 	protected $fieldsReady;
+	protected $fieldGroupsWokenUp;
+	protected $fieldGroups;
     
     /**
      * Массив tableID => tableName
@@ -154,7 +156,7 @@ class table extends \infuso\core\component {
     public function factoryByName($name) {
 
         if(!self::$names) {
-            self::$names = @file::get("/reflex/system/names.inc.php")->inc();
+            self::$names = @file::get(mod::app()->varPath()."/reflex/names.php")->inc();
         }
 
         $id = self::$names[$name];
@@ -466,7 +468,7 @@ class table extends \infuso\core\component {
         
         foreach($this->fields() as $field) {
             if(!in_array($field->group(),$names)) {
-                $group = new reflex_table_fieldGroup(array(
+                $group = new fieldGroup(array(
                     "name" => $field->group(),
                     "title" => $field->group(),
                 ));
@@ -500,7 +502,7 @@ class table extends \infuso\core\component {
      * Запускат миграцию иаблицы
      **/
     public function migrateUp() {
-        $migration = new reflex_table_migration($this);
+        $migration = new tableMigration($this);
         $migration->migrateUp();
     }
 

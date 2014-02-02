@@ -17,7 +17,7 @@ class reflex_editor_fieldController extends mod_controller {
     public function post_getSelectOptions($p) {
         
         // Определяем последовательность
-        $editor = reflex_editor_controller::byOldIndex($p["index"])->editor();
+        $editor = Infuso\Cms\Reflex\Controller::byOldIndex($p["index"])->editor();
 
 		// Для получения списка элементов достаточно права просматривать коллекцию
         if(!$editor->beforeCollectionView()) {
