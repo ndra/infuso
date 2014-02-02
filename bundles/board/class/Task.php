@@ -159,7 +159,7 @@ class Task extends \Infuso\ActiveRecord\Record {
     }
 
     public function reflex_title() {
-        return util::str($this->data("text"))->ellipsis(50)."";
+        return \util::str($this->data("text"))->ellipsis(50)."";
     }
 
     public function text() {
@@ -390,7 +390,7 @@ class Task extends \Infuso\ActiveRecord\Record {
     }
 
     public function getLogCustom() {
-        return board_task_log::all()->eq("taskID",$this->id());
+        return \board_task_log::all()->eq("taskID",$this->id());
     }
 
     public function logCustom($params) {

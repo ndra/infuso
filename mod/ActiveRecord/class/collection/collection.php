@@ -91,23 +91,24 @@ class Collection extends \infuso\core\component implements \Iterator {
         $bb = array();
         foreach($this->behaviours() as $b) {
             $b = get_class($b);
-            if(!in_array($b,array("reflex_collection_behaviour")))
+            if(!in_array($b,array("reflex_collection_behaviour"))) {
                 $bb[] = $b;
+            }
         }
 
         $ret["params"] = $this->params();
         $ret["behaviours"] = $bb;
 
-        return serialize($ret);
+        return json_encode($ret);
     }
 
     /**
      * Восстанавливает коллекцию из строки
      **/
     public final function unserialize($data) {
-
+    
         // Распаковываем данные в массив
-        $data = unserialize($data);
+        $data = json_decode($data,true);
 
         // Получаем коллекцию нужного класса
         $list = self::get($data["itemClass"]);
@@ -117,13 +118,16 @@ class Collection extends \infuso\core\component implements \Iterator {
             $list->$key = $data[$key];
 
         // Подключаем поведения
-        if($bb = $data["behaviours"])
-            foreach($bb as $b)
+        if($bb = $data["behaviours"]) {
+            foreach($bb as $b) {
                 $list->addBehaviour($b);
+            }
+        }
 
         // Разворачиваем параметры
-        if($params = $data["params"])
+        if($params = $data["params"]) {
             $list->params($params);
+        }
 
         // Готово
         return $list;

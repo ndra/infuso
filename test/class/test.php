@@ -12,13 +12,10 @@ class tester extends \infuso\core\controller {
 
 		\tmp::header();
 		
-        //$items = \Infuso\Board\Task::all();
-        //echo $items->count();
-        
-        $x = "infuso\\board\\collectionbehaviour";
-        //new $x;
-        $z = \mod::service("classmap")->testClass($x);
-        //var_export($z);
+        $root = \Infuso\ActiveRecord\Record::get("reflex_editor_root",10218);
+        $items = $root->getList();
+        //var_export($root->data());
+        var_export($items->params());
        
 
 		\tmp::footer();
