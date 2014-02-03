@@ -304,11 +304,11 @@ class Collection extends \infuso\core\component implements \Iterator {
             $joinType = $join["type"];
 
             $from.=" $joinType `{$joinTable->prefixedName()}` ";
-            $from.= " as {$joinClassName} ";
+            $from.= " as `{$joinClassName}` ";
             $from.=" on {$on} ";
 
             if($aliases[$joinClassName]) {
-                throw new Exception("Multiple joins with table `$joinClassName` ");
+                throw new \Exception("Multiple joins with table `$joinClassName` ");
             }
 
             $aliases[$joinClassName] = true;
@@ -442,7 +442,7 @@ class Collection extends \infuso\core\component implements \Iterator {
         $what = $this->groupBy() ? "distinct {$groupBy} " : "*";
 
         $q = "select count($what) from {$this->from()} where {$this->whereQuery()} ";
-
+        
         if($cached) {
 
             $count = mod_cache::get($q);

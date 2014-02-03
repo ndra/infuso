@@ -1,5 +1,9 @@
 <?
 
+use Infuso\Board\TaskStatus;
+use Infuso\Board\Task;
+use \user;
+
 class board_controller_task extends mod_controller {
 
     public function postTest() {
@@ -18,22 +22,22 @@ class board_controller_task extends mod_controller {
         $ret = array();
 
         // Статус для которого мы смотрим задачи
-        $status = board_task_status::get($p["status"]);
+        $status = TaskStatus::get($p["status"]);
 
         // Полный список задач
-        $tasks = board_task::visible()->orderByExpr($status->order())->limit($limit);
+        $tasks = Task::visible()->orderByExpr($status->order())->limit($limit);
 
         if($p["parentTaskID"]) {
 
             $tasks = $tasks->eq("epicParentTask",$p["parentTaskID"])->orderByExpr("`status` != 1")->asc("priority",true);
-            $tasks->eq("status",array(board_task_status::STATUS_NEW,board_task_status::STATUS_IN_PROGRESS))
+            $tasks->eq("status",array(TaskStatus::STATUS_NEW,TaskStatus::STATUS_IN_PROGRESS))
                 ->orr()->gt("changed",util::now()->shift(-60));
 
         } else {
         
             $tasks->eq("status",$p["status"]);
             
-            if($p["status"] != board_task_status::STATUS_IN_PROGRESS) {
+            if($p["status"] != TaskStatus::STATUS_IN_PROGRESS) {
                 $tasks->eq("epicParentTask",0);
             }
             
@@ -91,8 +95,8 @@ class board_controller_task extends mod_controller {
      **/
     public static function post_taskStatusList($p) {
         $ret = array();
-        foreach(board_task_status::all() as $status) {
-            $n = board_task::visible()->eq("status",$status->id())->count();
+        foreach(TaskStatus::all() as $status) {
+            $n = Task::visible()->eq("status",$status->id())->count();
             $ret[] = array(
                 "id" => $status->id(),
                 "title" => $status->title().($n ? " ($n)" : ""),
@@ -106,7 +110,7 @@ class board_controller_task extends mod_controller {
      **/     
     public static function post_getTask($p) {
 
-        $task = board_task::get($p["taskID"]);
+        $task = Task::get($p["taskID"]);
 
         // Параметры задачи
         user::active()->checkAccessThrowException("board/getTaskParams",array(
@@ -114,7 +118,7 @@ class board_controller_task extends mod_controller {
         ));
 
         $statuses = array();
-        foreach(board_task_status::all() as $status) {
+        foreach(TaskStatus::all() as $status) {
             $statuses[] = array(
                 "id" => $status->id(),
                 "text" => $task->status()->id() == $status->id() ? "<u>".$status->title()."</u>" : $status->title(),
@@ -144,7 +148,7 @@ class board_controller_task extends mod_controller {
      **/
     public static function post_saveTask($p) {
 
-        $task = board_task::get($p["taskID"]);
+        $task = Task::get($p["taskID"]);
         $data = util::a($p["data"])->filter("text","timeScheduled","projectID","color","deadline","deadlineDate")->asArray();
 
         // Параметры задачи
@@ -156,11 +160,11 @@ class board_controller_task extends mod_controller {
             $task->data($key,$val);
         }
 
-        if($task->status()->id() == board_task_status::STATUS_DRAFT) {
+        if($task->status()->id() == TaskStatus::STATUS_DRAFT) {
             if(user::active()->checkAccess("boardUser")) {
-                $task->data("status",board_task_status::STATUS_BACKLOG);
+                $task->data("status",TaskStatus::STATUS_BACKLOG);
             } else {
-                $task->data("status",board_task_status::STATUS_DEMAND);
+                $task->data("status",TaskStatus::STATUS_DEMAND);
             }
         }
 
@@ -178,7 +182,7 @@ class board_controller_task extends mod_controller {
      **/
     public function post_changeProject($p) {
 
-        $task = board_task::get($p["taskID"]);
+        $task = Task::get($p["taskID"]);
 
         if(!user::active()->checkAccess("board/changeTaskProject", array (
             "task" => $task,
@@ -207,8 +211,8 @@ class board_controller_task extends mod_controller {
             return;
         }
 
-        $task = reflex::create("board_task",array(
-            "status" => board_task_status::STATUS_DRAFT,
+        $task = reflex::create(Task::inspector()->className(),array(
+            "status" => TaskStatus::STATUS_DRAFT,
             "projectID" => $project->id(),
         ));
 
@@ -220,7 +224,7 @@ class board_controller_task extends mod_controller {
      **/
     public function post_getEpicSubtasks($p) {
 
-        $task = board_task::get($p["taskID"]);
+        $task = Task::get($p["taskID"]);
 
         // Параметры задачи
         if(!user::active()->checkAccess("board/getEpicSubtasks",array(
@@ -233,7 +237,7 @@ class board_controller_task extends mod_controller {
         $ret = array();
 
         $tasks = $task->subtasks()->orderByExpr("`status` != 1")->asc("priority",true);
-        $tasks->eq("status",array(board_task_status::STATUS_NEW,board_task_status::STATUS_IN_PROGRESS))->orr()->gt("changed",util::now()->shift(-60));
+        $tasks->eq("status",array(TaskStatus::STATUS_NEW,TaskStatus::STATUS_IN_PROGRESS))->orr()->gt("changed",util::now()->shift(-60));
         foreach($tasks as $subtask) {
             $ret[] = $subtask->stickerData();
         }
@@ -244,7 +248,7 @@ class board_controller_task extends mod_controller {
 
     public function post_addEpicSubtask($p) {
 
-        $task = board_task::get($p["taskID"]);
+        $task = Task::get($p["taskID"]);
 
         // Параметры задачи
         if(!user::active()->checkAccess("board/addEpicSubtask",array(
@@ -254,14 +258,14 @@ class board_controller_task extends mod_controller {
             return;
         }
 
-        $task = reflex::create("board_task",array(
+        $task = reflex::create(Task::inspector()->className(),array(
             "text" => $p["data"]["text"],
             "timeScheduled" => $p["data"]["timeScheduled"],
             "epicParentTask" => $task->id(),
         ));
 
         if($p["take"]) {
-            $task->data("status",board_task_status::STATUS_IN_PROGRESS);
+            $task->data("status",TaskStatus::STATUS_IN_PROGRESS);
         }
 
     }
@@ -271,7 +275,7 @@ class board_controller_task extends mod_controller {
      **/
     public function post_takeTask($p) {
 
-        $task = board_task::get($p["taskID"]);
+        $task = Task::get($p["taskID"]);
 
         if(!user::active()->checkAccess("board/takeTask",array(
             "task" => $task,
@@ -280,7 +284,7 @@ class board_controller_task extends mod_controller {
             return;
         }
 
-        $task->data("status",board_task_status::STATUS_IN_PROGRESS);
+        $task->data("status",TaskStatus::STATUS_IN_PROGRESS);
         $task->logCustom(array(
             "type" => board_task_log::TYPE_TASK_TAKEN,
         ));
@@ -291,7 +295,7 @@ class board_controller_task extends mod_controller {
      **/
     public function post_stopTask($p) {
 
-        $task = board_task::get($p["taskID"]);
+        $task = Task::get($p["taskID"]);
         $time = $p["time"];
 
         if(!user::active()->checkAccess("board/stopTask",array(
@@ -301,7 +305,7 @@ class board_controller_task extends mod_controller {
             return;
         }
 
-        $task->data("status",board_task_status::STATUS_BACKLOG);
+        $task->data("status",TaskStatus::STATUS_BACKLOG);
         $task->logCustom(array(
             "text" => $p["comment"],
             "time" => $time,
@@ -318,14 +322,14 @@ class board_controller_task extends mod_controller {
      **/
     public function post_revisionTask($p) {
 
-        $task = board_task::get($p["taskID"]);
+        $task = Task::get($p["taskID"]);
 
-        $newStatus = board_task_status::STATUS_BACKLOG;
+        $newStatus = TaskStatus::STATUS_BACKLOG;
 
         if(!user::active()->checkAccess("board/revisionTaskToBacklog",array(
             "task" => $task,
         ))) {
-            $newStatus = board_task_status::STATUS_DEMAND;
+            $newStatus = TaskStatus::STATUS_DEMAND;
             if(!user::active()->checkAccess("board/revisionTaskToDemand",array(
                 "task" => $task,
             ))) {
@@ -348,7 +352,7 @@ class board_controller_task extends mod_controller {
      **/
     public function post_doneTask($p) {
     
-        $task = board_task::get($p["taskID"]);
+        $task = Task::get($p["taskID"]);
         $time = $p["time"];
 
         if(!user::active()->checkAccess("board/doneTask",array(
@@ -358,7 +362,7 @@ class board_controller_task extends mod_controller {
             return;
         }
 
-        $task->data("status",board_task_status::STATUS_CHECKOUT);
+        $task->data("status",TaskStatus::STATUS_CHECKOUT);
         $task->logCustom(array(
             "text" => $p["comment"],
             "time" => $time,
@@ -374,7 +378,7 @@ class board_controller_task extends mod_controller {
      **/
     public function post_completeTask($p) {
 
-        $task = board_task::get($p["taskID"]);
+        $task = Task::get($p["taskID"]);
 
         if(!user::active()->checkAccess("board/completeTask",array(
             "task" => $task,
@@ -383,7 +387,7 @@ class board_controller_task extends mod_controller {
             return;
         }
 
-        $task->data("status",board_task_status::STATUS_COMPLETED);
+        $task->data("status",TaskStatus::STATUS_COMPLETED);
         $task->logCustom(array(
             "text" => $p["comment"],
             "type" => board_task_log::TYPE_TASK_COMPLETED,
@@ -397,7 +401,7 @@ class board_controller_task extends mod_controller {
      **/
     public function post_cancelTask($p) {
 
-        $task = board_task::get($p["taskID"]);
+        $task = Task::get($p["taskID"]);
 
         if(!user::active()->checkAccess("board/cancelTask",array(
             "task" => $task,
@@ -406,7 +410,7 @@ class board_controller_task extends mod_controller {
             return;
         }
 
-        $task->data("status",board_task_status::STATUS_CANCELLED);
+        $task->data("status",TaskStatus::STATUS_CANCELLED);
         $task->logCustom(array(
             "type" => board_task_log::TYPE_TASK_CANCELLED,
         ));
@@ -419,7 +423,7 @@ class board_controller_task extends mod_controller {
      **/
     public function post_getTaskTime($p) {
 
-        $task = board_task::get($p["taskID"]);
+        $task = Task::get($p["taskID"]);
 
         // Параметры задачи
         if(!user::active()->checkAccess("board/getTaskTime",array(
@@ -446,7 +450,7 @@ class board_controller_task extends mod_controller {
      **/
     public function post_moveToBacklog($p) {
 
-        $task = board_task::get($p["taskID"]);
+        $task = Task::get($p["taskID"]);
 
         // Параметры задачи
         if(!user::active()->checkAccess("board/task/moveToBacklog",array(
@@ -456,7 +460,7 @@ class board_controller_task extends mod_controller {
             return;
         }
 
-        $task->data("status",board_task_status::STATUS_BACKLOG);
+        $task->data("status",TaskStatus::STATUS_BACKLOG);
         $task->logCustom(array(
             "type" => board_task_log::TYPE_TASK_MOVED_TO_BACKLOG,
         ));
@@ -469,7 +473,7 @@ class board_controller_task extends mod_controller {
     public function post_saveSort($p) {
 
         foreach($p["idList"] as $n=>$id) {
-            $task = board_task::get($id);
+            $task = Task::get($id);
             // Параметры задачи
             if(user::active()->checkAccess("board/sortTask",array(
                 "task" => $task,
@@ -491,7 +495,7 @@ class board_controller_task extends mod_controller {
 
     public function post_pauseTask($p) {
 
-        $task = board_task::get($p["taskID"]);
+        $task = Task::get($p["taskID"]);
 
         // Параметры задачи
         if(!user::active()->checkAccess("board/pauseTask",array(
@@ -507,7 +511,7 @@ class board_controller_task extends mod_controller {
     
     public function post_updateNotice($p) {
 
-        $task = board_task::get($p["taskID"]);
+        $task = Task::get($p["taskID"]);
 
         // Параметры задачи
         if(!user::active()->checkAccess("board/updateTaskNotice",array(

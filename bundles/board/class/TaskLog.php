@@ -1,9 +1,14 @@
 <?
 
+namespace Infuso\Board;
+
+use  \Infuso\ActiveRecord\Record;
+use  \User;
+
 /**
  * Модель записи в логе
  **/
-class board_task_log extends reflex {
+class TaskLog extends Record {
 
     const TYPE_COMMENT = 1;
     const TYPE_TASK_MODIFIED = 3;
@@ -32,14 +37,14 @@ class board_task_log extends reflex {
                   'type' => 'pg03-cv07-y16t-kli7-fe6x',
                   'editable' => '2',
                   'label' => 'Пользователь',
-                  'class' => 'user',
+                  'class' => User::inspector()->className(),
                 ), array (
                   'name' => 'taskID',
                   'type' => 'pg03-cv07-y16t-kli7-fe6x',
                   'editable' => '2',
                   'label' => 'Задача',
                   'indexEnabled' => '1',
-                  'class' => 'board_task',
+                  'class' => Task::inspector()->className(),
                 ), array (
                   'name' => 'text',
                   'type' => 'kbd4-xo34-tnb3-4nxl-cmhu',
@@ -78,14 +83,14 @@ class board_task_log extends reflex {
      * Возвращает коллекцию всех записей в логе
      **/
     public static function all() {
-        return reflex::get(get_class())->desc("created");
+        return Record::get(get_class())->desc("created");
     }
 
     /**
      * Возвращает коллекцию записей в логе, видимых для активного пользователя
      **/
     public static function visible() {
-        $visibleTasks = board_task::visible();
+        $visibleTasks = Task::visible();
         $log = self::all()->joinByField("taskID",$visibleTasks);
         return $log;
     }
@@ -94,7 +99,7 @@ class board_task_log extends reflex {
      * Возвращает запись в логе по id
      **/
     public static function get($id) {
-        return reflex::get(get_class(),$id);
+        return Record::get(get_class(),$id);
     }
 
     /**

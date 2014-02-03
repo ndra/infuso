@@ -22,10 +22,10 @@ class Main extends \Infuso\Core\Controller {
     public function index_test() {
         
         tmp::header();
-        inx::add(array(
-            "type" => "inx.mod.board.task",
-            "taskID" => board_task::all()->eq("status",board_task_status::STATUS_NEW)->one()->id(),
-        ));
+        
+        $items = Task::visible();
+        echo $items->count();
+
         tmp::footer();
         
         

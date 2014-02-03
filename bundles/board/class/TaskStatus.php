@@ -2,6 +2,8 @@
 
 namespace Infuso\Board;
 
+use \User;
+
 class TaskStatus extends \Infuso\Core\Controller {
 
     const STATUS_DEMAND = 200;
@@ -121,13 +123,13 @@ class TaskStatus extends \Infuso\Core\Controller {
 
             case self::STATUS_IN_PROGRESS:
                 $currentUserID = user::active()->id();
-                return "`board_task`.`responsibleUser` <> $currentUserID, `board_task`.`responsibleUser`";
+                return "`Infuso\\Board\\Task`.`responsibleUser` <> $currentUserID, `Infuso\\Board\\Task`.`responsibleUser`";
 
         }
 
     	$ret = self::$all[$this->status]["order"];
     	if(!$ret) {
-    	    $ret = "board_task.priority asc";
+    	    $ret = "`Infuso\\Board\\Task`.`priority` asc";
         }
     	return $ret;
     }

@@ -7,7 +7,7 @@ class Project extends \Infuso\ActiveRecord\Record {
     public function reflex_table() {
 
         return array (
-            'name' => "infuso_board_project",
+            'name' => "board_project",
             'fields' => array (
                 array (
                     'name' => 'id',

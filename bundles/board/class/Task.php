@@ -2,6 +2,9 @@
 
 namespace Infuso\Board;
 
+use \User;
+use \mod;
+
 class Task extends \Infuso\ActiveRecord\Record {
 
     public function reflex_table() {
@@ -38,14 +41,14 @@ class Task extends \Infuso\ActiveRecord\Record {
                 ),array (
                     'name' => 'creator',
                     'type' => 'link',
-                    'class' => "user",
+                    'class' => User::inspector()->className(),
                 ),array (
                     'name' => 'changed',
                     'type' => 'x8g2-xkgh-jc52-tpe2-jcgb',
                 ),array (
                     'name' => 'projectID',
                     'type' => 'pg03-cv07-y16t-kli7-fe6x',
-                    'class' => 'board_project',
+                    'class' => Project::inspector()->className(),
                 ),array (
                     'name' => 'bonus',
                     'type' => 'fsxp-lhdw-ghof-1rnk-5bqp',
@@ -61,7 +64,7 @@ class Task extends \Infuso\ActiveRecord\Record {
                 ),array (
                     'name' => 'responsibleUser',
                     'type' => 'pg03-cv07-y16t-kli7-fe6x',
-                    'label' => 'Ответственный пользователь',
+                    'label' => User::inspector()->className(),
                     "class" => "user",
                 ),array (
                     'name' => 'deadline',
@@ -75,7 +78,7 @@ class Task extends \Infuso\ActiveRecord\Record {
                     'label' => 'Эпик',
                 ),array (
                     'name' => 'epicParentTask',
-                    'type' => 'pg03-cv07-y16t-kli7-fe6x',
+                    'type' => Task::inspector()->className(),
                     'label' => 'reflex_task',
                     'class' => 'board_task',
                 ),array (
@@ -209,30 +212,30 @@ class Task extends \Infuso\ActiveRecord\Record {
             $this->data("paused",false);
 
 			// Отправляем рассылку про выполненные сообщения
-			if($this->field("status")->initialValue() == board_task_status::STATUS_IN_PROGRESS
-				&& in_array($this->data("status"),array(board_task_status::STATUS_COMPLETED, board_task_status::STATUS_CHECKOUT))) {
+			if($this->field("status")->initialValue() == TaskStatus::STATUS_IN_PROGRESS
+				&& in_array($this->data("status"),array(TaskStatus::STATUS_COMPLETED, TaskStatus::STATUS_CHECKOUT))) {
             	$this->defer("handleCompleted");
 			}
 			
 			// Отправляем рассылку про возвращанные на доработку сообщения
-			if($this->field("status")->initialValue() == board_task_status::STATUS_CHECKOUT
-				&& in_array($this->data("status"),array(board_task_status::STATUS_NEW))) {
+			if($this->field("status")->initialValue() == TaskStatus::STATUS_CHECKOUT
+				&& in_array($this->data("status"),array(TaskStatus::STATUS_NEW))) {
             	$this->defer("handleRevision");
 			}
 
 			// При переходи задачи в статус к исполнению она ставится на первое место
-			if($this->data("status") == board_task_status::STATUS_NEW) {
-			    $min = board_task::all()->eq("status",board_task_status::STATUS_IN_PROGRESS)->min("priority");
+			if($this->data("status") == TaskStatus::STATUS_NEW) {
+			    $min = board_task::all()->eq("status",TaskStatus::STATUS_IN_PROGRESS)->min("priority");
 			    $this->data("priority",$min - 1);
 			}
 
 			// Если взяли задачу - запускаем таймер
-			if($this->data("status") == board_task_status::STATUS_IN_PROGRESS) {
+			if($this->data("status") == TaskStatus::STATUS_IN_PROGRESS) {
                 $this->startTimer();
 			}
 
 			// Если задача перестала выполняться - останавливаем таймер
-			if($this->field("status")->initialValue() == board_task_status::STATUS_IN_PROGRESS) {
+			if($this->field("status")->initialValue() == TaskStatus::STATUS_IN_PROGRESS) {
                 $this->stopTimer();
                 $this->timeLog()->data("charged",1);
 			}
@@ -258,7 +261,7 @@ class Task extends \Infuso\ActiveRecord\Record {
 
             $xtasks = board_task::all()
                 ->eq("responsibleUser",user::active()->id())
-                ->eq("status",board_task_status::STATUS_IN_PROGRESS)
+                ->eq("status",TaskStatus::STATUS_IN_PROGRESS)
                 ->neq("id",$this->id());
             foreach($xtasks as $xtask) {
                 $xtask->pause();
@@ -373,7 +376,7 @@ class Task extends \Infuso\ActiveRecord\Record {
      **/
     public function timeSpentProgress() {
     
-        if($this->status()->id() != board_task_status::STATUS_IN_PROGRESS) {
+        if($this->status()->id() != TaskStatus::STATUS_IN_PROGRESS) {
             return 0;
         }
 
@@ -390,7 +393,7 @@ class Task extends \Infuso\ActiveRecord\Record {
     }
 
     public function getLogCustom() {
-        return \board_task_log::all()->eq("taskID",$this->id());
+        return TaskLog::all()->eq("taskID",$this->id());
     }
 
     public function logCustom($params) {
@@ -434,7 +437,7 @@ class Task extends \Infuso\ActiveRecord\Record {
      * Возвращает статус задача (объект)
      **/
     public function status() {
-        return board_task_status::get($this->data("status"));
+        return TaskStatus::get($this->data("status"));
     }
 
     /**
@@ -502,7 +505,7 @@ class Task extends \Infuso\ActiveRecord\Record {
         // Ставим остальные задачи на паузу
         $xtasks = board_task::all()
             ->eq("responsibleUser",user::active()->id())
-            ->eq("status",board_task_status::STATUS_IN_PROGRESS)
+            ->eq("status",TaskStatus::STATUS_IN_PROGRESS)
             ->neq("id",$this->id());
         foreach($xtasks as $xtask) {
             $xtask->pause();
@@ -533,7 +536,7 @@ class Task extends \Infuso\ActiveRecord\Record {
      **/
     public function paused() {
 
-        if($this->status()->id() != board_task_status::STATUS_IN_PROGRESS) {
+        if($this->status()->id() != TaskStatus::STATUS_IN_PROGRESS) {
             return false;
         }
 
@@ -682,7 +685,7 @@ class Task extends \Infuso\ActiveRecord\Record {
 
         switch($this->status()->id()) {
 
-            case board_task_status::STATUS_IN_PROGRESS:
+            case TaskStatus::STATUS_IN_PROGRESS:
 
                 if(!$this->paused()) {
                     $tools["main"][] = "pause";
@@ -697,7 +700,7 @@ class Task extends \Infuso\ActiveRecord\Record {
 
                 break;
 
-            case board_task_status::STATUS_BACKLOG:
+            case TaskStatus::STATUS_BACKLOG:
 
                 if($this->isEpic()) {
                     $tools["main"][] = "subtask";
@@ -711,7 +714,7 @@ class Task extends \Infuso\ActiveRecord\Record {
 
                 break;
 
-            case board_task_status::STATUS_DEMAND:
+            case TaskStatus::STATUS_DEMAND:
 
                 $tools["main"][] = "add";
                 $tools["main"][] = "take";
@@ -721,7 +724,7 @@ class Task extends \Infuso\ActiveRecord\Record {
 
                 break;
 
-            case board_task_status::STATUS_CHECKOUT:
+            case TaskStatus::STATUS_CHECKOUT:
 
                 $tools["main"][] = "complete";
                 $tools["main"][] = "revision";
@@ -729,7 +732,7 @@ class Task extends \Infuso\ActiveRecord\Record {
                 $tools["additional"][] = "cancel";
                 break;
 
-            case board_task_status::STATUS_COMPLETED:
+            case TaskStatus::STATUS_COMPLETED:
 
                 $tools["additional"][] = "revision";
                 break;
@@ -809,13 +812,13 @@ class Task extends \Infuso\ActiveRecord\Record {
 	public function tryAutocomplete() {
 
 		// Если задача не на проверке - выходим
-	    if($this->data("status") != board_task_status::STATUS_CHECKOUT) {
+	    if($this->data("status") != TaskStatus::STATUS_CHECKOUT) {
 	        return;
 	    }
 	
 	    // Закрываем задачи у которых есть родители
 	    if($this->data("epicParentTask")) {
-	        $this->data("status",board_task_status::STATUS_COMPLETED);
+	        $this->data("status",TaskStatus::STATUS_COMPLETED);
 	        $this->logCustom("Закрыто автоматически");
 	        return;
 	    }
@@ -827,7 +830,7 @@ class Task extends \Infuso\ActiveRecord\Record {
 	    
 	    $taskDays = (util::now()->date()->stamp() - $this->pdata("changed")->date()->stamp()) / 3600 / 24;
 	    if($taskDays >= $days) {
-	        $this->data("status",board_task_status::STATUS_COMPLETED);
+	        $this->data("status",TaskStatus::STATUS_COMPLETED);
 	        $this->logCustom("Закрыто автоматически");
 	    }
 	

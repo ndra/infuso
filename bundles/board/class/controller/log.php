@@ -1,5 +1,7 @@
 <?
 
+use \Infuso\Board\TaskLog;
+
 class board_controller_log extends mod_controller {
 
     public function postTest() {
@@ -13,7 +15,7 @@ class board_controller_log extends mod_controller {
 
         $ret = array();
 
-        $log = board_task_log::visible();
+        $log = TaskLog::visible();
 
         if($taskID = $p["taskID"]) {
             $log->eq("taskID",$taskID);
@@ -22,11 +24,11 @@ class board_controller_log extends mod_controller {
         // Только важные записи
         if($p["mode"]==0) {
             $log->eq("type",array(
-                board_task_log::TYPE_COMMENT,
-                board_task_log::TYPE_TASK_DONE,
-                board_task_log::TYPE_TASK_COMPLETED,
-                board_task_log::TYPE_TASK_REVISED,
-                board_task_log::TYPE_TASK_CANCELLED,
+                TaskLog::TYPE_COMMENT,
+                TaskLog::TYPE_TASK_DONE,
+                TaskLog::TYPE_TASK_COMPLETED,
+                TaskLog::TYPE_TASK_REVISED,
+                TaskLog::TYPE_TASK_CANCELLED,
             ));
         }
 
@@ -54,27 +56,27 @@ class board_controller_log extends mod_controller {
                     $action = "";
                     break;
 
-                case board_task_log::TYPE_TASK_TAKEN:
+                case TaskLog::TYPE_TASK_TAKEN:
                     $action = "(Взято) ";
                     break;
 
-                case board_task_log::TYPE_TASK_DONE:
+                case TaskLog::TYPE_TASK_DONE:
                     $action = "(Выполнено) ";
                     break;
 
-                case board_task_log::TYPE_TASK_COMPLETED:
+                case TaskLog::TYPE_TASK_COMPLETED:
                     $action = "(Завершено) ";
                     break;
 
-                case board_task_log::TYPE_TASK_REVISED:
+                case TaskLog::TYPE_TASK_REVISED:
                     $action = "(Возвращено) ";
                     break;
 
-                case board_task_log::TYPE_TASK_CANCELLED:
+                case TaskLog::TYPE_TASK_CANCELLED:
                     $action = "(Отменено) ";
                     break;
                     
-                case board_task_log::TYPE_TASK_STOPPED:
+                case TaskLog::TYPE_TASK_STOPPED:
                     $action = "(Остановлено) ";
                     break;
 
@@ -116,7 +118,7 @@ class board_controller_log extends mod_controller {
 
         $task->getLogCustom()->create(array(
             "text" => $p["text"],
-            "type" => board_task_log::TYPE_COMMENT,
+            "type" => TaskLog::TYPE_COMMENT,
         ));
 
         mod::msg("Сообщение отправлено");
