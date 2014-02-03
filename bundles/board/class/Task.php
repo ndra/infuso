@@ -3,7 +3,7 @@
 namespace Infuso\Board;
 
 use \User;
-use \mod;
+use \mod, \Util;
 
 class Task extends \Infuso\ActiveRecord\Record {
 
@@ -135,7 +135,7 @@ class Task extends \Infuso\ActiveRecord\Record {
      * Возвращает задлачу по id
      **/
     public static function get($id) {
-        return reflex::get(get_class(),$id);
+        return \Infuso\ActiveRecord\Record::get(get_class(),$id);
     }
 
     public function reflex_url() {
@@ -199,7 +199,7 @@ class Task extends \Infuso\ActiveRecord\Record {
 
     public function reflex_beforeStore() {
 
-        $this->data("dataHash",util::id());
+        $this->data("dataHash",\util::id());
 
         // Устанавливаем новую дату изменения только если задача активна
         // Иначе мы можем влезть в статистику по прошлому периоду
@@ -580,8 +580,6 @@ class Task extends \Infuso\ActiveRecord\Record {
      **/
     public function stickerDataNoCache() {
 
-        mod_profiler::beginOperation("board","stickerData",$this->id());
-
         if($this->data("type")==1) {
             return array(
                 "folder" => true,
@@ -593,7 +591,7 @@ class Task extends \Infuso\ActiveRecord\Record {
 		$ret["id"] = $this->id();
 
         // Текст стикера
-        $ret["text"] = util::str($this->data("text"))->ellipsis(200)->secure()."";
+        $ret["text"] = \util::str($this->data("text"))->ellipsis(200)->secure()."";
         
         // Проект
         $ret["project"] = array(
@@ -662,8 +660,6 @@ class Task extends \Infuso\ActiveRecord\Record {
 
         $ret["tools"] = $this->tools();
         
-        mod_profiler::endOperation();
-
         return $ret;
     }
 
@@ -760,7 +756,7 @@ class Task extends \Infuso\ActiveRecord\Record {
 
         $tag = $this->tags()->eq("tagID",$tagID)->one();
         if(!$tag->exists()) {
-            $tag = reflex::create("board_task_tag",array(
+            $tag = \Infuso\ActiveRecord\Record::create("board_task_tag",array(
                 "taskID" => $this->id(),
                 "tagID" => $tagID,
 			));

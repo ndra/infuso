@@ -1,1 +1,0 @@
-09:17:33 infuso\core\log::trace >> 127.0.0.1 at /infuso/test/tester/ got exception: delete `user_operation` from  where 1  You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where 1' at line 1

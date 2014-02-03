@@ -78,9 +78,11 @@ class log {
      * Заносит запись в лог
      **/
     public static function trace($trace) {
+    
+        $tracePath = mod::app()->varPath()->trace();
 
         $trace = self::toString($trace);
-        file::mkdir("/mod/trace/");
+        file::mkdir($tracePath);
 
         $message = "";
         $message.= date("h:i:s")." ";
@@ -105,7 +107,7 @@ class log {
 
         $message.= " >> ".$trace."\n";
         $date = date("Y-m-d");
-        $path = "/mod/trace/$date.txt";
+        $path = "/{$tracePath}/$date.txt";
         $handle = fopen(file::get($path)->native(),'a');
         fwrite($handle, $message);
     }

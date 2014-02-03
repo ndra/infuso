@@ -11,7 +11,7 @@ class inx {
 
 	public static function add($params=null,$noloader=null) {
 	
-	    $version = 666;
+	    $version = 888;
 	
 	    $bundlePath = mod::service("classmap")->getClassBundle(get_class())->path();
 
@@ -22,6 +22,7 @@ class inx {
 		$ret.= "<script>\n";
 
 		if(!self::$included) {
+		    $ret.= "inx.conf.boardRes='/bundles/board/res/';\n";
 		    $ret.= "inx.conf.url='{$bundlePath}/version/".$version."/';\n";
 		    $ret.= "inx.conf.res='{$bundlePath}/res/';\n";
 		}

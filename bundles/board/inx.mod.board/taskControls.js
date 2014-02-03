@@ -26,19 +26,21 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
     
         this.items().cmd("destroy");
         
+        var resPath = "/bundles/board/res";
+        
         var buttons = {
 
             add:{
                 general: {
-                    icon:"/board/res/img/icons16/add.png",
+                    icon:resPath+"/img/icons16/add.png",
                     onclick:[this.id(),"addTask"],
                     help:"В бэклог",
                 }, large: {
-                    icon:"/board/res/img/icons24/add.png",
+                    icon:resPath+"/img/icons24/add.png",
                 }
             }, subtask:{
                 general: {
-                    icon:"/board/res/img/icons16/subtask.png",
+                    icon:resPath+"/img/icons16/subtask.png",
                     onclick:[this.id(),"addSubtask"],
                     help:"Подзадача",
                 }, large: {
@@ -49,9 +51,9 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                     help:"Пауза",
                     onclick:[this.id(),"pauseTask"],
                 }, small: {
-                    icon:"/board/res/img/icons16/pause.png",
+                    icon:resPath+"/img/icons16/pause.png",
                 }, large: {
-                    icon:"/board/res/img/icons24/pause.png",
+                    icon:resPath+"/img/icons24/pause.png",
                 }
             }, resume: {
                 general: {
@@ -59,25 +61,25 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                     onclick:[this.id(),"pauseTask"],
                 }, small: {
                     air:true,
-                    icon:"/board/res/img/icons16/resume.png",
+                    icon:resPath+"/img/icons16/resume.png",
                 }, large :{
-                    icon:"/board/res/img/icons24/resume.png",
+                    icon:resPath+"/img/icons24/resume.png",
                 }
                 
             }, done: {
                 general: {
-                    icon:"/board/res/img/icons16/done.png",
+                    icon:resPath+"/img/icons16/done.png",
                     onclick:[this.id(),"doneTask"]
                 }, small:{
                     air:true
                 }, large:{
-                    icon:"/board/res/img/icons24/done.png"
+                    icon:resPath+"/img/icons24/done.png"
                 }             
             }, problems: {
                 general: {
-                    icon:"/board/res/img/icons24/problems.png"
+                    icon:resPath+"/img/icons24/problems.png"
                 }, small: {
-                    icon:"/board/res/img/icons16/problems.png",
+                    icon:resPath+"/img/icons16/problems.png",
                     air:true
                 }
             }, take: {
@@ -85,17 +87,17 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                     onclick:[this.id(),"takeTask"],
                     help:"Взять"
                 }, small: {
-                    icon:"/board/res/img/icons16/take.png",
+                    icon:resPath+"/img/icons16/take.png",
                 }, large: {
-                    icon:"/board/res/img/icons24/take.png",
+                    icon:resPath+"/img/icons24/take.png",
                 }
             }, stop: {
                 general: {
-                    icon:"/board/res/img/icons24/stop.png",
+                    icon:resPath+"/img/icons24/stop.png",
                     onclick:[this.id(),"stopTask"],
                     help:"Вернуть"
                 }, small: {
-                    icon:"/board/res/img/icons16/stop.png",
+                    icon:resPath+"/img/icons16/stop.png",
                     air:true
                 }
             }, complete: {
@@ -103,7 +105,7 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                     icon:"complete",
                     onclick:[this.id(),"completeTask"],
                 }, large: {
-                    icon:"/board/res/img/icons24/complete.png",
+                    icon:resPath+"/img/icons24/complete.png",
                 }
             }, revision: {
                 general: {
@@ -111,9 +113,9 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                     onclick:[this.id(),"revisionTask"],
                     help:"Не готово"                    
                 }, large: {
-                    icon:"/board/res/img/icons24/revision.png",
+                    icon:resPath+"/img/icons24/revision.png",
                 }, small: {
-                    icon:"/board/res/img/icons16/revision.png",
+                    icon:resPath+"/img/icons16/revision.png",
                     air:true
                 }
             }, cancel: {
@@ -121,9 +123,9 @@ inx.ns("inx.mod.board").taskControls = inx.panel.extend({
                     onclick:[this.id(),"cancelTask"],
                     help:"Отменить"
                 }, large: {
-                    icon:"/board/res/img/icons24/cancel.png",
+                    icon:resPath+"/img/icons24/cancel.png",
                 }, small: {
-                    icon:"/board/res/img/icons16/cancel.png",
+                    icon:resPath+"/img/icons16/cancel.png",
                     air:true
                 }
             }    

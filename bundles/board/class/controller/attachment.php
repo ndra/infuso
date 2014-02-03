@@ -1,5 +1,9 @@
 <?
 
+use Infuso\Board\TaskStatus;
+use Infuso\Board\Task;
+use \user;
+
 /**
  * Контроллер для операций с вложениями в задачи
  **/
@@ -14,7 +18,7 @@ class board_controller_attachment extends mod_controller {
      **/
     public function post_listFiles($p) {
 
-        $task = board_task::get($p["taskID"]);
+        $task = Task::get($p["taskID"]);
 
         // Параметры задачи
         user::active()->checkAccessThrowException("board/listTaskAttachments",array(
@@ -42,7 +46,7 @@ class board_controller_attachment extends mod_controller {
 	 **/
     public function post_uploadFile($p) {
 
-        $task = board_task::get($p["taskID"]);
+        $task = Task::get($p["taskID"]);
 
         // Параметры задачи
         if(!user::active()->checkAccess("board/uploadFile",array(

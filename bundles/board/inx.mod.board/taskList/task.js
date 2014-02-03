@@ -55,7 +55,7 @@ inx.mod.board.taskList.task = inx.panel.extend({
                     height:params.height,
                     color:"white",
                     cursor:"pointer",
-                    background:"url(/board/res/img/icons24inverse/"+action+".png) center center no-repeat"
+                    background:"url("+inx.conf.boardRes+"img/icons24inverse/"+action+".png) center center no-repeat"
                 }).click(inx.cmd(this,"execCommand",action))
                 .appendTo(e);
                 
