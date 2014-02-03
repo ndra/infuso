@@ -1,6 +1,8 @@
 <?
 
-class board_controller_messages extends mod_controller {
+namespace Infuso\Board\Controller;
+
+class Messages extends \Infuso\Core\Controller {
 
     public function postTest() {
         return user::active()->exists();

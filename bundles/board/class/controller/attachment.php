@@ -1,13 +1,14 @@
 <?
 
+namespace Infuso\Board\Controller;
+
 use Infuso\Board\TaskStatus;
-use Infuso\Board\Task;
 use \user;
 
 /**
  * Контроллер для операций с вложениями в задачи
  **/
-class board_controller_attachment extends mod_controller {
+class Attachment extends \Infuso\Core\Controller {
 
     public function postTest() {
         return user::active()->exists();

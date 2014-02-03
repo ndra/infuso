@@ -40,7 +40,7 @@ inx.ns("inx.mod.board").task = inx.dialog.extend({
     
     cmd_requestData:function() {
         this.call({
-            cmd:"board/controller/task/getTask",
+            cmd:"infuso/board/controller/task/getTask",
             taskID:this.taskID
         },[this.id(),"handleData"])
     },

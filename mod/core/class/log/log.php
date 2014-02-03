@@ -79,7 +79,7 @@ class log {
      **/
     public static function trace($trace) {
     
-        $tracePath = mod::app()->varPath()->trace();
+        $tracePath = mod::app()->varPath()."/trace/";
 
         $trace = self::toString($trace);
         file::mkdir($tracePath);

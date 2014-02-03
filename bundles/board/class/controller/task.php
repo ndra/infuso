@@ -1,10 +1,11 @@
 <?
 
+namespace Infuso\Board\Controller;
+
 use Infuso\Board\TaskStatus;
-use Infuso\Board\Task;
 use \user;
 
-class board_controller_task extends mod_controller {
+class Task extends \Infuso\Core\Controller {
 
     public function postTest() {
         return user::active()->exists();
@@ -15,8 +16,6 @@ class board_controller_task extends mod_controller {
      **/             
     public static function post_listTasks($p) {
 
-        mod_profiler::beginOperation("board/listTasks",1,2);
-    
         $limit = 40;
     
         $ret = array();
@@ -25,7 +24,7 @@ class board_controller_task extends mod_controller {
         $status = TaskStatus::get($p["status"]);
 
         // Полный список задач
-        $tasks = Task::visible()->orderByExpr($status->order())->limit($limit);
+        $tasks = \Infuso\Board\Task::visible()->orderByExpr($status->order())->limit($limit);
 
         if($p["parentTaskID"]) {
 
@@ -85,8 +84,6 @@ class board_controller_task extends mod_controller {
         $ret["sortable"] = $status->sortable();
         $ret["showCreateButton"] = $status->showCreateButton();
         
-        mod_profiler::endOperation();
-
         return $ret;
     }
 
@@ -96,7 +93,7 @@ class board_controller_task extends mod_controller {
     public static function post_taskStatusList($p) {
         $ret = array();
         foreach(TaskStatus::all() as $status) {
-            $n = Task::visible()->eq("status",$status->id())->count();
+            $n = \Infuso\Board\Task::visible()->eq("status",$status->id())->count();
             $ret[] = array(
                 "id" => $status->id(),
                 "title" => $status->title().($n ? " ($n)" : ""),
@@ -110,7 +107,7 @@ class board_controller_task extends mod_controller {
      **/     
     public static function post_getTask($p) {
 
-        $task = Task::get($p["taskID"]);
+        $task = \Infuso\Board\Task::get($p["taskID"]);
 
         // Параметры задачи
         user::active()->checkAccessThrowException("board/getTaskParams",array(
@@ -148,7 +145,7 @@ class board_controller_task extends mod_controller {
      **/
     public static function post_saveTask($p) {
 
-        $task = Task::get($p["taskID"]);
+        $task = \Infuso\Board\Task::get($p["taskID"]);
         $data = util::a($p["data"])->filter("text","timeScheduled","projectID","color","deadline","deadlineDate")->asArray();
 
         // Параметры задачи
@@ -182,7 +179,7 @@ class board_controller_task extends mod_controller {
      **/
     public function post_changeProject($p) {
 
-        $task = Task::get($p["taskID"]);
+        $task = \Infuso\Board\Task::get($p["taskID"]);
 
         if(!user::active()->checkAccess("board/changeTaskProject", array (
             "task" => $task,
@@ -202,7 +199,7 @@ class board_controller_task extends mod_controller {
      **/
     public function post_newTask($p) {
 
-        $project = board_project::get($p["projectID"]);
+        $project = Project::get($p["projectID"]);
 
         if(!user::active()->checkAccess("board/newTask",array(
             "project" => $project,
@@ -211,7 +208,7 @@ class board_controller_task extends mod_controller {
             return;
         }
 
-        $task = reflex::create(Task::inspector()->className(),array(
+        $task = reflex::create(\Infuso\Board\Task::inspector()->className(),array(
             "status" => TaskStatus::STATUS_DRAFT,
             "projectID" => $project->id(),
         ));
@@ -224,7 +221,7 @@ class board_controller_task extends mod_controller {
      **/
     public function post_getEpicSubtasks($p) {
 
-        $task = Task::get($p["taskID"]);
+        $task = \Infuso\Board\Task::get($p["taskID"]);
 
         // Параметры задачи
         if(!user::active()->checkAccess("board/getEpicSubtasks",array(
@@ -248,7 +245,7 @@ class board_controller_task extends mod_controller {
 
     public function post_addEpicSubtask($p) {
 
-        $task = Task::get($p["taskID"]);
+        $task = \Infuso\Board\Task::get($p["taskID"]);
 
         // Параметры задачи
         if(!user::active()->checkAccess("board/addEpicSubtask",array(
@@ -258,7 +255,7 @@ class board_controller_task extends mod_controller {
             return;
         }
 
-        $task = reflex::create(Task::inspector()->className(),array(
+        $task = reflex::create(\Infuso\Board\Task::inspector()->className(),array(
             "text" => $p["data"]["text"],
             "timeScheduled" => $p["data"]["timeScheduled"],
             "epicParentTask" => $task->id(),
@@ -275,7 +272,7 @@ class board_controller_task extends mod_controller {
      **/
     public function post_takeTask($p) {
 
-        $task = Task::get($p["taskID"]);
+        $task = \Infuso\Board\Task::get($p["taskID"]);
 
         if(!user::active()->checkAccess("board/takeTask",array(
             "task" => $task,
@@ -295,7 +292,7 @@ class board_controller_task extends mod_controller {
      **/
     public function post_stopTask($p) {
 
-        $task = Task::get($p["taskID"]);
+        $task = \Infuso\Board\Task::get($p["taskID"]);
         $time = $p["time"];
 
         if(!user::active()->checkAccess("board/stopTask",array(
@@ -322,7 +319,7 @@ class board_controller_task extends mod_controller {
      **/
     public function post_revisionTask($p) {
 
-        $task = Task::get($p["taskID"]);
+        $task = \Infuso\Board\Task::get($p["taskID"]);
 
         $newStatus = TaskStatus::STATUS_BACKLOG;
 
@@ -352,7 +349,7 @@ class board_controller_task extends mod_controller {
      **/
     public function post_doneTask($p) {
     
-        $task = Task::get($p["taskID"]);
+        $task = \Infuso\Board\Task::get($p["taskID"]);
         $time = $p["time"];
 
         if(!user::active()->checkAccess("board/doneTask",array(
@@ -378,7 +375,7 @@ class board_controller_task extends mod_controller {
      **/
     public function post_completeTask($p) {
 
-        $task = Task::get($p["taskID"]);
+        $task = \Infuso\Board\Task::get($p["taskID"]);
 
         if(!user::active()->checkAccess("board/completeTask",array(
             "task" => $task,
@@ -401,7 +398,7 @@ class board_controller_task extends mod_controller {
      **/
     public function post_cancelTask($p) {
 
-        $task = Task::get($p["taskID"]);
+        $task = \Infuso\Board\Task::get($p["taskID"]);
 
         if(!user::active()->checkAccess("board/cancelTask",array(
             "task" => $task,
@@ -423,7 +420,7 @@ class board_controller_task extends mod_controller {
      **/
     public function post_getTaskTime($p) {
 
-        $task = Task::get($p["taskID"]);
+        $task = \Infuso\Board\Task::get($p["taskID"]);
 
         // Параметры задачи
         if(!user::active()->checkAccess("board/getTaskTime",array(
@@ -450,7 +447,7 @@ class board_controller_task extends mod_controller {
      **/
     public function post_moveToBacklog($p) {
 
-        $task = Task::get($p["taskID"]);
+        $task = \Infuso\Board\Task::get($p["taskID"]);
 
         // Параметры задачи
         if(!user::active()->checkAccess("board/task/moveToBacklog",array(
@@ -473,7 +470,7 @@ class board_controller_task extends mod_controller {
     public function post_saveSort($p) {
 
         foreach($p["idList"] as $n=>$id) {
-            $task = Task::get($id);
+            $task = \Infuso\Board\Task::get($id);
             // Параметры задачи
             if(user::active()->checkAccess("board/sortTask",array(
                 "task" => $task,
@@ -495,7 +492,7 @@ class board_controller_task extends mod_controller {
 
     public function post_pauseTask($p) {
 
-        $task = Task::get($p["taskID"]);
+        $task = \Infuso\Board\Task::get($p["taskID"]);
 
         // Параметры задачи
         if(!user::active()->checkAccess("board/pauseTask",array(
@@ -511,7 +508,7 @@ class board_controller_task extends mod_controller {
     
     public function post_updateNotice($p) {
 
-        $task = Task::get($p["taskID"]);
+        $task = \Infuso\Board\Task::get($p["taskID"]);
 
         // Параметры задачи
         if(!user::active()->checkAccess("board/updateTaskNotice",array(

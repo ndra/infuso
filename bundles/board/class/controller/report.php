@@ -1,6 +1,8 @@
 <?
 
-class board_controller_report extends mod_controller {
+namespace Infuso\Board\Controller;
+
+class Report extends \Infuso\Core\Controller {
 
     public function indexTest() {
         return user::active()->exists();

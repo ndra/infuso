@@ -1,14 +1,15 @@
 <?
 
+namespace Infuso\Board\Controller;
+
 use Infuso\Board\TaskStatus;
 use Infuso\Board\Task;
-use Infuso\Board\Project;
 use \user;
 
 /**
  * Контроллер для работы с проектами
  **/
-class board_controller_project extends mod_controller {
+class Project extends \Infuso\Core\Controller {
 
     public function postTest() {
         return true;
@@ -21,7 +22,7 @@ class board_controller_project extends mod_controller {
 
         $ret = array();
 
-        $projects = Project::visible()->limit(0);
+        $projects = Infuso\Board\Project::visible()->limit(0);
 
         foreach($projects as $project) {
             $ret["data"][] = array(
@@ -73,7 +74,7 @@ class board_controller_project extends mod_controller {
 		
 		$priority = array_flip($priority);
 			
-        $projects = Project::visible()->limit(0);
+        $projects = Infuso\Board\Project::visible()->limit(0);
         if($search = trim($p["search"])) {
             $projects->like("title",$search)
                 ->orr()->like("title",util::str($search)->switchLayout());
@@ -105,7 +106,7 @@ class board_controller_project extends mod_controller {
     
     public function post_subscribeProject($p) {
     
-        $project = Project::get($p["projectID"]);
+        $project = Infuso\Board\Project::get($p["projectID"]);
 	    $subscriptionKey = "board/project-{$project->id()}/taskCompleted";
 	    $subscriptions = user::active()->subscriptions()->eq("key",$subscriptionKey);
 	    
@@ -119,13 +120,13 @@ class board_controller_project extends mod_controller {
 
     public function post_deleteProjects($p) {
         foreach($p["idList"] as $projectID) {
-            $project = Project::get($projectID);
+            $project = Infuso\Board\Project::get($projectID);
             $project->delete();
         }
     }
     
     public static function post_getProject($p) {
-        $project = Project::get($p["projectID"]);
+        $project = Infuso\Board\Project::get($p["projectID"]);
         return array(
             "title" => $project->data("title"),
             "url" => $project->data("url"),
@@ -154,11 +155,11 @@ class board_controller_project extends mod_controller {
                 return;
             }
 
-            $project = reflex::create(Project::inspector()->className());
+            $project = reflex::create(Infuso\Board\Project::inspector()->className());
 
         } else {
 
-            $project = Project::get($p["projectID"]);
+            $project = Infuso\Board\Project::get($p["projectID"]);
 
             if(!user::active()->checkAccess("board/updateProject")) {
                 mod::msg(user::active()->errorText(),1);

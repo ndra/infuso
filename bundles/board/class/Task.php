@@ -565,7 +565,7 @@ class Task extends \Infuso\ActiveRecord\Record {
         }
 
         $data = $this->stickerDataNoCache();
-        $loader = new mod_confLoader_json();
+        $loader = new \mod_confLoader_json();
         $cached = $loader->write($data);
 
         // Кэшируем данные задачи на 10 минут

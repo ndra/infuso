@@ -11,7 +11,7 @@ inx.ns("inx.mod.board").comments = inx.list.extend({
         p.style.spacing = 10;
     
         p.loader = {
-            cmd:"board/controller/log/getLog",
+            cmd:"infuso/board/controller/log/getLog",
             taskID:p.taskID
         }
         

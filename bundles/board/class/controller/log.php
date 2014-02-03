@@ -1,11 +1,14 @@
 <?
 
-use \Infuso\Board\TaskLog;
+namespace Infuso\Board\Controller;
 
-class board_controller_log extends mod_controller {
+use \Infuso\Board\TaskLog;
+use \Util;
+
+class Log extends \Infuso\Core\Controller {
 
     public function postTest() {
-        return user::active()->exists();
+        return \user::active()->exists();
     }
 
     /**

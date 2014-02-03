@@ -5,7 +5,7 @@ inx.ns("inx.mod.board").taskList = inx.list.extend({
     constructor:function(p) {    
 
         p.loader = {
-            cmd:"board_controller_task::listTasks",
+            cmd:"infuso/board/controller/task/listTasks",
             parentTaskID:p.parentTaskID,
             status:p.status
         };

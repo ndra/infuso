@@ -1,6 +1,8 @@
 <?
 
-class board_controller_tag extends mod_controller {
+namespace Infuso\Board\Controller;
+
+class Tag extends \Infuso\Core\Controller {
 
     public function postTest() {
         return user::active()->exists();

@@ -53,7 +53,7 @@ inx.mod.board.main.dayActivity = inx.panel.extend({
         }
         this.usersLoaded = true;
         this.call({
-            cmd:"board/controller/report/getUsers"
+            cmd:"infuso/board/controller/report/getUsers"
         },[this.id(),"handleUsers"]);
     },
     

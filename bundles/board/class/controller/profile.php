@@ -1,6 +1,8 @@
 <?
 
-class board_controller_profile extends mod_controller {
+namespace Infuso\Board\Controller;
+
+class Profile extends \Infuso\Core\Controller {
 
     public function postTest() {
         return user::active()->exists();
