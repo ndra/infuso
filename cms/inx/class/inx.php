@@ -11,7 +11,7 @@ class inx {
 
 	public static function add($params=null,$noloader=null) {
 	
-	    $version = 888;
+	    $version = 777;
 	
 	    $bundlePath = mod::service("classmap")->getClassBundle(get_class())->path();
 

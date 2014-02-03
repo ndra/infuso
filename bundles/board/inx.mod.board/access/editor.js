@@ -20,7 +20,7 @@ inx.mod.board.access.editor = inx.dialog.extend({
     
     cmd_requestData:function() {
         this.call({
-            cmd:"board/controller/access/getAccessData",
+            cmd:"infuso/board/controller/access/getAccessData",
             accessID:this.accessID
         },[this.id(),"handleData"])
     },
@@ -33,7 +33,7 @@ inx.mod.board.access.editor = inx.dialog.extend({
                 width:"parent"
             },
             loader:{
-                cmd:"board/controller/user/getUserList"
+                cmd:"infuso/board/controller/user/getUserList"
             },
             name:"userID",
             value:data.userID,
@@ -47,7 +47,7 @@ inx.mod.board.access.editor = inx.dialog.extend({
                 width:"parent"
             },
             loader:{
-                cmd:"board/controller/project/listProjectsSimple"
+                cmd:"infuso/board/controller/project/listProjectsSimple"
             },
             name:"projectID",
             value:data.projectID,
@@ -104,7 +104,7 @@ inx.mod.board.access.editor = inx.dialog.extend({
     cmd_save:function() {
         var data = this.info("data");
         this.call({
-            cmd:"board/controller/access/save",
+            cmd:"infuso/board/controller/access/save",
             data:data,
             accessID:this.accessID
         },[this.id(),"handleSave"])

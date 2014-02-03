@@ -38,7 +38,7 @@ inx.mod.board.main.dayActivity.user = inx.panel.extend({
     
         if(this.info("visibleRecursive")) {
             this.call({
-                cmd:"board/controller/report/getMyDayActivity",
+                cmd:"infuso/board/controller/report/getMyDayActivity",
                 userID:this.userID
             },[this.id(),"handleData"]);
         }

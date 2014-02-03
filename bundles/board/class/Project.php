@@ -72,7 +72,7 @@ class Project extends \Infuso\ActiveRecord\Record {
                 ->eq("userID",user::active()->id())
                 ->neq("userID",0);
 
-			$projects = board_project::all()->eq("id",$access->distinct("projectID"));
+			$projects = Project::all()->eq("id",$access->distinct("projectID"));
         }
 
 		return $projects;

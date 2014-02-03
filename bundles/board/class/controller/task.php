@@ -2,7 +2,7 @@
 
 namespace Infuso\Board\Controller;
 
-use Infuso\Board\TaskStatus;
+use Infuso\Board;
 use \user;
 
 class Task extends \Infuso\Core\Controller {
@@ -21,22 +21,22 @@ class Task extends \Infuso\Core\Controller {
         $ret = array();
 
         // Статус для которого мы смотрим задачи
-        $status = TaskStatus::get($p["status"]);
+        $status = Board\TaskStatus::get($p["status"]);
 
         // Полный список задач
-        $tasks = \Infuso\Board\Task::visible()->orderByExpr($status->order())->limit($limit);
+        $tasks = Board\Task::visible()->orderByExpr($status->order())->limit($limit);
 
         if($p["parentTaskID"]) {
 
             $tasks = $tasks->eq("epicParentTask",$p["parentTaskID"])->orderByExpr("`status` != 1")->asc("priority",true);
-            $tasks->eq("status",array(TaskStatus::STATUS_NEW,TaskStatus::STATUS_IN_PROGRESS))
+            $tasks->eq("status",array(Board\TaskStatus::STATUS_NEW,Board\TaskStatus::STATUS_IN_PROGRESS))
                 ->orr()->gt("changed",util::now()->shift(-60));
 
         } else {
         
             $tasks->eq("status",$p["status"]);
             
-            if($p["status"] != TaskStatus::STATUS_IN_PROGRESS) {
+            if($p["status"] != Board\TaskStatus::STATUS_IN_PROGRESS) {
                 $tasks->eq("epicParentTask",0);
             }
             
@@ -92,8 +92,8 @@ class Task extends \Infuso\Core\Controller {
      **/
     public static function post_taskStatusList($p) {
         $ret = array();
-        foreach(TaskStatus::all() as $status) {
-            $n = \Infuso\Board\Task::visible()->eq("status",$status->id())->count();
+        foreach(Board\TaskStatus::all() as $status) {
+            $n = Board\Task::visible()->eq("status",$status->id())->count();
             $ret[] = array(
                 "id" => $status->id(),
                 "title" => $status->title().($n ? " ($n)" : ""),
@@ -115,7 +115,7 @@ class Task extends \Infuso\Core\Controller {
         ));
 
         $statuses = array();
-        foreach(TaskStatus::all() as $status) {
+        foreach(Board\TaskStatus::all() as $status) {
             $statuses[] = array(
                 "id" => $status->id(),
                 "text" => $task->status()->id() == $status->id() ? "<u>".$status->title()."</u>" : $status->title(),
@@ -157,11 +157,11 @@ class Task extends \Infuso\Core\Controller {
             $task->data($key,$val);
         }
 
-        if($task->status()->id() == TaskStatus::STATUS_DRAFT) {
+        if($task->status()->id() == Board\TaskStatus::STATUS_DRAFT) {
             if(user::active()->checkAccess("boardUser")) {
-                $task->data("status",TaskStatus::STATUS_BACKLOG);
+                $task->data("status",Board\TaskStatus::STATUS_BACKLOG);
             } else {
-                $task->data("status",TaskStatus::STATUS_DEMAND);
+                $task->data("status",Board\TaskStatus::STATUS_DEMAND);
             }
         }
 
@@ -209,7 +209,7 @@ class Task extends \Infuso\Core\Controller {
         }
 
         $task = reflex::create(\Infuso\Board\Task::inspector()->className(),array(
-            "status" => TaskStatus::STATUS_DRAFT,
+            "status" => Board\TaskStatus::STATUS_DRAFT,
             "projectID" => $project->id(),
         ));
 
@@ -234,7 +234,7 @@ class Task extends \Infuso\Core\Controller {
         $ret = array();
 
         $tasks = $task->subtasks()->orderByExpr("`status` != 1")->asc("priority",true);
-        $tasks->eq("status",array(TaskStatus::STATUS_NEW,TaskStatus::STATUS_IN_PROGRESS))->orr()->gt("changed",util::now()->shift(-60));
+        $tasks->eq("status",array(Board\TaskStatus::STATUS_NEW,Board\TaskStatus::STATUS_IN_PROGRESS))->orr()->gt("changed",util::now()->shift(-60));
         foreach($tasks as $subtask) {
             $ret[] = $subtask->stickerData();
         }
@@ -262,7 +262,7 @@ class Task extends \Infuso\Core\Controller {
         ));
 
         if($p["take"]) {
-            $task->data("status",TaskStatus::STATUS_IN_PROGRESS);
+            $task->data("status",Board\TaskStatus::STATUS_IN_PROGRESS);
         }
 
     }
@@ -281,9 +281,9 @@ class Task extends \Infuso\Core\Controller {
             return;
         }
 
-        $task->data("status",TaskStatus::STATUS_IN_PROGRESS);
+        $task->data("status",Board\TaskStatus::STATUS_IN_PROGRESS);
         $task->logCustom(array(
-            "type" => board_task_log::TYPE_TASK_TAKEN,
+            "type" => Board\taskLog::TYPE_TASK_TAKEN,
         ));
     }
 
@@ -302,11 +302,11 @@ class Task extends \Infuso\Core\Controller {
             return;
         }
 
-        $task->data("status",TaskStatus::STATUS_BACKLOG);
+        $task->data("status",Board\TaskStatus::STATUS_BACKLOG);
         $task->logCustom(array(
             "text" => $p["comment"],
             "time" => $time,
-            "type" => board_task_log::TYPE_TASK_STOPPED,
+            "type" => Board\TaskLog::TYPE_TASK_STOPPED,
         ));
 
         return true;
@@ -319,14 +319,14 @@ class Task extends \Infuso\Core\Controller {
      **/
     public function post_revisionTask($p) {
 
-        $task = \Infuso\Board\Task::get($p["taskID"]);
+        $task = Board\Task::get($p["taskID"]);
 
-        $newStatus = TaskStatus::STATUS_BACKLOG;
+        $newStatus = Board\TaskStatus::STATUS_BACKLOG;
 
         if(!user::active()->checkAccess("board/revisionTaskToBacklog",array(
             "task" => $task,
         ))) {
-            $newStatus = TaskStatus::STATUS_DEMAND;
+            $newStatus = Board\TaskStatus::STATUS_DEMAND;
             if(!user::active()->checkAccess("board/revisionTaskToDemand",array(
                 "task" => $task,
             ))) {
@@ -338,7 +338,7 @@ class Task extends \Infuso\Core\Controller {
         $task->data("status",$newStatus);
         $task->logCustom(array(
             "text" => $p["comment"],
-            "type" => board_task_log::TYPE_TASK_REVISED,
+            "type" => Board\taskLog::TYPE_TASK_REVISED,
         ));
 
         return true;
@@ -359,11 +359,11 @@ class Task extends \Infuso\Core\Controller {
             return;
         }
 
-        $task->data("status",TaskStatus::STATUS_CHECKOUT);
+        $task->data("status",Board\TaskStatus::STATUS_CHECKOUT);
         $task->logCustom(array(
             "text" => $p["comment"],
             "time" => $time,
-            "type" => board_task_log::TYPE_TASK_DONE,
+            "type" => Board\taskLog::TYPE_TASK_DONE,
             "files" => $p["sessionHash"],
         ));
 
@@ -407,9 +407,9 @@ class Task extends \Infuso\Core\Controller {
             return;
         }
 
-        $task->data("status",TaskStatus::STATUS_CANCELLED);
+        $task->data("status",Board\TaskStatus::STATUS_CANCELLED);
         $task->logCustom(array(
-            "type" => board_task_log::TYPE_TASK_CANCELLED,
+            "type" => Board\taskLog::TYPE_TASK_CANCELLED,
         ));
 
         return true;
@@ -457,9 +457,9 @@ class Task extends \Infuso\Core\Controller {
             return;
         }
 
-        $task->data("status",TaskStatus::STATUS_BACKLOG);
+        $task->data("status",Board\TaskStatus::STATUS_BACKLOG);
         $task->logCustom(array(
-            "type" => board_task_log::TYPE_TASK_MOVED_TO_BACKLOG,
+            "type" => Board\taskLog::TYPE_TASK_MOVED_TO_BACKLOG,
         ));
 
     }

@@ -2,6 +2,8 @@
 
 namespace Infuso\Board\Controller;
 
+use \user, \util;
+
 class Report extends \Infuso\Core\Controller {
 
     public function indexTest() {
@@ -9,7 +11,7 @@ class Report extends \Infuso\Core\Controller {
     }
 
     public function postTest() {
-        return user::active()->exists();
+        return \user::active()->exists();
     }
 
     /**
@@ -119,7 +121,7 @@ class Report extends \Infuso\Core\Controller {
             )
         );
 
-        $tasks = board_task_time::all()
+        $tasks = \board_task_time::all()
             ->eq("userID",$user->id())
             ->limit(0)
             ->eq("date(begin)",util::now()->date());

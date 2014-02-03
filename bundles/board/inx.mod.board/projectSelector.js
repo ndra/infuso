@@ -16,7 +16,7 @@ inx.ns("inx.mod.board").projectSelector = inx.dialog.extend({
                 maxHeight:400
             },
             loader:{
-                cmd:"board/controller/project/listProjectsSimple",
+                cmd:"infuso/board/controller/project/listProjectsSimple",
                 taskID:this.taskID
             },
             listeners:{

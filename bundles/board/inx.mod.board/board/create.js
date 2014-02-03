@@ -49,7 +49,7 @@ inx.mod.board.board.create = inx.panel.extend({
     cmd_requestData:function() {
     
         this.call({
-            cmd:"board/controller/project/listProjectsSimple",
+            cmd:"infuso/board/controller/project/listProjectsSimple",
             search:inx(this).axis("side").allItems().eq("name","search").info("value")
         },[this.id(),"handleData"]);
     
