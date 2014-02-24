@@ -166,7 +166,13 @@ class tmp implements mod_handler {
         $obj = tmp::obj();
 
         // Добавляем <title>
-        $title = $obj->meta("title");
+        $title = tmp::param("title");  
+           
+        if ($title == "" ){
+        
+            $title = $obj->meta("title");
+        }
+		
         $title = strtr($title,array("<"=>"&lt;",">"=>"&gt;"));
         $head.= "<title>$title</title>\n";
 
