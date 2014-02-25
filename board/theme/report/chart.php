@@ -112,7 +112,8 @@ mod::coreJS();
         
         if($mode=="user") {
         
-            $onclick = "mod.fire('board/showLog',{from:'$current',to:'$next'})";
+            $projectID = $params["projectID"];
+            $onclick = "mod.fire('board/showLog',{from:'$current',to:'$next',projectID:$projectID})";
         
             if($split == "user") {
             

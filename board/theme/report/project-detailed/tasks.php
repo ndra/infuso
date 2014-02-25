@@ -37,6 +37,7 @@
     
     <tr class='total' >
         <td></td>
+        <td></td>
         <td>Итого</td>
         <td>{$planned}</td>
         <td>{$spent}</td>
