@@ -37,6 +37,7 @@ inx.ns("inx.mod.file").manager = inx.list.extend({
                 {text:"Создать папку",onclick:[this.id(),"mkdir"]},
                 {text:"Без картинки",onclick:[this.id(),"noimage"]},
                 "|",
+                {text:"Выбрать",onclick:[this.id(),"selectCurrentFile"],icon:"/file/res/selectFile.png"},
                 {text:"Удалить",onclick:[this.id(),"deleteFile"],icon:"/file/res/delete.png"},
                 {type:"inx.panel.separator"},
                 this.downloadLink,
@@ -80,6 +81,19 @@ inx.ns("inx.mod.file").manager = inx.list.extend({
         var ret = this.base(data);
         ret.width = 128;
         return ret;
+    },
+    
+    cmd_selectCurrentFile:function(){
+       var selectedFile = this.info("selection")[0];
+       if(!selectedFile){
+           inx.msg("Выбирите файл");
+       }else{
+           var node = this.info("item",selectedFile);
+           if(node.folder)
+               this.cmd("goDeeper",node.name);
+           else
+               this.fire("fileSelected",node.url);
+       }
     },
     
     cmd_noimage:function() {
