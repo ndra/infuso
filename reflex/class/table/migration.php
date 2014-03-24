@@ -3,10 +3,10 @@
 /**
  * Класс миграции mysql
  **/
-class reflex_table_migration {
+class reflex_table_migration extends mod_component {
 
     private $table = null;
-
+    
     /**
      * сюда будут складываться кусочки запросов по изменению таблицы
      **/
@@ -54,18 +54,25 @@ class reflex_table_migration {
         if(sizeof($this->q)) {
             $q = implode(", ",$this->q);
             $q = "alter table `{$this->table()->prefixedName()}` $q";
-            mod::trace($q);
             reflex_mysql::query($q);
         }
 
     }
 
     public function updateEngine() {
+        $confDbEngine = $this->param("dbEngine");
+        if( $confDbEngine == null ){
+            $confDbEngine = "MyISAM";   
+        } 
+        if( $confDbEngine != "InnoDB" && $confDbEngine != "MyISAM" ){
+            $confDbEngine = "MyISAM";    
+        }
+
         reflex_mysql::query("SHOW TABLE STATUS like '{$this->table()->prefixedName()}' ");
         $status = reflex_mysql::get_row();
         $engine = $status["Engine"];
-        if($engine!="MyISAM")
-            $this->q[] = "ENGINE=myisam";
+        if($engine!=$confDbEngine)
+            $this->q[] = "ENGINE=".$confDbEngine;
     }
 
     /*public function updateRowFormat() {

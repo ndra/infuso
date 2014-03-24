@@ -23,5 +23,7 @@ class user_mail_template_editor extends reflex_editor {
     
     }
 
-
+    public function beforeEdit() {
+        return user::active()->checkAccess("admin");
+    }  
 }

@@ -11,6 +11,10 @@ class user_mail_editor extends reflex_editor {
         );
     }
     
+    public function beforeEdit() {
+        return user::active()->checkAccess("admin");
+    }  
+    
     public function disable() {
         return "list";
     }
