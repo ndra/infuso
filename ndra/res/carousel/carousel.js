@@ -142,7 +142,7 @@ ndra.carousel.instance = function(e,p) {
 
     this.moveTo = function(n,immediately) {
     
-        current = n*that.offset();
+        current = n;
         var visible = that.visible();
         if(!p.cycle) {
             if(current+visible>total) current = total-visible;
