@@ -3,7 +3,7 @@
 class user_admin_report extends mod_controller {
 
     public function indexTest() {
-        return true;
+        return user::active()->checkAccess("admin");
     }
     
     public function index() {
