@@ -16,11 +16,17 @@
     array (
       'id' => '3p1274vr7fu27cgrt890dk52dw1r78',
       'name' => 'orderID',
-      'type' => 'gklv-0ijh-uh7g-7fhu-4jtg',
+      'type' => 'pg03-cv07-y16t-kli7-fe6x',
       'editable' => '0',
       'label' => '',
       'default' => '',
       'help' => '',
+      'group' => '',
+      'indexEnabled' => 0,
+      'class' => 'eshop_order',
+      'foreignKey' => '',
+      'collection' => '',
+      'titleMethod' => '',
     ),
     2 => 
     array (

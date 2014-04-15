@@ -16,33 +16,61 @@ mod.msg = function(text,error) {
 
 mod.handlers = {}
 mod.on = function(name,handler) {
-	if(!mod.handlers[name])
-		mod.handlers[name] = [];
-	mod.handlers[name].push(handler);
+    if(!mod.handlers[name])
+        mod.handlers[name] = [];
+    mod.handlers[name].push(handler);
 }
+
+mod.uniqueCalls = {};
+
+
 
 /**
  * Отправляет команду на сервер
  **/
-mod.cmd = function(data,fn) {
+mod.cmd = function(data,fn,conf) {
     if (!window.JSON) {
         return;
     }
+    
+    if(!conf) {
+        conf = {}
+    }
+    
+    if(conf.unique) {
+        var xhr = this.uniqueCalls[conf.unique];
+        if(xhr) {
+            xhr.abort();
+        }
+    }
+    
     var json = JSON.stringify(data);
-    this.request = $.ajax({
-        url: "/mod/pub/json.php?cmd="+data.cmd, // Добавляем команду к get-запросу (для логов)
+    var tag = data.cmd;
+    if(!tag){
+        tag = "multiCmd";
+    }
+    var xhr = $.ajax({
+        url: "/mod/pub/json.php?cmd="+tag, // Добавляем команду к get-запросу (для логов)
         data: {data:json},
+        multi: true,
         type: "POST",
         success:function(d){
-            mod.handleCmd(true,d,fn);
+            mod.handleCmd(true,d,fn,false);
         },
         error:function(r) {
             if(r.readyState!=0) {
                 mod.handleCmd(false,r.responseText);
-			}
+            }
         }
-    })
+    });
+    
+    if(conf.unique) {
+        this.uniqueCalls[conf.unique] = xhr;
+    }
+    
 },
+
+
 
 mod.parseCmd = function(str) {
 
@@ -50,9 +78,9 @@ mod.parseCmd = function(str) {
         eval("var data="+str);
     } catch(ex) {
         return {
-			success:false,
-			text:str
-		};
+            success:false,
+            text:str
+        };
     }
     
     // Выводим сообщения
@@ -67,11 +95,12 @@ mod.parseCmd = function(str) {
         mod.fire(event.name,event.params);
     }
     
+    
     return {
-		success:data.completed,
-		data:data.data,
-		meta:data.meta
-	}
+        success:data.completed,
+        data:data.data,
+        meta:data.meta
+    }
 }
 
 /**
@@ -80,11 +109,11 @@ mod.parseCmd = function(str) {
 mod.fire = function(name,params) {
     var handlers = mod.handlers[name];
     if(handlers)
-    	for(var j in handlers)
-    		handlers[j](params);
+        for(var j in handlers)
+            handlers[j](params);
 }
 
-mod.handleCmd = function(success,response,fn) {
+mod.handleCmd = function(success,response,fn,isMultiCmd) {
 
     // Если сам запрос к серверу не увенчался успехом
     if(!success) {
@@ -102,6 +131,6 @@ mod.handleCmd = function(success,response,fn) {
     }
 
     if(fn)
-		fn(ret.data);
+        fn(ret.data);
 
 }

@@ -138,11 +138,11 @@ class reflex_collection extends mod_component implements Iterator {
         $this->where($filter->where());
         foreach($filter->eqs() as $key=>$val) {
             $this->def($key,$val);
-		}
+        }
 
         if($filter->sort) {
             $this->sort = $filter->sort;
-		}
+        }
     }
 
     /**
@@ -242,13 +242,13 @@ class reflex_collection extends mod_component implements Iterator {
 
         if($field->typeID()!="pg03-cv07-y16t-kli7-fe6x") {
             return $this;
-		}
-		
-		if($this->param("fieldJoin-".$name)) {
-		    return $this;
-		}
-		
-		$this->param("fieldJoin-".$name,true);
+        }
+        
+        if($this->param("fieldJoin-".$name)) {
+            return $this;
+        }
+        
+        $this->param("fieldJoin-".$name,true);
 
         $class = $field->itemClass();
         $list = reflex::get($class);
@@ -274,7 +274,7 @@ class reflex_collection extends mod_component implements Iterator {
             if($field->typeID()=="pg03-cv07-y16t-kli7-fe6x") {
                 $this->joinByField($field->name());
             }
-		}
+        }
         return $this;
     }
 
@@ -513,8 +513,8 @@ class reflex_collection extends mod_component implements Iterator {
 
         // Если оба параметра скаляры и не задана ф-ция
         if($type=="s:s" && !$fn) {
-			$this->eqs[$key] = $val;
-		}
+            $this->eqs[$key] = $val;
+        }
 
         switch($type) {
 
@@ -522,8 +522,8 @@ class reflex_collection extends mod_component implements Iterator {
                 $key = $this->normalizeColName($key);
                 $val = reflex_mysql::escape($val);
                 if($fn) {
-					$key = "$fn($key)";
-				}
+                    $key = "$fn($key)";
+                }
                 $this->where("$key='$val'",$key);
                 break;
 
@@ -531,8 +531,8 @@ class reflex_collection extends mod_component implements Iterator {
                 if(func_num_args()==1) {
                     foreach($key as $k=>$v) {
                         $this->eq($k,$v);
-					}
-				}
+                    }
+                }
                 break;
 
             // Если второй параметр массив, производится выборка p1 in p2
@@ -541,7 +541,7 @@ class reflex_collection extends mod_component implements Iterator {
                 $r = array();
                 foreach($val as $v) {
                     $r[] = "'".reflex_mysql::escape($v)."'";
-				}
+                }
 
                 switch(sizeof($r)) {
 
@@ -593,14 +593,14 @@ class reflex_collection extends mod_component implements Iterator {
         
         switch($type) {
     
-		    case "s:s":
-		        $key = $this->normalizeColName($key);
-		        $val = reflex_mysql::escape($val);
-		        $this->where("$key<>'$val'",$key);
-		        break;
-		        
-			case "s:a":
-			$r = array();
+            case "s:s":
+                $key = $this->normalizeColName($key);
+                $val = reflex_mysql::escape($val);
+                $this->where("$key<>'$val'",$key);
+                break;
+                
+            case "s:a":
+            $r = array();
                 foreach($val as $v) {
                     $r[] = "'".reflex_mysql::escape($v)."'";
                 }
@@ -620,7 +620,7 @@ class reflex_collection extends mod_component implements Iterator {
                         break;
                 }
                 break;
-		}
+        }
         
         return $this;
     }
@@ -890,9 +890,9 @@ class reflex_collection extends mod_component implements Iterator {
         return $this;
     }
 
-	/**
-	 * Устанавливает коллекции сортировку по возрастанию
-	 **/
+    /**
+     * Устанавливает коллекции сортировку по возрастанию
+     **/
     public function asc($field, $keep = false) {
         if(!$keep) {
             $this->resetSort();
@@ -1028,8 +1028,10 @@ class reflex_collection extends mod_component implements Iterator {
      * Триггеры игнорируются.
      **/
     public function delete() {
+        //АДЬ!
+        //АДЬ!
         $this->callBeforeQuery();
-        $query = "delete `{$this->itemClass()}` from {$this->fromWithoutJoins()} where {$this->whereQuery()} ";
+        $query = "delete `{$this->itemClass()}` from {$this->from()} where {$this->whereQuery()} ";
         reflex_mysql::query($query);
     }
 

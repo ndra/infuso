@@ -124,8 +124,8 @@ class eshop_order extends reflex implements mod_handler {
         
         foreach($s as $id) {
             reflex::get(get_class())->eq("security",$id)->eq("userID",0)->one()->data("userID",$user->id());
-		}
-		
+        }
+        
         setcookie(self::$cookieMyOrders,false,-1,"/");
     }
 
@@ -481,6 +481,15 @@ class eshop_order extends reflex implements mod_handler {
             $n+= min($item->item()->inStock(),$item->quantity());
         }
         return $n;
+    }
+    
+    /**
+    * удаляем все висящие заказы которые страше 2 месяцев
+    **/
+    public static function deleteOldOrders() {
+        $date = util::now()->shiftMonth(-2);
+        $items = self::all()->eq("status", "")->leq("created", $date);
+        $items->delete();
     }
 
 }
