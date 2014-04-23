@@ -144,9 +144,10 @@ class eshop_1c_exchange extends mod_controller {
         foreach($orders as $order) {
             $document = $parent->addChild("Документ");
             $order->export1CXML($document);
+            $order->data("1CExportCompleted",true);
         }
 
-        $orders->data("1CExportCompleted",true);
+
 
         return $xml;
     }
