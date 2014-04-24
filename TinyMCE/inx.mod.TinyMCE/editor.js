@@ -95,6 +95,8 @@ inx.ns("inx.mod.TinyMCE").editor = inx.panel.extend({
             force_p_newlines : false,
             forced_root_block : "",
             elements:this.id(),
+            extended_valid_elements : "widget[*]",
+            custom_elements: "widget",
             file_browser_callback:inx.delegate(this.triggerFilemanager,this)
         };
         
