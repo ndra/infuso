@@ -162,10 +162,16 @@ inx.calendar = inx.panel.extend({
         if(!p) p = {};
         
         var date = new Date();
+        if(!p.year || !p.month || !p.day){
+            if(!p.hours) p.hours = date.getHours();
+            if(!p.minutes) p.minutes = date.getMinutes();
+            if(!p.seconds) p.seconds = date.getSeconds();
+        }
+        
         if(!p.year) p.year = date.getFullYear();
         if(!p.month) p.month = date.getMonth()+1;
         if(!p.day) p.day = date.getDate();
-      
+        
         var day = p.day*1;
         var month = p.month*1;
         var year = p.year*1;
@@ -177,7 +183,7 @@ inx.calendar = inx.panel.extend({
             this.cmd("updateMonths");
         }
         
-        this.fire("select",p.year+"-"+p.month+"-"+p.day);
+        this.fire("select",p.year+"-"+p.month+"-"+p.day+" "+p.hours+":"+p.minutes+":"+p.seconds);
     },
     
     cmd_setNow:function() {

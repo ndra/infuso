@@ -62,12 +62,12 @@ class pay_vendors_chronopay extends pay_vendors {
     * @todo Изменить вызов метода incoming у инвойса
     **/
     public function index_result($p = NULL) {
-        
+        self::$config_id = $_REQUEST["cs3"];
         self::loadConf();
         
         if ($p["key"] != self::$key) {
             throw new Exception("Неверный защитный ключ");
-		}
+        }
 
         $out_summ = $_REQUEST["total"];
         
@@ -77,7 +77,7 @@ class pay_vendors_chronopay extends pay_vendors {
         
         if ($my_crc != $crc) {
             throw new Exception("Неверная подпись CRC");
-		}
+        }
         
         // Загружаем счет
         $invoice = pay_invoice::get((integer)$_REQUEST["cs1"]);
@@ -105,7 +105,7 @@ class pay_vendors_chronopay extends pay_vendors {
     * @return void
     **/
     public function index_success($p = NULL) {
-    
+       self::$config_id = $_REQUEST["cs3"];
        self::loadConf();
        
        $invoice = pay_invoice::get((integer)$_REQUEST["cs1"]);
@@ -120,6 +120,7 @@ class pay_vendors_chronopay extends pay_vendors {
     * @return void
     **/
     public function index_fail($p = NULL) {
+       self::$config_id = $_REQUEST["cs3"]; 
        self::loadConf();
        
        $invoice = pay_invoice::get((integer)$_REQUEST["cs1"]);
@@ -146,6 +147,7 @@ class pay_vendors_chronopay extends pay_vendors {
             'product_price' => $this->invoice()->sum(),
             'cs1' => $this->invoice()->id(),
             'cs2' => mb_substr($this->invoice()->details(), 0, 99),
+            'cs3' => self::$config_id,
             'cb_url' => mod_url::current()->scheme()."://" . mod_url::current()->host() . mod_action::get("pay_vendors_chronopay", "result", array("key"=>self::$key))->url(),
             'cb_type' => 'P',
             'success_url' => mod_url::current()->scheme()."://" . mod_url::current()->host() . mod_action::get("pay_vendors_chronopay", "success")->url(),
