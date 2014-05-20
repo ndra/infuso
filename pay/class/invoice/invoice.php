@@ -159,7 +159,7 @@ class pay_invoice extends reflex implements mod_handler {
     
         if ($id <= 0 || !is_int($id)) {
             throw new Exception("Задан невалидный номер счета: ".var_export($id,1));
-		}         
+        }         
 
         return reflex::get(get_class(), $id);
     }
@@ -397,7 +397,7 @@ class pay_invoice extends reflex implements mod_handler {
 
                 $this->data("date_incoming", util::now());
                 $this->data("driver", $params["driver"]);
-
+                $this->store(); 
                 // Выбрасываем событие оплаты заказа
                 mod::fire("pay_success", array(
                     "invoice" => $this,
@@ -467,7 +467,7 @@ class pay_invoice extends reflex implements mod_handler {
 
             if (!array_key_exists($status, self::statusAll())) {
                 throw new Exception("Pay: несуществующий статус оплаты с кодом " . $status);
-			}
+            }
 
             // Если указан тип Требует прерки, заполняем поле время проверки
             if($status == self::STATUS_CHECK) {
