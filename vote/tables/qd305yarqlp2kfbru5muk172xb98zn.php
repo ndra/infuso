@@ -1,6 +1,5 @@
 <? return array (
   'name' => 'vote',
-  'parent' => '',
   'fields' => 
   array (
     0 => 
@@ -61,8 +60,28 @@
       'list' => 'Разрешен один ответ, Разрешено несколько ответов, Произвольные значения',
       'method' => '',
     ),
+    5 => 
+    array (
+      'editable' => 1,
+      'id' => '0xp90x8e63m1rxkaixke67c56qwei3',
+      'name' => 'enableDraft',
+      'type' => 'fsxp-lhdw-ghof-1rnk-5bqp',
+      'label' => 'Включить возможность писать свои вариант(для варианта с чекбоксами)',
+      'group' => '',
+      'default' => '',
+      'indexEnabled' => 0,
+      'help' => '',
+    ),
   ),
   'indexes' => 
   array (
+  ),
+  'fieldGroups' => 
+  array (
+    0 => 
+    array (
+      'name' => NULL,
+      'title' => NULL,
+    ),
   ),
 ); ?>

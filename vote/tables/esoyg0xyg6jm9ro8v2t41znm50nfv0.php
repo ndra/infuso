@@ -1,6 +1,5 @@
 <? return array (
   'name' => 'vote_option',
-  'parent' => '',
   'fields' => 
   array (
     0 => 
@@ -53,6 +52,18 @@
     ),
     4 => 
     array (
+      'editable' => 1,
+      'id' => '4g0dyv2qyuix4u23k9in8g2xp1itmu',
+      'name' => 'draft',
+      'type' => 'fsxp-lhdw-ghof-1rnk-5bqp',
+      'label' => 'Пользовательский',
+      'group' => '',
+      'default' => '',
+      'indexEnabled' => 0,
+      'help' => '',
+    ),
+    5 => 
+    array (
       'id' => 'klbqclz7c1hnm50twesqc5znk903ml',
       'name' => 'count',
       'type' => 'gklv-0ijh-uh7g-7fhu-4jtg',
@@ -66,5 +77,13 @@
   ),
   'indexes' => 
   array (
+  ),
+  'fieldGroups' => 
+  array (
+    0 => 
+    array (
+      'name' => NULL,
+      'title' => NULL,
+    ),
   ),
 ); ?>
