@@ -1,50 +1,50 @@
 <?
 
 /**
- * Ìîäåëü îòâåòà íà âîïðîñ
+ * ÐœÐ¾Ð´ÐµÐ»ÑŒ Ð¾Ñ‚Ð²ÐµÑ‚Ð° Ð½Ð° Ð²Ð¾Ð¿Ñ€Ð¾Ñ
  **/
 class vote_answer extends reflex {
 
-	public function reflex_beforeCreate() {
-	    $this->data("date",util::now());
-	}
+    public function reflex_beforeCreate() {
+        $this->data("date",util::now());
+    }
 
-	public static function all() {
-	    return reflex::get(get_class())->desc("date");
-	}
+    public static function all() {
+        return reflex::get(get_class())->desc("date");
+    }
 
-	public static function get($id) {
-	    return reflex::get(get_class(),$id);
-	}
+    public static function get($id) {
+        return reflex::get(get_class(),$id);
+    }
 
-	public function reflex_parent() {
-		return vote::get($this->data("voteID"));
-	}
+    public function reflex_parent() {
+        return vote::get($this->data("voteID"));
+    }
 
-	public function reflex_cleanup() {
-		return !$this->reflex_parent()->exists();
-	}
+    public function reflex_cleanup() {
+        return !$this->reflex_parent()->exists();
+    }
 
-	/**
-	 * @return Âàðèàíò îòâåòà
-	 **/
-	public function option() {
-		return $this->pdata("optionID");
-	}
+    /**
+     * @return Ð’Ð°Ñ€Ð¸Ð°Ð½Ñ‚ Ð¾Ñ‚Ð²ÐµÑ‚Ð°
+     **/
+    public function option() {
+        return $this->pdata("optionID");
+    }
 
-	/**
-	 * @return Îáúåêò ãîëîñîâàíèÿ
-	 **/
-	public function vote() {
-		return $this->pdata("voteID");
-	}
+    /**
+     * @return ÐžÐ±ÑŠÐµÐºÑ‚ Ð³Ð¾Ð»Ð¾ÑÐ¾Ð²Ð°Ð½Ð¸Ñ
+     **/
+    public function vote() {
+        return $this->pdata("voteID");
+    }
 
-	public function reflex_afterOperation() {
-		mod::fire("vote_answersChanged",array(
-		    "vote" => $this->vote(),
-		    "answer" => $this,
-		    "option" => $this->option(),
-		));
-	}
+    public function reflex_afterOperation() {
+        mod::fire("vote_answersChanged",array(
+            "vote" => $this->vote(),
+            "answer" => $this,
+            "option" => $this->option(),
+        ));
+    }
 
 }
