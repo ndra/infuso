@@ -11,7 +11,7 @@ inx.service.register("reflex",new function() {
     }
     
     this.getSelectedItems = function() {
-        var list = inx(this.viewport).allItems().eq("type", "inx.mod.reflex.editor.list.items");
+        var list = inx(this.viewport).allItems().eq("type", "inx.mod.reflex.editor.list.items").eq("visibleRecursive", true);
         var selectedItems = list.info("selection");
         
         return selectedItems;    
