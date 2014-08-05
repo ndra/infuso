@@ -172,7 +172,7 @@ class tmp implements mod_handler {
         
             $title = $obj->meta("title");
         }
-		
+        
         $title = strtr($title,array("<"=>"&lt;",">"=>"&gt;"));
         $head.= "<title>$title</title>\n";
 
@@ -197,10 +197,10 @@ class tmp implements mod_handler {
     public function header($p1=null) {
 
         if(!$p1["html"]) {
-            $html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">'."\n";
+            $html = '<!DOCTYPE html>'."\n";
             $html.= "<html xmlns='http://www.w3.org/1999/xhtml'>\n<head>\n";
             $html.= "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />\n";
-			//$html.= "<meta http-equiv='X-UA-Compatible' content='IE=EmulateIE7,IE=edge'>";
+            //$html.= "<meta http-equiv='X-UA-Compatible' content='IE=EmulateIE7,IE=edge'>";
 
             $html.= tmp_delayed::add(array(
                 "class" => "tmp",
@@ -282,8 +282,8 @@ class tmp implements mod_handler {
             return reflex::get("reflex_none",0);
         }
     
-		list($class,$id) = explode("/",$action->ar());
-		return reflex::get($class,$id);
+        list($class,$id) = explode("/",$action->ar());
+        return reflex::get($class,$id);
     }
     
     public function setCurrentObject($obj) {
@@ -402,12 +402,12 @@ class tmp implements mod_handler {
         $theme = tmp_theme::get($id);
         foreach($theme->templatesArray() as $key=>$tmp) {
             self::$templateMap[$key] = $tmp;
-		}
+        }
     }
 
-	/**
-	 * Возвращает путь к файлу шаблона с заданным расширением
-	 **/
+    /**
+     * Возвращает путь к файлу шаблона с заданным расширением
+     **/
     public function filePath($template,$ext) {
 
         tmp_theme::loadDefaults();
@@ -419,7 +419,7 @@ class tmp implements mod_handler {
             return file::get($ret);
         } else {
             return file::nonExistent();
-		}
+        }
     }
 
     public static function helper($html) {
