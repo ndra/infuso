@@ -24,7 +24,7 @@ class mod_field_point extends mod_field_textfield {
 
     public function editorInx() {
         return array(
-            "type" => "inx.textarea",
+            "type" => "inx.mod.reflex.fields.point",
             "value" => $this->rvalue(),
         );
     }
