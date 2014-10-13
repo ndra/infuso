@@ -183,7 +183,11 @@ class tmp implements mod_handler {
 
         // Добавляем меты
         foreach(array("keywords","description") as $name) {
-            if($val = trim($obj->meta($name))) {
+            $val = tmp::param($name);
+            if(!$val){
+                $val = trim($obj->meta($name));
+            }
+            if($val) {
                 $head.= "<meta name='{$name}' content='{$val}' />\n";
             }
         }
