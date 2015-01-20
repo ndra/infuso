@@ -314,10 +314,10 @@ ndra.slideshow = new function() {
     /**
      * Утстанавливает html-описание
      **/
-    this.setHtml = function(html) {
-        eContent.top.html(html);
-        eContent.right.html(html);
-        eContent.bottom.html(html);
+    this.setHtml = function(data) {
+        eContent.top.html(data.top);
+        eContent.right.html(data.html);
+        eContent.bottom.html(data.bottom);
     }
 
     /**
@@ -359,9 +359,8 @@ ndra.slideshow = new function() {
             $(this).fadeIn("fast");
 
             eBigImageContainer.html("");
-
-            if(data.html)
-                ndra.slideshow.setHtml(data.html);
+            
+            ndra.slideshow.setHtml(data);
 
             $(this).appendTo(eBigImageContainer);
 

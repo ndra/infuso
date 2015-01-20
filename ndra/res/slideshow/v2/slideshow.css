@@ -68,18 +68,14 @@
 	
 	.content-top {
 	    top:0;
-	    height:40px;
 	    overflow:hidden;
 	    position:absolute;
 	    background:#222;
-	    padding:10px;
 	}
 	
 	.content-bottom {
-	    height:40px;
 	    position:absolute;
 	    bottom:0;
-	    padding:30px;
 	    background:#222;
 	    overflow:hidden;
 	}
