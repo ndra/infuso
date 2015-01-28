@@ -69,7 +69,7 @@ class form extends tmp_helper {
 	 **/
 	public function execWidget() {
 
-	    $id = "form-{$this->hash()}";
+	    $id = "form-{$this->hash()}-".util::id(8);
 	    tmp::exec("form:form",array(
 	        "xx" => 1213,
 			"form" => $this,
@@ -194,7 +194,7 @@ class form extends tmp_helper {
 	    tmp::reset();
 	    mod::coreJS();
 	    tmp::js("/form/res/form.js");
-	    tmp::script("$(function() { form('$selector','{$this->hash()}'); })");
+	    tmp::script("$(function() { $('$selector').mod('init', function(){ form('$selector','{$this->hash()}'); });  })");
 	}
 
 	private $errorTxt = "";

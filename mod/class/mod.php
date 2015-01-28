@@ -280,6 +280,7 @@ class mod extends mod_controller {
 	public static function coreJS() {
         tmp::jq();
 		tmp::singlejs("/mod/res/core.js",-900);
+        tmp::singlejs("/mod/res/mod.jquery.js",-900);
 	}
 
 	/**
