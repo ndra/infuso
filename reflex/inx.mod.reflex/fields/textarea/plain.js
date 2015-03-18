@@ -9,7 +9,8 @@ inx.mod.reflex.fields.textarea.plain = inx.panel.extend({
             value:p.value,
             style:{
                 border:0
-            }
+            },
+            onchange: [this.id(),"updateCounter"] 
         });
         p.padding = 0;
         p.bbar = [            
@@ -26,13 +27,31 @@ inx.mod.reflex.fields.textarea.plain = inx.panel.extend({
                 {text:"Типографить",onclick:[this.id(),"typografize"],air:true},
                 {text:"Удалить тэги",onclick:[this.id(),"clearHTML"],air:true},
                 {text:"Закачать внешние файлы",onclick:[this.id(),"downloadExternalFiles"],air:true}
-            ]}
+            ]},
+            "|",
+            {
+                type:"inx.panel",
+                labelAlign:"top",
+                width: 110,
+                html: "Символов в тексте:"
+            },
+            {
+                type:"inx.panel",
+                name: "counterfzs2ygex21",
+                labelAlign:"top",
+                width: 50,
+                html: "<b>" + p.value.length + "<b>"
+            }
         ];
         p.items = [this.textarea]
         this.base(p);
         this.textarea.on("focus",[this.id(),"handleFocus"]);
         this.on("smoothBlur",[this.id(),"handleBlur"]);
         this.bbar.cmd("hide");
+    },
+    
+    cmd_updateCounter:function(p) {
+        this.bbar.items().eq("name","counterfzs2ygex21").cmd("html","<b>" + p.length + "<b>");    
     },
     
     cmd_handleFocus:function() {
