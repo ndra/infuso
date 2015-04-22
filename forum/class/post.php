@@ -385,7 +385,13 @@ class forum_post extends reflex {
      **/
     public function reflex_url() {
         $page = floor($this->postsBefore()->count() / $this->postsBefore()->perPage()) + 1;
-        return $this->topic()->url()."?page=".$page."#post-".$this->id();
+        $url = $this->topic()->url();
+        if($page>1){
+            $url .= "?page=".$page."#post-".$this->id();     
+        }else{
+            $url .= "#post-".$this->id();         
+        }
+        return $url;
     }
 
 
