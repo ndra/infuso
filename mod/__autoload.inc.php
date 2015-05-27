@@ -7,9 +7,9 @@ ini_set('default_charset', "utf-8");
 $GLOBALS["infusoStarted"] = microtime(1);
 $GLOBALS["infusoClassTimer"] = 0;
 
-function __autoload($class) {
+spl_autoload_register(function ($class) {
 
-	$quickMap = array(
+    $quickMap = array(
         "mod" => "/mod/class/mod.php",
         "mod_classmap" => "/mod/class/classmap/classmap.php",
         "mod_handler" => "/mod/class/handler.php",
@@ -32,31 +32,31 @@ function __autoload($class) {
         "mod_update" => "/mod/class/update.php",
         "mod_log" => "/mod/class/log/log.php",
         "mod_log_msg" => "/mod/class/log/msg.php",
-		"mod_unzip" => "/mod/class/unzip.php",
-		"mod_profiler" => "/mod/class/profiler.php",
-		"mod_confLoader_xml" => "/mod/class/confLoader/xml.php",
-		"mod_confLoader_yaml" => "/mod/class/confLoader/yaml.php",
+        "mod_unzip" => "/mod/class/unzip.php",
+        "mod_profiler" => "/mod/class/profiler.php",
+        "mod_confLoader_xml" => "/mod/class/confLoader/xml.php",
+        "mod_confLoader_yaml" => "/mod/class/confLoader/yaml.php",
         "mod_cmd" => "/mod/class/cmd.php",
         "mod_behaviour" => "/mod/class/behaviour.php",
         "mod_controller_behaviour" => "/mod/class/controller/behaviour.php",
         "mod_app" => "/mod/class/app.php",
-	);
-	
-	if($path = $quickMap[$class]) {
-	    include $_SERVER["DOCUMENT_ROOT"].$path;
-	    return;
-	}
-	
-	$map = mod::classmap("map");
-	
-	if($map[$class]) {
-	    $path = $_SERVER["DOCUMENT_ROOT"].$map[$class]["f"];
-	    $t = microtime(1);
-	    include $path;
-	    $GLOBALS["infusoClassTimer"] += microtime(1) - $t;
-	}
+    );
+    
+    if($path = $quickMap[$class]) {
+        include $_SERVER["DOCUMENT_ROOT"].$path;
+        return;
+    }
+    
+    $map = mod::classmap("map");
+    
+    if($map[$class]) {
+        $path = $_SERVER["DOCUMENT_ROOT"].$map[$class]["f"];
+        $t = microtime(1);
+        include $path;
+        $GLOBALS["infusoClassTimer"] += microtime(1) - $t;
+    }
 
-}
+}, true, true); 
 
 if(mod_superadmin::check()) {
     error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT);
