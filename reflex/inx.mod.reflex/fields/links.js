@@ -74,6 +74,7 @@ inx.ns("inx.mod.reflex.fields").links = inx.panel.extend({
     },
     
     cmd_moveObjectUp:function(id) {
+        id = id * 1;
         var pos = this.data.indexOf(id);
         if(pos==0) return;
         this.data.splice(pos,1);
@@ -82,6 +83,7 @@ inx.ns("inx.mod.reflex.fields").links = inx.panel.extend({
     },
     
     cmd_moveObjectDown:function(id) {
+        id = id * 1;
         var pos = this.data.indexOf(id);
         if(pos==this.data.length-1) return;
         this.data.splice(pos,1);

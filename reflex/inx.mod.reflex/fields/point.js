@@ -40,11 +40,14 @@ inx.ns("inx.mod.reflex.fields").point = inx.panel.extend({
     },
     
     cmd_openMap:function() {        
-        inx.mod.reflex.fields.point.load(inx.cmd(this.id(), "handleMapReady"));        
+        inx.mod.reflex.fields.point.load(inx.cmd(this.id(), "handleMapReady", null));        
     },
     
     cmd_geoCode:function() {        
-        var address = inx(this).owner().allItems().eq("name", "addres").info("value");
+        var address = null;
+        if(inx(this).owner().allItems().eq("name", "addres").length){
+            adress = inx(this).owner().allItems().eq("name", "addres").info("value");    
+        }
         inx.mod.reflex.fields.point.load(inx.cmd(this.id(), "handleMapReady", address));   
     },
     
